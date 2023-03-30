@@ -1,0 +1,12 @@
+<Project Sdk="Godot.NET.Sdk/4.0.1-rc.1">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	<LangVersion>11</LangVersion>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+	<DefineConstants>TEMPLATE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+	<PackageReference Include="ENet-CSharp" Version="2.4.8" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+</Project>

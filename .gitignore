@@ -1,0 +1,9 @@
+# Godot ignores
+.godot/*
+
+# Visual Studio ignores
+.vs/*
+Properties/*
+
+# Include these files
+!Properties/.gdignore
