@@ -15,6 +15,10 @@ run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 config/icon="res://Sprites/icon.svg"
 
+[autoload]
+
+SceneManager="*res://GodotUtils/Scripts/Autoload/SceneManager.cs"
+
 [dotnet]
 
 project/assembly_name="Template"
