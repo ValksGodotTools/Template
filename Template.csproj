@@ -6,6 +6,9 @@
     <DefineConstants>TEMPLATE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="GodotUtils\Snippets\VS2022\ExportNodePath.snippet" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="ENet-CSharp" Version="2.4.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
