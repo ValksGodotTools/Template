@@ -14,3 +14,7 @@ Please have a look at the [Projects Coding Style](https://github.com/Valks-Games
 I highly recommend you install the [GitHub Desktop App](https://desktop.github.com/). This will almost completely eliminate the need to do Git CLI commands through the command line.
 
 If you are interested in contributing or have any questions please talk to `va#9904` over Discord.
+
+## Credit
+### Audio
+"5 Chiptunes (Action)" by SubspaceAudio licensed CC0: https://opengameart.org/content/5-chiptunes-action  

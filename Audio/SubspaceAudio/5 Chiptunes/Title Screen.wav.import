@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://7y62x863j44t"
+path="res://.godot/imported/Title Screen.wav-c24e908f04f18f92e795442b105461f5.sample"
+
+[deps]
+
+source_file="res://Audio/SubspaceAudio/5 Chiptunes/Title Screen.wav"
+dest_files=["res://.godot/imported/Title Screen.wav-c24e908f04f18f92e795442b105461f5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
