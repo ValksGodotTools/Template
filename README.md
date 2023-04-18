@@ -1,5 +1,5 @@
 # Template
-Template to be used for all starting projects.
+I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point. See the [roadmap](https://github.com/ValksGodotTools/Template/issues/1) for planned features.
 
 https://user-images.githubusercontent.com/6277739/232676254-b8d15328-395b-4717-8338-051222a186a6.mp4
 
