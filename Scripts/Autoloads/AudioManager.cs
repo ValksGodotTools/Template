@@ -10,31 +10,25 @@ public partial class AudioManager : Node
 
     public static AudioManager Instance { get; set; }
 
-    public static float VolumeMusic
+    private static Dictionary<string, float> Volume { get; } = new();
+
+    public static void SetVolume(string name, float value)
     {
-        get => _volumeMusic;
-        set
-        {
-            _volumeMusic = value;
-            EmitRemappedValue(SignalName.VolumeMusicChanged, value);
-        }
+        var signalName = $"Volume{name}Changed";
+        Volume[signalName] = value;
+        var error = Instance.EmitSignal(signalName, value.Remap(0, 100, -40, 0));
+
+        if (error == Error.Unavailable)
+            Logger.LogWarning($"The volume signal '{signalName}' does not exist. " +
+                $"Perhaps there was a typo in SetVolume({name}, {value})?");
     }
 
-    public static float VolumeSFX
+    private Dictionary<string, AudioStreamPlayer> StreamPlayers { get; } = new();
+
+    public override void _Ready()
     {
-        get => _volumeSFX;
-        set
-        {
-            _volumeSFX = value;
-            EmitRemappedValue(SignalName.VolumeSFXChanged, value);
-        }
+        Instance = this;
+        StreamPlayers["Music"] = GetNode<AudioStreamPlayer>("Music");
+        StreamPlayers["SFX"] = GetNode<AudioStreamPlayer>("SFX");
     }
-
-    private static float _volumeMusic;
-    private static float _volumeSFX;
-
-    private static void EmitRemappedValue(string signalName, float value) =>
-        Instance.EmitSignal(signalName, value.Remap(0, 100, -40, 0));
-
-    public override void _Ready() => Instance = this;
 }
