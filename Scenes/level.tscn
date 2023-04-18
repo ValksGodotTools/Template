@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://bh35gnkui1lml"]
+
+[ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="1_wnpie"]
+
+[node name="Level" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wnpie")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+text = "Resume"
+
+[node name="Options" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+text = "Options"
+
+[node name="Main Menu" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="Quit" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Resume" to="CanvasLayer/PanelContainer" method="_on_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Options" to="CanvasLayer/PanelContainer" method="_on_options_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Main Menu" to="CanvasLayer/PanelContainer" method="_on_main_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Quit" to="CanvasLayer/PanelContainer" method="_on_quit_pressed"]

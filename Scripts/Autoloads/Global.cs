@@ -12,12 +12,14 @@ global using System.Threading.Tasks;
 
 namespace Template;
 
-public partial class Main : Node
+public partial class Global : Node
 {
+    private static Global Instance { get; set; }
+
 	public override void _Ready()
 	{
-		
-	}
+        Instance = this;
+    }
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -29,14 +31,14 @@ public partial class Main : Node
 		if (what == NotificationWMCloseRequest)
 		{
 			GetTree().AutoAcceptQuit = false;
-			HandleCleanup();
+			Quit();
 		}
 	}
 
-	private void HandleCleanup()
+	public static void Quit()
 	{
-		// Handle cleanup here
+        // Handle cleanup here
 
-		GetTree().Quit();
+        Instance.GetTree().Quit();
 	}
 }

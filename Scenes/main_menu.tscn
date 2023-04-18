@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0timcqaob7wy"]
+
+[ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
+
+[node name="Main Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3ln8k")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Play" type="Button" parent="PanelContainer/CenterContainer/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Play"
+
+[node name="Options" type="Button" parent="PanelContainer/CenterContainer/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Options"
+
+[node name="Quit" type="Button" parent="PanelContainer/CenterContainer/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBox/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBox/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/VBox/Quit" to="." method="_on_quit_pressed"]
