@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="Template"
-run/main_scene="res://Scenes/main.tscn"
+run/main_scene="res://Scenes/main_menu.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 config/icon="res://Sprites/icon.svg"
 
 [autoload]
 
+Global="*res://Scripts/Autoloads/Global.cs"
 SceneManager="*res://GodotUtils/Scripts/Autoload/SceneManager.cs"
+AudioManager="*res://Scripts/Autoloads/audio_manager.tscn"
 
 [dotnet]
 
