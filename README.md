@@ -1,6 +1,8 @@
 # Template
 Template to be used for all starting projects.
 
+https://user-images.githubusercontent.com/6277739/232676254-b8d15328-395b-4717-8338-051222a186a6.mp4
+
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone this repository with all its submodules
