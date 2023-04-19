@@ -1,6 +1,8 @@
 # Template
 I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point. See the [roadmap](https://github.com/ValksGodotTools/Template/issues/1) for planned features.
 
+https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a84b-7f09fc6199a3.mp4
+
 ## Features
 - Many things have been pre-configured such as project settings, input maps, folder structure, gitignore, etc
 - Scene transitions
