@@ -1,7 +1,18 @@
 # Template
 I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point. See the [roadmap](https://github.com/ValksGodotTools/Template/issues/1) for planned features.
 
-https://user-images.githubusercontent.com/6277739/232676254-b8d15328-395b-4717-8338-051222a186a6.mp4
+## Features
+- Many things have been pre-configured such as project settings, input maps, folder structure, gitignore, etc
+- Scene transitions
+- Audio manager
+- Options (Audio Sliders, Window Mode, VSync Mode, Window Size, Max FPS, Language, and more is planned)
+- Multi-Language Support
+
+## Roadmap
+- Credits scene that you can scroll up / down and pause / resume
+- Hotkey management
+- ModLoader logic and UI
+- Clicking on Options in popup menu should take user to some kind of options scene (would be nice if used the same script to add the options)
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
