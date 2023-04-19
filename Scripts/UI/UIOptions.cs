@@ -1,6 +1,6 @@
 namespace Template;
 
-public partial class UIOptions : Node
+public partial class UIOptions : Control
 {
     private VBoxContainer   VBox                { get; set; }
     private UIWindowSize    UIWindowSize        { get; set; }
@@ -30,15 +30,6 @@ public partial class UIOptions : Node
 
         OptionsManager.WindowModeChanged += windowMode =>
             UIFullscreenOptions.OptionButton.Select((int)windowMode);
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (Input.IsActionJustPressed("ui_cancel"))
-        {
-            AudioManager.PlayMusic(Music.Menu);
-            SceneManager.SwitchScene("main_menu");
-        }
     }
 
     private void CreateSliderMusic() =>

@@ -29,6 +29,22 @@ public partial class Global : Node
 		Logger.Update();
 	}
 
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionJustPressed("ui_cancel"))
+        {
+            var curScene = SceneManager.CurrentScene.Name;
+
+            switch (curScene)
+            {
+                case "Options":
+                    AudioManager.PlayMusic(Music.Menu);
+                    SceneManager.SwitchScene("main_menu");
+                    break;
+            }
+        }
+    }
+
     public override void _Notification(int what)
 	{
 		if (what == NotificationWMCloseRequest)

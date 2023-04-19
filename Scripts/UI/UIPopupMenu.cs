@@ -2,8 +2,38 @@ namespace Template;
 
 public partial class UIPopupMenu : Control
 {
+    private VBoxContainer VBox { get; set; }
+    private UIOptions Options { get; set; }
+
+    private List<Button> Btns { get; set; } = new();
+
     public override void _Ready()
     {
+        VBox = GetNode<VBoxContainer>("Margin/VBox");
+
+        var resume = new GButton("RESUME");
+        resume.Pressed += OnResumePressed;
+
+        var options = new GButton("OPTIONS");
+        options.Pressed += OnOptionsPressed;
+
+        var mainMenu = new GButton("MAIN MENU");
+        mainMenu.Pressed += OnMainMenuPressed;
+
+        var quit = new GButton("QUIT");
+        quit.Pressed += OnQuitPressed;
+
+        Btns.Add(resume);
+        Btns.Add(options);
+        Btns.Add(mainMenu);
+        Btns.Add(quit);
+
+        foreach (var btn in Btns)
+            VBox.AddChild(btn);
+
+        Options = Prefabs.Options.Instantiate<UIOptions>();
+        VBox.AddChild(Options);
+        Options.Hide();
         Hide();
     }
 
@@ -11,36 +41,46 @@ public partial class UIPopupMenu : Control
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            if (Visible)
+            if (Options.Visible)
             {
-                Hide();
+                Options.Hide();
+
+                foreach (var btn in Btns)
+                    btn.Show();
             }
             else
             {
-                // todo: pause the game
-                Show();
+                Visible = !Visible;
+
+                if (Visible)
+                {
+                    // todo: pause the game
+                }
             }
         }
     }
 
-    private void _on_resume_pressed()
+    private void OnResumePressed()
     {
         // todo: unpause the game
         Hide();
     }
 
-    private void _on_options_pressed()
+    private void OnOptionsPressed()
     {
+        Options.Visible = !Options.Visible;
 
+        foreach (var btn in Btns)
+            btn.Hide();
     }
 
-    private void _on_main_menu_pressed()
+    private void OnMainMenuPressed()
     {
         AudioManager.PlayMusic(Music.Menu);
         SceneManager.SwitchScene("main_menu");
     }
 
-    private void _on_quit_pressed()
+    private void OnQuitPressed()
     {
         Global.Quit();
     }

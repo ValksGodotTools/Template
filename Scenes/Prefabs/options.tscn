@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://s7odqekrtb2y"]
 
-[ext_resource type="Script" path="res://Scripts/UI/UIOptions.cs" id="1_3jpjt"]
+[ext_resource type="Script" path="res://Scripts/UI/UIOptions.cs" id="1_1rqv8"]
 
 [node name="Options" type="PanelContainer"]
 anchors_preset = 15
@@ -8,7 +8,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_3jpjt")
+script = ExtResource("1_1rqv8")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2

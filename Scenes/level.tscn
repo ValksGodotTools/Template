@@ -6,7 +6,7 @@
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+[node name="UIPopupMenu" type="PanelContainer" parent="CanvasLayer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -20,33 +20,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wnpie")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/UIPopupMenu"]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 20
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/UIPopupMenu/Margin"]
 layout_mode = 2
-
-[node name="Resume" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
-layout_mode = 2
-text = "RESUME"
-
-[node name="Options" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
-layout_mode = 2
-text = "OPTIONS"
-
-[node name="Main Menu" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
-layout_mode = 2
-text = "MAIN MENU"
-
-[node name="Quit" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
-layout_mode = 2
-text = "QUIT"
-
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Resume" to="CanvasLayer/PanelContainer" method="_on_resume_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Options" to="CanvasLayer/PanelContainer" method="_on_options_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Main Menu" to="CanvasLayer/PanelContainer" method="_on_main_menu_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Quit" to="CanvasLayer/PanelContainer" method="_on_quit_pressed"]
