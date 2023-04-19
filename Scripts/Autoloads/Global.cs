@@ -23,6 +23,11 @@ public partial class Global : Node
         // Load options from disk
         var fileExists = FileAccess.FileExists("user://options.tres");
 
+        // Note: There is a bug in Godot. If the ResourceOptions.cs script is moved
+        // then the file path will not updated in the .tres file. In order to fix
+        // this go to C:\Users\VALK-DESKTOP\AppData\Roaming\Godot\app_userdata\Template
+        // and delete the .tres file so Godot will be forced to generate it from
+        // scratch.
         Options = fileExists ? 
             GD.Load<ResourceOptions>("user://options.tres") : new();
 
