@@ -1,6 +1,8 @@
 # Template
 I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point.
 
+**TL:DR; I did all the tedious stuff for you.**
+
 P.S. There is music in the video below. Might be muted for you by default.
 
 https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8ea6-87b3febd7e86.mp4
