@@ -2,12 +2,6 @@ namespace Template;
 
 public partial class AudioManager : Node
 {
-    [Signal] 
-    public delegate void VolumeMusicChangedEventHandler(float volume);
-
-    [Signal]
-    public delegate void VolumeSFXChangedEventHandler(float volume);
-
     public static float MusicVolume { get; private set; }
     public static float SFXVolume   { get; private set; }
 
@@ -18,30 +12,39 @@ public partial class AudioManager : Node
     {
         if (!instant && MusicPlayer.Playing)
         {
+            // Transition from current song being played to new song
             var tween = new GTween(MusicPlayer);
             tween.Create();
 
+            // Fade out current song
             tween.Animate("volume_db", -80, fadeOut)
                 .SetTrans(Tween.TransitionType.Sine)
                 .SetEase(Tween.EaseType.In);
 
+            // Set to new song
             tween.Callback(() =>
             {
                 MusicPlayer.Stream = song;
                 MusicPlayer.Play();
             });
 
+            // Fade in to current song
             tween.Animate("volume_db", MusicVolume, fadeIn)
                 .SetTrans(Tween.TransitionType.Sine)
                 .SetEase(Tween.EaseType.In);
         }
         else
         {
+            // Instantly switch to and play new song
             MusicPlayer.Stream = song;
             MusicPlayer.Play();
         }
     }
 
+    // Remember, this is a temporary solution to SFX sounds
+    // Imagine 100's of sounds being played at once. There is only
+    // one SFX player. So each new sound will cancel out the previous.
+    // To fix this, we need to create AudioStreamPlayers on demand.
     public static void PlaySFX(AudioStream sound)
     {
         SFXPlayer.Stream = sound;
@@ -56,10 +59,6 @@ public partial class AudioManager : Node
         MusicPlayer.VolumeDb = remappedValue <= -40 ? -80 : remappedValue;
     }
 
-    // Remember, this is a temporary solution to SFX sounds
-    // Imagine 100's of sounds being played at once. There is only
-    // one SFX player. So each new sound will cancel out the previous.
-    // To fix this, we need to create AudioStreamPlayers on demand.
     public static void SetSFXVolume(float v)
     {
         var remappedValue = v.Remap(0, 100, -40, 0);
