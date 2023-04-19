@@ -1,7 +1,7 @@
 # Template
 I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point.
 
-https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a84b-7f09fc6199a3.mp4
+https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8ea6-87b3febd7e86.mp4
 
 ## Features
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
@@ -34,5 +34,4 @@ I highly recommend you install the [GitHub Desktop App](https://desktop.github.c
 If you are interested in contributing or have any questions please talk to `va#9904` over Discord.
 
 ## Credit
-### Audio
-"5 Chiptunes (Action)" by SubspaceAudio licensed CC0: https://opengameart.org/content/5-chiptunes-action  
+See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)
