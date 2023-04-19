@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dxcb5n6nrp2y2"
+path="res://.godot/imported/musical-game-over.wav-9e9b579c8c7275b965698345361864e6.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/Game Over/musical-game-over.wav"
+dest_files=["res://.godot/imported/musical-game-over.wav-9e9b579c8c7275b965698345361864e6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

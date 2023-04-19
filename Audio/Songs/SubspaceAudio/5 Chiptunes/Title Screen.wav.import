@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://7y62x863j44t"
-path="res://.godot/imported/Title Screen.wav-c24e908f04f18f92e795442b105461f5.sample"
+path="res://.godot/imported/Title Screen.wav-6a746934be3f1bdb5ad4cbc6715ebd6a.sample"
 
 [deps]
 
-source_file="res://Audio/SubspaceAudio/5 Chiptunes/Title Screen.wav"
-dest_files=["res://.godot/imported/Title Screen.wav-c24e908f04f18f92e795442b105461f5.sample"]
+source_file="res://Audio/Songs/SubspaceAudio/5 Chiptunes/Title Screen.wav"
+dest_files=["res://.godot/imported/Title Screen.wav-6a746934be3f1bdb5ad4cbc6715ebd6a.sample"]
 
 [params]
 

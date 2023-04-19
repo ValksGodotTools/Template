@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c4fb8n28l3snw"
-path="res://.godot/imported/Level 3.wav-cc51929a8998729744959d74f2541946.sample"
+path="res://.godot/imported/Level 3.wav-da01858c4b21cdbf414720f3a2998948.sample"
 
 [deps]
 
-source_file="res://Audio/SubspaceAudio/5 Chiptunes/Level 3.wav"
-dest_files=["res://.godot/imported/Level 3.wav-cc51929a8998729744959d74f2541946.sample"]
+source_file="res://Audio/Songs/SubspaceAudio/5 Chiptunes/Level 3.wav"
+dest_files=["res://.godot/imported/Level 3.wav-da01858c4b21cdbf414720f3a2998948.sample"]
 
 [params]
 

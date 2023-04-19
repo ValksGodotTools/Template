@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://djp22q3qpcbij"
-path="res://.godot/imported/Ending.wav-4df5748ad7f0021ede80adc93cdaf888.sample"
+path="res://.godot/imported/Ending.wav-e510d8e5dfc47ddd1393ab7dd581e672.sample"
 
 [deps]
 
-source_file="res://Audio/SubspaceAudio/5 Chiptunes/Ending.wav"
-dest_files=["res://.godot/imported/Ending.wav-4df5748ad7f0021ede80adc93cdaf888.sample"]
+source_file="res://Audio/Songs/SubspaceAudio/5 Chiptunes/Ending.wav"
+dest_files=["res://.godot/imported/Ending.wav-e510d8e5dfc47ddd1393ab7dd581e672.sample"]
 
 [params]
 
