@@ -18,11 +18,6 @@ public partial class UIOptions : Node
             AudioManager.PlayMusic(Music.Menu);
             SceneManager.SwitchScene("main_menu");
         }
-
-        if (Input.IsActionJustPressed("move_left"))
-        {
-            AudioManager.PlaySFX(Sounds.GameOver);
-        }
     }
 
     private void CreateMusicSlider()
