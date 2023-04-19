@@ -2,11 +2,6 @@ namespace Template;
 
 public partial class UIMainMenu : Node
 {
-    public override void _Ready()
-    {
-        
-    }
-
     private void _on_play_pressed()
     {
         AudioManager.PlayMusic(Music.Level1, false);
@@ -17,6 +12,12 @@ public partial class UIMainMenu : Node
     {
         AudioManager.PlayMusic(Music.Level4);
         SceneManager.SwitchScene("Prefabs/options");
+    }
+
+    private void _on_credits_pressed()
+    {
+        AudioManager.PlayMusic(Music.Level4);
+        SceneManager.SwitchScene("credits");
     }
 
     private void _on_quit_pressed()

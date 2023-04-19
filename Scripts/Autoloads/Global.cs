@@ -38,6 +38,7 @@ public partial class Global : Node
             switch (curScene)
             {
                 case "Options":
+                case "Credits":
                     AudioManager.PlayMusic(Music.Menu);
                     SceneManager.SwitchScene("main_menu");
                     break;
