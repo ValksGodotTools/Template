@@ -31,7 +31,7 @@ public partial class AudioManager : Node
             });
 
             // Fade in to current song
-            tween.Animate("volume_db", MusicVolume, fadeIn)
+            tween.Animate("volume_db", MusicVolume.Remap(0, 100, -40, 0), fadeIn)
                 .SetTrans(Tween.TransitionType.Sine)
                 .SetEase(Tween.EaseType.In);
         }
