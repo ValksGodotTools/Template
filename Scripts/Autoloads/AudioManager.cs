@@ -1,10 +1,7 @@
 namespace Template;
 
 public partial class AudioManager : Node
-{
-    public  static float        MusicVolume      { get; private set; } = 100;
-    public  static float        SFXVolume        { get; private set; } = 100;
-                                                 
+{                                                
     private static GAudioPlayer MusicPlayer      { get; set; }
 
     private static Node         SFXPlayersParent { get; set; }
@@ -31,8 +28,9 @@ public partial class AudioManager : Node
             });
 
             // Fade in to current song
-            var volume = MusicVolume == 0 ? -80 : MusicVolume.Remap(0, 100, -40, 0);
-            tween.Animate("volume_db", volume, fadeIn)
+            var volume = Global.Options.MusicVolume;
+            var volumeRemapped = volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
+            tween.Animate("volume_db", volumeRemapped, fadeIn)
                 .SetTrans(Tween.TransitionType.Sine)
                 .SetEase(Tween.EaseType.In);
         }
@@ -40,6 +38,7 @@ public partial class AudioManager : Node
         {
             // Instantly switch to and play new song
             MusicPlayer.Stream = song;
+            MusicPlayer.Volume = Global.Options.MusicVolume;
             MusicPlayer.Play();
         }
     }
@@ -50,7 +49,7 @@ public partial class AudioManager : Node
         var sfxPlayer = new GAudioPlayer(SFXPlayersParent, true)
         {
             Stream = sound,
-            Volume = SFXVolume
+            Volume = Global.Options.SFXVolume
         };
 
         // Randomize the pitch
@@ -88,13 +87,13 @@ public partial class AudioManager : Node
     public static void SetMusicVolume(float v)
     {
         MusicPlayer.Volume = v;
-        MusicVolume = MusicPlayer.Volume;
+        Global.Options.MusicVolume = MusicPlayer.Volume;
     }
 
     public static void SetSFXVolume(float v)
     {
         // Set volume for future SFX players
-        SFXVolume = v;
+        Global.Options.SFXVolume = v;
 
         // Can't cast to GAudioPlayer so will have to remap manually again
         v = v == 0 ? -80 : v.Remap(0, 100, -40, 0);
@@ -110,9 +109,6 @@ public partial class AudioManager : Node
 
         SFXPlayersParent = new Node();
         AddChild(SFXPlayersParent);
-
-        // TODO: Save 'MusicVolume' and 'SFXVolume' somewhere and then
-        // load the values back in here
 
         PlayMusic(Music.Menu);
     }

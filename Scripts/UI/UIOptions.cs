@@ -27,7 +27,7 @@ public partial class UIOptions : Node
             Name = "Music",
             HSlider = new HSlider
             {
-                Value = AudioManager.MusicVolume
+                Value = Global.Options.MusicVolume
             }
         });
 
@@ -43,7 +43,7 @@ public partial class UIOptions : Node
             Name = "SFX",
             HSlider = new HSlider
             {
-                Value = AudioManager.SFXVolume
+                Value = Global.Options.SFXVolume
             }
         });
 

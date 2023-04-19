@@ -14,10 +14,18 @@ namespace Template;
 
 public partial class Global : Node
 {
+    public static ResourceOptions Options { get; set; }
+
     private static Global Instance { get; set; }
 
 	public override void _Ready()
 	{
+        // Load options from disk
+        var fileExists = FileAccess.FileExists("user://options.tres");
+
+        Options = fileExists ? 
+            GD.Load<ResourceOptions>("user://options.tres") : new();
+
         Instance = this;
 
         SceneManager.SceneChanged += name =>
@@ -44,6 +52,10 @@ public partial class Global : Node
 	public static void Quit()
 	{
         // Handle cleanup here
+        var error = ResourceSaver.Save(Options, "user://options.tres");
+
+        if (error != Error.Ok)
+            GD.Print(error);
 
         Instance.GetTree().Quit();
 	}
