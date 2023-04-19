@@ -11,6 +11,11 @@ using VSyncMode = DisplayServer.VSyncMode;
  * 
  * Resource props must have [Export] attribute otherwise they will not save 
  * properly.
+ * 
+ * The 'recommended' way of storing config files can be found here
+ * https://docs.godotengine.org/en/stable/classes/class_configfile.html
+ * However this is undesired because values are saved through string keys
+ * instead of props.
  */
 public partial class ResourceOptions : Resource
 {
