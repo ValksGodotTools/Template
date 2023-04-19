@@ -10,9 +10,9 @@ https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a
 - [Several Options](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UIOptions.cs)
 - [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
+- [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 
 ## Roadmap
-- Credits scene that you can scroll up / down and pause / resume
 - Hotkey management
 - ModLoader logic and UI
 
