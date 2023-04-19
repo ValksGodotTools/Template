@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0timcqaob7wy"]
+[gd_scene load_steps=3 format=3 uid="uid://c0timcqaob7wy"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbvcp"]
+bg_color = Color(0.172549, 0.172549, 0.172549, 1)
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -17,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dbvcp")
 
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -27,17 +31,17 @@ layout_mode = 2
 [node name="Play" type="Button" parent="PanelContainer/CenterContainer/VBox"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "Play"
+text = "PLAY"
 
 [node name="Options" type="Button" parent="PanelContainer/CenterContainer/VBox"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "Options"
+text = "OPTIONS"
 
 [node name="Quit" type="Button" parent="PanelContainer/CenterContainer/VBox"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-text = "Quit"
+text = "QUIT"
 
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBox/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/VBox/Options" to="." method="_on_options_pressed"]

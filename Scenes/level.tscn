@@ -32,19 +32,19 @@ layout_mode = 2
 
 [node name="Resume" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2
-text = "Resume"
+text = "RESUME"
 
 [node name="Options" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2
-text = "Options"
+text = "OPTIONS"
 
 [node name="Main Menu" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2
-text = "Main Menu"
+text = "MAIN MENU"
 
 [node name="Quit" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBox"]
 layout_mode = 2
-text = "Quit"
+text = "QUIT"
 
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Resume" to="CanvasLayer/PanelContainer" method="_on_resume_pressed"]
 [connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBox/Options" to="CanvasLayer/PanelContainer" method="_on_options_pressed"]
