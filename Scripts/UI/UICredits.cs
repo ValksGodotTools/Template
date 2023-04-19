@@ -26,21 +26,12 @@ public partial class UICredits : Node
             var line = file.GetLine();
 
             if (line.Contains("http"))
-            {
                 AddTextWithLink(line);
-            }
             else
-            {
                 if (string.IsNullOrWhiteSpace(line))
-                {
                     VBox.AddChild(new GPadding(0, 10));
-                }
                 else
-                {
-                    var label = new GLabel(line);
-                    VBox.AddChild(label);
-                }
-            }
+                    VBox.AddChild(new GLabel(line));
         } 
 
         file.Close();
