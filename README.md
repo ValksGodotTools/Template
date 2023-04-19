@@ -1,14 +1,15 @@
 # Template
-I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point. See the [roadmap](https://github.com/ValksGodotTools/Template/issues/1) for planned features.
+I was tired of doing the same things over and over again for each new game I started working on. So that's what this template is for, something that I can use in all my games as a starting point.
 
 https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a84b-7f09fc6199a3.mp4
 
 ## Features
-- Many things have been pre-configured such as project settings, input maps, folder structure, gitignore, etc
-- Scene transitions
-- Audio manager
-- Options (Audio Sliders, Window Mode, VSync Mode, Window Size, Max FPS, Language, and more is planned)
-- Multi-Language Support
+- Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
+- [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
+- [Audio Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/AudioManager.cs)
+- [Several Options](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UIOptions.cs)
+- [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
+- [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
 
 ## Roadmap
 - Credits scene that you can scroll up / down and pause / resume
