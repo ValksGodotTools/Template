@@ -2,13 +2,15 @@ namespace Template;
 
 public partial class UIOptions : Node
 {
-    private VBoxContainer  VBox                { get; set; }
-    private UIWindowSize   UIWindowSize        { get; set; }
-    private UIOptionButton UIFullscreenOptions { get; set; }
-    private UISlider       UIFPSSlider         { get; set; }
+    private VBoxContainer   VBox                { get; set; }
+    private UIWindowSize    UIWindowSize        { get; set; }
+    private UIOptionButton  UIFullscreenOptions { get; set; }
+    private UISlider        UIFPSSlider         { get; set; }
+    private ResourceOptions Options             { get; set; }
 
     public override void _Ready()
     {
+        Options = OptionsManager.Options;
         VBox = GetNode<VBoxContainer>("VBox");
 
         CreateSliderMusic();
@@ -20,13 +22,13 @@ public partial class UIOptions : Node
         CreateDropdownLanguage();
 
         // Set FPS to unlimited when any VSync mode is enabled
-        if (Global.Options.VSyncMode != DisplayServer.VSyncMode.Disabled)
+        if (Options.VSyncMode != DisplayServer.VSyncMode.Disabled)
         {
             UIFPSSlider.Slider.Value = 0;
             UIFPSSlider.Slider.Editable = false;
         }
 
-        Global.WindowModeChanged += windowMode =>
+        OptionsManager.WindowModeChanged += windowMode =>
             UIFullscreenOptions.OptionButton.Select((int)windowMode);
     }
 
@@ -40,11 +42,11 @@ public partial class UIOptions : Node
     }
 
     private void CreateSliderMusic() =>
-        CreateAudioSlider("Music", Global.Options.MusicVolume, v =>
+        CreateAudioSlider("Music", Options.MusicVolume, v =>
             AudioManager.SetMusicVolume(v));
 
     private void CreateSliderSounds() =>
-        CreateAudioSlider("Sounds", Global.Options.SFXVolume, v =>
+        CreateAudioSlider("Sounds", Options.SFXVolume, v =>
             AudioManager.SetSFXVolume(v));
 
     private void CreateDropdownFullscreenMode()
@@ -60,15 +62,15 @@ public partial class UIOptions : Node
             {
                 case WindowMode.Windowed:
                     DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-                    Global.Options.WindowMode = WindowMode.Windowed;
+                    Options.WindowMode = WindowMode.Windowed;
                     break;
                 case WindowMode.Borderless:
                     DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-                    Global.Options.WindowMode = WindowMode.Borderless;
+                    Options.WindowMode = WindowMode.Borderless;
                     break;
                 case WindowMode.Fullscreen:
                     DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
-                    Global.Options.WindowMode = WindowMode.Fullscreen;
+                    Options.WindowMode = WindowMode.Fullscreen;
                     break;
             }
 
@@ -78,8 +80,8 @@ public partial class UIOptions : Node
             UIWindowSize.ResX.Text = winSize.X + "";
             UIWindowSize.ResY.Text = winSize.Y + "";
 
-            Global.Options.WindowSize = winSize;
-        }, (int)Global.Options.WindowMode);
+            Options.WindowSize = winSize;
+        }, (int)Options.WindowMode);
     }
 
     private void CreateDropdownVSyncMode()
@@ -93,7 +95,7 @@ public partial class UIOptions : Node
         {
             var vsyncMode = (DisplayServer.VSyncMode)v;
             DisplayServer.WindowSetVsyncMode(vsyncMode);
-            Global.Options.VSyncMode = vsyncMode;
+            Options.VSyncMode = vsyncMode;
 
             // Set FPS to unlimited when any VSync mode is enabled
             if (vsyncMode != DisplayServer.VSyncMode.Disabled)
@@ -105,7 +107,7 @@ public partial class UIOptions : Node
             {
                 UIFPSSlider.Slider.Editable = true;
             }
-        }, (int)Global.Options.VSyncMode);
+        }, (int)Options.VSyncMode);
     }
 
     private void CreateLineEditWindowSize()
@@ -127,7 +129,7 @@ public partial class UIOptions : Node
             Name = "Max FPS",
             HSlider = new HSlider
             {
-                Value = Global.Options.MaxFPS,
+                Value = Options.MaxFPS,
                 MinValue = 0,
                 MaxValue = 120,
                 AllowGreater = true
@@ -136,7 +138,7 @@ public partial class UIOptions : Node
 
         var fpsLabel = new GLabel("");
 
-        if (Global.Options.MaxFPS == 0)
+        if (Options.MaxFPS == 0)
             fpsLabel.Text = "Unlimited";
 
         UIFPSSlider.ValueChanged += v =>
@@ -147,7 +149,7 @@ public partial class UIOptions : Node
                 fpsLabel.Text = "";
 
             Engine.MaxFps = (int)v;
-            Global.Options.MaxFPS = (int)v;
+            Options.MaxFPS = (int)v;
         };
 
         hbox.AddChild(UIFPSSlider);
@@ -169,8 +171,8 @@ public partial class UIOptions : Node
 
             TranslationServer.SetLocale(locale);
 
-            Global.Options.Language = (Language)v;
-        }, (int)Global.Options.Language);
+            Options.Language = (Language)v;
+        }, (int)Options.Language);
     }
 
     private void CreateAudioSlider(string name, double initialValue, Action<float> valueChanged)
@@ -271,7 +273,7 @@ public partial class UIWindowSize : UIElement
             var winSize = DisplayServer.WindowGetSize();
             DisplayServer.WindowSetPosition(screenSize / 2 - winSize / 2);
 
-            Global.Options.WindowSize = winSize;
+            OptionsManager.Options.WindowSize = winSize;
         };
 
         hbox.AddChild(ResX);
