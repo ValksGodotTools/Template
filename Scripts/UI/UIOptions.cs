@@ -165,18 +165,9 @@ public partial class UIOptions : Node
             Language.Japanese + ""
         }, v =>
         {
-            switch ((Language)v)
-            {
-                case Language.English:
-                    TranslationServer.SetLocale("en");
-                    break;
-                case Language.French:
-                    TranslationServer.SetLocale("fr");
-                    break;
-                case Language.Japanese:
-                    TranslationServer.SetLocale("ja");
-                    break;
-            }
+            var locale = ((Language)v).ToString().Substring(0, 2).ToLower();
+
+            TranslationServer.SetLocale(locale);
 
             Global.Options.Language = (Language)v;
         }, (int)Global.Options.Language);
