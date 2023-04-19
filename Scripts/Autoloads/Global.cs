@@ -14,30 +14,26 @@ namespace Template;
 
 public partial class Global : Node
 {
+    public static event Action<WindowMode> WindowModeChanged;
+
     public static ResourceOptions Options { get; set; }
 
     private static Global Instance { get; set; }
 
 	public override void _Ready()
 	{
-        // Load options from disk
-        var fileExists = FileAccess.FileExists("user://options.tres");
-
-        // Note: There is a bug in Godot. If the ResourceOptions.cs script is moved
-        // then the file path will not updated in the .tres file. In order to fix
-        // this go to C:\Users\VALK-DESKTOP\AppData\Roaming\Godot\app_userdata\Template
-        // and delete the .tres file so Godot will be forced to generate it from
-        // scratch.
-        Options = fileExists ? 
-            GD.Load<ResourceOptions>("user://options.tres") : new();
-
         Instance = this;
 
-        SceneManager.SceneChanged += name =>
-        {
-            // whenever the scene is changed, gradually fade out all SFX
-            AudioManager.FadeOutSFX();
-        };
+        LoadOptions();
+
+        SetWindowMode();
+        SetVSyncMode();
+        SetWinSize();
+        SetMaxFPS();
+        SetLanguage();
+
+        // Gradually fade out all SFX whenever the scene is changed
+        SceneManager.SceneChanged += name => AudioManager.FadeOutSFX();
     }
 
 	public override void _PhysicsProcess(double delta)
@@ -45,7 +41,26 @@ public partial class Global : Node
 		Logger.Update();
 	}
 
-	public override void _Notification(int what)
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionJustPressed("fullscreen"))
+        {
+            if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed)
+            {
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+                Options.WindowMode = WindowMode.Borderless;
+                WindowModeChanged?.Invoke(WindowMode.Borderless);
+            }
+            else
+            {
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+                Options.WindowMode = WindowMode.Windowed;
+                WindowModeChanged?.Invoke(WindowMode.Windowed);
+            }
+        }
+    }
+
+    public override void _Notification(int what)
 	{
 		if (what == NotificationWMCloseRequest)
 		{
@@ -64,4 +79,54 @@ public partial class Global : Node
 
         Instance.GetTree().Quit();
 	}
+
+    private void LoadOptions()
+    {
+        var fileExists = FileAccess.FileExists("user://options.tres");
+
+        Options = fileExists ?
+            GD.Load<ResourceOptions>("user://options.tres") : new();
+    }
+
+    private void SetWindowMode()
+    {
+        switch (Options.WindowMode)
+        {
+            case WindowMode.Windowed:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+                break;
+            case WindowMode.Borderless:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+                break;
+            case WindowMode.Fullscreen:
+                DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+                break;
+        }
+    }
+
+    private void SetVSyncMode() => DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
+
+    private void SetWinSize()
+    {
+        if (Options.WindowSize != Vector2I.Zero)
+        {
+            DisplayServer.WindowSetSize(Options.WindowSize);
+
+            // center window
+            var screenSize = DisplayServer.ScreenGetSize();
+            var winSize = DisplayServer.WindowGetSize();
+            DisplayServer.WindowSetPosition(screenSize / 2 - winSize / 2);
+        }
+    }
+
+    private void SetMaxFPS()
+    {
+        if (DisplayServer.WindowGetVsyncMode() == DisplayServer.VSyncMode.Disabled)
+        {
+            Engine.MaxFps = Options.MaxFPS;
+        }
+    }
+
+    private void SetLanguage() => TranslationServer.SetLocale(
+        Options.Language.ToString().Substring(0, 2).ToLower());
 }
