@@ -10,5 +10,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1rqv8")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="Center/Margin"]
 layout_mode = 2

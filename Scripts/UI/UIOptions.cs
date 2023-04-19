@@ -11,7 +11,7 @@ public partial class UIOptions : Control
     public override void _Ready()
     {
         Options = OptionsManager.Options;
-        VBox = GetNode<VBoxContainer>("VBox");
+        VBox = GetNode<VBoxContainer>("Center/Margin/VBox");
 
         CreateSliderMusic();
         CreateSliderSounds();
