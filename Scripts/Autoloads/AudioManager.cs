@@ -113,6 +113,6 @@ public partial class AudioManager : Node
         // TODO: Save 'MusicVolume' and 'SFXVolume' somewhere and then
         // load the values back in here
 
-        PlayMusic(Songs.Menu);
+        PlayMusic(Music.Menu);
     }
 }

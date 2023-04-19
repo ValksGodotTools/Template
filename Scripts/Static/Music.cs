@@ -1,6 +1,6 @@
 ﻿namespace Template;
 
-public static class Songs
+public static class Music
 {
     public static AudioStream Menu { get; } = 
         Load("SubspaceAudio/5 Chiptunes/Title Screen.wav");

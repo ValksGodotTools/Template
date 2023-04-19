@@ -15,7 +15,7 @@ public partial class UIOptions : Node
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            AudioManager.PlayMusic(Songs.Menu);
+            AudioManager.PlayMusic(Music.Menu);
             SceneManager.SwitchScene("main_menu");
         }
 
