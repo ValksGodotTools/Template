@@ -4,7 +4,3 @@
 
 [node name="audio_manager" type="Node"]
 script = ExtResource("1_e4p82")
-
-[node name="Music" type="AudioStreamPlayer" parent="."]
-
-[node name="SFX" type="AudioStreamPlayer" parent="."]

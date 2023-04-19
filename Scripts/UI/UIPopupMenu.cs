@@ -36,7 +36,7 @@ public partial class UIPopupMenu : Control
 
     private void _on_main_menu_pressed()
     {
-        AudioManager.PlayMusic(Music.Menu);
+        AudioManager.PlayMusic(Songs.Menu);
         SceneManager.SwitchScene("main_menu");
     }
 

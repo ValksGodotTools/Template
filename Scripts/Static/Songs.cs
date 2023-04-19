@@ -1,6 +1,6 @@
 ﻿namespace Template;
 
-public static class Music
+public static class Songs
 {
     public static AudioStream Menu { get; } = 
         Load("SubspaceAudio/5 Chiptunes/Title Screen.wav");
@@ -18,5 +18,5 @@ public static class Music
         Load("SubspaceAudio/5 Chiptunes/Ending.wav");
 
     private static AudioStream Load(string path) =>
-        GD.Load<AudioStream>($"res://Audio/{path}");
+        GD.Load<AudioStream>($"res://Audio/Songs/{path}");
 }

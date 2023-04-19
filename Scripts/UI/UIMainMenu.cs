@@ -9,13 +9,13 @@ public partial class UIMainMenu : Node
 
     private void _on_play_pressed()
     {
-        AudioManager.PlayMusic(Music.Level1, false);
+        AudioManager.PlayMusic(Songs.Level1, false);
         SceneManager.SwitchScene("level", SceneManager.TransType.Fade);
     }
 
     private void _on_options_pressed()
     {
-        AudioManager.PlayMusic(Music.Level4);
+        AudioManager.PlayMusic(Songs.Level4);
         SceneManager.SwitchScene("options");
     }
 

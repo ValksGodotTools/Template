@@ -15,8 +15,13 @@ public partial class UIOptions : Node
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            AudioManager.PlayMusic(Music.Menu);
+            AudioManager.PlayMusic(Songs.Menu);
             SceneManager.SwitchScene("main_menu");
+        }
+
+        if (Input.IsActionJustPressed("move_left"))
+        {
+            AudioManager.PlaySFX(Sounds.GameOver);
         }
     }
 
@@ -27,7 +32,7 @@ public partial class UIOptions : Node
             Name = "Music",
             HSlider = new HSlider
             {
-                Value = AudioManager.MusicVolume.Remap(-40, 0, 0, 100)
+                Value = AudioManager.MusicVolume
             }
         });
 
@@ -43,7 +48,7 @@ public partial class UIOptions : Node
             Name = "SFX",
             HSlider = new HSlider
             {
-                Value = AudioManager.SFXVolume.Remap(-40, 0, 0, 100)
+                Value = AudioManager.SFXVolume
             }
         });
 
