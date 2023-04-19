@@ -10,13 +10,14 @@ public partial class UIOptions : Node
     public override void _Ready()
     {
         VBox = GetNode<VBoxContainer>("VBox");
-        CreateMusicSlider();
-        CreateSFXSlider();
-        CreateFullscreenOptions();
-        CreateVSync();
-        CreateWindowSize();
-        CreateMaxFPS();
-        CreateLanguageOptions();
+
+        CreateSliderMusic();
+        CreateSliderSounds();
+        CreateDropdownFullscreenMode();
+        CreateDropdownVSyncMode();
+        CreateLineEditWindowSize();
+        CreateSliderMaxFPS();
+        CreateDropdownLanguage();
 
         // Set FPS to unlimited when any VSync mode is enabled
         if (Global.Options.VSyncMode != DisplayServer.VSyncMode.Disabled)
@@ -38,52 +39,22 @@ public partial class UIOptions : Node
         }
     }
 
-    private void CreateMusicSlider()
+    private void CreateSliderMusic() =>
+        CreateAudioSlider("Music", Global.Options.MusicVolume, v =>
+            AudioManager.SetMusicVolume(v));
+
+    private void CreateSliderSounds() =>
+        CreateAudioSlider("Sounds", Global.Options.SFXVolume, v =>
+            AudioManager.SetSFXVolume(v));
+
+    private void CreateDropdownFullscreenMode()
     {
-        var slider = new UISlider(new SliderOptions
+        UIFullscreenOptions = CreateOptionButton("Window Mode", new string[]
         {
-            Name = "Music",
-            HSlider = new HSlider
-            {
-                Value = Global.Options.MusicVolume
-            }
-        });
-
-        slider.ValueChanged += v => AudioManager.SetMusicVolume(v);
-
-        VBox.AddChild(slider);
-    }
-
-    private void CreateSFXSlider()
-    {
-        var slider = new UISlider(new SliderOptions
-        {
-            Name = "Sounds",
-            HSlider = new HSlider
-            {
-                Value = Global.Options.SFXVolume
-            }
-        });
-
-        slider.ValueChanged += v => AudioManager.SetSFXVolume(v);
-
-        VBox.AddChild(slider);
-    }
-
-    private void CreateFullscreenOptions()
-    {
-        UIFullscreenOptions = new UIOptionButton(new OptionButtonOptions
-        {
-            Name = "Window Mode",
-            Items = new string[]
-            {
-                "Windowed",
-                "Borderless",
-                "Fullscreen"
-            }
-        });
-
-        UIFullscreenOptions.ValueChanged += v =>
+            "Windowed",
+            "Borderless",
+            "Fullscreen"
+        }, v =>
         {
             switch ((WindowMode)v)
             {
@@ -108,27 +79,17 @@ public partial class UIOptions : Node
             UIWindowSize.ResY.Text = winSize.Y + "";
 
             Global.Options.WindowSize = winSize;
-        };
-
-        VBox.AddChild(UIFullscreenOptions);
-
-        UIFullscreenOptions.OptionButton.Select((int)Global.Options.WindowMode);
+        }, (int)Global.Options.WindowMode);
     }
 
-    private void CreateVSync()
+    private void CreateDropdownVSyncMode()
     {
-        var options = new UIOptionButton(new OptionButtonOptions
+        CreateOptionButton("VSync Mode", new string[]
         {
-            Name = "VSync Mode",
-            Items = new string[]
-            {
-                DisplayServer.VSyncMode.Disabled + "",
-                DisplayServer.VSyncMode.Enabled + "",
-                DisplayServer.VSyncMode.Adaptive + ""
-            }
-        });
-
-        options.ValueChanged += v =>
+            DisplayServer.VSyncMode.Disabled + "",
+            DisplayServer.VSyncMode.Enabled + "",
+            DisplayServer.VSyncMode.Adaptive + ""
+        }, v =>
         {
             var vsyncMode = (DisplayServer.VSyncMode)v;
             DisplayServer.WindowSetVsyncMode(vsyncMode);
@@ -144,14 +105,10 @@ public partial class UIOptions : Node
             {
                 UIFPSSlider.Slider.Editable = true;
             }
-        };
-
-        VBox.AddChild(options);
-
-        options.OptionButton.Select((int)Global.Options.VSyncMode);
+        }, (int)Global.Options.VSyncMode);
     }
 
-    private void CreateWindowSize()
+    private void CreateLineEditWindowSize()
     {
         UIWindowSize = new UIWindowSize(new ElementOptions
         {
@@ -161,9 +118,7 @@ public partial class UIOptions : Node
         VBox.AddChild(UIWindowSize);
     }
 
-    private string prevStr = "";
-
-    private void CreateMaxFPS()
+    private void CreateSliderMaxFPS()
     {
         var hbox = new HBoxContainer();
 
@@ -201,20 +156,14 @@ public partial class UIOptions : Node
         VBox.AddChild(hbox);
     }
 
-    private void CreateLanguageOptions()
+    private void CreateDropdownLanguage()
     {
-        var options = new UIOptionButton(new OptionButtonOptions
+        CreateOptionButton("Language", new string[]
         {
-            Name = "Language",
-            Items = new string[]
-            {
-                Language.English + "",
-                Language.French + "",
-                Language.Japanese + ""
-            }
-        });
-
-        options.ValueChanged += v =>
+            Language.English + "",
+            Language.French + "",
+            Language.Japanese + ""
+        }, v =>
         {
             switch ((Language)v)
             {
@@ -230,11 +179,40 @@ public partial class UIOptions : Node
             }
 
             Global.Options.Language = (Language)v;
-        };
+        }, (int)Global.Options.Language);
+    }
 
-        VBox.AddChild(options);
+    private void CreateAudioSlider(string name, double initialValue, Action<float> valueChanged)
+    {
+        var slider = new UISlider(new SliderOptions
+        {
+            Name = name,
+            HSlider = new HSlider
+            {
+                Value = initialValue
+            }
+        });
 
-        options.OptionButton.Select((int)Global.Options.Language);
+        slider.ValueChanged += v => valueChanged(v);
+
+        VBox.AddChild(slider);
+    }
+
+    private UIOptionButton CreateOptionButton(string name, string[] items, Action<long> valueChanged, int selected)
+    {
+        var optionBtn = new UIOptionButton(new OptionButtonOptions
+        {
+            Name = name,
+            Items = items
+        });
+
+        optionBtn.ValueChanged += v => valueChanged(v);
+
+        VBox.AddChild(optionBtn);
+
+        optionBtn.OptionButton.Select(selected);
+
+        return optionBtn;
     }
 }
 
