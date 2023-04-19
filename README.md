@@ -15,7 +15,6 @@ https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a
 - Credits scene that you can scroll up / down and pause / resume
 - Hotkey management
 - ModLoader logic and UI
-- Clicking on Options in popup menu should take user to some kind of options scene (would be nice if used the same script to add the options)
 
 ## Known Issues
 - Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
