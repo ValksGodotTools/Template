@@ -1,5 +1,6 @@
 # Godot ignores
 .godot/*
+Exported/*
 
 # Visual Studio ignores
 .vs/*
