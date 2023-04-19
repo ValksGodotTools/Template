@@ -18,6 +18,7 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 
 ## Known Issues
 - Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
+- Window Size option is sometimes not displaying the correct width and height values
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
