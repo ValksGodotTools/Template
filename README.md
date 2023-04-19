@@ -13,6 +13,7 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 
 ## Roadmap
+- Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
 - Hotkey management
 - ModLoader logic and UI
 
