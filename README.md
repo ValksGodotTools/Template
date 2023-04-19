@@ -17,6 +17,9 @@ https://user-images.githubusercontent.com/6277739/233023496-d50b59a2-fe19-42f2-a
 - ModLoader logic and UI
 - Clicking on Options in popup menu should take user to some kind of options scene (would be nice if used the same script to add the options)
 
+## Known Issues
+- Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
+
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone this repository with all its submodules
