@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Template"
 run/main_scene="res://Scenes/main_menu.tscn"
-config/features=PackedStringArray("4.0", "C#", "Forward Plus")
+config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://Sprites/icon.svg"
 
@@ -26,6 +26,10 @@ SceneManager="*res://GodotUtils/Scripts/Autoload/SceneManager.cs"
 [dotnet]
 
 project/assembly_name="Template"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 
