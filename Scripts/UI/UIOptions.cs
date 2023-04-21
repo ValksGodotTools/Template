@@ -70,6 +70,8 @@ public partial class UIOptions : Control
 
             UIWindowSize.ResX.Text = winSize.X + "";
             UIWindowSize.ResY.Text = winSize.Y + "";
+            UIWindowSize.PrevNumX = winSize.X;
+            UIWindowSize.PrevNumY = winSize.Y;
 
             Options.WindowSize = winSize;
         }, (int)Options.WindowMode);
@@ -205,16 +207,16 @@ public partial class UIWindowSize : UIElement
     public LineEdit ResX { get; set; }
     public LineEdit ResY { get; set; }
 
-    private Vector2I WinSize { get; }
+    public int PrevNumX;
+    public int PrevNumY;
 
-    private int _prevNumX;
-    private int _prevNumY;
+    private Vector2I WinSize { get; }
 
     public UIWindowSize(ElementOptions options) : base(options)
     {
         WinSize = DisplayServer.WindowGetSize();
-        _prevNumX = WinSize.X;
-        _prevNumY = WinSize.Y;
+        PrevNumX = WinSize.X;
+        PrevNumY = WinSize.Y;
     }
 
     public override void CreateUI(HBoxContainer hbox)
@@ -248,17 +250,17 @@ public partial class UIWindowSize : UIElement
 
         ResX.TextChanged += text =>
         {
-            Utils.ValidateNumber(text, ResX, 0, screenSize.X, ref _prevNumX);
+            Utils.ValidateNumber(text, ResX, 0, screenSize.X, ref PrevNumX);
         };
 
         ResY.TextChanged += text =>
         {
-            Utils.ValidateNumber(text, ResY, 0, screenSize.Y, ref _prevNumY);
+            Utils.ValidateNumber(text, ResY, 0, screenSize.Y, ref PrevNumY);
         };
 
         btn.Pressed += () =>
         {
-            DisplayServer.WindowSetSize(new Vector2I(_prevNumX, _prevNumY));
+            DisplayServer.WindowSetSize(new Vector2I(PrevNumX, PrevNumY));
 
             // Center window
             var winSize = DisplayServer.WindowGetSize();
