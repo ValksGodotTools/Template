@@ -20,5 +20,17 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBox" type="VBoxContainer" parent="Center/Margin"]
+[node name="Tab" type="TabContainer" parent="Center/Margin"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+
+[node name="General" type="VBoxContainer" parent="Center/Margin/Tab"]
+visible = false
+layout_mode = 2
+
+[node name="Hotkeys" type="ScrollContainer" parent="Center/Margin/Tab"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
 layout_mode = 2

@@ -2,7 +2,9 @@ namespace Template;
 
 public partial class UIOptions : Control
 {
-    private VBoxContainer   VBox                { get; set; }
+    private VBoxContainer   TabGeneral          { get; set; }
+    private VBoxContainer   TabHotkeys          { get; set; }
+
     private UIWindowSize    UIWindowSize        { get; set; }
     private UIOptionButton  UIFullscreenOptions { get; set; }
     private UISlider        UIFPSSlider         { get; set; }
@@ -11,8 +13,13 @@ public partial class UIOptions : Control
     public override void _Ready()
     {
         Options = OptionsManager.Options;
-        VBox = GetNode<VBoxContainer>("Center/Margin/VBox");
 
+        var tabContainer = GetNode<TabContainer>("Center/Margin/Tab");
+
+        TabGeneral = tabContainer.GetNode<VBoxContainer>("General");
+        TabHotkeys = tabContainer.GetNode<VBoxContainer>("Hotkeys/VBox");
+
+        // General
         CreateSliderMusic();
         CreateSliderSounds();
         CreateDropdownFullscreenMode();
@@ -20,6 +27,9 @@ public partial class UIOptions : Control
         CreateLineEditWindowSize();
         CreateSliderMaxFPS();
         CreateDropdownLanguage();
+
+        // Hotkeys
+        CreateHotkeys();
 
         // Set FPS to unlimited when any VSync mode is enabled
         if (Options.VSyncMode != DisplayServer.VSyncMode.Disabled)
@@ -31,6 +41,8 @@ public partial class UIOptions : Control
         OptionsManager.WindowModeChanged += windowMode =>
             UIFullscreenOptions.OptionButton.Select((int)windowMode);
     }
+
+    private void CreateHotkeys() => TabHotkeys.AddChild(new UIHotkeys());
 
     private void CreateSliderMusic() =>
         CreateAudioSlider("Music", Options.MusicVolume, v =>
@@ -110,7 +122,7 @@ public partial class UIOptions : Control
             Name = "Window Size"
         });
 
-        VBox.AddChild(UIWindowSize);
+        TabGeneral.AddChild(UIWindowSize);
     }
 
     private void CreateSliderMaxFPS()
@@ -148,7 +160,7 @@ public partial class UIOptions : Control
         hbox.AddChild(UIFPSSlider);
         hbox.AddChild(fpsLabel);
 
-        VBox.AddChild(hbox);
+        TabGeneral.AddChild(hbox);
     }
 
     private void CreateDropdownLanguage()
@@ -181,7 +193,7 @@ public partial class UIOptions : Control
 
         slider.ValueChanged += v => valueChanged(v);
 
-        VBox.AddChild(slider);
+        TabGeneral.AddChild(slider);
     }
 
     private UIOptionButton CreateOptionButton(string name, string[] items, Action<long> valueChanged, int selected)
@@ -194,7 +206,7 @@ public partial class UIOptions : Control
 
         optionBtn.ValueChanged += v => valueChanged(v);
 
-        VBox.AddChild(optionBtn);
+        TabGeneral.AddChild(optionBtn);
 
         optionBtn.OptionButton.Select(selected);
 
