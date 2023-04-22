@@ -10,6 +10,7 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 ## Features
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
 - [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
+- [UIConsole](https://github.com/ValksGodotTools/GodotUtils/blob/main/Scripts/Console/UIConsole.cs)
 - [Audio Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/AudioManager.cs)
 - [Several Options](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UIOptions.cs)
 - [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
@@ -23,7 +24,6 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 
 ## Known Issues
 - Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
-- Window Size option is sometimes not displaying the correct width and height values
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
