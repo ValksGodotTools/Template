@@ -17,7 +17,7 @@ public partial class UIOptions : Control
         var tabContainer = GetNode<TabContainer>("Center/Margin/Tab");
 
         TabGeneral = tabContainer.GetNode<VBoxContainer>("General");
-        TabHotkeys = tabContainer.GetNode<VBoxContainer>("Hotkeys/VBox");
+        TabHotkeys = tabContainer.GetNode<VBoxContainer>("Hotkeys/VBox1/VBox2");
 
         // General
         CreateSliderMusic();

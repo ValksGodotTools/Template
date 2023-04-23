@@ -25,12 +25,15 @@ custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 
 [node name="General" type="VBoxContainer" parent="Center/Margin/Tab"]
-visible = false
 layout_mode = 2
 
 [node name="Hotkeys" type="ScrollContainer" parent="Center/Margin/Tab"]
+visible = false
 custom_minimum_size = Vector2(800, 400)
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
+[node name="VBox1" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
+layout_mode = 2
+
+[node name="VBox2" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys/VBox1"]
 layout_mode = 2

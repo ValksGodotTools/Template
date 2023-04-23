@@ -1,58 +1,188 @@
 ﻿namespace Template;
 
+using Godot.Collections;
+
 public partial class UIHotkeys : Node
 {
-    private Node Parent             { get; set; }
-    private bool WaitingForNewInput { get; set; }
+    public static BtnInfo BtnNewInput { get; set; } // the btn waiting for new input
+    
+    private Node    Parent      { get; set; }
+    private Dictionary<StringName, Array<InputEvent>> DefaultActions { get; set; }
 
     public override void _Ready()
     {
         Parent = GetParent();
+
         CreateHotkeys();
+
+        var btn = new GButton("Reset to Defaults");
+
+        btn.Pressed += () =>
+        {
+            for (int i = 0; i < Parent.GetChildren().Count; i++)
+                if (Parent.GetChild(i) != this)
+                    Parent.GetChild(i).QueueFree();
+
+            // This is not enough. Everything needs to be unique for the clone.
+            // No 2 InputEvents can be the same. Because if a key is changed in
+            // OptionsManager.Hotkeys.Actions then it is also changed in
+            // OptionsManager.DefaultHotkeys which is no good because we should
+            // never be changing the default hotkeys. They are called the defaults
+            // for a reason.
+            OptionsManager.Hotkeys.Actions = OptionsManager.DefaultHotkeys;
+
+            CreateHotkeys();
+        };
+
+        Parent.GetParent().AddChild(btn);
     }
 
     public override void _Input(InputEvent @event)
     {
-        if (!WaitingForNewInput)
-            return;
+        // If not waiting for any new input then do nothing
+        if (BtnNewInput == null)
+        {
+            if (Input.IsActionJustPressed("ui_cancel"))
+            {
+                AudioManager.PlayMusic(Music.Menu);
+                SceneManager.SwitchScene("main_menu");
+            }
 
+            return;
+        }
+
+        if (Input.IsActionJustPressed("remove_hotkey"))
+        {
+            // Todo: Remove the hotkey action / action events
+
+            BtnNewInput.Btn.QueueFree();
+            BtnNewInput = null;
+        }
+
+        if (Input.IsActionJustPressed("ui_cancel"))
+        {
+            BtnNewInput.Btn.Text = BtnNewInput.OriginalText;
+
+            if (BtnNewInput.Plus)
+                BtnNewInput.Btn.QueueFree();
+
+            BtnNewInput = null;
+            return;
+        }
+
+        // Handle all key inputs
         if (@event is InputEventKey eventKey && !eventKey.Echo)
         {
+            // Only check when the last key was released from the keyboard
             if (!eventKey.Pressed)
             {
-                WaitingForNewInput = false;
-                GD.Print(OS.GetKeycodeString(eventKey.GetKeycodeWithModifiers()));
+                if (eventKey.Keycode == Key.Escape)
+                    return;
 
-                // TODO: Set to new eventKey
+                var action = BtnNewInput.Action;
 
-                //var curActions = InputMap.ActionGetEvents(actionName);
+                // Re-create the button
 
-                //InputMap.ActionEraseEvents(actionName);
+                // Preserve the index the button was originally at
+                var index = BtnNewInput.Btn.GetIndex();
 
-                //InputMap.ActionAddEvent(actionName, inputEvent);
+                // Destroy the button
+                BtnNewInput.Btn.QueueFree();
+
+                // Create the button
+                var btn = CreateButton(action, eventKey, BtnNewInput.HBox);
+
+                // Move the button to where it was originally at
+                BtnNewInput.HBox.MoveChild(btn, index);
+
+                var actions = OptionsManager.Hotkeys.Actions;
+
+                // Clear the specific action event
+                actions[action].Remove(BtnNewInput.InputEventKey);
+
+                // Update the specific action event
+                actions[action].Add(@event);
+
+                // Update input map
+                if (BtnNewInput.InputEventKey != null)
+                    InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
+
+                InputMap.ActionAddEvent(action, @event);
+
+                // No longer waiting for new input
+                BtnNewInput = null;
             }
         }
     }
 
-    private void CreateHotkeys()
+    private Button CreateButton(string action, InputEventKey key, HBoxContainer hbox)
     {
-        // The important UI actions we care about
-        var uiActions = new string[] {
-            "ui_left",
-            "ui_down",
-            "ui_right",
-            "ui_up",
-            "ui_select",
-            "ui_cancel",
-            "ui_accept"
+        // Create the button
+        var btn = new GButton(key.Readable());
+        btn.Pressed += () =>
+        {
+            // Do not do anything if listening for new input
+            if (BtnNewInput != null)
+                return;
+
+            // Listening for new hotkey to replace old with...
+            BtnNewInput = new BtnInfo
+            {
+                Action = action,
+                Btn = btn,
+                HBox = hbox,
+                InputEventKey = key,
+                OriginalText = btn.Text
+            };
+
+            // Give feedback to the user saying we are waiting for new input
+            btn.Text = "...";
         };
 
-        foreach (var action in InputMap.GetActions())
+        // Add this button to the hbox container
+        hbox.AddChild(btn);
+        return btn;
+    }
+
+    private void CreateButtonPlus(string action, HBoxContainer hbox)
+    {
+        // Create the button
+        var btn = new GButton("+");
+        btn.Pressed += () =>
+        {
+            // Do not do anything if listening for new input
+            if (BtnNewInput != null)
+                return;
+
+            // Listening for new hotkey to replace old with...
+            BtnNewInput = new BtnInfo
+            {
+                Action = action,
+                Btn = btn,
+                HBox = hbox,
+                OriginalText = btn.Text,
+                Plus = true
+            };
+
+            // Give feedback to the user saying we are waiting for new input
+            btn.Text = "...";
+
+            CreateButtonPlus(action, hbox);
+        };
+
+        // Add this button to the hbox container
+        hbox.AddChild(btn);
+    }
+
+    private void CreateHotkeys()
+    {
+        // Loop through the actions in alphabetical order
+        foreach (var action in OptionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
         {
             var actionStr = action.ToString();
 
-            // Exclude all the UI actions we do not care about
-            if (actionStr.StartsWith("ui") && !uiActions.Contains(actionStr))
+            // Exclude all built-in actions
+            if (actionStr.StartsWith("ui"))
                 continue;
 
             var hbox = new HBoxContainer();
@@ -77,38 +207,16 @@ public partial class UIHotkeys : Node
             });
 
             // Add all the events after the action label
-            var events = InputMap.ActionGetEvents(action);
+            var hboxEvents = new HBoxContainer();
+
+            var events = OptionsManager.Hotkeys.Actions[action];
 
             foreach (var @event in events)
             {
                 // Handle keys
                 if (@event is InputEventKey eventKey)
                 {
-                    // If Keycode is not set than use PhysicalKeycode
-                    var keyWithModifiers = eventKey.Keycode == Key.None ?
-                        eventKey.GetPhysicalKeycodeWithModifiers() :
-                        eventKey.GetKeycodeWithModifiers();
-
-                    // Convert to a human readable key
-                    // For example 'Ctrl + Shift + E'
-                    var readableKey = OS.GetKeycodeString(keyWithModifiers);
-                    readableKey = readableKey.Replace("+", " + ");
-
-                    // Create the button
-                    var btn = new GButton(readableKey);
-                    btn.Pressed += () =>
-                    {
-                        // Do not do anything is listening for new input
-                        if (WaitingForNewInput)
-                            return;
-
-                        // Listening for new hotkey to replace old with...
-                        WaitingForNewInput = true;
-                        btn.Text = "...";
-                    };
-
-                    // Add the button
-                    hbox.AddChild(btn);
+                    CreateButton(action, eventKey, hboxEvents);
                 }
 
                 // Handle mouse buttons
@@ -122,11 +230,24 @@ public partial class UIHotkeys : Node
                         btn.Text = "...";
                     };
 
-                    hbox.AddChild(btn);
+                    hboxEvents.AddChild(btn);
                 }
             }
 
+            CreateButtonPlus(action, hboxEvents);
+
+            hbox.AddChild(hboxEvents);
             Parent.AddChild(hbox);
         }
     }
+}
+
+public class BtnInfo
+{
+    public InputEventKey InputEventKey { get; set; }
+    public string        OriginalText  { get; set; }
+    public StringName    Action        { get; set; }
+    public HBoxContainer HBox          { get; set; }
+    public Button        Btn           { get; set; }
+    public bool          Plus          { get; set; }
 }

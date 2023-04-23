@@ -1,10 +1,15 @@
 ﻿namespace Template;
 
+using Godot.Collections;
+
 public partial class OptionsManager : Node
 {
     public static event Action<WindowMode> WindowModeChanged;
 
     public static ResourceOptions Options { get; set; }
+
+    public static Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; private set; }
+    public static ResourceHotkeys Hotkeys { get; set; }
 
     public static void SaveOptions()
     {
@@ -14,9 +19,20 @@ public partial class OptionsManager : Node
             GD.Print(error);
     }
 
+    public static void SaveHotkeys()
+    {
+        var error = ResourceSaver.Save(OptionsManager.Hotkeys, "user://hotkeys.tres");
+
+        if (error != Error.Ok)
+            GD.Print(error);
+    }
+
     public override void _Ready()
     {
         LoadOptions();
+
+        GetDefaultHotkeys();
+        LoadHotkeys();
 
         SetWindowMode();
         SetVSyncMode();
@@ -50,6 +66,52 @@ public partial class OptionsManager : Node
 
         Options = fileExists ?
             GD.Load<ResourceOptions>("user://options.tres") : new();
+    }
+
+    private void GetDefaultHotkeys()
+    {
+        // Get all the default actions defined in the input map
+        var actions = new Dictionary<StringName, Array<InputEvent>>();
+
+        foreach (var action in InputMap.GetActions())
+        {
+            actions.Add(action, new Array<InputEvent>());
+
+            foreach (var actionEvent in InputMap.ActionGetEvents(action))
+                actions[action].Add(actionEvent);
+        }
+
+        DefaultHotkeys = actions;
+    }
+
+    private void LoadHotkeys()
+    {
+        var fileExists = FileAccess.FileExists("user://hotkeys.tres");
+
+        if (fileExists)
+        {
+            Hotkeys = GD.Load<ResourceHotkeys>("user://hotkeys.tres");
+
+            var actions = InputMap.GetActions();
+
+            foreach (var action in actions)
+                InputMap.EraseAction(action);
+
+            foreach (var action in Hotkeys.Actions.Keys)
+            {
+                InputMap.AddAction(action);
+
+                foreach (var @event in Hotkeys.Actions[action])
+                    InputMap.ActionAddEvent(action, @event);
+            }
+        }
+        else
+        {
+            Hotkeys = new ResourceHotkeys
+            {
+                Actions = new(DefaultHotkeys)
+            };
+        }
     }
 
     private void SetWindowMode()

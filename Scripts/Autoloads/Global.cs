@@ -37,7 +37,6 @@ public partial class Global : Node
 
             switch (curScene)
             {
-                case "Options":
                 case "Credits":
                     AudioManager.PlayMusic(Music.Menu);
                     SceneManager.SwitchScene("main_menu");
@@ -59,6 +58,7 @@ public partial class Global : Node
 	{
         // Handle cleanup here
         OptionsManager.SaveOptions();
+        OptionsManager.SaveHotkeys();
 
         Instance.GetTree().Quit();
 	}
