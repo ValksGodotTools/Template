@@ -14,21 +14,7 @@ public partial class UIHotkeys : Node
         Parent = GetParent();
 
         CreateHotkeys();
-
-        var btn = new GButton("Reset to Defaults");
-
-        btn.Pressed += () =>
-        {
-            for (int i = 0; i < Parent.GetChildren().Count; i++)
-                if (Parent.GetChild(i) != this)
-                    Parent.GetChild(i).QueueFree();
-
-            BtnNewInput = null;
-            OptionsManager.ResetHotkeys();
-            CreateHotkeys();
-        };
-
-        Parent.GetParent().AddChild(btn);
+        CreateResetToDefaultBtn();
     }
 
     public override void _Input(InputEvent @event)
@@ -107,6 +93,24 @@ public partial class UIHotkeys : Node
                 BtnNewInput = null;
             }
         }
+    }
+
+    private void CreateResetToDefaultBtn()
+    {
+        var btn = new GButton("Reset to Defaults");
+
+        btn.Pressed += () =>
+        {
+            for (int i = 0; i < Parent.GetChildren().Count; i++)
+                if (Parent.GetChild(i) != this)
+                    Parent.GetChild(i).QueueFree();
+
+            BtnNewInput = null;
+            OptionsManager.ResetHotkeys();
+            CreateHotkeys();
+        };
+
+        Parent.GetParent().AddChild(btn);
     }
 
     private Button CreateButton(string action, InputEventKey key, HBoxContainer hbox)
