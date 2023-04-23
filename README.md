@@ -29,8 +29,8 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 - ModLoader logic and UI
 
 ## Known Issues
-- Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
-- Pressing escape while in level.tscn while the hotkeys is open and currently waiting for new hotkey, escapes out of the hotkey menu back to the popup menu. This behaviour is undesired. Instead the first escape should cancel the waiting for hotkey input. Then the next escape should exit out of the options menu.
+(1) Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)  
+(2) Pressing escape while in level.tscn while the hotkeys is open and currently waiting for new hotkey, escapes out of the hotkey menu back to the popup menu. This behaviour is undesired. Instead the first escape should cancel the waiting for hotkey input. Then the next escape should exit out of the options menu.  
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
@@ -40,7 +40,7 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 ```
 
 ## Contributing
-Please help my code is starting to get really messy.
+Currently looking for programmers to peer review my code. I am struggling trying to figure out how to known issue (2).
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
