@@ -1,6 +1,6 @@
 namespace Template;
 
-public partial class UIOptions : Control
+public partial class UIOptions : PanelContainer
 {
     private VBoxContainer   TabGeneral          { get; set; }
     private VBoxContainer   TabHotkeys          { get; set; }
@@ -12,12 +12,15 @@ public partial class UIOptions : Control
 
     public override void _Ready()
     {
+        if (SceneManager.CurrentScene.Name != "Options")
+            AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
+
         Options = OptionsManager.Options;
 
         var tabContainer = GetNode<TabContainer>("Center/Margin/Tab");
 
-        TabGeneral = tabContainer.GetNode<VBoxContainer>("General");
-        TabHotkeys = tabContainer.GetNode<VBoxContainer>("Hotkeys/VBox1/VBox2");
+        TabGeneral = tabContainer.GetNode<VBoxContainer>("General/VBox");
+        TabHotkeys = tabContainer.GetNode<VBoxContainer>("Hotkeys/VBox/Scroll/VBox");
 
         // General
         CreateSliderMusic();

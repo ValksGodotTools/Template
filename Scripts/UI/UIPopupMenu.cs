@@ -3,13 +3,15 @@ namespace Template;
 public partial class UIPopupMenu : Control
 {
     private VBoxContainer VBox { get; set; }
+    private PanelContainer Menu { get; set; }
     private UIOptions Options { get; set; }
 
     private List<Button> Btns { get; set; } = new();
 
     public override void _Ready()
     {
-        VBox = GetNode<VBoxContainer>("Margin/VBox");
+        Menu = GetNode<PanelContainer>("Panel");
+        VBox = Menu.GetNode<VBoxContainer>("Margin/VBox");
 
         var resume = new GButton("RESUME");
         resume.Pressed += OnResumePressed;
@@ -32,7 +34,7 @@ public partial class UIPopupMenu : Control
             VBox.AddChild(btn);
 
         Options = Prefabs.Options.Instantiate<UIOptions>();
-        VBox.AddChild(Options);
+        AddChild(Options);
         Options.Hide();
         Hide();
     }
@@ -44,9 +46,7 @@ public partial class UIPopupMenu : Control
             if (Options.Visible)
             {
                 Options.Hide();
-
-                foreach (var btn in Btns)
-                    btn.Show();
+                Menu.Show();
             }
             else
             {
@@ -68,10 +68,8 @@ public partial class UIPopupMenu : Control
 
     private void OnOptionsPressed()
     {
-        Options.Visible = !Options.Visible;
-
-        foreach (var btn in Btns)
-            btn.Hide();
+        Options.Show();
+        Menu.Hide();
     }
 
     private void OnMainMenuPressed()

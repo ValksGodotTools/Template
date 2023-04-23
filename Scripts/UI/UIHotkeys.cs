@@ -102,7 +102,11 @@ public partial class UIHotkeys : Node
 
     private void CreateResetToDefaultBtn()
     {
-        var btn = new GButton("Reset to Defaults");
+        var btn = new GButton("Reset to Defaults")
+        {
+            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter,
+            CustomMinimumSize = new Vector2(200, 0)
+        };
 
         btn.Pressed += () =>
         {
@@ -115,7 +119,8 @@ public partial class UIHotkeys : Node
             CreateHotkeys();
         };
 
-        Parent.GetParent().AddChild(btn);
+        // Lol
+        Parent.GetParent().GetParent().AddChild(btn);
     }
 
     private Button CreateButton(string action, InputEventKey key, HBoxContainer hbox)

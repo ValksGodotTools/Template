@@ -24,16 +24,34 @@ theme_override_constants/margin_bottom = 20
 custom_minimum_size = Vector2(300, 200)
 layout_mode = 2
 
-[node name="General" type="VBoxContainer" parent="Center/Margin/Tab"]
+[node name="General" type="MarginContainer" parent="Center/Margin/Tab"]
+custom_minimum_size = Vector2(700, 400)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/General"]
 layout_mode = 2
 
-[node name="Hotkeys" type="ScrollContainer" parent="Center/Margin/Tab"]
+[node name="Hotkeys" type="MarginContainer" parent="Center/Margin/Tab"]
 visible = false
-custom_minimum_size = Vector2(800, 400)
+custom_minimum_size = Vector2(700, 400)
 layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
-[node name="VBox1" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
+[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="VBox2" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys/VBox1"]
+[node name="Scroll" type="ScrollContainer" parent="Center/Margin/Tab/Hotkeys/VBox"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys/VBox/Scroll"]
+layout_mode = 2
+theme_override_constants/separation = 10
