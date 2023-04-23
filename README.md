@@ -42,13 +42,11 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 ```
 
 ## Contributing
-All contributions are welcome.
+Please help my code is starting to get really messy.
 
-Please have a look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style).
+[Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
-I highly recommend you install the [GitHub Desktop App](https://desktop.github.com/). This will almost completely eliminate the need to do Git CLI commands through the command line.
-
-If you are interested in contributing or have any questions please talk to `va#9904` over Discord.
+If you have any questions, talk to me over Discord (`va#9904`)
 
 ## Credit
 See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)
