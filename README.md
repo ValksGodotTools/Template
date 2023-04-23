@@ -24,7 +24,6 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 
 #### Hotkeys
 - Add support for mouse buttons to hotkey management
-- Add padding to the options / hotkeys
 
 #### ModLoader
 - ModLoader logic and UI
@@ -33,6 +32,7 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 
 ## Known Issues
 - Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
+- Pressing escape while in level.tscn while the hotkeys is open and currently waiting for new hotkey, escapes out of the hotkey menu back to the popup menu. This behaviour is undesired. Instead the first escape should cancel the waiting for hotkey input. Then the next escape should exit out of the options menu.
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
