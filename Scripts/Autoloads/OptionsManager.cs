@@ -27,6 +27,27 @@ public partial class OptionsManager : Node
             GD.Print(error);
     }
 
+    public static void ResetHotkeys()
+    {
+        // Deep clone default hotkeys over
+        Hotkeys.Actions = new();
+
+        foreach (var element in DefaultHotkeys)
+        {
+            var arr = new Array<InputEvent>();
+
+            foreach (var item in DefaultHotkeys[element.Key])
+            {
+                arr.Add((InputEvent)item.Duplicate());
+            }
+
+            Hotkeys.Actions.Add(element.Key, arr);
+        }
+
+        // Set input map
+        LoadInputMap(DefaultHotkeys);
+    }
+
     public override void _Ready()
     {
         LoadOptions();
@@ -68,6 +89,22 @@ public partial class OptionsManager : Node
             GD.Load<ResourceOptions>("user://options.tres") : new();
     }
 
+    private static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
+    {
+        var actions = InputMap.GetActions();
+
+        foreach (var action in actions)
+            InputMap.EraseAction(action);
+
+        foreach (var action in hotkeys.Keys)
+        {
+            InputMap.AddAction(action);
+
+            foreach (var @event in hotkeys[action])
+                InputMap.ActionAddEvent(action, @event);
+        }
+    }
+
     private void GetDefaultHotkeys()
     {
         // Get all the default actions defined in the input map
@@ -91,26 +128,12 @@ public partial class OptionsManager : Node
         if (fileExists)
         {
             Hotkeys = GD.Load<ResourceHotkeys>("user://hotkeys.tres");
-
-            var actions = InputMap.GetActions();
-
-            foreach (var action in actions)
-                InputMap.EraseAction(action);
-
-            foreach (var action in Hotkeys.Actions.Keys)
-            {
-                InputMap.AddAction(action);
-
-                foreach (var @event in Hotkeys.Actions[action])
-                    InputMap.ActionAddEvent(action, @event);
-            }
+            LoadInputMap(Hotkeys.Actions);
         }
         else
         {
-            Hotkeys = new ResourceHotkeys
-            {
-                Actions = new(DefaultHotkeys)
-            };
+            Hotkeys = new();
+            ResetHotkeys();
         }
     }
 

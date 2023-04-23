@@ -23,14 +23,8 @@ public partial class UIHotkeys : Node
                 if (Parent.GetChild(i) != this)
                     Parent.GetChild(i).QueueFree();
 
-            // This is not enough. Everything needs to be unique for the clone.
-            // No 2 InputEvents can be the same. Because if a key is changed in
-            // OptionsManager.Hotkeys.Actions then it is also changed in
-            // OptionsManager.DefaultHotkeys which is no good because we should
-            // never be changing the default hotkeys. They are called the defaults
-            // for a reason.
-            OptionsManager.Hotkeys.Actions = OptionsManager.DefaultHotkeys;
-
+            BtnNewInput = null;
+            OptionsManager.ResetHotkeys();
             CreateHotkeys();
         };
 
@@ -180,6 +174,10 @@ public partial class UIHotkeys : Node
         foreach (var action in OptionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
         {
             var actionStr = action.ToString();
+
+            // Exlucde "remove_hotkey" action
+            if (actionStr == "remove_hotkey")
+                continue;
 
             // Exclude all built-in actions
             if (actionStr.StartsWith("ui"))
