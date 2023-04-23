@@ -11,6 +11,7 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
 - [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
 - [UIConsole](https://github.com/ValksGodotTools/GodotUtils/blob/main/Scripts/Console/UIConsole.cs)
+- [Hotkey Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UIHotkeys.cs)
 - [Audio Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/AudioManager.cs)
 - [Several Options](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UIOptions.cs)
 - [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
@@ -18,8 +19,14 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 
 ## Roadmap
+#### Scenes
 - Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
-- Hotkey management
+
+#### Hotkeys
+- Add support for mouse buttons to hotkey management
+- Add padding to the options / hotkeys
+
+#### ModLoader
 - ModLoader logic and UI
 
 ![Untitled](https://user-images.githubusercontent.com/6277739/233752905-c256e541-3f35-42f1-866f-1b5477857a88.png)
