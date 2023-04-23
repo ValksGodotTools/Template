@@ -22,15 +22,15 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 #### Scenes
 - Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
 
-#### Hotkeys
+#### UI
 - Add support for mouse buttons to hotkey management
-
-#### ModLoader
 - ModLoader logic and UI
+- Redo options. Stray away from defining UI elements through script. Defining UI elements in editor gives more visual control.
 
 ## Known Issues
 (1) Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)  
 (2) Pressing escape while in level.tscn while the hotkeys is open and currently waiting for new hotkey, escapes out of the hotkey menu back to the popup menu. This behaviour is undesired. Instead the first escape should cancel the waiting for hotkey input. Then the next escape should exit out of the options menu.  
+(3) If a input map action is intentionally deleted, people who have the game will crash when they update it because code will not find that action anymore. There needs to be a try-catch to catch this and handle it.  
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
