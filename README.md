@@ -40,7 +40,7 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 ```
 
 ## Contributing
-Currently looking for programmers to peer review my code. I am struggling trying to figure out how to known issue (2).
+Currently looking for programmers to peer review my code. I am struggling trying to figure out how to solve known issue (2).
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
