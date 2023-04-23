@@ -19,78 +19,83 @@ public partial class UIHotkeys : Node
 
     public override void _Input(InputEvent @event)
     {
-        // If not waiting for any new input then do nothing
-        if (BtnNewInput == null)
+        if (BtnNewInput != null)
+        {
+            if (Input.IsActionJustPressed("remove_hotkey"))
+            {
+                // Todo: Remove the hotkey action / action events
+
+                BtnNewInput.Btn.QueueFree();
+                BtnNewInput = null;
+            }
+
+            if (Input.IsActionJustPressed("ui_cancel"))
+            {
+                BtnNewInput.Btn.Text = BtnNewInput.OriginalText;
+
+                if (BtnNewInput.Plus)
+                    BtnNewInput.Btn.QueueFree();
+
+                BtnNewInput = null;
+                return;
+            }
+
+            // Handle all key inputs
+            if (@event is InputEventKey eventKey && !eventKey.Echo)
+            {
+                // Only check when the last key was released from the keyboard
+                if (!eventKey.Pressed)
+                {
+                    if (eventKey.Keycode == Key.Escape)
+                        return;
+
+                    var action = BtnNewInput.Action;
+
+                    // Re-create the button
+
+                    // Preserve the index the button was originally at
+                    var index = BtnNewInput.Btn.GetIndex();
+
+                    // Destroy the button
+                    BtnNewInput.Btn.QueueFree();
+
+                    // Create the button
+                    var btn = CreateButton(action, eventKey, BtnNewInput.HBox);
+
+                    // Move the button to where it was originally at
+                    BtnNewInput.HBox.MoveChild(btn, index);
+
+                    var actions = OptionsManager.Hotkeys.Actions;
+
+                    // Clear the specific action event
+                    actions[action].Remove(BtnNewInput.InputEventKey);
+
+                    // Update the specific action event
+                    actions[action].Add(@event);
+
+                    // Update input map
+                    if (BtnNewInput.InputEventKey != null)
+                        InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
+
+                    InputMap.ActionAddEvent(action, @event);
+
+                    // No longer waiting for new input
+                    BtnNewInput = null;
+                }
+            }
+        }
+        else
         {
             if (Input.IsActionJustPressed("ui_cancel"))
             {
-                AudioManager.PlayMusic(Music.Menu);
-                SceneManager.SwitchScene("main_menu");
-            }
-
-            return;
-        }
-
-        if (Input.IsActionJustPressed("remove_hotkey"))
-        {
-            // Todo: Remove the hotkey action / action events
-
-            BtnNewInput.Btn.QueueFree();
-            BtnNewInput = null;
-        }
-
-        if (Input.IsActionJustPressed("ui_cancel"))
-        {
-            BtnNewInput.Btn.Text = BtnNewInput.OriginalText;
-
-            if (BtnNewInput.Plus)
-                BtnNewInput.Btn.QueueFree();
-
-            BtnNewInput = null;
-            return;
-        }
-
-        // Handle all key inputs
-        if (@event is InputEventKey eventKey && !eventKey.Echo)
-        {
-            // Only check when the last key was released from the keyboard
-            if (!eventKey.Pressed)
-            {
-                if (eventKey.Keycode == Key.Escape)
-                    return;
-
-                var action = BtnNewInput.Action;
-
-                // Re-create the button
-
-                // Preserve the index the button was originally at
-                var index = BtnNewInput.Btn.GetIndex();
-
-                // Destroy the button
-                BtnNewInput.Btn.QueueFree();
-
-                // Create the button
-                var btn = CreateButton(action, eventKey, BtnNewInput.HBox);
-
-                // Move the button to where it was originally at
-                BtnNewInput.HBox.MoveChild(btn, index);
-
-                var actions = OptionsManager.Hotkeys.Actions;
-
-                // Clear the specific action event
-                actions[action].Remove(BtnNewInput.InputEventKey);
-
-                // Update the specific action event
-                actions[action].Add(@event);
-
-                // Update input map
-                if (BtnNewInput.InputEventKey != null)
-                    InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
-
-                InputMap.ActionAddEvent(action, @event);
-
-                // No longer waiting for new input
-                BtnNewInput = null;
+                if (SceneManager.CurrentScene.Name == "Options")
+                {
+                    if (UIHotkeys.BtnNewInput == null)
+                    {
+                        AudioManager.PlayMusic(Music.Menu);
+                        SceneManager.SwitchScene("main_menu");
+                    }
+                }
             }
         }
     }
