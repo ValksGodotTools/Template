@@ -22,6 +22,8 @@ https://user-images.githubusercontent.com/6277739/233207169-180570a5-4c9a-4ab7-8
 - Hotkey management
 - ModLoader logic and UI
 
+![Untitled](https://user-images.githubusercontent.com/6277739/233752905-c256e541-3f35-42f1-866f-1b5477857a88.png)
+
 ## Known Issues
 - Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)
 
@@ -33,6 +35,8 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 ```
 
 ## Contributing
+All contributions are welcome.
+
 Please have a look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style).
 
 I highly recommend you install the [GitHub Desktop App](https://desktop.github.com/). This will almost completely eliminate the need to do Git CLI commands through the command line.
