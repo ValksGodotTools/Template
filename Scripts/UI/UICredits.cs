@@ -56,6 +56,15 @@ public partial class UICredits : Node
         }
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionJustPressed("ui_cancel"))
+        {
+            AudioManager.PlayMusic(Music.Menu);
+            SceneManager.SwitchScene("main_menu");
+        }
+    }
+
     private void AddTextWithLink(string text)
     {
         var indexOfHttp = text.IndexOf("http");
