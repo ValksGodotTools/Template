@@ -10,7 +10,7 @@ public partial class UIPopupMenu : Control
 
     public override void _Ready()
     {
-        Menu = GetNode<PanelContainer>("Panel");
+        Menu = GetNode<PanelContainer>("Center/Panel");
         VBox = Menu.GetNode<VBoxContainer>("Margin/VBox");
 
         var resume = new GButton("RESUME");

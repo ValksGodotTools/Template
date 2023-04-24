@@ -20,6 +20,9 @@ public partial class UIMainMenu : Node
         SceneManager.SwitchScene("credits");
     }
 
+    private void _on_discord_pressed() => OS.ShellOpen("https://discord.gg/866cg8yfxZ");
+    private void _on_github_pressed() => OS.ShellOpen("https://github.com/ValksGodotTools/Template");
+
     private void _on_quit_pressed()
     {
         Global.Quit();

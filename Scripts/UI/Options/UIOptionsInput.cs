@@ -1,20 +1,17 @@
-﻿namespace Template;
+namespace Template;
 
 using Godot.Collections;
 
-public partial class UIHotkeys : Node
+public partial class UIOptionsInput : Control
 {
     public static BtnInfo BtnNewInput { get; set; } // the btn waiting for new input
-    
-    private Node    Parent      { get; set; }
     private Dictionary<StringName, Array<InputEvent>> DefaultActions { get; set; }
+    private VBoxContainer Content { get; set; }
 
     public override void _Ready()
     {
-        Parent = GetParent();
-
+        Content = GetNode<VBoxContainer>("Scroll/VBox");
         CreateHotkeys();
-        CreateResetToDefaultBtn();
     }
 
     public override void _Input(InputEvent @event)
@@ -90,7 +87,7 @@ public partial class UIHotkeys : Node
             {
                 if (SceneManager.CurrentScene.Name == "Options")
                 {
-                    if (UIHotkeys.BtnNewInput == null)
+                    if (BtnNewInput == null)
                     {
                         AudioManager.PlayMusic(Music.Menu);
                         SceneManager.SwitchScene("main_menu");
@@ -98,29 +95,6 @@ public partial class UIHotkeys : Node
                 }
             }
         }
-    }
-
-    private void CreateResetToDefaultBtn()
-    {
-        var btn = new GButton("Reset to Defaults")
-        {
-            SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter,
-            CustomMinimumSize = new Vector2(200, 0)
-        };
-
-        btn.Pressed += () =>
-        {
-            for (int i = 0; i < Parent.GetChildren().Count; i++)
-                if (Parent.GetChild(i) != this)
-                    Parent.GetChild(i).QueueFree();
-
-            BtnNewInput = null;
-            OptionsManager.ResetHotkeys();
-            CreateHotkeys();
-        };
-
-        // Lol
-        Parent.GetParent().GetParent().AddChild(btn);
     }
 
     private Button CreateButton(string action, InputEventKey key, HBoxContainer hbox)
@@ -199,20 +173,11 @@ public partial class UIHotkeys : Node
 
             var hbox = new HBoxContainer();
 
-            // For example convert ui_left to UI Left
-            var words = action.ToString().Split('_');
-            for (int i = 0; i < words.Length; i++)
-            {
-                // Convert first letter to be uppercase
-                words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
-
-                // Convert special words to all uppercase
-                if (words[i] == "Ui")
-                    words[i] = words[i].ToUpper();
-            }
+            // For example convert ui_left to UI_LEFT
+            var name = action.ToString().ToUpper();
 
             // Add the action label. For example 'UI Left'
-            hbox.AddChild(new GLabel(words.Join(" "))
+            hbox.AddChild(new GLabel(name)
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 CustomMinimumSize = new Vector2(200, 0)
@@ -249,17 +214,28 @@ public partial class UIHotkeys : Node
             CreateButtonPlus(action, hboxEvents);
 
             hbox.AddChild(hboxEvents);
-            Parent.AddChild(hbox);
+            Content.AddChild(hbox);
         }
+    }
+
+    private void _on_reset_to_defaults_pressed()
+    {
+        for (int i = 0; i < Content.GetChildren().Count; i++)
+            if (Content.GetChild(i) != this)
+                Content.GetChild(i).QueueFree();
+
+        BtnNewInput = null;
+        OptionsManager.ResetHotkeys();
+        CreateHotkeys();
     }
 }
 
 public class BtnInfo
 {
     public InputEventKey InputEventKey { get; set; }
-    public string        OriginalText  { get; set; }
-    public StringName    Action        { get; set; }
-    public HBoxContainer HBox          { get; set; }
-    public Button        Btn           { get; set; }
-    public bool          Plus          { get; set; }
+    public string OriginalText { get; set; }
+    public StringName Action { get; set; }
+    public HBoxContainer HBox { get; set; }
+    public Button Btn { get; set; }
+    public bool Plus { get; set; }
 }

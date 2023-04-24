@@ -23,15 +23,20 @@ public partial class UICredits : Node
 
         while (!file.EofReached())
         {
-            var line = file.GetLine();
+            var line = Tr(file.GetLine());
 
-            if (line.Contains("http"))
-                AddTextWithLink(line);
+            var translatedLine = "";
+
+            foreach (var word in line.Split(' '))
+                translatedLine += Tr(word) + " ";
+
+            if (translatedLine.Contains("http"))
+                AddTextWithLink(translatedLine);
             else
-                if (string.IsNullOrWhiteSpace(line))
+                if (string.IsNullOrWhiteSpace(translatedLine))
                     VBox.AddChild(new GPadding(0, 10));
                 else
-                    VBox.AddChild(new GLabel(line));
+                    VBox.AddChild(new GLabel(translatedLine));
         } 
 
         file.Close();
