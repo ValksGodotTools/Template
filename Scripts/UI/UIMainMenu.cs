@@ -5,7 +5,7 @@ public partial class UIMainMenu : Node
     private void _on_play_pressed()
     {
         AudioManager.PlayMusic(Music.Level1, false);
-        SceneManager.SwitchScene("level", SceneManager.TransType.Fade);
+        SceneManager.SwitchScene("level_2D_top_down", SceneManager.TransType.Fade);
     }
 
     private void _on_options_pressed()
