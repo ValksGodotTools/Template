@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bh35gnkui1lml"]
+[gd_scene load_steps=5 format=3 uid="uid://bh35gnkui1lml"]
 
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/icon.svg" id="1_7g8n4"]
 [ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="1_wnpie"]
+[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="2_fugkg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
 
@@ -21,6 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("2_fugkg")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_j3vts")
 script = ExtResource("1_wnpie")
 

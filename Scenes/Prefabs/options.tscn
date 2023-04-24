@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://do6xcegltucab"]
+[gd_scene load_steps=11 format=3 uid="uid://cbajm5a75aiwu"]
 
+[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="1_0kbby"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
+[ext_resource type="Theme" uid="uid://8f4q252ns4xm" path="res://Themes/nav_btns.tres" id="3_mvq8n"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGeneral.cs" id="3_vefex"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsDisplay.cs" id="4_o6e7i"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsAudio.cs" id="5_hbpj8"]
@@ -18,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_0kbby")
 theme_override_styles/panel = SubResource("StyleBoxFlat_v8h3e")
 script = ExtResource("1_xjg3i")
 
@@ -34,6 +37,8 @@ theme_override_constants/separation = 30
 
 [node name="Nav" type="VBoxContainer" parent="Margin/HBox"]
 layout_mode = 2
+theme = ExtResource("3_mvq8n")
+theme_override_constants/separation = 0
 alignment = 1
 script = ExtResource("2_w30yg")
 
@@ -87,7 +92,6 @@ popup/item_2/text = "Japanese"
 popup/item_2/id = 2
 
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
@@ -197,7 +201,9 @@ text = "UNLIMITED"
 vertical_alignment = 1
 
 [node name="Audio" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
 layout_mode = 2
+theme_override_constants/separation = 20
 script = ExtResource("5_hbpj8")
 
 [node name="Music" type="HBoxContainer" parent="Margin/HBox/Content/Audio"]

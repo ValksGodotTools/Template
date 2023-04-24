@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bi0f2eo0ywyyf"]
+
+[ext_resource type="FontFile" uid="uid://c1qgn2c1mlfmn" path="res://Fonts/Unbounded/Unbounded-VariableFont_wght.ttf" id="1_a1npw"]
+
+[resource]
+default_font = ExtResource("1_a1npw")
