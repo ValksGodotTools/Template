@@ -20,8 +20,15 @@ public partial class UIOptionsInput : Control
         {
             if (Input.IsActionJustPressed("remove_hotkey"))
             {
-                // Todo: Remove the hotkey action / action events
+                var action = BtnNewInput.Action;
 
+                // Update input map
+                InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
+
+                // Update options
+                OptionsManager.Hotkeys.Actions[action].Remove(BtnNewInput.InputEventKey);
+
+                // Update UI
                 BtnNewInput.Btn.QueueFree();
                 BtnNewInput = null;
             }
