@@ -15,11 +15,7 @@ https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 
 ## Roadmap
-#### Scenes
 - Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
-
-#### UI
-- ModLoader logic and UI
 
 ## Known Issues
 (1) Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)  
