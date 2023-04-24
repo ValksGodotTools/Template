@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://s7odqekrtb2y"]
+[gd_scene load_steps=9 format=3 uid="uid://do6xcegltucab"]
 
-[ext_resource type="Script" path="res://Scripts/UI/UIOptions.cs" id="1_1rqv8"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGeneral.cs" id="3_vefex"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsDisplay.cs" id="4_o6e7i"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsAudio.cs" id="5_hbpj8"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsInput.cs" id="6_n2qcv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8h3e"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ijcjj"]
 
 [node name="Options" type="PanelContainer"]
 anchors_preset = 15
@@ -8,50 +18,247 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_1rqv8")
+theme_override_styles/panel = SubResource("StyleBoxFlat_v8h3e")
+script = ExtResource("1_xjg3i")
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="Margin" type="MarginContainer" parent="Center"]
+[node name="HBox" type="HBoxContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/separation = 30
 
-[node name="Tab" type="TabContainer" parent="Center/Margin"]
-custom_minimum_size = Vector2(300, 200)
+[node name="Nav" type="VBoxContainer" parent="Margin/HBox"]
 layout_mode = 2
+alignment = 1
+script = ExtResource("2_w30yg")
 
-[node name="General" type="MarginContainer" parent="Center/Margin/Tab"]
-custom_minimum_size = Vector2(700, 400)
+[node name="General" type="Button" parent="Margin/HBox/Nav"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+text = "GENERAL"
 
-[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/General"]
+[node name="Display" type="Button" parent="Margin/HBox/Nav"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+text = "DISPLAY"
 
-[node name="Hotkeys" type="MarginContainer" parent="Center/Margin/Tab"]
+[node name="Audio" type="Button" parent="Margin/HBox/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "AUDIO"
+
+[node name="Input" type="Button" parent="Margin/HBox/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "INPUT"
+
+[node name="Content" type="PanelContainer" parent="Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ijcjj")
+
+[node name="General" type="VBoxContainer" parent="Margin/HBox/Content"]
 visible = false
-custom_minimum_size = Vector2(700, 400)
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
+script = ExtResource("3_vefex")
 
-[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys"]
+[node name="Language" type="HBoxContainer" parent="Margin/HBox/Content/General"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/General/Language"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "LANGUAGE"
+
+[node name="Language" type="OptionButton" parent="Margin/HBox/Content/General/Language"]
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "English"
+popup/item_0/id = 0
+popup/item_1/text = "French"
+popup/item_1/id = 1
+popup/item_2/text = "Japanese"
+popup/item_2/id = 2
+
+[node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+script = ExtResource("4_o6e7i")
+
+[node name="WindowMode" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/WindowMode"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "WINDOW_MODE"
+
+[node name="WindowMode" type="OptionButton" parent="Margin/HBox/Content/Display/WindowMode"]
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "WINDOWED"
+popup/item_0/id = 0
+popup/item_1/text = "BORDERLESS"
+popup/item_1/id = 1
+popup/item_2/text = "FULLSCREEN"
+popup/item_2/id = 2
+
+[node name="WindowSize" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/WindowSize"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "WINDOW_SIZE"
+
+[node name="HBox" type="HBoxContainer" parent="Margin/HBox/Content/Display/WindowSize"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="WindowWidth" type="LineEdit" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+layout_mode = 2
+text = "1920"
+alignment = 1
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+layout_mode = 2
+text = "x"
+
+[node name="WindowHeight" type="LineEdit" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+layout_mode = 2
+text = "1080"
+alignment = 1
+
+[node name="WindowSizeApply" type="Button" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "APPLY"
+
+[node name="VSyncMode" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/VSyncMode"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "VSYNC_MODE"
+
+[node name="VSyncMode" type="OptionButton" parent="Margin/HBox/Content/Display/VSyncMode"]
+layout_mode = 2
+item_count = 3
+selected = 1
+popup/item_0/text = "DISABLED"
+popup/item_0/id = 0
+popup/item_1/text = "ENABLED"
+popup/item_1/id = 1
+popup/item_2/text = "ADAPTIVE"
+popup/item_2/id = 2
+
+[node name="MaxFPS" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/MaxFPS"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "MAX_FPS"
+
+[node name="HBox" type="HBoxContainer" parent="Margin/HBox/Content/Display/MaxFPS"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Scroll" type="ScrollContainer" parent="Center/Margin/Tab/Hotkeys/VBox"]
+[node name="MaxFPS" type="HSlider" parent="Margin/HBox/Content/Display/MaxFPS/HBox"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 120.0
+allow_greater = true
+
+[node name="Panel" type="PanelContainer" parent="Margin/HBox/Content/Display/MaxFPS/HBox"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Margin/HBox/Content/Display/MaxFPS/HBox/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="MaxFPSFeedback" type="Label" parent="Margin/HBox/Content/Display/MaxFPS/HBox/Panel/Margin"]
+layout_mode = 2
+text = "UNLIMITED"
+vertical_alignment = 1
+
+[node name="Audio" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
+layout_mode = 2
+script = ExtResource("5_hbpj8")
+
+[node name="Music" type="HBoxContainer" parent="Margin/HBox/Content/Audio"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Audio/Music"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "MUSIC"
+
+[node name="Music" type="HSlider" parent="Margin/HBox/Content/Audio/Music"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="Sounds" type="HBoxContainer" parent="Margin/HBox/Content/Audio"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Audio/Sounds"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "SOUNDS"
+
+[node name="Sounds" type="HSlider" parent="Margin/HBox/Content/Audio/Sounds"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 75.0
+
+[node name="Input" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
+layout_mode = 2
+script = ExtResource("6_n2qcv")
+
+[node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Content/Input"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBox" type="VBoxContainer" parent="Center/Margin/Tab/Hotkeys/VBox/Scroll"]
+[node name="VBox" type="VBoxContainer" parent="Margin/HBox/Content/Input/Scroll"]
 layout_mode = 2
-theme_override_constants/separation = 10
+
+[node name="ResetToDefaults" type="Button" parent="Margin/HBox/Content/Input"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RESET_TO_DEFAULTS"
+
+[connection signal="pressed" from="Margin/HBox/Nav/General" to="Margin/HBox/Nav" method="_on_general_pressed"]
+[connection signal="pressed" from="Margin/HBox/Nav/Display" to="Margin/HBox/Nav" method="_on_display_pressed"]
+[connection signal="pressed" from="Margin/HBox/Nav/Audio" to="Margin/HBox/Nav" method="_on_audio_pressed"]
+[connection signal="pressed" from="Margin/HBox/Nav/Input" to="Margin/HBox/Nav" method="_on_input_pressed"]
+[connection signal="item_selected" from="Margin/HBox/Content/General/Language/Language" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
+[connection signal="item_selected" from="Margin/HBox/Content/Display/WindowMode/WindowMode" to="Margin/HBox/Content/Display" method="_on_window_mode_item_selected"]
+[connection signal="text_changed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_changed"]
+[connection signal="text_submitted" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_submitted"]
+[connection signal="text_changed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowHeight" to="Margin/HBox/Content/Display" method="_on_window_height_text_changed"]
+[connection signal="text_submitted" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowHeight" to="Margin/HBox/Content/Display" method="_on_window_height_text_submitted"]
+[connection signal="pressed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowSizeApply" to="Margin/HBox/Content/Display" method="_on_window_size_apply_pressed"]
+[connection signal="item_selected" from="Margin/HBox/Content/Display/VSyncMode/VSyncMode" to="Margin/HBox/Content/Display" method="_on_v_sync_mode_item_selected"]
+[connection signal="drag_ended" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_drag_ended"]
+[connection signal="value_changed" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_value_changed"]
+[connection signal="value_changed" from="Margin/HBox/Content/Audio/Music/Music" to="Margin/HBox/Content/Audio" method="_on_music_value_changed"]
+[connection signal="value_changed" from="Margin/HBox/Content/Audio/Sounds/Sounds" to="Margin/HBox/Content/Audio" method="_on_sounds_value_changed"]
+[connection signal="pressed" from="Margin/HBox/Content/Input/ResetToDefaults" to="Margin/HBox/Content/Input" method="_on_reset_to_defaults_pressed"]

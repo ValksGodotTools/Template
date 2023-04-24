@@ -28,7 +28,7 @@ grow_vertical = 0
 
 [node name="Pause" type="Button" parent="HBox"]
 layout_mode = 2
-text = "Pause"
+text = "PAUSE"
 
 [node name="Speed" type="Button" parent="HBox"]
 layout_mode = 2

@@ -1,47 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://bh35gnkui1lml"]
+[gd_scene load_steps=4 format=3 uid="uid://bh35gnkui1lml"]
 
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/icon.svg" id="1_7g8n4"]
 [ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="1_wnpie"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
 
 [node name="Level" type="Node2D"]
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(304, 216)
+texture = ExtResource("1_7g8n4")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="UIPopupMenu" type="Control" parent="CanvasLayer"]
+[node name="UIPopupMenu" type="PanelContainer" parent="CanvasLayer"]
 visible = false
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_j3vts")
 script = ExtResource("1_wnpie")
 
-[node name="Panel" type="PanelContainer" parent="CanvasLayer/UIPopupMenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -20.0
-offset_right = 50.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Center" type="CenterContainer" parent="CanvasLayer/UIPopupMenu"]
+layout_mode = 2
 
-[node name="Margin" type="MarginContainer" parent="CanvasLayer/UIPopupMenu/Panel"]
+[node name="Panel" type="PanelContainer" parent="CanvasLayer/UIPopupMenu/Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/UIPopupMenu/Center/Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 20
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/UIPopupMenu/Panel/Margin"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin"]
 layout_mode = 2
