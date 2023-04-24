@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnha32sr4ugip"]
+[gd_scene load_steps=7 format=3 uid="uid://dnha32sr4ugip"]
 
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/popup_menu.tscn" id="1_e7m6x"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/icon.svg" id="1_le5i4"]
@@ -10,7 +10,13 @@ size = Vector2(125, 125)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_li775"]
 size = Vector2(128.3, 124)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_227sc"]
+size = Vector2(125, 125)
+
 [node name="Level" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(553, 258)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(553, 423)
@@ -22,9 +28,53 @@ shape = SubResource("RectangleShape2D_fgf1b")
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture = ExtResource("1_le5i4")
 
+[node name="Raycasts" type="Node2D" parent="Player"]
+
+[node name="Wall Left" type="Node2D" parent="Player/Raycasts"]
+
+[node name="Top" type="RayCast2D" parent="Player/Raycasts/Wall Left"]
+position = Vector2(-61, -53)
+target_position = Vector2(-10, 0)
+
+[node name="Middle" type="RayCast2D" parent="Player/Raycasts/Wall Left"]
+position = Vector2(-61, 1)
+target_position = Vector2(-10, 0)
+
+[node name="Bottom" type="RayCast2D" parent="Player/Raycasts/Wall Left"]
+position = Vector2(-61, 51)
+target_position = Vector2(-10, 0)
+
+[node name="Wall Right" type="Node2D" parent="Player/Raycasts"]
+
+[node name="Top" type="RayCast2D" parent="Player/Raycasts/Wall Right"]
+position = Vector2(61, -53)
+target_position = Vector2(10, 0)
+
+[node name="Middle" type="RayCast2D" parent="Player/Raycasts/Wall Right"]
+position = Vector2(61, 1)
+target_position = Vector2(10, 0)
+
+[node name="Bottom" type="RayCast2D" parent="Player/Raycasts/Wall Right"]
+position = Vector2(61, 51)
+target_position = Vector2(10, 0)
+
+[node name="Floor" type="Node2D" parent="Player/Raycasts"]
+
+[node name="Left" type="RayCast2D" parent="Player/Raycasts/Floor"]
+position = Vector2(-53, 60)
+target_position = Vector2(0, 10)
+
+[node name="Middle" type="RayCast2D" parent="Player/Raycasts/Floor"]
+position = Vector2(1, 60)
+target_position = Vector2(0, 10)
+
+[node name="Right" type="RayCast2D" parent="Player/Raycasts/Floor"]
+position = Vector2(52, 60)
+target_position = Vector2(0, 10)
+
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(575, 593)
-scale = Vector2(10, 1)
+scale = Vector2(41.88, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="Floor"]
 texture = ExtResource("1_le5i4")
@@ -32,6 +82,15 @@ texture = ExtResource("1_le5i4")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 position = Vector2(-0.25, -2)
 shape = SubResource("RectangleShape2D_li775")
+
+[node name="Box" type="StaticBody2D" parent="."]
+position = Vector2(814, 465)
+
+[node name="Sprite2D" type="Sprite2D" parent="Box"]
+texture = ExtResource("1_le5i4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Box"]
+shape = SubResource("RectangleShape2D_227sc")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
