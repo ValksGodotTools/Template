@@ -3,6 +3,8 @@ A template for all Godot 4 C# starting projects. See the video below for a showc
 
 https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a691-59e296c1b10f.mp4
 
+https://user-images.githubusercontent.com/6277739/234088697-11d94789-3a14-4aee-bc5b-ba8dee9f4461.mp4
+
 ## Features
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
 - [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
@@ -13,10 +15,6 @@ https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a
 - [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
-
-## Planned
-- More scripts for each game type specific scene
-- What else? I don't know. You tell me! :)
 
 ## Known Issues
 (1) Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)  
