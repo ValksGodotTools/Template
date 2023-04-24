@@ -23,10 +23,10 @@ public partial class UIOptionsInput : Control
                 var action = BtnNewInput.Action;
 
                 // Update input map
-                InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
+                InputMap.ActionEraseEvent(action, BtnNewInput.InputEvent);
 
                 // Update options
-                OptionsManager.Hotkeys.Actions[action].Remove(BtnNewInput.InputEventKey);
+                OptionsManager.Hotkeys.Actions[action].Remove(BtnNewInput.InputEvent);
 
                 // Update UI
                 BtnNewInput.Btn.QueueFree();
@@ -44,49 +44,17 @@ public partial class UIOptionsInput : Control
                 return;
             }
 
-            // Handle all key inputs
-            if (@event is InputEventKey eventKey && !eventKey.Echo)
+            if (@event is InputEventMouseButton eventMouseBtn)
+            {
+                if (!eventMouseBtn.Pressed)
+                    HandleInput(eventMouseBtn);
+            }
+            else if (@event is InputEventKey eventKey && !eventKey.Echo)
             {
                 // Only check when the last key was released from the keyboard
                 if (!eventKey.Pressed)
-                {
-                    if (eventKey.Keycode == Key.Escape)
-                        return;
-
-                    var action = BtnNewInput.Action;
-
-                    // Re-create the button
-
-                    // Preserve the index the button was originally at
-                    var index = BtnNewInput.Btn.GetIndex();
-
-                    // Destroy the button
-                    BtnNewInput.Btn.QueueFree();
-
-                    // Create the button
-                    var btn = CreateButton(action, eventKey, BtnNewInput.HBox);
-
-                    // Move the button to where it was originally at
-                    BtnNewInput.HBox.MoveChild(btn, index);
-
-                    var actions = OptionsManager.Hotkeys.Actions;
-
-                    // Clear the specific action event
-                    actions[action].Remove(BtnNewInput.InputEventKey);
-
-                    // Update the specific action event
-                    actions[action].Add(@event);
-
-                    // Update input map
-                    if (BtnNewInput.InputEventKey != null)
-                        InputMap.ActionEraseEvent(action, BtnNewInput.InputEventKey);
-
-                    InputMap.ActionAddEvent(action, @event);
-
-                    // No longer waiting for new input
-                    BtnNewInput = null;
-                }
-            }
+                    HandleInput(eventKey);
+            }   
         }
         else
         {
@@ -104,10 +72,62 @@ public partial class UIOptionsInput : Control
         }
     }
 
-    private Button CreateButton(string action, InputEventKey key, HBoxContainer hbox)
+    private void HandleInput(InputEvent @event)
     {
+        var action = BtnNewInput.Action;
+
+        // Prevent something very evil from happening!
+        if (action == "fullscreen" && @event is InputEventMouseButton eventBtn)
+            return;
+
+        // Re-create the button
+
+        // Preserve the index the button was originally at
+        var index = BtnNewInput.Btn.GetIndex();
+
+        // Destroy the button
+        BtnNewInput.Btn.QueueFree();
+
         // Create the button
-        var btn = new GButton(key.Readable());
+        var btn = CreateButton(action, @event, BtnNewInput.HBox);
+        btn.Disabled = false;
+
+        // Move the button to where it was originally at
+        BtnNewInput.HBox.MoveChild(btn, index);
+
+        var actions = OptionsManager.Hotkeys.Actions;
+
+        // Clear the specific action event
+        actions[action].Remove(BtnNewInput.InputEvent);
+
+        // Update the specific action event
+        actions[action].Add(@event);
+
+        // Update input map
+        if (BtnNewInput.InputEvent != null)
+            InputMap.ActionEraseEvent(action, BtnNewInput.InputEvent);
+
+        InputMap.ActionAddEvent(action, @event);
+
+        // No longer waiting for new input
+        BtnNewInput = null;
+    }
+
+    private Button CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
+    {
+        var readable = "";
+
+        if (inputEvent is InputEventKey key)
+        {
+            readable = key.Readable();
+        }
+        else if (inputEvent is InputEventMouseButton button)
+        {
+            readable = $"Mouse {button.ButtonIndex}";
+        }
+
+        // Create the button
+        var btn = new GButton(readable);
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
@@ -120,11 +140,12 @@ public partial class UIOptionsInput : Control
                 Action = action,
                 Btn = btn,
                 HBox = hbox,
-                InputEventKey = key,
+                InputEvent = inputEvent,
                 OriginalText = btn.Text
             };
 
             // Give feedback to the user saying we are waiting for new input
+            btn.Disabled = true;
             btn.Text = "...";
         };
 
@@ -154,6 +175,7 @@ public partial class UIOptionsInput : Control
             };
 
             // Give feedback to the user saying we are waiting for new input
+            btn.Disabled = true;
             btn.Text = "...";
 
             CreateButtonPlus(action, hbox);
@@ -206,15 +228,7 @@ public partial class UIOptionsInput : Control
                 // Handle mouse buttons
                 if (@event is InputEventMouseButton eventMouseBtn)
                 {
-                    // WIP / TODO
-
-                    var btn = new GButton(eventMouseBtn.ButtonIndex + "");
-                    btn.Pressed += () =>
-                    {
-                        btn.Text = "...";
-                    };
-
-                    hboxEvents.AddChild(btn);
+                    CreateButton(action, eventMouseBtn, hboxEvents);
                 }
             }
 
@@ -239,7 +253,7 @@ public partial class UIOptionsInput : Control
 
 public class BtnInfo
 {
-    public InputEventKey InputEventKey { get; set; }
+    public InputEvent InputEvent { get; set; }
     public string OriginalText { get; set; }
     public StringName Action { get; set; }
     public HBoxContainer HBox { get; set; }
