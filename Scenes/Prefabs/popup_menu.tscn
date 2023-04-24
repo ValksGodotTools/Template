@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6pism2kgjr5c"]
+
+[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="1_8kp65"]
+[ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="2_g08n2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
+
+[node name="UIPopupMenu" type="PanelContainer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_8kp65")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_j3vts")
+script = ExtResource("2_g08n2")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+
+[node name="Nav" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="Center/Panel/Margin/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "RESUME"
+
+[node name="Options" type="Button" parent="Center/Panel/Margin/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="Main Menu" type="Button" parent="Center/Panel/Margin/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "MAIN MENU"
+
+[node name="Quit" type="Button" parent="Center/Panel/Margin/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "QUIT"
+
+[connection signal="pressed" from="Center/Panel/Margin/Nav/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Nav/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Nav/Main Menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Nav/Quit" to="." method="_on_quit_pressed"]

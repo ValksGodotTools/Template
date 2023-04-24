@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnha32sr4ugip"]
+
+[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/popup_menu.tscn" id="1_e7m6x"]
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/icon.svg" id="1_le5i4"]
+[ext_resource type="Script" path="res://Scripts/2D Platformer/Player.cs" id="1_sjn41"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fgf1b"]
+size = Vector2(125, 125)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_li775"]
+size = Vector2(128.3, 124)
+
+[node name="Level" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(553, 423)
+script = ExtResource("1_sjn41")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_fgf1b")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = ExtResource("1_le5i4")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(575, 593)
+scale = Vector2(10, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+texture = ExtResource("1_le5i4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-0.25, -2)
+shape = SubResource("RectangleShape2D_li775")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="popup_menu" parent="CanvasLayer" instance=ExtResource("1_e7m6x")]
