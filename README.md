@@ -14,8 +14,9 @@ https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 
-## Roadmap
-- Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
+## Planned
+- More scripts for each game type specific scene
+- What else? I don't know. You tell me! :)
 
 ## Known Issues
 (1) Borderless mode does not fully cover the entire screen (there is a 2 pixel border gap all around)  
@@ -27,7 +28,10 @@ https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a
 ```
 git clone --recursive https://github.com/ValksGodotTools/Template
 ```
-3. Go to `res://Scripts/UI/UIMainMenu.cs` and change `SceneManager.SwitchScene("level_2D_top_down", ...);` to the type of scene you want
+3. Go to `res://Scripts/UI/UIMainMenu.cs` and set the scene to be switched to on play
+```cs
+SceneManager.SwitchScene("level_2D_top_down", ...);
+```
 
 ## Contributing
 Currently looking for programmers to peer review my code. I am struggling trying to figure out how to solve known issue (2).
