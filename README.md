@@ -19,7 +19,6 @@ https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a
 - Add 3 different types of level scenes; 2D Top down, 2D Platformer, 3D FPS (each scene will have basic player controllers setup)
 
 #### UI
-- Add support for mouse buttons to hotkey management
 - ModLoader logic and UI
 
 ## Known Issues
