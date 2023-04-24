@@ -12,11 +12,12 @@ public partial class UIOptionsNav : Control
             Tabs.Add(child.Name, child);
 
         HideAllTabs();
-        ShowTab("General");
+        ShowTab(OptionsManager.CurrentOptionsTab);
     }
 
     private void ShowTab(string tabName)
     {
+        OptionsManager.CurrentOptionsTab = tabName;
         HideAllTabs();
         Tabs[tabName].Show();
     }

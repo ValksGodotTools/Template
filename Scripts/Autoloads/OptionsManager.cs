@@ -11,6 +11,8 @@ public partial class OptionsManager : Node
     public static Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; private set; }
     public static ResourceHotkeys Hotkeys { get; set; }
 
+    public static string CurrentOptionsTab { get; set; } = "General";
+
     public static void SaveOptions()
     {
         var error = ResourceSaver.Save(OptionsManager.Options, "user://options.tres");
