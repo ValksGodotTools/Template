@@ -14,7 +14,6 @@ texture = ExtResource("1_7g8n4")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UIPopupMenu" type="PanelContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -33,9 +32,34 @@ layout_mode = 2
 [node name="Margin" type="MarginContainer" parent="CanvasLayer/UIPopupMenu/Center/Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_bottom = 30
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin"]
 layout_mode = 2
+
+[node name="Resume" type="Button" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "RESUME"
+
+[node name="Options" type="Button" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="Main Menu" type="Button" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "MAIN MENU"
+
+[node name="Quit" type="Button" parent="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "QUIT"
+
+[connection signal="pressed" from="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox/Resume" to="CanvasLayer/UIPopupMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox/Options" to="CanvasLayer/UIPopupMenu" method="_on_options_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox/Main Menu" to="CanvasLayer/UIPopupMenu" method="_on_main_menu_pressed"]
+[connection signal="pressed" from="CanvasLayer/UIPopupMenu/Center/Panel/Margin/VBox/Quit" to="CanvasLayer/UIPopupMenu" method="_on_quit_pressed"]

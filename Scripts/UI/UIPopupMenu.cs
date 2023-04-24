@@ -2,36 +2,14 @@ namespace Template;
 
 public partial class UIPopupMenu : Control
 {
-    private VBoxContainer VBox { get; set; }
-    private PanelContainer Menu { get; set; }
-    private UIOptions Options { get; set; }
-
-    private List<Button> Btns { get; set; } = new();
+    private VBoxContainer  VBox    { get; set; }
+    private PanelContainer Menu    { get; set; }
+    private UIOptions      Options { get; set; }
 
     public override void _Ready()
     {
         Menu = GetNode<PanelContainer>("Center/Panel");
         VBox = Menu.GetNode<VBoxContainer>("Margin/VBox");
-
-        var resume = new GButton("RESUME");
-        resume.Pressed += OnResumePressed;
-
-        var options = new GButton("OPTIONS");
-        options.Pressed += OnOptionsPressed;
-
-        var mainMenu = new GButton("MAIN MENU");
-        mainMenu.Pressed += OnMainMenuPressed;
-
-        var quit = new GButton("QUIT");
-        quit.Pressed += OnQuitPressed;
-
-        Btns.Add(resume);
-        Btns.Add(options);
-        Btns.Add(mainMenu);
-        Btns.Add(quit);
-
-        foreach (var btn in Btns)
-            VBox.AddChild(btn);
 
         Options = Prefabs.Options.Instantiate<UIOptions>();
         AddChild(Options);
@@ -60,25 +38,25 @@ public partial class UIPopupMenu : Control
         }
     }
 
-    private void OnResumePressed()
+    private void _on_resume_pressed()
     {
         // todo: unpause the game
         Hide();
     }
 
-    private void OnOptionsPressed()
+    private void _on_options_pressed()
     {
         Options.Show();
         Menu.Hide();
     }
 
-    private void OnMainMenuPressed()
+    private void _on_main_menu_pressed()
     {
         AudioManager.PlayMusic(Music.Menu);
         SceneManager.SwitchScene("main_menu");
     }
 
-    private void OnQuitPressed()
+    private void _on_quit_pressed()
     {
         Global.Quit();
     }
