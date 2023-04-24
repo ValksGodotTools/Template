@@ -151,6 +151,7 @@ text = "VSYNC_MODE"
 
 [node name="VSyncMode" type="OptionButton" parent="Margin/HBox/Content/Display/VSyncMode"]
 layout_mode = 2
+tooltip_text = "VSync synchronizes the frame rate of the game with the monitor's refresh rate. Enable this to get rid of screen tearing. Disable this if stuttering is experienced."
 item_count = 3
 selected = 1
 popup/item_0/text = "DISABLED"
