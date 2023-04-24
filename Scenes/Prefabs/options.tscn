@@ -87,6 +87,7 @@ popup/item_2/text = "Japanese"
 popup/item_2/id = 2
 
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
@@ -196,7 +197,6 @@ text = "UNLIMITED"
 vertical_alignment = 1
 
 [node name="Audio" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
 layout_mode = 2
 script = ExtResource("5_hbpj8")
 
@@ -209,7 +209,7 @@ layout_mode = 2
 text = "MUSIC"
 
 [node name="Music" type="HSlider" parent="Margin/HBox/Content/Audio/Music"]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 4
 value = 100.0
@@ -223,7 +223,7 @@ layout_mode = 2
 text = "SOUNDS"
 
 [node name="Sounds" type="HSlider" parent="Margin/HBox/Content/Audio/Sounds"]
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 4
 value = 75.0
