@@ -21,4 +21,4 @@ texture = ExtResource("2_83qsm")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="popup_menu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
+[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]

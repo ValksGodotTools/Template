@@ -94,4 +94,4 @@ shape = SubResource("RectangleShape2D_227sc")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="popup_menu" parent="CanvasLayer" instance=ExtResource("1_e7m6x")]
+[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_e7m6x")]
