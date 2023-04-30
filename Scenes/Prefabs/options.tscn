@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbajm5a75aiwu"]
+[gd_scene load_steps=10 format=3 uid="uid://cbajm5a75aiwu"]
 
-[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="1_0kbby"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
 [ext_resource type="Theme" uid="uid://8f4q252ns4xm" path="res://Themes/nav_btns.tres" id="3_mvq8n"]
@@ -20,7 +19,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0kbby")
 theme_override_styles/panel = SubResource("StyleBoxFlat_v8h3e")
 script = ExtResource("1_xjg3i")
 

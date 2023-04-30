@@ -1,19 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6pism2kgjr5c"]
+[gd_scene load_steps=3 format=3 uid="uid://c6pism2kgjr5c"]
 
-[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="1_8kp65"]
 [ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="2_g08n2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
 
 [node name="UIPopupMenu" type="PanelContainer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("1_8kp65")
 theme_override_styles/panel = SubResource("StyleBoxEmpty_j3vts")
 script = ExtResource("2_g08n2")
 

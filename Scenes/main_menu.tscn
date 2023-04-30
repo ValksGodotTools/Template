@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1ige5g5k8nma"]
+[gd_scene load_steps=7 format=3 uid="uid://b1ige5g5k8nma"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
-[ext_resource type="Theme" uid="uid://bi0f2eo0ywyyf" path="res://Themes/main.tres" id="1_4pdd5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbvcp"]
 bg_color = Color(0.172549, 0.172549, 0.172549, 1)
@@ -34,7 +33,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_4pdd5")
 script = ExtResource("1_3ln8k")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
