@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj2rg5607dbh3"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/Autoloads/Global.cs" id="1_ueahs"]
-[ext_resource type="PackedScene" uid="uid://c4o3fj5cr8ua7" path="res://GodotUtils/Prefabs/UIConsole.tscn" id="2_ht13n"]
+[ext_resource type="PackedScene" uid="uid://c4o3fj5cr8ua7" path="res://Scenes/Prefabs/console.tscn" id="2_ht13n"]
 
 [node name="Global" type="Node2D"]
 script = ExtResource("1_ueahs")
