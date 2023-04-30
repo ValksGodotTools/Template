@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bh35gnkui1lml"]
+[gd_scene load_steps=5 format=3 uid="uid://b8i1mt0p3vi1j"]
 
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/icon.svg" id="1_1rxos"]
 [ext_resource type="Script" path="res://Scripts/2D Top Down/Player.cs" id="1_hrosf"]
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/UI/icon.svg" id="2_83qsm"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/popup_menu.tscn" id="2_ep4f7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4su66"]
@@ -17,7 +17,7 @@ script = ExtResource("1_hrosf")
 shape = SubResource("RectangleShape2D_4su66")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
-texture = ExtResource("1_1rxos")
+texture = ExtResource("2_83qsm")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
