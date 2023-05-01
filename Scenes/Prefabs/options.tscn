@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://cbajm5a75aiwu"]
+[gd_scene load_steps=12 format=3 uid="uid://cbajm5a75aiwu"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
 [ext_resource type="Theme" uid="uid://8f4q252ns4xm" path="res://Themes/nav_btns.tres" id="3_mvq8n"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGeneral.cs" id="3_vefex"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsDisplay.cs" id="4_o6e7i"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGameplay.cs" id="5_eyimv"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsAudio.cs" id="5_hbpj8"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsInput.cs" id="6_n2qcv"]
+[ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGraphics.cs" id="6_wctgl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8h3e"]
 bg_color = Color(0, 0, 0, 0.392157)
@@ -45,10 +47,18 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "GENERAL"
 
+[node name="Gameplay" type="Button" parent="Margin/HBox/Nav"]
+layout_mode = 2
+text = "GAMEPLAY"
+
 [node name="Display" type="Button" parent="Margin/HBox/Nav"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "DISPLAY"
+
+[node name="Graphics" type="Button" parent="Margin/HBox/Nav"]
+layout_mode = 2
+text = "GRAPHICS"
 
 [node name="Audio" type="Button" parent="Margin/HBox/Nav"]
 custom_minimum_size = Vector2(150, 0)
@@ -89,7 +99,31 @@ popup/item_1/id = 1
 popup/item_2/text = "Japanese"
 popup/item_2/id = 2
 
+[node name="Gameplay" type="VBoxContainer" parent="Margin/HBox/Content"]
+layout_mode = 2
+script = ExtResource("5_eyimv")
+
+[node name="Difficulty" type="HBoxContainer" parent="Margin/HBox/Content/Gameplay"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Gameplay/Difficulty"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "DIFFICULTY"
+
+[node name="Difficulty" type="OptionButton" parent="Margin/HBox/Content/Gameplay/Difficulty"]
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "EASY"
+popup/item_0/id = 0
+popup/item_1/text = "NORMAL"
+popup/item_1/id = 1
+popup/item_2/text = "HARD"
+popup/item_2/id = 2
+
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
@@ -198,6 +232,30 @@ layout_mode = 2
 text = "UNLIMITED"
 vertical_alignment = 1
 
+[node name="Graphics" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
+layout_mode = 2
+script = ExtResource("6_wctgl")
+
+[node name="QualityMode" type="HBoxContainer" parent="Margin/HBox/Content/Graphics"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Graphics/QualityMode"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "QUALITY_PRESET"
+
+[node name="QualityMode" type="OptionButton" parent="Margin/HBox/Content/Graphics/QualityMode"]
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "LOW"
+popup/item_0/id = 0
+popup/item_1/text = "MEDIUM"
+popup/item_1/id = 1
+popup/item_2/text = "HIGH"
+popup/item_2/id = 2
+
 [node name="Audio" type="VBoxContainer" parent="Margin/HBox/Content"]
 visible = false
 layout_mode = 2
@@ -251,10 +309,13 @@ size_flags_horizontal = 4
 text = "RESET_TO_DEFAULTS"
 
 [connection signal="pressed" from="Margin/HBox/Nav/General" to="Margin/HBox/Nav" method="_on_general_pressed"]
+[connection signal="pressed" from="Margin/HBox/Nav/Gameplay" to="Margin/HBox/Nav" method="_on_gameplay_pressed"]
 [connection signal="pressed" from="Margin/HBox/Nav/Display" to="Margin/HBox/Nav" method="_on_display_pressed"]
+[connection signal="pressed" from="Margin/HBox/Nav/Graphics" to="Margin/HBox/Nav" method="_on_graphics_pressed"]
 [connection signal="pressed" from="Margin/HBox/Nav/Audio" to="Margin/HBox/Nav" method="_on_audio_pressed"]
 [connection signal="pressed" from="Margin/HBox/Nav/Input" to="Margin/HBox/Nav" method="_on_input_pressed"]
 [connection signal="item_selected" from="Margin/HBox/Content/General/Language/Language" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
+[connection signal="item_selected" from="Margin/HBox/Content/Gameplay/Difficulty/Difficulty" to="Margin/HBox/Content/Gameplay" method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="Margin/HBox/Content/Display/WindowMode/WindowMode" to="Margin/HBox/Content/Display" method="_on_window_mode_item_selected"]
 [connection signal="text_changed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_changed"]
 [connection signal="text_submitted" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_submitted"]
@@ -264,6 +325,7 @@ text = "RESET_TO_DEFAULTS"
 [connection signal="item_selected" from="Margin/HBox/Content/Display/VSyncMode/VSyncMode" to="Margin/HBox/Content/Display" method="_on_v_sync_mode_item_selected"]
 [connection signal="drag_ended" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_drag_ended"]
 [connection signal="value_changed" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_value_changed"]
+[connection signal="item_selected" from="Margin/HBox/Content/Graphics/QualityMode/QualityMode" to="Margin/HBox/Content/Graphics" method="_on_quality_mode_item_selected"]
 [connection signal="value_changed" from="Margin/HBox/Content/Audio/Music/Music" to="Margin/HBox/Content/Audio" method="_on_music_value_changed"]
 [connection signal="value_changed" from="Margin/HBox/Content/Audio/Sounds/Sounds" to="Margin/HBox/Content/Audio" method="_on_sounds_value_changed"]
 [connection signal="pressed" from="Margin/HBox/Content/Input/ResetToDefaults" to="Margin/HBox/Content/Input" method="_on_reset_to_defaults_pressed"]
