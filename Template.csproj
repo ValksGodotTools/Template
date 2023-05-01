@@ -1,7 +1,7 @@
 <Project Sdk="Godot.NET.Sdk/4.0.0">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <LangVersion>11</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>10</LangVersion>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <DefineConstants>TEMPLATE</DefineConstants>
   </PropertyGroup>
