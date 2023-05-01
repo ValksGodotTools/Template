@@ -1,6 +1,7 @@
 ﻿namespace Template;
 
 using VSyncMode = DisplayServer.VSyncMode;
+using QualityP = QualityPreset;
 
 /* 
  * If the ResourceOptions.cs script is moved then the file path will not updated
@@ -19,11 +20,13 @@ using VSyncMode = DisplayServer.VSyncMode;
  */
 public partial class ResourceOptions : Resource
 {
-    [Export] public float      MusicVolume { get; set; } = 100;
-    [Export] public float      SFXVolume   { get; set; } = 100;
-    [Export] public WindowMode WindowMode  { get; set; } = WindowMode.Windowed;
-    [Export] public VSyncMode  VSyncMode   { get; set; } = VSyncMode.Enabled;
-    [Export] public Vector2I   WindowSize  { get; set; }
-    [Export] public int        MaxFPS      { get; set; } = 60;
-    [Export] public Language   Language    { get; set; } = Language.English;
+    [Export] public float      MusicVolume   { get; set; } = 100;
+    [Export] public float      SFXVolume     { get; set; } = 100;
+    [Export] public WindowMode WindowMode    { get; set; } = WindowMode.Windowed;
+    [Export] public VSyncMode  VSyncMode     { get; set; } = VSyncMode.Enabled;
+    [Export] public QualityP   QualityPreset { get; set; } = QualityPreset.High;
+    [Export] public Difficulty Difficulty    { get; set; } = Difficulty.Normal;
+    [Export] public Vector2I   WindowSize    { get; set; }
+    [Export] public int        MaxFPS        { get; set; } = 60;
+    [Export] public Language   Language      { get; set; } = Language.English;
 }
