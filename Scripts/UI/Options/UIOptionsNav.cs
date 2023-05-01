@@ -25,7 +25,9 @@ public partial class UIOptionsNav : Control
     private void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
 
     private void _on_general_pressed() => ShowTab("General");
+    private void _on_gameplay_pressed() => ShowTab("Gameplay");
     private void _on_display_pressed() => ShowTab("Display");
+    private void _on_graphics_pressed() => ShowTab("Graphics");
     private void _on_audio_pressed() => ShowTab("Audio");
     private void _on_input_pressed() => ShowTab("Input");
 }
