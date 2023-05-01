@@ -17,10 +17,10 @@ public partial class UIOptionsDisplay : Control
     private int prevNumX, prevNumY;
 
     // Window Mode
-    private OptionButton optionButtonWindowMode;
+    private OptionButton optionBtnWindowMode;
 
     // VSync Mode
-    private OptionButton optionButtonVSyncMode;
+    private OptionButton optionBtnVSyncMode;
 
     public override void _Ready()
     {
@@ -62,17 +62,17 @@ public partial class UIOptionsDisplay : Control
 
     private void SetupWindowMode()
     {
-        optionButtonWindowMode = GetNode<OptionButton>("WindowMode/WindowMode");
-        optionButtonWindowMode.Select((int)options.WindowMode);
+        optionBtnWindowMode = GetNode<OptionButton>("WindowMode/WindowMode");
+        optionBtnWindowMode.Select((int)options.WindowMode);
 
         OptionsManager.WindowModeChanged += windowMode =>
-            optionButtonWindowMode.Select((int)windowMode);
+            optionBtnWindowMode.Select((int)windowMode);
     }
 
     private void SetupVSyncMode()
     {
-        optionButtonVSyncMode = GetNode<OptionButton>("VSyncMode/VSyncMode");
-        optionButtonVSyncMode.Select((int)options.VSyncMode);
+        optionBtnVSyncMode = GetNode<OptionButton>("VSyncMode/VSyncMode");
+        optionBtnVSyncMode.Select((int)options.VSyncMode);
     }
 
     private void ApplyWindowSize()
