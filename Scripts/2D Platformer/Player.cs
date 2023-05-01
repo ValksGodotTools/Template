@@ -9,10 +9,9 @@ public partial class Player : CharacterBody2D
     private float JumpForce     { get; } = 100;
     private float JumpLoss      { get; } = 7.5f;
 
-    private float JumpLossBuildUp { get; set; }
-    private bool  HoldingJumpKey  { get; set; }
-
-    private Dictionary<string, RayCast2D[]> RayCasts { get; set; } = new();
+    private float jumpLossBuildUp;
+    private bool holdingJumpKey;
+    private readonly Dictionary<string, RayCast2D[]> rayCasts = new();
 
     public override void _Ready()
     {
@@ -35,20 +34,20 @@ public partial class Player : CharacterBody2D
         // Jump
         if (Input.IsActionJustPressed("jump") && AreRaycastsTouching("Floor"))
         {
-            HoldingJumpKey = true;
-            JumpLossBuildUp = 0;
+            holdingJumpKey = true;
+            jumpLossBuildUp = 0;
             vel.Y -= JumpForce;
         }
 
-        if (Input.IsActionPressed("jump") && HoldingJumpKey)
+        if (Input.IsActionPressed("jump") && holdingJumpKey)
         {
-            JumpLossBuildUp += JumpLoss;
-            vel.Y -= Mathf.Max(0, JumpForce - JumpLossBuildUp);
+            jumpLossBuildUp += JumpLoss;
+            vel.Y -= Mathf.Max(0, JumpForce - jumpLossBuildUp);
         }
 
         if (Input.IsActionJustReleased("jump"))
         {
-            HoldingJumpKey = false;
+            holdingJumpKey = false;
         }
 
         // Gravity
@@ -62,18 +61,18 @@ public partial class Player : CharacterBody2D
     {
         var raycastsFloor = GetNode($"Raycasts/{type}").GetChildren<RayCast2D>();
 
-        RayCasts[type] = new RayCast2D[raycastsFloor.Length];
+        rayCasts[type] = new RayCast2D[raycastsFloor.Length];
 
         for (int i = 0; i < raycastsFloor.Length; i++)
         {
-            RayCasts[type][i] = raycastsFloor[i];
-            RayCasts[type][i].AddException(this);
+            rayCasts[type][i] = raycastsFloor[i];
+            rayCasts[type][i].AddException(this);
         }
     }
 
     private bool AreRaycastsTouching(string type)
     {
-        foreach (var raycast in RayCasts[type])
+        foreach (var raycast in rayCasts[type])
             if (raycast.IsColliding())
                 return true;
 

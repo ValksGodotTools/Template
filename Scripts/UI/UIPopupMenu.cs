@@ -2,18 +2,18 @@ namespace Template;
 
 public partial class UIPopupMenu : Control
 {
-    private VBoxContainer  VBox    { get; set; }
-    private PanelContainer Menu    { get; set; }
-    private UIOptions      Options { get; set; }
+    private VBoxContainer vbox;
+    private PanelContainer menu;
+    private UIOptions options;
 
     public override void _Ready()
     {
-        Menu = GetNode<PanelContainer>("Center/Panel");
-        VBox = Menu.GetNode<VBoxContainer>("Margin/Nav");
+        menu = GetNode<PanelContainer>("Center/Panel");
+        vbox = menu.GetNode<VBoxContainer>("Margin/Nav");
 
-        Options = Prefabs.Options.Instantiate<UIOptions>();
-        AddChild(Options);
-        Options.Hide();
+        options = Prefabs.Options.Instantiate<UIOptions>();
+        AddChild(options);
+        options.Hide();
         Hide();
     }
 
@@ -21,10 +21,10 @@ public partial class UIPopupMenu : Control
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            if (Options.Visible)
+            if (options.Visible)
             {
-                Options.Hide();
-                Menu.Show();
+                options.Hide();
+                menu.Show();
             }
             else
             {
@@ -46,8 +46,8 @@ public partial class UIPopupMenu : Control
 
     private void _on_options_pressed()
     {
-        Options.Show();
-        Menu.Hide();
+        options.Show();
+        menu.Hide();
     }
 
     private void _on_main_menu_pressed()

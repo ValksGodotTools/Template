@@ -2,35 +2,35 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    private float    MouseSensitivity { get; set; } = 0.005f;
-    private float    GravityForce     { get; set; } = 10;
-    private float    JumpForce        { get; set; } = 150;
-    private float    MoveSpeed        { get; set; } = 10;
-    private float    MoveDampening    { get; set; } = 20; // the higher the value, the less the player will slide
+    private float MouseSensitivity { get; set; } = 0.005f;
+    private float GravityForce     { get; set; } = 10;
+    private float JumpForce        { get; set; } = 150;
+    private float MoveSpeed        { get; set; } = 10;
+    private float MoveDampening    { get; set; } = 20; // the higher the value, the less the player will slide
                                    
-    private Camera3D Camera           { get; set; }
-    private Vector2  MouseInput       { get; set; }
-    private Vector3  CameraTarget     { get; set; }
-    private Vector3  CameraOffset     { get; set; }
-    private Vector3  GravityVec       { get; set; }
-    private bool     MouseCaptured    { get; set; }
+    private Camera3D camera;
+    private Vector2 mouseInput;
+    private Vector3 cameraTarget;
+    private Vector3 cameraOffset;
+    private Vector3 gravityVec;
+    private bool mouseCaptured;
 
     public override void _Ready()
     {
-        Camera = GetNode<Camera3D>("Camera3D");
+        camera = GetNode<Camera3D>("Camera3D");
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        MouseCaptured = true;
+        mouseCaptured = true;
     }
 
     public override void _PhysicsProcess(double d)
     {
         var delta = (float)d;
 
-        Camera.Rotation = CameraTarget + CameraOffset;
+        camera.Rotation = cameraTarget + cameraOffset;
 
         //var h_rot = GlobalTransform.basis.GetEuler().y;
-        var h_rot = Camera.Basis.GetEuler().Y;
+        var h_rot = camera.Basis.GetEuler().Y;
 
         var f_input = -Input.GetAxis("move_down", "move_up");
         var h_input = Input.GetAxis("move_left", "move_right");
@@ -41,20 +41,20 @@ public partial class Player : CharacterBody3D
 
         if (IsOnFloor())
         {
-            GravityVec = Vector3.Zero;
+            gravityVec = Vector3.Zero;
 
             if (Input.IsActionJustPressed("jump"))
             {
-                GravityVec = Vector3.Up * JumpForce * delta;
+                gravityVec = Vector3.Up * JumpForce * delta;
             }
         }
         else
         {
-            GravityVec += Vector3.Down * GravityForce * delta;
+            gravityVec += Vector3.Down * GravityForce * delta;
         }
 
         Velocity = Velocity.Lerp(dir * MoveSpeed, MoveDampening * delta);
-        Velocity += GravityVec;
+        Velocity += gravityVec;
 
         MoveAndSlide();
     }
@@ -63,9 +63,9 @@ public partial class Player : CharacterBody3D
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            MouseCaptured = !MouseCaptured;
+            mouseCaptured = !mouseCaptured;
 
-            Input.MouseMode = MouseCaptured ?
+            Input.MouseMode = mouseCaptured ?
                 Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         }
 
@@ -75,13 +75,13 @@ public partial class Player : CharacterBody3D
         if (Input.MouseMode != Input.MouseModeEnum.Captured)
             return;
 
-        MouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
+        mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
 
-        CameraTarget += new Vector3(-motion.Relative.Y * MouseSensitivity, -motion.Relative.X * MouseSensitivity, 0);
+        cameraTarget += new Vector3(-motion.Relative.Y * MouseSensitivity, -motion.Relative.X * MouseSensitivity, 0);
 
         // prevent camera from looking too far up or down
-        var rotDeg = CameraTarget;
+        var rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
-        CameraTarget = rotDeg;
+        cameraTarget = rotDeg;
     }
 }

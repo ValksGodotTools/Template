@@ -2,14 +2,14 @@ namespace Template;
 
 public partial class UIOptionsNav : Control
 {
-    private Dictionary<string, Control> Tabs { get; } = new();
+    private readonly Dictionary<string, Control> tabs = new();
 
     public override void _Ready()
     {
         var content = GetParent().GetNode("Content");
 
         foreach (Control child in content.GetChildren())
-            Tabs.Add(child.Name, child);
+            tabs.Add(child.Name, child);
 
         HideAllTabs();
         ShowTab(OptionsManager.CurrentOptionsTab);
@@ -19,10 +19,10 @@ public partial class UIOptionsNav : Control
     {
         OptionsManager.CurrentOptionsTab = tabName;
         HideAllTabs();
-        Tabs[tabName].Show();
+        tabs[tabName].Show();
     }
 
-    private void HideAllTabs() => Tabs.Values.ForEach(x => x.Hide());
+    private void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
 
     private void _on_general_pressed() => ShowTab("General");
     private void _on_display_pressed() => ShowTab("Display");

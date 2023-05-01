@@ -2,19 +2,18 @@ namespace Template;
 
 public partial class UICredits : Node
 {
-    private VBoxContainer VBox     { get; set; }
-    private Button        BtnPause { get; set; }
-    private Button        BtnSpeed { get; set; }
-
-    private bool          Paused   { get; set; }
-    private float         Speed    { get; set; } = 1.0f;
+    private VBoxContainer vbox;
+    private Button btnPause;
+    private Button btnSpeed;
+    private bool paused;
+    private float speed = 1.0f;
 
     public override void _Ready()
     {
-        BtnPause = GetNode<Button>("HBox/Pause");
-        BtnSpeed = GetNode<Button>("HBox/Speed");
+        btnPause = GetNode<Button>("HBox/Pause");
+        btnSpeed = GetNode<Button>("HBox/Speed");
 
-        VBox = new VBoxContainer
+        vbox = new VBoxContainer
         {
             SizeFlagsVertical = Control.SizeFlags.ShrinkBegin
         };
@@ -34,27 +33,27 @@ public partial class UICredits : Node
                 AddTextWithLink(translatedLine);
             else
                 if (string.IsNullOrWhiteSpace(translatedLine))
-                    VBox.AddChild(new GPadding(0, 10));
+                    vbox.AddChild(new GPadding(0, 10));
                 else
-                    VBox.AddChild(new GLabel(translatedLine));
+                    vbox.AddChild(new GLabel(translatedLine));
         } 
 
         file.Close();
 
-        AddChild(VBox);
+        AddChild(vbox);
 
-        VBox.Position = new Vector2(
-            DisplayServer.WindowGetSize().X / 2 - VBox.Size.X / 2,
+        vbox.Position = new Vector2(
+            DisplayServer.WindowGetSize().X / 2 - vbox.Size.X / 2,
             DisplayServer.WindowGetSize().Y);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        var pos = VBox.Position;
-        pos.Y -= Speed;
-        VBox.Position = pos;
+        var pos = vbox.Position;
+        pos.Y -= speed;
+        vbox.Position = pos;
 
-        if (pos.Y <= -VBox.Size.Y)
+        if (pos.Y <= -vbox.Size.Y)
         {
             AudioManager.PlayMusic(Music.Menu);
             SceneManager.SwitchScene("main_menu");
@@ -88,22 +87,22 @@ public partial class UICredits : Node
         hbox.AddChild(labelText);
         hbox.AddChild(btnLink);
 
-        VBox.AddChild(hbox);
+        vbox.AddChild(hbox);
     }
 
     private void _on_pause_pressed()
     {
-        Paused = !Paused;
+        paused = !paused;
 
-        if (Paused)
+        if (paused)
         {
             SetPhysicsProcess(false);
-            BtnPause.Text = "Resume";
+            btnPause.Text = "Resume";
         }
         else
         {
             SetPhysicsProcess(true);
-            BtnPause.Text = "Pause";
+            btnPause.Text = "Pause";
         }
     }
 
@@ -112,17 +111,17 @@ public partial class UICredits : Node
         var numSpeeds = 3;
 
         for (int i = 1; i < numSpeeds; i++)
-            if (Speed == i)
+            if (speed == i)
             {
-                BtnSpeed.Text = $"{i + 1}.0x";
-                Speed = i + 1;
+                btnSpeed.Text = $"{i + 1}.0x";
+                speed = i + 1;
                 return;
             }
 
-        if (Speed == numSpeeds)
+        if (speed == numSpeeds)
         {
-            BtnSpeed.Text = "1.0x";
-            Speed = 1;
+            btnSpeed.Text = "1.0x";
+            speed = 1;
         }
     }
 }

@@ -4,43 +4,43 @@ using Godot.Collections;
 
 public partial class UIOptionsInput : Control
 {
-    public static BtnInfo BtnNewInput { get; set; } // the btn waiting for new input
-    private Dictionary<StringName, Array<InputEvent>> DefaultActions { get; set; }
-    private VBoxContainer Content { get; set; }
+    private static BtnInfo btnNewInput; // the btn waiting for new input
+    private Dictionary<StringName, Array<InputEvent>> defaultActions;
+    private VBoxContainer content;
 
     public override void _Ready()
     {
-        Content = GetNode<VBoxContainer>("Scroll/VBox");
+        content = GetNode<VBoxContainer>("Scroll/VBox");
         CreateHotkeys();
     }
 
     public override void _Input(InputEvent @event)
     {
-        if (BtnNewInput != null)
+        if (btnNewInput != null)
         {
             if (Input.IsActionJustPressed("remove_hotkey"))
             {
-                var action = BtnNewInput.Action;
+                var action = btnNewInput.Action;
 
                 // Update input map
-                InputMap.ActionEraseEvent(action, BtnNewInput.InputEvent);
+                InputMap.ActionEraseEvent(action, btnNewInput.InputEvent);
 
                 // Update options
-                OptionsManager.Hotkeys.Actions[action].Remove(BtnNewInput.InputEvent);
+                OptionsManager.Hotkeys.Actions[action].Remove(btnNewInput.InputEvent);
 
                 // Update UI
-                BtnNewInput.Btn.QueueFree();
-                BtnNewInput = null;
+                btnNewInput.Btn.QueueFree();
+                btnNewInput = null;
             }
 
             if (Input.IsActionJustPressed("ui_cancel"))
             {
-                BtnNewInput.Btn.Text = BtnNewInput.OriginalText;
+                btnNewInput.Btn.Text = btnNewInput.OriginalText;
 
-                if (BtnNewInput.Plus)
-                    BtnNewInput.Btn.QueueFree();
+                if (btnNewInput.Plus)
+                    btnNewInput.Btn.QueueFree();
 
-                BtnNewInput = null;
+                btnNewInput = null;
                 return;
             }
 
@@ -62,7 +62,7 @@ public partial class UIOptionsInput : Control
             {
                 if (SceneManager.CurrentScene.Name == "Options")
                 {
-                    if (BtnNewInput == null)
+                    if (btnNewInput == null)
                     {
                         AudioManager.PlayMusic(Music.Menu);
                         SceneManager.SwitchScene("main_menu");
@@ -74,7 +74,7 @@ public partial class UIOptionsInput : Control
 
     private void HandleInput(InputEvent @event)
     {
-        var action = BtnNewInput.Action;
+        var action = btnNewInput.Action;
 
         // Prevent something very evil from happening!
         if (action == "fullscreen" && @event is InputEventMouseButton eventBtn)
@@ -83,34 +83,34 @@ public partial class UIOptionsInput : Control
         // Re-create the button
 
         // Preserve the index the button was originally at
-        var index = BtnNewInput.Btn.GetIndex();
+        var index = btnNewInput.Btn.GetIndex();
 
         // Destroy the button
-        BtnNewInput.Btn.QueueFree();
+        btnNewInput.Btn.QueueFree();
 
         // Create the button
-        var btn = CreateButton(action, @event, BtnNewInput.HBox);
+        var btn = CreateButton(action, @event, btnNewInput.HBox);
         btn.Disabled = false;
 
         // Move the button to where it was originally at
-        BtnNewInput.HBox.MoveChild(btn, index);
+        btnNewInput.HBox.MoveChild(btn, index);
 
         var actions = OptionsManager.Hotkeys.Actions;
 
         // Clear the specific action event
-        actions[action].Remove(BtnNewInput.InputEvent);
+        actions[action].Remove(btnNewInput.InputEvent);
 
         // Update the specific action event
         actions[action].Add(@event);
 
         // Update input map
-        if (BtnNewInput.InputEvent != null)
-            InputMap.ActionEraseEvent(action, BtnNewInput.InputEvent);
+        if (btnNewInput.InputEvent != null)
+            InputMap.ActionEraseEvent(action, btnNewInput.InputEvent);
 
         InputMap.ActionAddEvent(action, @event);
 
         // No longer waiting for new input
-        BtnNewInput = null;
+        btnNewInput = null;
     }
 
     private Button CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
@@ -131,11 +131,11 @@ public partial class UIOptionsInput : Control
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
-            if (BtnNewInput != null)
+            if (btnNewInput != null)
                 return;
 
             // Listening for new hotkey to replace old with...
-            BtnNewInput = new BtnInfo
+            btnNewInput = new BtnInfo
             {
                 Action = action,
                 Btn = btn,
@@ -161,11 +161,11 @@ public partial class UIOptionsInput : Control
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
-            if (BtnNewInput != null)
+            if (btnNewInput != null)
                 return;
 
             // Listening for new hotkey to replace old with...
-            BtnNewInput = new BtnInfo
+            btnNewInput = new BtnInfo
             {
                 Action = action,
                 Btn = btn,
@@ -235,17 +235,17 @@ public partial class UIOptionsInput : Control
             CreateButtonPlus(action, hboxEvents);
 
             hbox.AddChild(hboxEvents);
-            Content.AddChild(hbox);
+            content.AddChild(hbox);
         }
     }
 
     private void _on_reset_to_defaults_pressed()
     {
-        for (int i = 0; i < Content.GetChildren().Count; i++)
-            if (Content.GetChild(i) != this)
-                Content.GetChild(i).QueueFree();
+        for (int i = 0; i < content.GetChildren().Count; i++)
+            if (content.GetChild(i) != this)
+                content.GetChild(i).QueueFree();
 
-        BtnNewInput = null;
+        btnNewInput = null;
         OptionsManager.ResetHotkeys();
         CreateHotkeys();
     }

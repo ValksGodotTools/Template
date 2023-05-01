@@ -2,12 +2,11 @@ namespace Template;
 
 public partial class UIOptionsAudio : Control
 {
-    private ResourceOptions Options { get; set; }
+    private ResourceOptions options;
 
     public override void _Ready()
     {
-        Options = OptionsManager.Options;
-
+        options = OptionsManager.Options;
         SetupMusic();
         SetupSounds();
     }
@@ -15,13 +14,13 @@ public partial class UIOptionsAudio : Control
     private void SetupMusic()
     {
         var slider = GetNode<HSlider>("Music/Music");
-        slider.Value = Options.MusicVolume;
+        slider.Value = options.MusicVolume;
     }
 
     private void SetupSounds()
     {
         var slider = GetNode<HSlider>("Sounds/Sounds");
-        slider.Value = Options.SFXVolume;
+        slider.Value = options.SFXVolume;
     }
 
     private void _on_music_value_changed(float v) =>

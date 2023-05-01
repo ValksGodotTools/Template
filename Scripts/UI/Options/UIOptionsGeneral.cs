@@ -2,19 +2,18 @@ namespace Template;
 
 public partial class UIOptionsGeneral : Control
 {
-    private ResourceOptions Options { get; set; }
+    private ResourceOptions options;
 
     public override void _Ready()
     {
-        Options = OptionsManager.Options;
-
+        options = OptionsManager.Options;
         SetupLanguage();
     }
 
     private void SetupLanguage()
     {
         var optionButtonLanguage = GetNode<OptionButton>("Language/Language");
-        optionButtonLanguage.Select((int)Options.Language);
+        optionButtonLanguage.Select((int)options.Language);
     }
 
     private void _on_language_item_selected(int index)
@@ -23,7 +22,7 @@ public partial class UIOptionsGeneral : Control
 
         TranslationServer.SetLocale(locale);
 
-        Options.Language = (Language)index;
+        options.Language = (Language)index;
     }
 }
 
