@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <DefineConstants>TEMPLATE</DefineConstants>
+		<RootNamespace>Template</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="GodotUtils\Snippets\VS2022\ExportNodePath.snippet" />
