@@ -11,7 +11,7 @@ public partial class UIMainMenu : Node
     private void _on_options_pressed()
     {
         AudioManager.PlayMusic(Music.Level4);
-        SceneManager.SwitchScene("Prefabs/options");
+        SceneManager.SwitchScene("Prefabs/UI/options");
     }
 
     private void _on_credits_pressed()

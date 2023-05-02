@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8i1mt0p3vi1j"]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://Scripts/2D Top Down/Player.cs" id="1_hrosf"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/UI/icon.svg" id="2_83qsm"]
-[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/popup_menu.tscn" id="2_ep4f7"]
+[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4su66"]
 size = Vector2(125, 125)

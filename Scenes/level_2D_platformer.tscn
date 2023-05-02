@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://g6pqiikmhobc"]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/popup_menu.tscn" id="1_e7m6x"]
+[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_e7m6x"]
 [ext_resource type="Script" path="res://Scripts/2D Platformer/Player.cs" id="1_sjn41"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/UI/icon.svg" id="2_i1m65"]
 
