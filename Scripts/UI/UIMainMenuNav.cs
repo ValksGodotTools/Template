@@ -2,6 +2,11 @@ namespace Template;
 
 public partial class UIMainMenuNav : Node
 {
+    public override void _Ready()
+    {
+        GetNode<Button>("Play").GrabFocus();
+    }
+
     private void _on_play_pressed()
     {
         AudioManager.PlayMusic(Music.Level1, false);
