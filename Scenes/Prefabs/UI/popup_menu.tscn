@@ -1,8 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6pism2kgjr5c"]
+[gd_scene load_steps=9 format=3 uid="uid://c6pism2kgjr5c"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIPopupMenu.cs" id="2_g08n2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xx28n"]
+bg_color = Color(0, 0, 0, 0.196078)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3nk4"]
+bg_color = Color(0, 0, 0, 0.470588)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c4p5d"]
+bg_color = Color(0, 0, 0, 0.219608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3lyh8"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.219608)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ymm5v"]
+
+[sub_resource type="Theme" id="Theme_gqro3"]
+Button/styles/focus = SubResource("StyleBoxFlat_t3nk4")
+Button/styles/hover = SubResource("StyleBoxFlat_c4p5d")
+Button/styles/normal = SubResource("StyleBoxFlat_3lyh8")
+Button/styles/pressed = SubResource("StyleBoxEmpty_ymm5v")
 
 [node name="UIPopupMenu" type="PanelContainer"]
 anchors_preset = 15
@@ -19,16 +43,18 @@ layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="Center"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xx28n")
 
 [node name="Margin" type="MarginContainer" parent="Center/Panel"]
 layout_mode = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 30
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 75
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 75
 
 [node name="Nav" type="VBoxContainer" parent="Center/Panel/Margin"]
 layout_mode = 2
+theme = SubResource("Theme_gqro3")
 
 [node name="Resume" type="Button" parent="Center/Panel/Margin/Nav"]
 custom_minimum_size = Vector2(150, 0)
