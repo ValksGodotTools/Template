@@ -21,6 +21,7 @@ public partial class UICredits : Node
             SizeFlagsVertical = Control.SizeFlags.ShrinkBegin
         };
 
+        // Read the contents from credits.txt and construct the credits
         var file = FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
 
         while (!file.EofReached())
@@ -45,17 +46,28 @@ public partial class UICredits : Node
 
         AddChild(vbox);
 
+        // Set starting position of the credits
         vbox.Position = new Vector2(
             DisplayServer.WindowGetSize().X / 2 - vbox.Size.X / 2,
             DisplayServer.WindowGetSize().Y);
+
+        // Re-center credits when window size is changed
+        GetViewport().SizeChanged += () =>
+        {
+            vbox.Position = new Vector2(
+                DisplayServer.WindowGetSize().X / 2 - vbox.Size.X / 2,
+                vbox.Size.Y);
+        };
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        // Animate the credits
         var pos = vbox.Position;
         pos.Y -= speed;
         vbox.Position = pos;
 
+        // Go back to the main menu when the credits are finished
         if (pos.Y <= -vbox.Size.Y)
         {
             AudioManager.PlayMusic(Music.Menu);
@@ -79,8 +91,7 @@ public partial class UICredits : Node
         var textDesc = text.Substring(0, indexOfHttp);
         var textLink = text.Substring(indexOfHttp);
 
-        var hbox = new HBoxContainer
-        {
+        var hbox = new HBoxContainer {
             SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
         };
 
