@@ -21,7 +21,7 @@ config/icon="res://Sprites/UI/icon.svg"
 Global="*res://Scenes/Autoloads/global.tscn"
 OptionsManager="*res://Scripts/Autoloads/OptionsManager.cs"
 AudioManager="*res://Scenes/Autoloads/audio_manager.tscn"
-SceneManager="*res://GodotUtils/Scripts/Autoload/SceneManager.cs"
+SceneManager="*res://GodotUtils/Autoload/SceneManager.cs"
 
 [dotnet]
 
