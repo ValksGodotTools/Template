@@ -316,12 +316,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "RESET_TO_DEFAULTS"
 
-[connection signal="pressed" from="Margin/HBox/Nav/General" to="Margin/HBox/Nav" method="_on_general_pressed"]
-[connection signal="pressed" from="Margin/HBox/Nav/Gameplay" to="Margin/HBox/Nav" method="_on_gameplay_pressed"]
-[connection signal="pressed" from="Margin/HBox/Nav/Display" to="Margin/HBox/Nav" method="_on_display_pressed"]
-[connection signal="pressed" from="Margin/HBox/Nav/Graphics" to="Margin/HBox/Nav" method="_on_graphics_pressed"]
-[connection signal="pressed" from="Margin/HBox/Nav/Audio" to="Margin/HBox/Nav" method="_on_audio_pressed"]
-[connection signal="pressed" from="Margin/HBox/Nav/Input" to="Margin/HBox/Nav" method="_on_input_pressed"]
 [connection signal="item_selected" from="Margin/HBox/Content/General/Language/Language" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
 [connection signal="item_selected" from="Margin/HBox/Content/Gameplay/Difficulty/Difficulty" to="Margin/HBox/Content/Gameplay" method="_on_difficulty_item_selected"]
 [connection signal="item_selected" from="Margin/HBox/Content/Display/WindowMode/WindowMode" to="Margin/HBox/Content/Display" method="_on_window_mode_item_selected"]

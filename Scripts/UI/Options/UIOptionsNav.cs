@@ -3,6 +3,7 @@ namespace Template;
 public partial class UIOptionsNav : Control
 {
     private readonly Dictionary<string, Control> tabs = new();
+    private readonly Dictionary<string, Button> buttons = new();
 
     public override void _Ready()
     {
@@ -10,6 +11,16 @@ public partial class UIOptionsNav : Control
 
         foreach (Control child in content.GetChildren())
             tabs.Add(child.Name, child);
+
+        foreach (Button button in GetChildren())
+        {
+            button.FocusEntered += () => ShowTab(button.Name);
+            button.Pressed += () => ShowTab(button.Name);
+
+            buttons.Add(button.Name, button);
+        }
+
+        buttons[OptionsManager.CurrentOptionsTab].GrabFocus();
 
         HideAllTabs();
         ShowTab(OptionsManager.CurrentOptionsTab);
@@ -23,11 +34,4 @@ public partial class UIOptionsNav : Control
     }
 
     private void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
-
-    private void _on_general_pressed() => ShowTab("General");
-    private void _on_gameplay_pressed() => ShowTab("Gameplay");
-    private void _on_display_pressed() => ShowTab("Display");
-    private void _on_graphics_pressed() => ShowTab("Graphics");
-    private void _on_audio_pressed() => ShowTab("Audio");
-    private void _on_input_pressed() => ShowTab("Input");
 }
