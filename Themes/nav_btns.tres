@@ -5,7 +5,7 @@ content_margin_left = 30.0
 content_margin_top = 30.0
 content_margin_right = 30.0
 content_margin_bottom = 30.0
-bg_color = Color(0, 0, 0, 0.392157)
+bg_color = Color(0, 0, 0, 0.219608)
 
 [resource]
 Button/styles/normal = SubResource("StyleBoxFlat_wyksp")

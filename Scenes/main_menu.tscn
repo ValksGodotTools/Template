@@ -1,16 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1ige5g5k8nma"]
+[gd_scene load_steps=8 format=3 uid="uid://d4a5xfmaulku1"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
+[ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Sprites/Concept Art/floating-island-city.JPG" id="2_b1wex"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbvcp"]
-bg_color = Color(0, 0, 0, 0.419608)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n05l1"]
 content_margin_left = 30.0
 content_margin_top = 15.0
 content_margin_right = 30.0
 content_margin_bottom = 15.0
-bg_color = Color(0, 0, 0, 0.392157)
+bg_color = Color(0, 0, 0, 0.207843)
 
 [sub_resource type="Theme" id="Theme_v88qt"]
 Button/styles/normal = SubResource("StyleBoxFlat_n05l1")
@@ -20,7 +20,7 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.392157)
+bg_color = Color(0, 0, 0, 0.207843)
 
 [sub_resource type="Theme" id="Theme_nbt60"]
 default_font_size = 14
@@ -35,13 +35,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3ln8k")
 
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b1wex")
+expand_mode = 1
+stretch_mode = 6
+flip_h = true
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_dbvcp")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xl3hr")
 
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
 layout_mode = 2

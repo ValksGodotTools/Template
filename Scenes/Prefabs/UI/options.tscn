@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cbajm5a75aiwu"]
+[gd_scene load_steps=13 format=3 uid="uid://7tfets4irkba"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
+[ext_resource type="Texture2D" uid="uid://dp28a3uv7irs7" path="res://Sprites/Concept Art/monkey-mountain.JPG" id="2_65pdd"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
 [ext_resource type="Theme" uid="uid://8f4q252ns4xm" path="res://Themes/nav_btns.tres" id="3_mvq8n"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGeneral.cs" id="3_vefex"]
@@ -23,6 +24,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_v8h3e")
 script = ExtResource("1_xjg3i")
+
+[node name="BackgroundArt" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_65pdd")
+expand_mode = 2
+stretch_mode = 6
+flip_h = true
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2
