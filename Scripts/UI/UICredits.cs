@@ -2,11 +2,14 @@ namespace Template;
 
 public partial class UICredits : Node
 {
+    private const float STARTING_SPEED = 0.75f;
+
     private VBoxContainer vbox;
     private Button btnPause;
     private Button btnSpeed;
     private bool paused;
-    private float speed = 1.0f;
+    private byte curSpeedSetting = 1;
+    private float speed = STARTING_SPEED;
 
     public override void _Ready()
     {
@@ -108,20 +111,17 @@ public partial class UICredits : Node
 
     private void _on_speed_pressed()
     {
-        var numSpeeds = 3;
-
-        for (int i = 1; i < numSpeeds; i++)
-            if (speed == i)
-            {
-                btnSpeed.Text = $"{i + 1}.0x";
-                speed = i + 1;
-                return;
-            }
-
-        if (speed == numSpeeds)
+        if (curSpeedSetting < 3)
         {
-            btnSpeed.Text = "1.0x";
-            speed = 1;
+            curSpeedSetting++;
+            btnSpeed.Text = $"{curSpeedSetting}.0x";
+            speed += 1;
+        }
+        else
+        {
+            curSpeedSetting = 1;
+            btnSpeed.Text = $"{curSpeedSetting}.0x";
+            speed = STARTING_SPEED;
         }
     }
 }
