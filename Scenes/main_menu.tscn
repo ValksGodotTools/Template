@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4a5xfmaulku1"]
+[gd_scene load_steps=15 format=3 uid="uid://d4a5xfmaulku1"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
 [ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Sprites/Concept Art/floating-island-city.JPG" id="2_b1wex"]
@@ -6,26 +6,45 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n05l1"]
-content_margin_left = 30.0
-content_margin_top = 15.0
-content_margin_right = 30.0
-content_margin_bottom = 15.0
-bg_color = Color(0, 0, 0, 0.207843)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r34gr"]
+bg_color = Color(0, 0, 0, 0.470588)
 
-[sub_resource type="Theme" id="Theme_v88qt"]
-Button/styles/normal = SubResource("StyleBoxFlat_n05l1")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bkoao"]
+bg_color = Color(0, 0, 0, 0.219608)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d325d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y51uf"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.219608)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dnx8c"]
+
+[sub_resource type="Theme" id="Theme_xn77g"]
+Button/styles/focus = SubResource("StyleBoxFlat_r34gr")
+Button/styles/hover = SubResource("StyleBoxFlat_bkoao")
+Button/styles/normal = SubResource("StyleBoxFlat_y51uf")
+Button/styles/pressed = SubResource("StyleBoxEmpty_dnx8c")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_madu2"]
+bg_color = Color(0, 0, 0, 0.470588)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rw86"]
+bg_color = Color(0, 0, 0, 0.219608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ctxq7"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.207843)
+bg_color = Color(0, 0, 0, 0.219608)
 
-[sub_resource type="Theme" id="Theme_nbt60"]
-default_font_size = 14
-Button/styles/normal = SubResource("StyleBoxFlat_d325d")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vbaxj"]
+
+[sub_resource type="Theme" id="Theme_2jf5t"]
+Button/styles/focus = SubResource("StyleBoxFlat_madu2")
+Button/styles/hover = SubResource("StyleBoxFlat_2rw86")
+Button/styles/normal = SubResource("StyleBoxFlat_ctxq7")
+Button/styles/pressed = SubResource("StyleBoxEmpty_vbaxj")
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -61,7 +80,7 @@ layout_mode = 2
 
 [node name="Nav" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
 layout_mode = 2
-theme = SubResource("Theme_v88qt")
+theme = SubResource("Theme_xn77g")
 script = ExtResource("3_te57n")
 
 [node name="Play" type="Button" parent="PanelContainer/CenterContainer/Nav"]
@@ -96,7 +115,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-theme = SubResource("Theme_nbt60")
+theme = SubResource("Theme_2jf5t")
 
 [node name="Discord" type="Button" parent="PanelContainer/Margin/Socials"]
 layout_mode = 2
