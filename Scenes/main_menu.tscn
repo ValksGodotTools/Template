@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbvcp"]
-bg_color = Color(0.172549, 0.172549, 0.172549, 1)
+bg_color = Color(0, 0, 0, 0.419608)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n05l1"]
 content_margin_left = 30.0
