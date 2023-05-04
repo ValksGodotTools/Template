@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://d4a5xfmaulku1"]
+[gd_scene load_steps=9 format=3 uid="uid://d4a5xfmaulku1"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
 [ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Sprites/Concept Art/floating-island-city.JPG" id="2_b1wex"]
+[ext_resource type="Script" path="res://Scripts/UI/UIMainMenuNav.cs" id="3_te57n"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 
@@ -61,6 +62,7 @@ layout_mode = 2
 [node name="Nav" type="VBoxContainer" parent="PanelContainer/CenterContainer"]
 layout_mode = 2
 theme = SubResource("Theme_v88qt")
+script = ExtResource("3_te57n")
 
 [node name="Play" type="Button" parent="PanelContainer/CenterContainer/Nav"]
 custom_minimum_size = Vector2(150, 0)
@@ -106,9 +108,9 @@ text = "Discord"
 layout_mode = 2
 text = "GitHub"
 
-[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Credits" to="." method="_on_credits_pressed"]
-[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="PanelContainer/Margin/Socials/Discord" to="." method="_on_discord_pressed"]
-[connection signal="pressed" from="PanelContainer/Margin/Socials/Github" to="." method="_on_github_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Play" to="PanelContainer/CenterContainer/Nav" method="_on_play_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Options" to="PanelContainer/CenterContainer/Nav" method="_on_options_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Credits" to="PanelContainer/CenterContainer/Nav" method="_on_credits_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Quit" to="PanelContainer/CenterContainer/Nav" method="_on_quit_pressed"]
+[connection signal="pressed" from="PanelContainer/Margin/Socials/Discord" to="PanelContainer/CenterContainer/Nav" method="_on_discord_pressed"]
+[connection signal="pressed" from="PanelContainer/Margin/Socials/Github" to="PanelContainer/CenterContainer/Nav" method="_on_github_pressed"]
