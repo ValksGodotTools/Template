@@ -66,7 +66,10 @@ public partial class UIOptionsDisplay : Control
         optionBtnWindowMode.Select((int)options.WindowMode);
 
         OptionsManager.WindowModeChanged += windowMode =>
-            optionBtnWindowMode.Select((int)windowMode);
+            // Window mode select button could be null. If there was no null check
+            // here then we would be assuming that the user can only change fullscreen
+            // when in the options screen but this is not the case.
+            optionBtnWindowMode?.Select((int)windowMode);
     }
 
     private void SetupVSyncMode()
