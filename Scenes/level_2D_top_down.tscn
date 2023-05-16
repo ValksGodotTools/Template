@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://btkfgi3rc5wm1"]
 
 [ext_resource type="Script" path="res://Scripts/2D Top Down/Player.cs" id="1_hrosf"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/UI/icon.svg" id="2_83qsm"]
@@ -11,6 +11,7 @@ size = Vector2(125, 125)
 
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(531, 300)
+motion_mode = 1
 script = ExtResource("1_hrosf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
@@ -22,3 +23,4 @@ texture = ExtResource("2_83qsm")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
+visible = false
