@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=13 format=3 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Scripts/3D FPS/Player.cs" id="1_3aas6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
@@ -124,3 +124,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.598881, 0)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_bhqx1")]
+visible = false
