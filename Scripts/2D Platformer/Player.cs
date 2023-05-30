@@ -23,10 +23,6 @@ public partial class Player : CharacterBody2D
     Area2D areaWallLeft;
     Area2D areaWallRight;
 
-    int areaFloorBodyCount;
-    int areaWallLeftBodyCount;
-    int areaWallRightBodyCount;
-
     AreaData areaDataFloor = new();
     AreaData areaDataWallLeft = new();
     AreaData areaDataWallRight = new();
