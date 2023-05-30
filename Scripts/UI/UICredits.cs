@@ -28,6 +28,20 @@ public partial class UICredits : Node
         {
             var line = Tr(file.GetLine());
 
+            var size = 16;
+
+            if (line.Contains("[h1]"))
+            {
+                size = 32;
+                line = line.Replace("[h1]", "");
+            }
+
+            if (line.Contains("[h2]"))
+            {
+                size = 24;
+                line = line.Replace("[h2]", "");
+            }
+
             var translatedLine = "";
 
             foreach (var word in line.Split(' '))
@@ -39,7 +53,7 @@ public partial class UICredits : Node
                 if (string.IsNullOrWhiteSpace(translatedLine))
                     vbox.AddChild(new GPadding(0, 10));
                 else
-                    vbox.AddChild(new GLabel(translatedLine));
+                    vbox.AddChild(new GLabel(translatedLine, size));
         } 
 
         file.Close();

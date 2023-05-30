@@ -1,6 +1,6 @@
-TEMPLATE
+[h1]TEMPLATE
 
-Lead Development
+[h2]Lead Development
 
 Valkyrienyanko
 
@@ -8,16 +8,16 @@ Valkyrienyanko
 
 
 
-Assets
+[h1]Assets
 
-Audio
+[h2]Audio
 
 "5 Chiptunes (Action)" by SubspaceAudio LICENSED CC0: https://opengameart.org/content/5-chiptunes-action
 
 
 
 
-Art
+[h2]Art
 
 "Dirt & Grass Tileset" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/dirt-grass-tileset
 
