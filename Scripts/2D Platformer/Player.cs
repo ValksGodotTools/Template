@@ -13,9 +13,9 @@ public partial class Player : CharacterBody2D
     bool holdingJumpKey;
     readonly Dictionary<string, RayCast2D[]> rayCasts = new();
 
-    bool isFloor;
-    bool isWallLeft;
-    bool isWallRight;
+    bool isFloor => areaDataFloor.Detected;
+    bool isWallLeft => areaDataWallLeft.Detected;
+    bool isWallRight => areaDataWallRight.Detected;
 
     // These may be used later on. For example temporarily disabling the collision
     // mask while jumping over a one-way platform
@@ -27,13 +27,17 @@ public partial class Player : CharacterBody2D
     int areaWallLeftBodyCount;
     int areaWallRightBodyCount;
 
+    AreaData areaDataFloor = new();
+    AreaData areaDataWallLeft = new();
+    AreaData areaDataWallRight = new();
+
     public override void _Ready()
     {
         MotionMode = MotionModeEnum.Grounded;
 
-        SetupAreaFloor();
-        SetupAreaWallLeft();
-        SetupAreaWallRight();
+        areaFloor = SetupArea("Floor", areaDataFloor);
+        areaWallLeft = SetupArea("WallLeft", areaDataWallLeft);
+        areaWallRight = SetupArea("WallRight", areaDataWallRight);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -71,69 +75,35 @@ public partial class Player : CharacterBody2D
         MoveAndSlide();
     }
 
-    void SetupAreaFloor()
+    Area2D SetupArea(string name, AreaData areaData)
     {
-        areaFloor = GetNode<Area2D>("Areas/Floor");
-        areaFloor.BodyEntered += body =>
-        {
-            if (body is not Player)
-            {
-                isFloor = true;
-                areaFloorBodyCount++;
-            }
-        };
-        areaFloor.BodyExited += body =>
-        {
-            if (body is not Player)
-            {
-                areaFloorBodyCount--;
-                if (areaFloorBodyCount == 0)
-                    isFloor = false;
-            }
-        };
-    }
+        var area = GetNode<Area2D>($"Areas/{name}");
 
-    void SetupAreaWallLeft()
-    {
-        areaWallLeft = GetNode<Area2D>("Areas/WallLeft");
-        areaWallLeft.BodyEntered += body =>
+        area.BodyEntered += body =>
         {
             if (body is not Player)
             {
-                isWallLeft = true;
-                areaWallLeftBodyCount++;
+                areaData.Detected = true;
+                areaData.BodyCount++;
             }
         };
-        areaWallLeft.BodyExited += body =>
-        {
-            if (body is not Player)
-            {
-                areaWallLeftBodyCount--;
-                if (areaWallLeftBodyCount == 0)
-                    isWallLeft = false;
-            }
-        };
-    }
 
-    void SetupAreaWallRight()
-    {
-        areaWallRight = GetNode<Area2D>("Areas/WallRight");
-        areaWallRight.BodyEntered += body =>
+        area.BodyExited += body =>
         {
             if (body is not Player)
             {
-                isWallRight = true;
-                areaWallRightBodyCount++;
+                areaData.BodyCount--;
+                if (areaData.BodyCount == 0)
+                    areaData.Detected = false;
             }
         };
-        areaWallRight.BodyExited += body =>
-        {
-            if (body is not Player)
-            {
-                areaWallRightBodyCount--;
-                if (areaWallRightBodyCount == 0)
-                    isWallRight = false;
-            }
-        };
+
+        return area;
     }
+}
+
+public class AreaData
+{
+    public bool Detected { get; set; }
+    public int BodyCount { get; set; }
 }
