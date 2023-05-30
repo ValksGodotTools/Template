@@ -117,7 +117,7 @@ public partial class UIConsole : PanelContainer
         if (@event is not InputEventKey inputEventKey)
             return;
 
-        if (inputEventKey.IsKeyJustPressed(Key.F12))
+        if (inputEventKey.IsJustPressed(Key.F12))
         {
             await ToggleVisibility();
             return;
