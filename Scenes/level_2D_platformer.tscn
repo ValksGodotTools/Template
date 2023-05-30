@@ -1124,7 +1124,7 @@ texture = ExtResource("2_i1m65")
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/Floor"]
-position = Vector2(0, 63.25)
+position = Vector2(0, 63)
 shape = SubResource("RectangleShape2D_qht2d")
 debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
@@ -1132,7 +1132,7 @@ debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallLeft"]
-position = Vector2(-63, 1)
+position = Vector2(-65, 1)
 shape = SubResource("RectangleShape2D_sy1nm")
 debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
@@ -1140,7 +1140,7 @@ debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallRight"]
-position = Vector2(63, 1)
+position = Vector2(64, 1)
 shape = SubResource("RectangleShape2D_gyh0c")
 debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
