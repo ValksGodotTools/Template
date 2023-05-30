@@ -77,7 +77,7 @@ public partial class Player : CharacterBody2D
 
         area.BodyEntered += body =>
         {
-            if (body is not Player)
+            if (body is TileMap)
             {
                 areaData.Detected = true;
                 areaData.BodyCount++;
@@ -86,7 +86,7 @@ public partial class Player : CharacterBody2D
 
         area.BodyExited += body =>
         {
-            if (body is not Player)
+            if (body is TileMap)
             {
                 areaData.BodyCount--;
                 if (areaData.BodyCount == 0)
