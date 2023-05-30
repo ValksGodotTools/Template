@@ -2,24 +2,38 @@ namespace Template.Platformer2D;
 
 public partial class Player : CharacterBody2D
 {
-    private float MaxSpeed      { get; } = 500;
-    private float Acceleration  { get; } = 40;
-    private float Friction      { get; } = 20;
-    private float Gravity       { get; } = 20;
-    private float JumpForce     { get; } = 100;
-    private float JumpLoss      { get; } = 7.5f;
+    float maxSpeed = 500;
+    float acceleration = 40;
+    float friction = 20;
+    float gravity = 20;
+    float jumpForce = 100;
+    float jumpLoss = 7.5f;
 
-    private float jumpLossBuildUp;
-    private bool holdingJumpKey;
-    private readonly Dictionary<string, RayCast2D[]> rayCasts = new();
+    float jumpLossBuildUp;
+    bool holdingJumpKey;
+    readonly Dictionary<string, RayCast2D[]> rayCasts = new();
+
+    bool isFloor;
+    bool isWallLeft;
+    bool isWallRight;
+
+    // These may be used later on. For example temporarily disabling the collision
+    // mask while jumping over a one-way platform
+    Area2D areaFloor;
+    Area2D areaWallLeft;
+    Area2D areaWallRight;
+
+    int areaFloorBodyCount;
+    int areaWallLeftBodyCount;
+    int areaWallRightBodyCount;
 
     public override void _Ready()
     {
         MotionMode = MotionModeEnum.Grounded;
 
-        PrepareRaycasts("Floor");
-        PrepareRaycasts("Wall Left");
-        PrepareRaycasts("Wall Right");
+        SetupAreaFloor();
+        SetupAreaWallLeft();
+        SetupAreaWallRight();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -28,21 +42,21 @@ public partial class Player : CharacterBody2D
         var vel = Velocity;
 
         // Horizontal movement
-        vel.X += horzDir * Acceleration;
-        vel.X = Utils.ClampAndDampen(vel.X, Friction, MaxSpeed);
+        vel.X += horzDir * acceleration;
+        vel.X = Utils.ClampAndDampen(vel.X, friction, maxSpeed);
 
         // Jump
-        if (Input.IsActionJustPressed("jump") && AreRaycastsTouching("Floor"))
+        if (Input.IsActionJustPressed("jump") && isFloor)
         {
             holdingJumpKey = true;
             jumpLossBuildUp = 0;
-            vel.Y -= JumpForce;
+            vel.Y -= jumpForce;
         }
 
         if (Input.IsActionPressed("jump") && holdingJumpKey)
         {
-            jumpLossBuildUp += JumpLoss;
-            vel.Y -= Mathf.Max(0, JumpForce - jumpLossBuildUp);
+            jumpLossBuildUp += jumpLoss;
+            vel.Y -= Mathf.Max(0, jumpForce - jumpLossBuildUp);
         }
 
         if (Input.IsActionJustReleased("jump"))
@@ -51,31 +65,75 @@ public partial class Player : CharacterBody2D
         }
 
         // Gravity
-        vel.Y += Gravity;
+        vel.Y += gravity;
 
         Velocity = vel;
         MoveAndSlide();
     }
 
-    private void PrepareRaycasts(string type)
+    void SetupAreaFloor()
     {
-        var raycastsFloor = GetNode($"Raycasts/{type}").GetChildren<RayCast2D>();
-
-        rayCasts[type] = new RayCast2D[raycastsFloor.Length];
-
-        for (int i = 0; i < raycastsFloor.Length; i++)
+        areaFloor = GetNode<Area2D>("Areas/Floor");
+        areaFloor.BodyEntered += body =>
         {
-            rayCasts[type][i] = raycastsFloor[i];
-            rayCasts[type][i].AddException(this);
-        }
+            if (body is not Player)
+            {
+                isFloor = true;
+                areaFloorBodyCount++;
+            }
+        };
+        areaFloor.BodyExited += body =>
+        {
+            if (body is not Player)
+            {
+                areaFloorBodyCount--;
+                if (areaFloorBodyCount == 0)
+                    isFloor = false;
+            }
+        };
     }
 
-    private bool AreRaycastsTouching(string type)
+    void SetupAreaWallLeft()
     {
-        foreach (var raycast in rayCasts[type])
-            if (raycast.IsColliding())
-                return true;
+        areaWallLeft = GetNode<Area2D>("Areas/WallLeft");
+        areaWallLeft.BodyEntered += body =>
+        {
+            if (body is not Player)
+            {
+                isWallLeft = true;
+                areaWallLeftBodyCount++;
+            }
+        };
+        areaWallLeft.BodyExited += body =>
+        {
+            if (body is not Player)
+            {
+                areaWallLeftBodyCount--;
+                if (areaWallLeftBodyCount == 0)
+                    isWallLeft = false;
+            }
+        };
+    }
 
-        return false;
+    void SetupAreaWallRight()
+    {
+        areaWallRight = GetNode<Area2D>("Areas/WallRight");
+        areaWallRight.BodyEntered += body =>
+        {
+            if (body is not Player)
+            {
+                isWallRight = true;
+                areaWallRightBodyCount++;
+            }
+        };
+        areaWallRight.BodyExited += body =>
+        {
+            if (body is not Player)
+            {
+                areaWallRightBodyCount--;
+                if (areaWallRightBodyCount == 0)
+                    isWallRight = false;
+            }
+        };
     }
 }
