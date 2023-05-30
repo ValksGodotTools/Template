@@ -11,29 +11,14 @@ public partial class Player : CharacterBody2D
 
     float jumpLossBuildUp;
     bool holdingJumpKey;
-    readonly Dictionary<string, RayCast2D[]> rayCasts = new();
 
-    bool isFloor => areaDataFloor.Detected;
-    bool isWallLeft => areaDataWallLeft.Detected;
-    bool isWallRight => areaDataWallRight.Detected;
-
-    // These may be used later on. For example temporarily disabling the collision
-    // mask while jumping over a one-way platform
-    Area2D areaFloor;
-    Area2D areaWallLeft;
-    Area2D areaWallRight;
-
-    AreaData areaDataFloor = new();
-    AreaData areaDataWallLeft = new();
-    AreaData areaDataWallRight = new();
+    Dictionary<AreaType, (Area2D, AreaData)> areas = new();
 
     public override void _Ready()
     {
         MotionMode = MotionModeEnum.Grounded;
 
-        areaFloor = SetupArea("Floor", areaDataFloor);
-        areaWallLeft = SetupArea("WallLeft", areaDataWallLeft);
-        areaWallRight = SetupArea("WallRight", areaDataWallRight);
+        InitAreas();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -46,7 +31,7 @@ public partial class Player : CharacterBody2D
         vel.X = Utils.ClampAndDampen(vel.X, friction, maxSpeed);
 
         // Jump
-        if (Input.IsActionJustPressed("jump") && isFloor)
+        if (Input.IsActionJustPressed("jump") && IsColliding(AreaType.Floor))
         {
             holdingJumpKey = true;
             jumpLossBuildUp = 0;
@@ -69,6 +54,17 @@ public partial class Player : CharacterBody2D
 
         Velocity = vel;
         MoveAndSlide();
+    }
+
+    bool IsColliding(AreaType type) => areas[type].Item2.Detected;
+
+    void InitAreas()
+    {
+        foreach (AreaType type in Enum.GetValues(typeof(AreaType)))
+        {
+            var areaData = new AreaData();
+            areas[type] = (SetupArea(type + "", areaData), areaData);
+        }
     }
 
     Area2D SetupArea(string name, AreaData areaData)
@@ -102,4 +98,11 @@ public class AreaData
 {
     public bool Detected { get; set; }
     public int BodyCount { get; set; }
+}
+
+public enum AreaType
+{
+    Floor,
+    WallLeft,
+    WallRight
 }
