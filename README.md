@@ -1,15 +1,20 @@
 # Template
 A template for all Godot 4 C# starting projects. See the video below for a showcase of what's here so far.
 
+Main menu
 ![1](https://user-images.githubusercontent.com/6277739/236582661-9e7a67d6-cf01-4457-9162-b3edd76dd999.png)
 
+Options
 ![2](https://user-images.githubusercontent.com/6277739/236582663-34dc44b2-7c29-4acd-b3b6-5a733ac7988d.png)
 
+Credits
 ![3](https://user-images.githubusercontent.com/6277739/236582668-738667a7-3bf1-4074-b852-7735f1d57100.png)
 
+Hotkeys
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
-And some somewhat old videos below
+The collisions in this tileset have been setup for you.
+![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/6ecf0b86-dfe9-40a3-af8b-4e96678869b6)
 
 https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a691-59e296c1b10f.mp4
 
