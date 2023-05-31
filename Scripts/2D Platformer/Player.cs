@@ -1,48 +1,39 @@
 namespace Template.Platformer2D;
 
-public partial class Player : CharacterBody2D
+public partial class Player : Entity
 {
+    public PlayerJumpVars JumpVars { get; } = new();
+
     float maxSpeed = 500;
     float acceleration = 40;
     float friction = 20;
     float gravity = 20;
-    float jumpForce = 100;
-    float jumpLoss = 7.5f;
 
-    float jumpLossBuildUp;
-    bool holdingJumpKey;
-
-    public override void _PhysicsProcess(double delta)
+    public override void Init()
     {
-        var horzDir = Input.GetAxis("move_left", "move_right");
+        CurState = new PlayerStateIdle { Player = this };
+    }
+
+    public override void Update()
+    {
         var vel = Velocity;
+        var horzDir = Input.GetAxis("move_left", "move_right");
 
         // Horizontal movement
         vel.X += horzDir * acceleration;
         vel.X = Utils.ClampAndDampen(vel.X, friction, maxSpeed);
 
-        if (Input.IsActionJustPressed("jump") && IsOnFloor())
-        {
-            holdingJumpKey = true;
-            jumpLossBuildUp = 0;
-            vel.Y -= jumpForce;
-        }
-
-        if (Input.IsActionPressed("jump") && holdingJumpKey)
-        {
-            jumpLossBuildUp += jumpLoss;
-            vel.Y -= Mathf.Max(0, jumpForce - jumpLossBuildUp);
-        }
-
-        if (Input.IsActionJustReleased("jump"))
-        {
-            holdingJumpKey = false;
-        }
-
         // Gravity
         vel.Y += gravity;
 
         Velocity = vel;
-        MoveAndSlide();
     }
+}
+
+public class PlayerJumpVars
+{
+    public float Force { get; } = 100;
+    public float Loss { get; } = 7.5f;
+    public float LossBuildUp { get; set; }
+    public bool HoldingKey { get; set; } // the jump key
 }

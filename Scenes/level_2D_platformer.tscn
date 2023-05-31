@@ -1,20 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://i2s0r6qgs7wm"]
+[gd_scene load_steps=11 format=3 uid="uid://i2s0r6qgs7wm"]
 
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_e7m6x"]
 [ext_resource type="Script" path="res://Scripts/2D Platformer/Player.cs" id="1_sjn41"]
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Sprites/UI/icon.svg" id="2_i1m65"]
+[ext_resource type="SpriteFrames" uid="uid://bmhx2d608ifbc" path="res://Resources/SpriteFrames/player.tres" id="2_1qvjg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fgf1b"]
-size = Vector2(125, 125)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qht2d"]
-size = Vector2(126, 1.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sy1nm"]
-size = Vector2(2, 108)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gyh0c"]
-size = Vector2(2, 108)
+size = Vector2(24, 37)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_txoa2"]
 load_path = "res://.godot/imported/grass_dirt_16.png-bd2cf7f8816c6b81b2608b74d84c5b89.ctex"
@@ -1109,45 +1100,19 @@ sources/0 = SubResource("TileSetAtlasSource_3djym")
 [node name="Level" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(13104, -2430)
+position = Vector2(16145, -313)
 floor_snap_length = 10.0
 script = ExtResource("1_sjn41")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("2_1qvjg")
+animation = &"blink"
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_fgf1b")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
-
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-texture = ExtResource("2_i1m65")
-
-[node name="Areas" type="Node2D" parent="Player"]
-
-[node name="Floor" type="Area2D" parent="Player/Areas"]
-visible = false
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/Floor"]
-position = Vector2(0, 63)
-shape = SubResource("RectangleShape2D_qht2d")
-debug_color = Color(0.670588, 0, 0.701961, 0.419608)
-
-[node name="WallLeft" type="Area2D" parent="Player/Areas"]
-visible = false
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallLeft"]
-position = Vector2(-65, 1)
-shape = SubResource("RectangleShape2D_sy1nm")
-debug_color = Color(0.670588, 0, 0.701961, 0.419608)
-
-[node name="WallRight" type="Area2D" parent="Player/Areas"]
-visible = false
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallRight"]
-position = Vector2(64, 1)
-shape = SubResource("RectangleShape2D_gyh0c")
-debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
