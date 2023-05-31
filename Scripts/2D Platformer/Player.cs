@@ -30,8 +30,9 @@ public partial class Player : CharacterBody2D
         vel.X += horzDir * acceleration;
         vel.X = Utils.ClampAndDampen(vel.X, friction, maxSpeed);
 
-        // Jump
-        if (Input.IsActionJustPressed("jump") && IsColliding(AreaType.Floor))
+        //
+        // //IsColliding(AreaType.Floor)
+        if (Input.IsActionJustPressed("jump") && IsOnFloor())
         {
             holdingJumpKey = true;
             jumpLossBuildUp = 0;
@@ -63,13 +64,16 @@ public partial class Player : CharacterBody2D
         foreach (AreaType type in Enum.GetValues(typeof(AreaType)))
         {
             var areaData = new AreaData();
-            areas[type] = (SetupArea(type + "", areaData), areaData);
+            areas[type] = (SetupArea(type, areaData), areaData);
         }
     }
 
-    Area2D SetupArea(string name, AreaData areaData)
+    Area2D SetupArea(AreaType type, AreaData areaData)
     {
-        var area = GetNode<Area2D>($"Areas/{name}");
+        var area = CreateArea(type);
+
+        if (area == null)
+            return null;
 
         area.BodyEntered += body =>
         {
@@ -91,6 +95,33 @@ public partial class Player : CharacterBody2D
         };
 
         return area;
+    }
+
+    Area2D CreateArea(AreaType type)
+    {
+        var pixelSize = GetNode<Sprite2D>("Sprite2D").GetPixelSize();
+
+        if (type == AreaType.Floor)
+        {
+            var floorHeight = 10;
+
+            var area = new Area2D();
+            var collisionShape = new CollisionShape2D
+            {
+                DebugColor = Colors.Pink,
+                Position = new Vector2(0, pixelSize.Y / 2 + floorHeight / 2),
+                Shape = new RectangleShape2D
+                {
+                    Size = new Vector2(pixelSize.X, floorHeight)
+                }
+            };
+
+            area.AddChild(collisionShape);
+            AddChild(area);
+            return area;
+        }
+
+        return null;
     }
 }
 

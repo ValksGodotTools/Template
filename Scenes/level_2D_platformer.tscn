@@ -1109,11 +1109,13 @@ sources/0 = SubResource("TileSetAtlasSource_3djym")
 [node name="Level" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(227, 345)
+position = Vector2(13104, -2430)
+floor_snap_length = 10.0
 script = ExtResource("1_sjn41")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_fgf1b")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture = ExtResource("2_i1m65")
@@ -1121,6 +1123,7 @@ texture = ExtResource("2_i1m65")
 [node name="Areas" type="Node2D" parent="Player"]
 
 [node name="Floor" type="Area2D" parent="Player/Areas"]
+visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/Floor"]
@@ -1129,6 +1132,7 @@ shape = SubResource("RectangleShape2D_qht2d")
 debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
 [node name="WallLeft" type="Area2D" parent="Player/Areas"]
+visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallLeft"]
@@ -1137,6 +1141,7 @@ shape = SubResource("RectangleShape2D_sy1nm")
 debug_color = Color(0.670588, 0, 0.701961, 0.419608)
 
 [node name="WallRight" type="Area2D" parent="Player/Areas"]
+visible = false
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Areas/WallRight"]
