@@ -2,22 +2,20 @@
 
 public partial class Player
 {
-    State idle;
-
-    void StateIdle()
+    State Idle()
     {
-        idle = new(this, "Idle");
+        var state = new State(this, "Idle");
 
-        idle.Enter = () =>
+        state.Enter = () =>
         {
             sprite.Play("idle");
         };
 
-        idle.Transitions = () =>
+        state.Transitions = () =>
         {
             if (Input.IsActionJustPressed("jump") && IsOnFloor())
             {
-                SwitchState(jump);
+                SwitchState(Jump());
             }
 
             else if (Input.IsActionJustPressed("move_down") && GetFloorAngle() > 0)
@@ -25,5 +23,7 @@ public partial class Player
 
             }
         };
+
+        return state;
     }
 }

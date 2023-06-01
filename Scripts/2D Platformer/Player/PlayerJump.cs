@@ -4,14 +4,12 @@ public partial class Player
 {
     PlayerJumpVars jumpVars { get; } = new();
 
-    State jump;
-
-    void StateJump()
+    State Jump()
     {
-        jump = new(this, "Jump");
+        var state = new State(this, "Jump");
 
 
-        jump.Enter = () =>
+        state.Enter = () =>
         {
             jumpVars.HoldingKey = true;
             jumpVars.LossBuildUp = 0;
@@ -19,7 +17,7 @@ public partial class Player
         };
 
 
-        jump.Update = () =>
+        state.Update = () =>
         {
             if (Input.IsActionPressed("jump") && jumpVars.HoldingKey)
             {
@@ -36,11 +34,13 @@ public partial class Player
         };
 
 
-        jump.Transitions = () =>
+        state.Transitions = () =>
         {
             if (IsOnFloor())
-                SwitchState(idle);
+                SwitchState(Idle());
         };
+
+        return state;
     }
 
     public class PlayerJumpVars

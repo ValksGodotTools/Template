@@ -2,27 +2,27 @@
 
 public partial class Player
 {
-    State slide;
-
-    void StateSlide()
+    State Slide()
     {
-        slide = new(this, "Slide");
+        var state = new State(this, "Slide");
 
-        slide.Enter = () =>
+        state.Enter = () =>
         {
 
         };
 
 
-        slide.Update = () =>
+        state.Update = () =>
         {
 
         };
 
 
-        slide.Transitions = () =>
+        state.Transitions = () =>
         {
 
         };
+
+        return state;
     }
 }
