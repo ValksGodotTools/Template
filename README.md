@@ -30,6 +30,7 @@ https://user-images.githubusercontent.com/6277739/234088697-11d94789-3a14-4aee-b
 - [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
+- And lots more!
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
