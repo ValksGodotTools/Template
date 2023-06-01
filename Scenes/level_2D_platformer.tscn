@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://i2s0r6qgs7wm"]
 
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_e7m6x"]
-[ext_resource type="Script" path="res://Scripts/2D Platformer/Player.cs" id="1_sjn41"]
+[ext_resource type="Script" path="res://Scripts/2D Platformer/Player/Player.cs" id="1_rnhe6"]
 [ext_resource type="SpriteFrames" uid="uid://bmhx2d608ifbc" path="res://Resources/SpriteFrames/player.tres" id="2_1qvjg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fgf1b"]
@@ -1102,7 +1102,7 @@ sources/0 = SubResource("TileSetAtlasSource_3djym")
 [node name="Player" type="CharacterBody2D" parent="."]
 position = Vector2(16145, -313)
 floor_snap_length = 10.0
-script = ExtResource("1_sjn41")
+script = ExtResource("1_rnhe6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 scale = Vector2(2.5, 2.5)
