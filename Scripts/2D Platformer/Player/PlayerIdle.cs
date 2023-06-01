@@ -19,6 +19,11 @@ public partial class Player
             {
                 SwitchState(jump);
             }
+
+            else if (Input.IsActionJustPressed("move_down") && GetFloorAngle() > 0)
+            {
+
+            }
         };
     }
 }
