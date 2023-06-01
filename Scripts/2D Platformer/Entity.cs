@@ -17,12 +17,7 @@ public abstract partial class Entity : CharacterBody2D
         AddChild(stateLabel);
 
         Init();
-
-        // Invoke any private methods starting with "State" in the entity class
-        // For example "StateIdle()" or "StateJump()"
-        foreach (var methodInfo in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
-            if (methodInfo.Name.StartsWith("State"))
-                methodInfo.Invoke(this, null);
+        InitStates();
 
         curState = InitialState();
         UpdateStateLabel(curState);
@@ -52,6 +47,18 @@ public abstract partial class Entity : CharacterBody2D
 
     public virtual void Init() { }
     public virtual void Update() { }
+
+    void InitStates()
+    {
+        // Invoke any private methods starting with "State" in the entity class
+        // For example "StateIdle()" or "StateJump()"
+        // This is sort of living on the edge because this means no other private
+        // methods can start with "State" in their names. I'm assuming no such
+        // methods will be created in the future.
+        foreach (var methodInfo in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
+            if (methodInfo.Name.StartsWith("State"))
+                methodInfo.Invoke(this, null);
+    }
 
     void UpdateStateLabel(State state)
     {
