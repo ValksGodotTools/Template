@@ -6,7 +6,7 @@ public partial class Player
 
     State Jump()
     {
-        var state = new State(this, "Jump");
+        var state = new State(this, nameof(Jump));
 
 
         state.Enter = () =>
