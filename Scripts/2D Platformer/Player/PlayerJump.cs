@@ -1,6 +1,6 @@
 ﻿namespace Template.Platformer2D;
 
-public partial class Player : Entity
+public partial class Player
 {
     PlayerJumpVars jumpVars { get; } = new();
 
