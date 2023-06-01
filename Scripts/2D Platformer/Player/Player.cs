@@ -7,12 +7,6 @@ public partial class Player : Entity
     float friction = 20;
     float gravity = 20;
 
-    public override void Init()
-    {
-        StateIdle();
-        StateJump();
-    }
-
     public override void Update()
     {
         var vel = Velocity;

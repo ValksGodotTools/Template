@@ -1,5 +1,7 @@
 ﻿namespace Template.Platformer2D;
 
+using System.Reflection;
+
 public abstract partial class Entity : CharacterBody2D
 {
     protected AnimatedSprite2D sprite;
@@ -15,6 +17,12 @@ public abstract partial class Entity : CharacterBody2D
         AddChild(stateLabel);
 
         Init();
+
+        // Invoke any private methods starting with "State" in the entity class
+        // For example "StateIdle()" or "StateJump()"
+        foreach (var methodInfo in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
+            if (methodInfo.Name.StartsWith("State"))
+                methodInfo.Invoke(this, null);
 
         curState = InitialState();
         UpdateStateLabel(curState);
