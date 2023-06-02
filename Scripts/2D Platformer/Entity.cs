@@ -1,7 +1,5 @@
 ﻿namespace Template.Platformer2D;
 
-using System.Reflection;
-
 public abstract partial class Entity : CharacterBody2D
 {
     protected AnimatedSprite2D sprite;
