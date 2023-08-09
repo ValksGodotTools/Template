@@ -13,7 +13,6 @@ public partial class AudioManager : Node
         {
             // Transition from current song being played to new song
             var tween = new GTween(musicPlayer.StreamPlayer);
-            tween.Create();
 
             // Fade out current song
             tween.Animate("volume_db", -80, fadeOut)
@@ -79,7 +78,6 @@ public partial class AudioManager : Node
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
             var tween = new GTween(audioPlayer);
-            tween.Create();
             tween.Animate("volume_db", -80, fadeTime);
         }
     }

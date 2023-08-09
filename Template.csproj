@@ -1,9 +1,9 @@
-<Project Sdk="Godot.NET.Sdk/4.0.0">
+<Project Sdk="Godot.NET.Sdk/4.1.1">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-		<RootNamespace>Template</RootNamespace>
+    <RootNamespace>Template</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="GodotUtils\Snippets\VS2022\ExportNodePath.snippet" />

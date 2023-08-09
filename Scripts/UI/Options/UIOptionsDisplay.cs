@@ -119,7 +119,7 @@ public partial class UIOptionsDisplay : Control
     }
 
     private void _on_window_width_text_changed(string text) =>
-        GodotUtilities.ValidateNumber(
+        GUtils.ValidateNumber(
             text,
             resX,
             0,
@@ -127,7 +127,7 @@ public partial class UIOptionsDisplay : Control
             ref prevNumX);
 
     private void _on_window_height_text_changed(string text) =>
-        GodotUtilities.ValidateNumber(
+        GUtils.ValidateNumber(
             text,
             resY,
             0,
