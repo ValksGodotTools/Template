@@ -2,9 +2,9 @@ namespace Template;
 
 public partial class UIPopupMenu : Control
 {
-    private VBoxContainer vbox;
-    private PanelContainer menu;
-    private UIOptions options;
+    VBoxContainer vbox;
+    PanelContainer menu;
+    UIOptions options;
 
     public override void _Ready()
     {
@@ -38,25 +38,25 @@ public partial class UIPopupMenu : Control
         }
     }
 
-    private void _on_resume_pressed()
+    void _on_resume_pressed()
     {
         // todo: unpause the game
         Hide();
     }
 
-    private void _on_options_pressed()
+    void _on_options_pressed()
     {
         options.Show();
         menu.Hide();
     }
 
-    private void _on_main_menu_pressed()
+    void _on_main_menu_pressed()
     {
         AudioManager.PlayMusic(Music.Menu);
         SceneManager.SwitchScene("main_menu");
     }
 
-    private void _on_quit_pressed()
+    void _on_quit_pressed()
     {
         Global.Quit();
     }

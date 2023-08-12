@@ -4,23 +4,23 @@ namespace Template;
 
 public partial class UIOptionsDisplay : Control
 {
-    private ResourceOptions options;
+    ResourceOptions options;
 
     // Max FPS
-    private HSlider sliderMaxFPS;
-    private Label labelMaxFPSFeedback;
+    HSlider sliderMaxFPS;
+    Label labelMaxFPSFeedback;
 
     // Window Size
-    private LineEdit resX;
-    private LineEdit resY;
+    LineEdit resX;
+    LineEdit resY;
 
-    private int prevNumX, prevNumY;
+    int prevNumX, prevNumY;
 
     // Window Mode
-    private OptionButton optionBtnWindowMode;
+    OptionButton optionBtnWindowMode;
 
     // VSync Mode
-    private OptionButton optionBtnVSyncMode;
+    OptionButton optionBtnVSyncMode;
 
     public override void _Ready()
     {
@@ -31,7 +31,7 @@ public partial class UIOptionsDisplay : Control
         SetupVSyncMode();
     }
 
-    private void SetupMaxFPS()
+    void SetupMaxFPS()
     {
         labelMaxFPSFeedback = GetNode<Label>("%MaxFPSFeedback");
         labelMaxFPSFeedback.Text = options.MaxFPS == 0 ?
@@ -46,7 +46,7 @@ public partial class UIOptionsDisplay : Control
             sliderMaxFPS.Editable = true;
     }
 
-    private void SetupWindowSize()
+    void SetupWindowSize()
     {
         resX = GetNode<LineEdit>("%WindowWidth");
         resY = GetNode<LineEdit>("%WindowHeight");
@@ -60,7 +60,7 @@ public partial class UIOptionsDisplay : Control
         resY.Text = winSize.Y + "";
     }
 
-    private void SetupWindowMode()
+    void SetupWindowMode()
     {
         optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
         optionBtnWindowMode.Select((int)options.WindowMode);
@@ -72,13 +72,13 @@ public partial class UIOptionsDisplay : Control
             optionBtnWindowMode?.Select((int)windowMode);
     }
 
-    private void SetupVSyncMode()
+    void SetupVSyncMode()
     {
         optionBtnVSyncMode = GetNode<OptionButton>("%VSyncMode");
         optionBtnVSyncMode.Select((int)options.VSyncMode);
     }
 
-    private void ApplyWindowSize()
+    void ApplyWindowSize()
     {
         DisplayServer.WindowSetSize(new Vector2I(prevNumX, prevNumY));
 
@@ -89,7 +89,7 @@ public partial class UIOptionsDisplay : Control
         OptionsManager.Options.WindowSize = winSize;
     }
 
-    private void _on_window_mode_item_selected(int index)
+    void _on_window_mode_item_selected(int index)
     {
         switch ((WindowMode)index)
         {
@@ -118,7 +118,7 @@ public partial class UIOptionsDisplay : Control
         options.WindowSize = winSize;
     }
 
-    private void _on_window_width_text_changed(string text) =>
+    void _on_window_width_text_changed(string text) =>
         GUtils.ValidateNumber(
             text,
             resX,
@@ -126,7 +126,7 @@ public partial class UIOptionsDisplay : Control
             DisplayServer.ScreenGetSize().X,
             ref prevNumX);
 
-    private void _on_window_height_text_changed(string text) =>
+    void _on_window_height_text_changed(string text) =>
         GUtils.ValidateNumber(
             text,
             resY,
@@ -134,11 +134,11 @@ public partial class UIOptionsDisplay : Control
             DisplayServer.ScreenGetSize().Y,
             ref prevNumY);
 
-    private void _on_window_width_text_submitted(string t) => ApplyWindowSize();
-    private void _on_window_height_text_submitted(string t) => ApplyWindowSize();
-    private void _on_window_size_apply_pressed() => ApplyWindowSize();
+    void _on_window_width_text_submitted(string t) => ApplyWindowSize();
+    void _on_window_height_text_submitted(string t) => ApplyWindowSize();
+    void _on_window_size_apply_pressed() => ApplyWindowSize();
 
-    private void _on_v_sync_mode_item_selected(int index)
+    void _on_v_sync_mode_item_selected(int index)
     {
         var vsyncMode = (DisplayServer.VSyncMode)index;
         DisplayServer.WindowSetVsyncMode(vsyncMode);
@@ -150,7 +150,7 @@ public partial class UIOptionsDisplay : Control
             sliderMaxFPS.Editable = true;
     }
 
-    private void _on_max_fps_value_changed(float value)
+    void _on_max_fps_value_changed(float value)
     {
         labelMaxFPSFeedback.Text = value == 0 ?
             "UNLIMITED" : value + "";
@@ -158,7 +158,7 @@ public partial class UIOptionsDisplay : Control
         options.MaxFPS = (int)value;
     }
 
-    private void _on_max_fps_drag_ended(bool valueChanged)
+    void _on_max_fps_drag_ended(bool valueChanged)
     {
         if (!valueChanged)
             return;

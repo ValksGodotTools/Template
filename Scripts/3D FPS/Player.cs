@@ -2,18 +2,18 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    private float MouseSensitivity { get; set; } = 0.005f;
-    private float GravityForce     { get; set; } = 10;
-    private float JumpForce        { get; set; } = 150;
-    private float MoveSpeed        { get; set; } = 10;
-    private float MoveDampening    { get; set; } = 20; // the higher the value, the less the player will slide
+    float MouseSensitivity { get; set; } = 0.005f;
+    float GravityForce     { get; set; } = 10;
+    float JumpForce        { get; set; } = 150;
+    float MoveSpeed        { get; set; } = 10;
+    float MoveDampening    { get; set; } = 20; // the higher the value, the less the player will slide
                                    
-    private Camera3D camera;
-    private Vector2 mouseInput;
-    private Vector3 cameraTarget;
-    private Vector3 cameraOffset;
-    private Vector3 gravityVec;
-    private bool mouseCaptured;
+    Camera3D camera;
+    Vector2 mouseInput;
+    Vector3 cameraTarget;
+    Vector3 cameraOffset;
+    Vector3 gravityVec;
+    bool mouseCaptured;
 
     public override void _Ready()
     {

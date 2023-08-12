@@ -2,10 +2,10 @@ namespace Template;
 
 public partial class UIOptionsGameplay : Control
 {
-    private ResourceOptions options;
+    ResourceOptions options;
 
     // Difficulty
-    private OptionButton optionBtnDifficulty;
+    OptionButton optionBtnDifficulty;
 
     public override void _Ready()
     {
@@ -13,13 +13,13 @@ public partial class UIOptionsGameplay : Control
         SetupDifficulty();
     }
 
-    private void SetupDifficulty()
+    void SetupDifficulty()
     {
         optionBtnDifficulty = GetNode<OptionButton>("%Difficulty");
         optionBtnDifficulty.Select((int)options.Difficulty);
     }
 
-    private void _on_difficulty_item_selected(int index)
+    void _on_difficulty_item_selected(int index)
     {
         // todo: update the difficulty in realtime
 

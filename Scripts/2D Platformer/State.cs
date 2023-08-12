@@ -7,8 +7,8 @@ public class State
     public Action Transitions { get; set; } = () => { };
     public Action Exit { get; set; } = () => { };
 
-    private Entity entity;
-    private string name;
+    Entity entity;
+    string name;
 
     public State(Entity entity, string name = "")
     {

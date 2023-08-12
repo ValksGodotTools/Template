@@ -2,10 +2,10 @@ namespace Template;
 
 public partial class AudioManager : Node
 {                                                
-    private static GAudioPlayer musicPlayer;
-    private static Node sfxPlayersParent;
-    private static float lastPitch;
-    private static ResourceOptions options;
+    static GAudioPlayer musicPlayer;
+    static Node sfxPlayersParent;
+    static float lastPitch;
+    static ResourceOptions options;
 
     public static void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
     {

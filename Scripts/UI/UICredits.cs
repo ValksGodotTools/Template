@@ -2,14 +2,14 @@ namespace Template;
 
 public partial class UICredits : Node
 {
-    private const float STARTING_SPEED = 0.75f;
+    const float STARTING_SPEED = 0.75f;
 
-    private VBoxContainer vbox;
-    private Button btnPause;
-    private Button btnSpeed;
-    private bool paused;
-    private byte curSpeedSetting = 1;
-    private float speed = STARTING_SPEED;
+    VBoxContainer vbox;
+    Button btnPause;
+    Button btnSpeed;
+    bool paused;
+    byte curSpeedSetting = 1;
+    float speed = STARTING_SPEED;
 
     public override void _Ready()
     {
@@ -98,7 +98,7 @@ public partial class UICredits : Node
         }
     }
 
-    private void AddTextWithLink(string text)
+    void AddTextWithLink(string text)
     {
         var indexOfHttp = text.IndexOf("http");
 
@@ -118,7 +118,7 @@ public partial class UICredits : Node
         vbox.AddChild(hbox);
     }
 
-    private void _on_pause_pressed()
+    void _on_pause_pressed()
     {
         paused = !paused;
 
@@ -134,7 +134,7 @@ public partial class UICredits : Node
         }
     }
 
-    private void _on_speed_pressed()
+    void _on_speed_pressed()
     {
         if (curSpeedSetting < 3)
         {

@@ -4,9 +4,9 @@ using Godot.Collections;
 
 public partial class UIOptionsInput : Control
 {
-    private static BtnInfo btnNewInput; // the btn waiting for new input
-    private Dictionary<StringName, Array<InputEvent>> defaultActions;
-    private VBoxContainer content;
+    static BtnInfo btnNewInput; // the btn waiting for new input
+    Dictionary<StringName, Array<InputEvent>> defaultActions;
+    VBoxContainer content;
 
     public override void _Ready()
     {
@@ -72,7 +72,7 @@ public partial class UIOptionsInput : Control
         }
     }
 
-    private void HandleInput(InputEvent @event)
+    void HandleInput(InputEvent @event)
     {
         var action = btnNewInput.Action;
 
@@ -113,7 +113,7 @@ public partial class UIOptionsInput : Control
         btnNewInput = null;
     }
 
-    private Button CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
+    Button CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
     {
         var readable = "";
 
@@ -154,7 +154,7 @@ public partial class UIOptionsInput : Control
         return btn;
     }
 
-    private void CreateButtonPlus(string action, HBoxContainer hbox)
+    void CreateButtonPlus(string action, HBoxContainer hbox)
     {
         // Create the button
         var btn = new GButton("+");
@@ -185,7 +185,7 @@ public partial class UIOptionsInput : Control
         hbox.AddChild(btn);
     }
 
-    private void CreateHotkeys()
+    void CreateHotkeys()
     {
         // Loop through the actions in alphabetical order
         foreach (var action in OptionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
@@ -239,7 +239,7 @@ public partial class UIOptionsInput : Control
         }
     }
 
-    private void _on_reset_to_defaults_pressed()
+    void _on_reset_to_defaults_pressed()
     {
         for (int i = 0; i < content.GetChildren().Count; i++)
             if (content.GetChild(i) != this)

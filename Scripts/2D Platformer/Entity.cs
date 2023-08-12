@@ -4,8 +4,8 @@ public abstract partial class Entity : CharacterBody2D
 {
     protected AnimatedSprite2D sprite;
 
-    private Label stateLabel;
-    private State curState;
+    Label stateLabel;
+    State curState;
 
     public override void _Ready()
     {

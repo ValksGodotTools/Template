@@ -2,9 +2,9 @@
 
 public class ConsoleHistory
 {
-    private readonly Dictionary<int, string> inputHistory = new();
-    private int inputHistoryIndex;
-    private int inputHistoryNav;
+    readonly Dictionary<int, string> inputHistory = new();
+    int inputHistoryIndex;
+    int inputHistoryNav;
 
     /// <summary>
     /// Add text to history

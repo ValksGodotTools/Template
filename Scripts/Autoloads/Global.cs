@@ -14,7 +14,7 @@ namespace Template;
 
 public partial class Global : Node
 {
-    private static Global Instance { get; set; }
+    static Global Instance { get; set; }
 
 	public override void _Ready()
 	{

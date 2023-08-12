@@ -8,7 +8,7 @@ public partial class OptionsManager : Node
 
     public static ResourceOptions Options { get; set; }
 
-    public static Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; private set; }
+    public static Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; set; }
     public static ResourceHotkeys Hotkeys { get; set; }
 
     public static string CurrentOptionsTab { get; set; } = "General";
@@ -83,7 +83,7 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void LoadOptions()
+    void LoadOptions()
     {
         var fileExists = FileAccess.FileExists("user://options.tres");
 
@@ -91,7 +91,7 @@ public partial class OptionsManager : Node
             GD.Load<ResourceOptions>("user://options.tres") : new();
     }
 
-    private static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
+    static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
     {
         var actions = InputMap.GetActions();
 
@@ -107,7 +107,7 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void GetDefaultHotkeys()
+    void GetDefaultHotkeys()
     {
         // Get all the default actions defined in the input map
         var actions = new Dictionary<StringName, Array<InputEvent>>();
@@ -123,7 +123,7 @@ public partial class OptionsManager : Node
         DefaultHotkeys = actions;
     }
 
-    private void LoadHotkeys()
+    void LoadHotkeys()
     {
         var fileExists = FileAccess.FileExists("user://hotkeys.tres");
 
@@ -139,7 +139,7 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void SetWindowMode()
+    void SetWindowMode()
     {
         switch (Options.WindowMode)
         {
@@ -155,9 +155,9 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void SetVSyncMode() => DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
+    void SetVSyncMode() => DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
 
-    private void SetWinSize()
+    void SetWinSize()
     {
         if (Options.WindowSize != Vector2I.Zero)
         {
@@ -170,7 +170,7 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void SetMaxFPS()
+    void SetMaxFPS()
     {
         if (DisplayServer.WindowGetVsyncMode() == DisplayServer.VSyncMode.Disabled)
         {
@@ -178,6 +178,6 @@ public partial class OptionsManager : Node
         }
     }
 
-    private void SetLanguage() => TranslationServer.SetLocale(
+    void SetLanguage() => TranslationServer.SetLocale(
         Options.Language.ToString().Substring(0, 2).ToLower());
 }

@@ -2,8 +2,8 @@ namespace Template;
 
 public partial class UIOptionsNav : Control
 {
-    private readonly Dictionary<string, Control> tabs = new();
-    private readonly Dictionary<string, Button> buttons = new();
+    readonly Dictionary<string, Control> tabs = new();
+    readonly Dictionary<string, Button> buttons = new();
 
     public override void _Ready()
     {
@@ -26,12 +26,12 @@ public partial class UIOptionsNav : Control
         ShowTab(OptionsManager.CurrentOptionsTab);
     }
 
-    private void ShowTab(string tabName)
+    void ShowTab(string tabName)
     {
         OptionsManager.CurrentOptionsTab = tabName;
         HideAllTabs();
         tabs[tabName].Show();
     }
 
-    private void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
+    void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
 }

@@ -2,9 +2,9 @@ namespace Template;
 
 public partial class UIOptionsGraphics : Control
 {
-    private ResourceOptions options;
+    ResourceOptions options;
 
-    private OptionButton optionBtnQualityPreset;
+    OptionButton optionBtnQualityPreset;
 
     public override void _Ready()
     {
@@ -12,13 +12,13 @@ public partial class UIOptionsGraphics : Control
         SetupQualityPreset();
     }
 
-    private void SetupQualityPreset()
+    void SetupQualityPreset()
     {
         optionBtnQualityPreset = GetNode<OptionButton>("%QualityMode");
         optionBtnQualityPreset.Select((int)options.QualityPreset);
     }
 
-    private void _on_quality_mode_item_selected(int index)
+    void _on_quality_mode_item_selected(int index)
     {
         // todo: setup quality preset and change other settings
 

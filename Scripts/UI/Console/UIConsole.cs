@@ -4,14 +4,14 @@ public partial class UIConsole : PanelContainer
 {
     public static bool IsVisible { get => instance.Visible; }
 
-    private static TextEdit feed;
-    private LineEdit input;
-    private Button settingsBtn;
-    private PopupPanel settingsPopup;
-    private CheckBox settingsAutoScroll;
-    private readonly ConsoleHistory history = new();
-    private static bool autoScroll = true;
-    private static UIConsole instance;
+    static TextEdit feed;
+    LineEdit input;
+    Button settingsBtn;
+    PopupPanel settingsPopup;
+    CheckBox settingsAutoScroll;
+    readonly ConsoleHistory history = new();
+    static bool autoScroll = true;
+    static UIConsole instance;
 
     public override void _Ready()
     {
@@ -65,19 +65,19 @@ public partial class UIConsole : PanelContainer
         ScrollDown();
     }
 
-    private static void ScrollDown()
+    static void ScrollDown()
     {
         if (autoScroll)
             feed.ScrollVertical = (int)feed.GetVScrollBar().MaxValue;
     }
 
-    private void OnSettingsBtnPressed()
+    void OnSettingsBtnPressed()
     {
         if (!settingsPopup.Visible)
             settingsPopup.PopupCentered();
     }
 
-    private void OnConsoleInputEntered(string text)
+    void OnConsoleInputEntered(string text)
     {
         // case sensitivity and trailing spaces should not factor in here
         var inputToLowerTrimmed = text.Trim().ToLower();
@@ -112,7 +112,7 @@ public partial class UIConsole : PanelContainer
         input.Clear();
     }
 
-    private async Task InputVisibility(InputEvent @event)
+    async Task InputVisibility(InputEvent @event)
     {
         if (@event is not InputEventKey inputEventKey)
             return;
@@ -124,7 +124,7 @@ public partial class UIConsole : PanelContainer
         }
     }
 
-    private void InputNavigateHistory()
+    void InputNavigateHistory()
     {
         // If console is not visible or there is no history to navigate do nothing
         if (!Visible || history.NoHistory())
@@ -153,7 +153,7 @@ public partial class UIConsole : PanelContainer
         }
     }
 
-    private async Task ToggleVisibility()
+    async Task ToggleVisibility()
     {
         Visible = !Visible;
 

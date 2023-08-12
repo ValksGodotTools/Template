@@ -4,7 +4,7 @@ using System.Reflection;
 
 public class CommandHelp : Command
 {
-    private static List<string> CommandNames { get; } = Assembly.GetExecutingAssembly()
+    static List<string> CommandNames { get; } = Assembly.GetExecutingAssembly()
         .GetTypes()
         .Where(x => typeof(Command).IsAssignableFrom(x) && !x.IsAbstract)
         .Select(Activator.CreateInstance).Cast<Command>()
