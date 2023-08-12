@@ -12,7 +12,7 @@ public partial class UIOptionsGeneral : Control
 
     private void SetupLanguage()
     {
-        var optionButtonLanguage = GetNode<OptionButton>("Language/Language");
+        var optionButtonLanguage = GetNode<OptionButton>("%Language");
         optionButtonLanguage.Select((int)options.Language);
     }
 

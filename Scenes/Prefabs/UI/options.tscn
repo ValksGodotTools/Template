@@ -97,6 +97,7 @@ layout_mode = 2
 text = "LANGUAGE"
 
 [node name="Language" type="OptionButton" parent="Margin/HBox/Content/General/Language"]
+unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
 selected = 0
@@ -120,6 +121,7 @@ layout_mode = 2
 text = "DIFFICULTY"
 
 [node name="Difficulty" type="OptionButton" parent="Margin/HBox/Content/Gameplay/Difficulty"]
+unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
 selected = 0
@@ -145,6 +147,7 @@ layout_mode = 2
 text = "WINDOW_MODE"
 
 [node name="WindowMode" type="OptionButton" parent="Margin/HBox/Content/Display/WindowMode"]
+unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
 selected = 0
@@ -168,6 +171,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="WindowWidth" type="LineEdit" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "1920"
 alignment = 1
@@ -177,6 +181,7 @@ layout_mode = 2
 text = "x"
 
 [node name="WindowHeight" type="LineEdit" parent="Margin/HBox/Content/Display/WindowSize/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "1080"
 alignment = 1
@@ -195,6 +200,7 @@ layout_mode = 2
 text = "VSYNC_MODE"
 
 [node name="VSyncMode" type="OptionButton" parent="Margin/HBox/Content/Display/VSyncMode"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "VSync synchronizes the frame rate of the game with the monitor's refresh rate. Enable this to get rid of screen tearing. Disable this if stuttering is experienced."
 item_count = 3
@@ -219,6 +225,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="MaxFPS" type="HSlider" parent="Margin/HBox/Content/Display/MaxFPS/HBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -236,6 +243,7 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
 [node name="MaxFPSFeedback" type="Label" parent="Margin/HBox/Content/Display/MaxFPS/HBox/Panel/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "UNLIMITED"
 vertical_alignment = 1
@@ -254,6 +262,7 @@ layout_mode = 2
 text = "QUALITY_PRESET"
 
 [node name="QualityMode" type="OptionButton" parent="Margin/HBox/Content/Graphics/QualityMode"]
+unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
 selected = 0
@@ -279,6 +288,7 @@ layout_mode = 2
 text = "MUSIC"
 
 [node name="Music" type="HSlider" parent="Margin/HBox/Content/Audio/Music"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -293,6 +303,7 @@ layout_mode = 2
 text = "SOUNDS"
 
 [node name="Sounds" type="HSlider" parent="Margin/HBox/Content/Audio/Sounds"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 4

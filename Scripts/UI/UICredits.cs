@@ -13,8 +13,8 @@ public partial class UICredits : Node
 
     public override void _Ready()
     {
-        btnPause = GetNode<Button>("HBox/Pause");
-        btnSpeed = GetNode<Button>("HBox/Speed");
+        btnPause = GetNode<Button>("%Pause");
+        btnSpeed = GetNode<Button>("%Speed");
 
         vbox = new VBoxContainer
         {

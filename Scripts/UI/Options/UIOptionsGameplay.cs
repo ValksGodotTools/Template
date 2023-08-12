@@ -15,7 +15,7 @@ public partial class UIOptionsGameplay : Control
 
     private void SetupDifficulty()
     {
-        optionBtnDifficulty = GetNode<OptionButton>("Difficulty/Difficulty");
+        optionBtnDifficulty = GetNode<OptionButton>("%Difficulty");
         optionBtnDifficulty.Select((int)options.Difficulty);
     }
 

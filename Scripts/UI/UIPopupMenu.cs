@@ -8,8 +8,8 @@ public partial class UIPopupMenu : Control
 
     public override void _Ready()
     {
-        menu = GetNode<PanelContainer>("Center/Panel");
-        vbox = menu.GetNode<VBoxContainer>("Margin/Nav");
+        menu = GetNode<PanelContainer>("%Menu");
+        vbox = GetNode<VBoxContainer>("%Navigation");
 
         options = Prefabs.Options.Instantiate<UIOptions>();
         AddChild(options);

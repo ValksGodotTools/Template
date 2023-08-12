@@ -33,11 +33,11 @@ public partial class UIOptionsDisplay : Control
 
     private void SetupMaxFPS()
     {
-        labelMaxFPSFeedback = GetNode<Label>("MaxFPS/HBox/Panel/Margin/MaxFPSFeedback");
+        labelMaxFPSFeedback = GetNode<Label>("%MaxFPSFeedback");
         labelMaxFPSFeedback.Text = options.MaxFPS == 0 ?
             "UNLIMITED" : options.MaxFPS + "";
 
-        sliderMaxFPS = GetNode<HSlider>("MaxFPS/HBox/MaxFPS");
+        sliderMaxFPS = GetNode<HSlider>("%MaxFPS");
         sliderMaxFPS.Value = options.MaxFPS;
 
         if (options.VSyncMode != DisplayServer.VSyncMode.Disabled)
@@ -48,8 +48,8 @@ public partial class UIOptionsDisplay : Control
 
     private void SetupWindowSize()
     {
-        resX = GetNode<LineEdit>("WindowSize/HBox/WindowWidth");
-        resY = GetNode<LineEdit>("WindowSize/HBox/WindowHeight");
+        resX = GetNode<LineEdit>("%WindowWidth");
+        resY = GetNode<LineEdit>("%WindowHeight");
 
         var winSize = DisplayServer.WindowGetSize();
 
@@ -62,7 +62,7 @@ public partial class UIOptionsDisplay : Control
 
     private void SetupWindowMode()
     {
-        optionBtnWindowMode = GetNode<OptionButton>("WindowMode/WindowMode");
+        optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
         optionBtnWindowMode.Select((int)options.WindowMode);
 
         OptionsManager.WindowModeChanged += windowMode =>
@@ -74,7 +74,7 @@ public partial class UIOptionsDisplay : Control
 
     private void SetupVSyncMode()
     {
-        optionBtnVSyncMode = GetNode<OptionButton>("VSyncMode/VSyncMode");
+        optionBtnVSyncMode = GetNode<OptionButton>("%VSyncMode");
         optionBtnVSyncMode.Select((int)options.VSyncMode);
     }
 

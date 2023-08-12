@@ -41,42 +41,44 @@ script = ExtResource("2_g08n2")
 [node name="Center" type="CenterContainer" parent="."]
 layout_mode = 2
 
-[node name="Panel" type="PanelContainer" parent="Center"]
+[node name="Menu" type="PanelContainer" parent="Center"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xx28n")
 
-[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+[node name="Margin" type="MarginContainer" parent="Center/Menu"]
 layout_mode = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 75
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 75
 
-[node name="Nav" type="VBoxContainer" parent="Center/Panel/Margin"]
+[node name="Navigation" type="VBoxContainer" parent="Center/Menu/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_gqro3")
 
-[node name="Resume" type="Button" parent="Center/Panel/Margin/Nav"]
+[node name="Resume" type="Button" parent="Center/Menu/Margin/Navigation"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "RESUME"
 
-[node name="Options" type="Button" parent="Center/Panel/Margin/Nav"]
+[node name="Options" type="Button" parent="Center/Menu/Margin/Navigation"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "OPTIONS"
 
-[node name="Main Menu" type="Button" parent="Center/Panel/Margin/Nav"]
+[node name="Main Menu" type="Button" parent="Center/Menu/Margin/Navigation"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "MAIN MENU"
 
-[node name="Quit" type="Button" parent="Center/Panel/Margin/Nav"]
+[node name="Quit" type="Button" parent="Center/Menu/Margin/Navigation"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "QUIT"
 
-[connection signal="pressed" from="Center/Panel/Margin/Nav/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="Center/Panel/Margin/Nav/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Center/Panel/Margin/Nav/Main Menu" to="." method="_on_main_menu_pressed"]
-[connection signal="pressed" from="Center/Panel/Margin/Nav/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Center/Menu/Margin/Navigation/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Center/Menu/Margin/Navigation/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Center/Menu/Margin/Navigation/Main Menu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="Center/Menu/Margin/Navigation/Quit" to="." method="_on_quit_pressed"]

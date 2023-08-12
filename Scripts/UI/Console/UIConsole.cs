@@ -17,13 +17,13 @@ public partial class UIConsole : PanelContainer
     {
         instance = this;
 
-        feed          = GetNode<TextEdit>("Margin/VBox/Feed");
-        input         = GetNode<LineEdit>("Margin/VBox/HBox/Input");
-        settingsBtn   = GetNode<Button>  ("Margin/VBox/HBox/Settings");
+        feed          = GetNode<TextEdit>("%Output");
+        input         = GetNode<LineEdit>("%Input");
+        settingsBtn   = GetNode<Button>  ("%Settings");
         settingsPopup = GetNode<PopupPanel>("PopupPanel");
         
-        var settingsVBox = GetNode("PopupPanel/Margin/VBox");
-        settingsAutoScroll = settingsVBox.GetNode<CheckBox>("AutoScroll");
+        var settingsVBox = GetNode("%PopupVBox");
+        settingsAutoScroll = GetNode<CheckBox>("%PopupAutoScroll");
 
         input.TextSubmitted += OnConsoleInputEntered;
         settingsBtn.Pressed += OnSettingsBtnPressed;

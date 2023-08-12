@@ -14,7 +14,7 @@ public partial class UIOptionsGraphics : Control
 
     private void SetupQualityPreset()
     {
-        optionBtnQualityPreset = GetNode<OptionButton>("QualityMode/QualityMode");
+        optionBtnQualityPreset = GetNode<OptionButton>("%QualityMode");
         optionBtnQualityPreset.Select((int)options.QualityPreset);
     }
 

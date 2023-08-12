@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://jrjqky6ag6gg"]
 
 [ext_resource type="Texture2D" uid="uid://ptgl7pv2t8a2" path="res://Sprites/UI/gear.png" id="1_cep3b"]
 [ext_resource type="Script" path="res://Scripts/UI/Console/UIConsole.cs" id="1_gs4bw"]
-
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cq5rj"]
 
@@ -31,7 +30,8 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Feed" type="TextEdit" parent="Margin/VBox"]
+[node name="Output" type="TextEdit" parent="Margin/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_readonly_color = Color(0.87451, 0.87451, 0.87451, 1)
@@ -48,10 +48,12 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Input" type="LineEdit" parent="Margin/VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Settings" type="Button" parent="Margin/VBox/HBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_32acl")
 action_mode = 0
@@ -59,8 +61,8 @@ icon = ExtResource("1_cep3b")
 flat = true
 
 [node name="PopupPanel" type="PopupPanel" parent="."]
-initial_position = 1
 title = "Settings"
+initial_position = 1
 size = Vector2i(300, 100)
 borderless = false
 
@@ -79,9 +81,11 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBox" type="VBoxContainer" parent="PopupPanel/Margin"]
+[node name="PopupVBox" type="VBoxContainer" parent="PopupPanel/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AutoScroll" type="CheckBox" parent="PopupPanel/Margin/VBox"]
+[node name="PopupAutoScroll" type="CheckBox" parent="PopupPanel/Margin/PopupVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Autoscroll"
