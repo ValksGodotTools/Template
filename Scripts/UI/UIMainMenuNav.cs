@@ -25,10 +25,8 @@ public partial class UIMainMenuNav : Node
         SceneManager.SwitchScene("credits");
     }
 
-    void _on_quit_pressed()
-    {
-        Global.Quit();
-    }
+    void _on_quit_pressed() => 
+        GetNode<Global>("/root/Global").Quit();
 
     void _on_discord_pressed() =>
         OS.ShellOpen("https://discord.gg/866cg8yfxZ");

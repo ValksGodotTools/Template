@@ -4,8 +4,8 @@ public class CommandExit : Command
 {
     public CommandExit() => Aliases = new[] { "quit" };
 
-    public override void Run(string[] args)
+    public override void Run(Window root, string[] args)
     {
-        Global.Quit();
+        root.GetNode<Global>("/root/Global").Quit();
     }
 }

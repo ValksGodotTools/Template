@@ -14,12 +14,8 @@ namespace Template;
 
 public partial class Global : Node
 {
-    static Global Instance { get; set; }
-
 	public override void _Ready()
 	{
-        Instance = this;
-
         // Gradually fade out all SFX whenever the scene is changed
         SceneManager.SceneChanged += name => AudioManager.FadeOutSFX();
     }
@@ -33,17 +29,17 @@ public partial class Global : Node
 	{
 		if (what == NotificationWMCloseRequest)
 		{
-			GetTree().AutoAcceptQuit = false;
 			Quit();
 		}
 	}
 
-	public static void Quit()
+	public void Quit()
 	{
         // Handle cleanup here
         OptionsManager.SaveOptions();
         OptionsManager.SaveHotkeys();
 
-        Instance.GetTree().Quit();
+        // This must be here because buttons call Global::Quit()
+        GetTree().Quit();
 	}
 }

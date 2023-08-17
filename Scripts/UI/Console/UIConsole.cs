@@ -102,7 +102,7 @@ public partial class UIConsole : PanelContainer
             var cmdArgs = inputArr.Skip(1).ToArray();
 
             // run the command
-            command.Run(cmdArgs);
+            command.Run(GetTree().Root, cmdArgs);
         }
         else
             // command does not exist

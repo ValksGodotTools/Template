@@ -56,8 +56,6 @@ public partial class UIPopupMenu : Control
         SceneManager.SwitchScene("main_menu");
     }
 
-    void _on_quit_pressed()
-    {
-        Global.Quit();
-    }
+    void _on_quit_pressed() => 
+        GetNode<Global>("/root/Global").Quit();
 }

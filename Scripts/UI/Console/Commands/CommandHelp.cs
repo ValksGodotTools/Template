@@ -10,6 +10,6 @@ public class CommandHelp : Command
         .Select(Activator.CreateInstance).Cast<Command>()
         .Select(x => x.GetType().Name.Replace("Command", "").ToLower()).ToList();
 
-    public override void Run(string[] args) => 
+    public override void Run(Window root, string[] args) => 
         Logger.Log($"Commands:\n{CommandNames.Print()}");
 }

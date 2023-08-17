@@ -26,5 +26,5 @@ public abstract class Command
         return cmdMatchesAlias || GetType().Name.Replace("Command", "").ToLower() == cmd;
     }
 
-    public abstract void Run(string[] args);
+    public abstract void Run(Window root, string[] args);
 }
