@@ -1,5 +1,8 @@
 namespace Template;
 
+// Members of this class were set to static because this will exist for the
+// duration of the applications life and there should be no issues with
+// using these functions anywhere at anytime.
 public partial class AudioManager : Node
 {                                                
     static GAudioPlayer musicPlayer;
@@ -39,7 +42,9 @@ public partial class AudioManager : Node
 
             // Fade in to current song
             var volume = options.MusicVolume;
-            var volumeRemapped = volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
+            var volumeRemapped = 
+                volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
+
             tween.Animate("volume_db", volumeRemapped, fadeIn)
                 .SetTrans(Tween.TransitionType.Sine)
                 .SetEase(Tween.EaseType.In);
