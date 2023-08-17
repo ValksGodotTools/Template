@@ -7,6 +7,17 @@ public partial class AudioManager : Node
     static float lastPitch;
     static ResourceOptions options;
 
+    public override void _Ready()
+    {
+        options = OptionsManager.Options;
+        musicPlayer = new GAudioPlayer(this);
+
+        sfxPlayersParent = new Node();
+        AddChild(sfxPlayersParent);
+
+        PlayMusic(Music.Menu);
+    }
+
     public static void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
     {
         if (!instant && musicPlayer.Playing)
@@ -99,16 +110,5 @@ public partial class AudioManager : Node
         // Set volume of all SFX players currently in the scene
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
             audioPlayer.VolumeDb = v;
-    }
-
-    public override void _Ready()
-    {
-        options = OptionsManager.Options;
-        musicPlayer = new GAudioPlayer(this);
-
-        sfxPlayersParent = new Node();
-        AddChild(sfxPlayersParent);
-
-        PlayMusic(Music.Menu);
     }
 }
