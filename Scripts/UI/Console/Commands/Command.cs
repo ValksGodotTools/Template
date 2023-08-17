@@ -9,12 +9,6 @@ using System.Reflection;
  */
 public abstract class Command
 {
-    public static List<Command> Instances { get; } = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(x => typeof(Command).IsAssignableFrom(x) && !x.IsAbstract)
-            .Select(Activator.CreateInstance).Cast<Command>()
-            .ToList();
-
     public string[] Aliases { get; set; }
 
     public bool IsMatch(string cmd)

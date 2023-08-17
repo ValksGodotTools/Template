@@ -1,5 +1,7 @@
 namespace GodotUtils;
 
+using System.Reflection;
+
 public partial class UIConsole : PanelContainer
 {
     public static bool IsVisible { get => instance.Visible; }
@@ -12,6 +14,12 @@ public partial class UIConsole : PanelContainer
     readonly ConsoleHistory history = new();
     static bool autoScroll = true;
     static UIConsole instance;
+
+    List<Command> cmdInstances = Assembly.GetExecutingAssembly()
+        .GetTypes()
+        .Where(x => typeof(Command).IsAssignableFrom(x) && !x.IsAbstract)
+        .Select(Activator.CreateInstance).Cast<Command>()
+        .ToList();
 
     public override void _Ready()
     {
@@ -94,7 +102,7 @@ public partial class UIConsole : PanelContainer
         history.Add(inputToLowerTrimmed);
 
         // check to see if the command is valid
-        var command = Command.Instances.FirstOrDefault(x => x.IsMatch(cmd));
+        var command = cmdInstances.FirstOrDefault(x => x.IsMatch(cmd));
 
         if (command != null)
         {
