@@ -2,11 +2,11 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    float MouseSensitivity { get; set; } = 0.005f;
-    float GravityForce     { get; set; } = 10;
-    float JumpForce        { get; set; } = 150;
-    float MoveSpeed        { get; set; } = 10;
-    float MoveDampening    { get; set; } = 20; // the higher the value, the less the player will slide
+    float mouseSensitivity = 0.005f;
+    float gravityForce = 10;
+    float jumpForce = 150;
+    float moveSpeed = 10;
+    float moveDampening = 20; // the higher the value, the less the player will slide
                                    
     Camera3D camera;
     Vector2 mouseInput;
@@ -30,14 +30,18 @@ public partial class Player : CharacterBody3D
         camera.Rotation = cameraTarget + cameraOffset;
 
         //var h_rot = GlobalTransform.basis.GetEuler().y;
-        var h_rot = camera.Basis.GetEuler().Y;
+        float h_rot = camera.Basis.GetEuler().Y;
 
-        var f_input = -Input.GetAxis("move_down", "move_up");
-        var h_input = Input.GetAxis("move_left", "move_right");
+        float f_input = -Input.GetAxis("move_down", "move_up");
+        float h_input = Input.GetAxis("move_left", "move_right");
 
-        // normalized to prevent "fast strafing movement" by holding down 2 movement keys at the same time
-        // rotated to horizontal rotation to always move in the correct direction
-        var dir = new Vector3(h_input, 0, f_input).Rotated(Vector3.Up, h_rot).Normalized();
+        // Normalized to prevent "fast strafing movement" by holding down 2
+        // movement keys at the same time
+        // Rotated to horizontal rotation to always move in the correct
+        // direction
+        var dir = new Vector3(h_input, 0, f_input)
+            .Rotated(Vector3.Up, h_rot)
+            .Normalized();
 
         if (IsOnFloor())
         {
@@ -45,15 +49,15 @@ public partial class Player : CharacterBody3D
 
             if (Input.IsActionJustPressed("jump"))
             {
-                gravityVec = Vector3.Up * JumpForce * delta;
+                gravityVec = Vector3.Up * jumpForce * delta;
             }
         }
         else
         {
-            gravityVec += Vector3.Down * GravityForce * delta;
+            gravityVec += Vector3.Down * gravityForce * delta;
         }
 
-        Velocity = Velocity.Lerp(dir * MoveSpeed, MoveDampening * delta);
+        Velocity = Velocity.Lerp(dir * moveSpeed, moveDampening * delta);
         Velocity += gravityVec;
 
         MoveAndSlide();
@@ -77,7 +81,7 @@ public partial class Player : CharacterBody3D
 
         mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
 
-        cameraTarget += new Vector3(-motion.Relative.Y * MouseSensitivity, -motion.Relative.X * MouseSensitivity, 0);
+        cameraTarget += new Vector3(-motion.Relative.Y * mouseSensitivity, -motion.Relative.X * mouseSensitivity, 0);
 
         // prevent camera from looking too far up or down
         var rotDeg = cameraTarget;
