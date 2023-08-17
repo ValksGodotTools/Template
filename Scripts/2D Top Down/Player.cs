@@ -2,14 +2,14 @@ namespace Template.TopDown2D;
 
 public partial class Player : CharacterBody2D
 {
-    public float Speed    { get; set; } = 50;
-    public float Friction { get; set; } = 0.1f;
+    float speed = 50;
+    float friction = 0.1f;
 
     public override void _PhysicsProcess(double delta)
     {
         // Velocity is mutiplied by delta for us already
-        Velocity += GetMovementInput() * Speed;
-        Velocity = Velocity.Lerp(Vector2.Zero, Friction);
+        Velocity += GetMovementInput() * speed;
+        Velocity = Velocity.Lerp(Vector2.Zero, friction);
 
         MoveAndSlide();
     }
