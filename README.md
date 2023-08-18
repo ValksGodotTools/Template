@@ -44,4 +44,4 @@ Currently looking for programmers to peer review my code.
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
-If you have any questions, talk to me over Discord (`va#9904`)
+If you have any questions, talk to me over Discord (`valk2023`)
