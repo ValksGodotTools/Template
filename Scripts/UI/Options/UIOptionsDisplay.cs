@@ -51,7 +51,7 @@ public partial class UIOptionsDisplay : Control
         resX = GetNode<LineEdit>("%WindowWidth");
         resY = GetNode<LineEdit>("%WindowHeight");
 
-        var winSize = DisplayServer.WindowGetSize();
+        Vector2I winSize = DisplayServer.WindowGetSize();
 
         prevNumX = winSize.X;
         prevNumY = winSize.Y;
@@ -83,7 +83,7 @@ public partial class UIOptionsDisplay : Control
         DisplayServer.WindowSetSize(new Vector2I(prevNumX, prevNumY));
 
         // Center window
-        var winSize = DisplayServer.WindowGetSize();
+        Vector2I winSize = DisplayServer.WindowGetSize();
         DisplayServer.WindowSetPosition(DisplayServer.ScreenGetSize() / 2 - winSize / 2);
 
         OptionsManager.Options.WindowSize = winSize;
@@ -108,7 +108,7 @@ public partial class UIOptionsDisplay : Control
         }
 
         // Update UIWindowSize element on window mode change
-        var winSize = DisplayServer.WindowGetSize();
+        Vector2I winSize = DisplayServer.WindowGetSize();
 
         resX.Text = winSize.X + "";
         resY.Text = winSize.Y + "";

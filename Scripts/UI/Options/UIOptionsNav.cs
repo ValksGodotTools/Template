@@ -7,7 +7,7 @@ public partial class UIOptionsNav : Control
 
     public override void _Ready()
     {
-        var content = GetParent().GetNode("Content");
+        Node content = GetParent().GetNode("Content");
 
         foreach (Control child in content.GetChildren())
             tabs.Add(child.Name, child);

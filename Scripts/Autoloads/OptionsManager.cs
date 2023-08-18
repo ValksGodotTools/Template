@@ -18,7 +18,9 @@ public partial class OptionsManager : Node
 
     public static void SaveOptions()
     {
-        var error = ResourceSaver.Save(OptionsManager.Options, "user://options.tres");
+        Error error = ResourceSaver.Save(
+            resource: OptionsManager.Options, 
+            path: "user://options.tres");
 
         if (error != Error.Ok)
             GD.Print(error);
@@ -26,7 +28,9 @@ public partial class OptionsManager : Node
 
     public static void SaveHotkeys()
     {
-        var error = ResourceSaver.Save(OptionsManager.Hotkeys, "user://hotkeys.tres");
+        Error error = ResourceSaver.Save(
+            resource: OptionsManager.Hotkeys, 
+            path: "user://hotkeys.tres");
 
         if (error != Error.Ok)
             GD.Print(error);
@@ -41,7 +45,7 @@ public partial class OptionsManager : Node
         {
             var arr = new Array<InputEvent>();
 
-            foreach (var item in DefaultHotkeys[element.Key])
+            foreach (InputEvent item in DefaultHotkeys[element.Key])
             {
                 arr.Add((InputEvent)item.Duplicate());
             }
@@ -88,7 +92,7 @@ public partial class OptionsManager : Node
 
     void LoadOptions()
     {
-        var fileExists = FileAccess.FileExists("user://options.tres");
+        bool fileExists = FileAccess.FileExists("user://options.tres");
 
         Options = fileExists ?
             GD.Load<ResourceOptions>("user://options.tres") : new();
@@ -96,16 +100,16 @@ public partial class OptionsManager : Node
 
     static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
     {
-        var actions = InputMap.GetActions();
+        Array<StringName> actions = InputMap.GetActions();
 
-        foreach (var action in actions)
+        foreach (StringName action in actions)
             InputMap.EraseAction(action);
 
-        foreach (var action in hotkeys.Keys)
+        foreach (StringName action in hotkeys.Keys)
         {
             InputMap.AddAction(action);
 
-            foreach (var @event in hotkeys[action])
+            foreach (InputEvent @event in hotkeys[action])
                 InputMap.ActionAddEvent(action, @event);
         }
     }
@@ -115,11 +119,11 @@ public partial class OptionsManager : Node
         // Get all the default actions defined in the input map
         var actions = new Dictionary<StringName, Array<InputEvent>>();
 
-        foreach (var action in InputMap.GetActions())
+        foreach (StringName action in InputMap.GetActions())
         {
             actions.Add(action, new Array<InputEvent>());
 
-            foreach (var actionEvent in InputMap.ActionGetEvents(action))
+            foreach (InputEvent actionEvent in InputMap.ActionGetEvents(action))
                 actions[action].Add(actionEvent);
         }
 
@@ -128,7 +132,7 @@ public partial class OptionsManager : Node
 
     void LoadHotkeys()
     {
-        var fileExists = FileAccess.FileExists("user://hotkeys.tres");
+        bool fileExists = FileAccess.FileExists("user://hotkeys.tres");
 
         if (fileExists)
         {
@@ -167,8 +171,8 @@ public partial class OptionsManager : Node
             DisplayServer.WindowSetSize(Options.WindowSize);
 
             // center window
-            var screenSize = DisplayServer.ScreenGetSize();
-            var winSize = DisplayServer.WindowGetSize();
+            Vector2I screenSize = DisplayServer.ScreenGetSize();
+            Vector2I winSize = DisplayServer.WindowGetSize();
             DisplayServer.WindowSetPosition(screenSize / 2 - winSize / 2);
         }
     }

@@ -84,7 +84,7 @@ public partial class Player : CharacterBody3D
         cameraTarget += new Vector3(-motion.Relative.Y * mouseSensitivity, -motion.Relative.X * mouseSensitivity, 0);
 
         // prevent camera from looking too far up or down
-        var rotDeg = cameraTarget;
+        Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
     }

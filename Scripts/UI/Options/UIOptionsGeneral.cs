@@ -18,7 +18,7 @@ public partial class UIOptionsGeneral : Control
 
     void _on_language_item_selected(int index)
     {
-        var locale = ((Language)index).ToString().Substring(0, 2).ToLower();
+        string locale = ((Language)index).ToString().Substring(0, 2).ToLower();
 
         TranslationServer.SetLocale(locale);
 

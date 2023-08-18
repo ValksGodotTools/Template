@@ -30,7 +30,7 @@ public partial class UIConsole : PanelContainer
         settingsBtn   = GetNode<Button>  ("%Settings");
         settingsPopup = GetNode<PopupPanel>("PopupPanel");
         
-        var settingsVBox = GetNode("%PopupVBox");
+        Node settingsVBox = GetNode("%PopupVBox");
         settingsAutoScroll = GetNode<CheckBox>("%PopupAutoScroll");
 
         input.TextSubmitted += OnConsoleInputEntered;
@@ -53,7 +53,7 @@ public partial class UIConsole : PanelContainer
         if (instance == null)
             return;
 
-        var prevScroll = feed.ScrollVertical;
+        double prevScroll = feed.ScrollVertical;
         
         // Prevent text feed from becoming too large
         if (feed.Text.Count() > 1000)
@@ -88,11 +88,11 @@ public partial class UIConsole : PanelContainer
     void OnConsoleInputEntered(string text)
     {
         // case sensitivity and trailing spaces should not factor in here
-        var inputToLowerTrimmed = text.Trim().ToLower();
-        var inputArr = inputToLowerTrimmed.Split(' ');
+        string inputToLowerTrimmed = text.Trim().ToLower();
+        string[] inputArr = inputToLowerTrimmed.Split(' ');
 
         // extract command from input
-        var cmd = inputArr[0];
+        string cmd = inputArr[0];
 
         // do not do anything if cmd is just whitespace
         if (string.IsNullOrWhiteSpace(cmd))
@@ -102,12 +102,12 @@ public partial class UIConsole : PanelContainer
         history.Add(inputToLowerTrimmed);
 
         // check to see if the command is valid
-        var command = cmdInstances.FirstOrDefault(x => x.IsMatch(cmd));
+        Command command = cmdInstances.FirstOrDefault(x => x.IsMatch(cmd));
 
         if (command != null)
         {
             // extract cmd args from input
-            var cmdArgs = inputArr.Skip(1).ToArray();
+            string[] cmdArgs = inputArr.Skip(1).ToArray();
 
             // run the command
             command.Run(GetTree().Root, cmdArgs);
@@ -140,7 +140,7 @@ public partial class UIConsole : PanelContainer
 
         if (Godot.Input.IsActionJustPressed("ui_up"))
         {
-            var historyText = history.MoveUpOne();
+            string historyText = history.MoveUpOne();
 
             input.Text = historyText;
 
@@ -151,7 +151,7 @@ public partial class UIConsole : PanelContainer
 
         if (Godot.Input.IsActionJustPressed("ui_down"))
         {
-            var historyText = history.MoveDownOne();
+            string historyText = history.MoveDownOne();
 
             input.Text = historyText;
 

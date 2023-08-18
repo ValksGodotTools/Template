@@ -9,8 +9,8 @@ public partial class Player : Entity
 
     public override void Update()
     {
-        var vel = Velocity;
-        var horzDir = Input.GetAxis("move_left", "move_right");
+        Vector2 vel = Velocity;
+        float horzDir = Input.GetAxis("move_left", "move_right");
 
         // Horizontal movement
         vel.X += horzDir * acceleration;

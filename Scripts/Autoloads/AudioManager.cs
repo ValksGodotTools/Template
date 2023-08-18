@@ -41,8 +41,8 @@ public partial class AudioManager : Node
             });
 
             // Fade in to current song
-            var volume = options.MusicVolume;
-            var volumeRemapped = 
+            float volume = options.MusicVolume;
+            float volumeRemapped = 
                 volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
 
             tween.Animate("volume_db", volumeRemapped, fadeIn)
@@ -70,7 +70,7 @@ public partial class AudioManager : Node
         // Randomize the pitch
         var rng = new RandomNumberGenerator();
         rng.Randomize();
-        var pitch = rng.RandfRange(0.8f, 1.2f);
+        float pitch = rng.RandfRange(0.8f, 1.2f);
 
         // Ensure the current pitch is not the same as the last
         while (Mathf.Abs(pitch - lastPitch) < 0.1f)

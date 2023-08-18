@@ -22,13 +22,14 @@ public partial class UICredits : Node
         };
 
         // Read the contents from credits.txt and construct the credits
-        var file = FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
+        FileAccess file = 
+            FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
 
         while (!file.EofReached())
         {
-            var line = Tr(file.GetLine());
+            string line = Tr(file.GetLine());
 
-            var size = 16;
+            int size = 16;
 
             if (line.Contains("[h1]"))
             {
@@ -42,9 +43,9 @@ public partial class UICredits : Node
                 line = line.Replace("[h2]", "");
             }
 
-            var translatedLine = "";
+            string translatedLine = "";
 
-            foreach (var word in line.Split(' '))
+            foreach (string word in line.Split(' '))
                 translatedLine += Tr(word) + " ";
 
             if (translatedLine.Contains("http"))
@@ -77,7 +78,7 @@ public partial class UICredits : Node
     public override void _PhysicsProcess(double delta)
     {
         // Animate the credits
-        var pos = vbox.Position;
+        Vector2 pos = vbox.Position;
         pos.Y -= speed;
         vbox.Position = pos;
 
@@ -100,10 +101,10 @@ public partial class UICredits : Node
 
     void AddTextWithLink(string text)
     {
-        var indexOfHttp = text.IndexOf("http");
+        int indexOfHttp = text.IndexOf("http");
 
-        var textDesc = text.Substring(0, indexOfHttp);
-        var textLink = text.Substring(indexOfHttp);
+        string textDesc = text.Substring(0, indexOfHttp);
+        string textLink = text.Substring(indexOfHttp);
 
         var hbox = new HBoxContainer {
             SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
