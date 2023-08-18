@@ -13,11 +13,14 @@ public abstract class Command
 
     public bool IsMatch(string cmd)
     {
-        var cmdMatchesAlias = false;
+        bool cmdMatchesAlias = false;
         if (Aliases != null)
             cmdMatchesAlias = Aliases.Contains(cmd);
 
-        return cmdMatchesAlias || GetType().Name.Replace("Command", "").ToLower() == cmd;
+        bool cmdMatchesType = 
+            GetType().Name.Replace("Command", "").ToLower() == cmd;
+
+        return cmdMatchesAlias || cmdMatchesType;
     }
 
     public abstract void Run(Window root, string[] args);
