@@ -14,8 +14,8 @@ The template I use when starting a new Godot 4 C# game.
 - And lots more!
 
 ## FAQ
-Q: Why am I not seeing any messages appear in console?
-A: The `AddMessage(...)` function has been commented out 3 times in `Logger.cs` because what if a project is using `GodotUtils` submodule where the `Logger.cs` is defined but it's not using `Template` where `UIConsole.Instance.AddMessage(...)` is defined. I have not found a solution to this so for now please just uncomment the calls to `AddMessage(...)` in `Logger.cs`.
+Q: Why am I not seeing any messages appear in console?  
+A: The `AddMessage(...)` function has been commented out 3 times in `Logger.cs` because what if a project is using `GodotUtils` submodule where the `Logger.cs` is defined but it's not using `Template` where `UIConsole.Instance.AddMessage(...)` is defined. I have not found a solution to this so for now please just uncomment the calls to `AddMessage(...)` in `Logger.cs`.  
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
