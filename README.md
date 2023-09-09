@@ -1,5 +1,5 @@
 # Template
-A template for all Godot 4 C# starting projects.
+The template I use when starting a new Godot 4 C# game.
 
 ## Feature Summary
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
