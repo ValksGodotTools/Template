@@ -74,8 +74,108 @@ void Debug()
 }
 ```
 
+## Prefabs
+```cs
+// Load all your scene prefabs here. This script can be found in
+// "res://Scripts/Static/Prefabs.cs". Note that music and sounds are
+// loaded in very similarily and these scripts can be found in the
+// static folder as well.
+public static class Prefabs
+{
+    public static PackedScene Options { get; } = Load("UI/options");
+
+    static PackedScene Load(string path) =>
+        GD.Load<PackedScene>($"res://Scenes/Prefabs/{path}.tscn");
+}
+
+// Prefabs are instantiated like this
+UIOptions options = Prefabs.Options.Instantiate<UIOptions>();
+```
+
+## AudioManager
+```cs
+// Play a soundtrack
+AudioManager.Instance.PlayMusic(Music.Menu);
+
+// Play a sound
+AudioManager.Instance.PlaySFX(Sounds.GameOver);
+
+// Set the music volume
+AudioManager.Instance.SetMusicVolume(75);
+
+// Set the sound volume
+AudioManager.Instance.SetSFXVolume(100);
+
+// Gradually fade out all sounds
+AudioManager.Instance.FadeOutSFX();
+```
+
+## SceneManager
+```cs
+// Switch to a scene instantly
+SceneManager.Instance.SwitchScene("main_menu");
+
+// Switch to a scene with a fade transition
+SceneManager.Instance.SwitchScene("level_2D_top_down", 
+    SceneManager.TransType.Fade);
+```
+
+## Experimental EventManager
+This is __one__ way of programming events, it may not be the best way but there is no harm in trying it out. 
+
+*In most tutorials about this on the internet you will find that they pass in a `Dictionary<string, string>` for the event params. This is very ugly but with the use of `dynamic` now you can pass in any kind of object you want and have beautiful params if you so desire.*
+
+### Event Enums
+```cs
+public enum EventGeneric
+{
+    OnKeyboardInput
+}
+
+public enum EventPlayer
+{
+    OnPlayerSpawn
+}
+```
+
+### Event Dictionaries
+```cs
+public static class Events
+{
+    public static EventManager<EventGeneric> Generic { get; } = new();
+    public static EventManager<EventPlayer> Player { get; } = new();
+}
+```
+
+### Example #1
+```cs
+Events.Generic.AddListener(EventGeneric.OnKeyboardInput, (args) => 
+{
+    GD.Print(args[0]);
+    GD.Print(args[1]);
+    GD.Print(args[2]);
+}, "someId");
+
+Events.Generic.RemoveListeners(EventGeneric.OnKeyboardInput, "someId");
+
+// Listener is never called because it was removed
+Events.Generic.Notify(EventGeneric.OnKeyboardInput, 1, 2, 3);
+```
+
+### Example #2
+```cs
+Events.Player.AddListener<PlayerSpawnArgs>(EventPlayer.OnPlayerSpawn, (args) => 
+{
+    GD.Print(args.Name);
+    GD.Print(args.Location);
+    GD.Print(args.Player);
+});
+
+Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, location, player));
+```
+
 ## Contributing
-Currently looking for programmers to peer review my code.
+Any kind of contributions are very much welcomed!
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
