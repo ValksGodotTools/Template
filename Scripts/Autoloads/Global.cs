@@ -17,7 +17,8 @@ public partial class Global : Node
 	public override void _Ready()
 	{
         // Gradually fade out all SFX whenever the scene is changed
-        SceneManager.SceneChanged += name => AudioManager.FadeOutSFX();
+        SceneManager.SceneChanged += name => 
+            AudioManager.Instance.FadeOutSFX();
     }
 
 	public override void _PhysicsProcess(double delta)

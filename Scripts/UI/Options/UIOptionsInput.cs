@@ -60,12 +60,12 @@ public partial class UIOptionsInput : Control
         {
             if (Input.IsActionJustPressed("ui_cancel"))
             {
-                if (SceneManager.CurrentScene.Name == "Options")
+                if (SceneManager.Instance.CurrentScene.Name == "Options")
                 {
                     if (btnNewInput == null)
                     {
-                        AudioManager.PlayMusic(Music.Menu);
-                        SceneManager.SwitchScene("main_menu");
+                        AudioManager.Instance.PlayMusic(Music.Menu);
+                        SceneManager.Instance.SwitchScene("main_menu");
                     }
                 }
             }

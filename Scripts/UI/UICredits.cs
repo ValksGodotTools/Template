@@ -85,8 +85,8 @@ public partial class UICredits : Node
         // Go back to the main menu when the credits are finished
         if (pos.Y <= -vbox.Size.Y)
         {
-            AudioManager.PlayMusic(Music.Menu);
-            SceneManager.SwitchScene("main_menu");
+            AudioManager.Instance.PlayMusic(Music.Menu);
+            SceneManager.Instance.SwitchScene("main_menu");
         }
     }
 
@@ -94,8 +94,8 @@ public partial class UICredits : Node
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            AudioManager.PlayMusic(Music.Menu);
-            SceneManager.SwitchScene("main_menu");
+            AudioManager.Instance.PlayMusic(Music.Menu);
+            SceneManager.Instance.SwitchScene("main_menu");
         }
     }
 

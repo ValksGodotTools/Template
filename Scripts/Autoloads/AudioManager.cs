@@ -4,14 +4,18 @@ namespace Template;
 // duration of the applications life and there should be no issues with
 // using these functions anywhere at anytime.
 public partial class AudioManager : Node
-{                                                
-    static GAudioPlayer musicPlayer;
-    static Node sfxPlayersParent;
-    static float lastPitch;
-    static ResourceOptions options;
+{
+    public static AudioManager Instance { get; private set; }
+
+    GAudioPlayer musicPlayer;
+    Node sfxPlayersParent;
+    float lastPitch;
+    ResourceOptions options;
 
     public override void _Ready()
     {
+        Instance = this;
+
         options = OptionsManager.Options;
         musicPlayer = new GAudioPlayer(this);
 
@@ -21,7 +25,7 @@ public partial class AudioManager : Node
         PlayMusic(Music.Menu);
     }
 
-    public static void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
+    public void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
     {
         if (!instant && musicPlayer.Playing)
         {
@@ -58,7 +62,7 @@ public partial class AudioManager : Node
         }
     }
 
-    public static void PlaySFX(AudioStream sound)
+    public void PlaySFX(AudioStream sound)
     {
         // Setup the SFX stream player
         var sfxPlayer = new GAudioPlayer(sfxPlayersParent, true)
@@ -89,7 +93,7 @@ public partial class AudioManager : Node
     /// <summary>
     /// Gradually fade out all sounds
     /// </summary>
-    public static void FadeOutSFX(double fadeTime = 1)
+    public void FadeOutSFX(double fadeTime = 1)
     {
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
@@ -98,13 +102,13 @@ public partial class AudioManager : Node
         }
     }
 
-    public static void SetMusicVolume(float v)
+    public void SetMusicVolume(float v)
     {
         musicPlayer.Volume = v;
         options.MusicVolume = musicPlayer.Volume;
     }
 
-    public static void SetSFXVolume(float v)
+    public void SetSFXVolume(float v)
     {
         // Set volume for future SFX players
         options.SFXVolume = v;
