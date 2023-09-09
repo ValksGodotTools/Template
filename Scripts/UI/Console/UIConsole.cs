@@ -1,10 +1,12 @@
-namespace GodotUtils;
+namespace Template;
 
+using System.Globalization;
 using System.Reflection;
 
 public partial class UIConsole : PanelContainer
 {
-    public static bool IsVisible { get => instance.Visible; }
+    public static UIConsole Instance { get; private set; }
+    public static bool IsVisible { get => Instance.Visible; }
 
     static TextEdit feed;
     LineEdit input;
@@ -13,17 +15,13 @@ public partial class UIConsole : PanelContainer
     CheckBox settingsAutoScroll;
     readonly ConsoleHistory history = new();
     static bool autoScroll = true;
-    static UIConsole instance;
 
-    List<Command> cmdInstances = Assembly.GetExecutingAssembly()
-        .GetTypes()
-        .Where(x => typeof(Command).IsAssignableFrom(x) && !x.IsAbstract)
-        .Select(Activator.CreateInstance).Cast<Command>()
-        .ToList();
+    public List<ConsoleCommandInfo> Commands { get; } = new();
 
     public override void _Ready()
     {
-        instance = this;
+        LoadCommands();
+        Instance = this;
 
         feed          = GetNode<TextEdit>("%Output");
         input         = GetNode<LineEdit>("%Input");
@@ -50,7 +48,7 @@ public partial class UIConsole : PanelContainer
     public static void AddMessage(object message)
     {
         // UIConsole was not set up properly so return
-        if (instance == null)
+        if (Instance == null)
             return;
 
         double prevScroll = feed.ScrollVertical;
@@ -85,6 +83,110 @@ public partial class UIConsole : PanelContainer
             settingsPopup.PopupCentered();
     }
 
+    void LoadCommands()
+    {
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+
+        foreach (Type type in types)
+        {
+            // BindingFlags.Instance must be added or the methods will not
+            // be seen. Not sure why static methods can't be added.
+            MethodInfo[] methods = type.GetMethods(
+                BindingFlags.Instance |
+                BindingFlags.Public |
+                BindingFlags.NonPublic);
+
+            foreach (MethodInfo method in methods)
+            {
+                object[] attributes =
+                    method.GetCustomAttributes(
+                        attributeType: typeof(ConsoleCommandAttribute),
+                        inherit: false);
+
+                foreach (object attribute in attributes)
+                {
+                    if (attribute is not ConsoleCommandAttribute cmd)
+                        continue;
+
+                    TryLoadCommand(cmd, method);
+                }
+            }
+        }
+    }
+
+    void TryLoadCommand(ConsoleCommandAttribute cmd, MethodInfo method)
+    {
+        if (Commands.FirstOrDefault(x => x.Name == cmd.Name) != null)
+        {
+            throw new Exception($"Duplicate console command: {cmd.Name}");
+        }
+
+        Commands.Add(new ConsoleCommandInfo
+        {
+            Name = cmd.Name.ToLower(),
+            Aliases = cmd.Aliases.Select(x => x.ToLower()).ToArray(),
+            Method = method
+        });
+    }
+
+    bool ProcessCommand(string text)
+    {
+        ConsoleCommandInfo cmd = TryGetCommand(text.ToLower());
+
+        if (cmd == null)
+        {
+            Logger.Log($"The command '{text.Split()[0].ToLower()}' " +
+                $"does not exist");
+
+            return false;
+        }
+
+        MethodInfo method = cmd.Method;
+
+        // Not sure why this has to be the "DeclaringType" as suppose to
+        // any of the other Type properties or methods
+        object instance = GetMethodInstance(cmd.Method.DeclaringType);
+
+        // Valk: Not really sure what this regex is doing. May rewrite
+        // code in a more readable fassion.
+
+        // Split by spaces, unless in quotes
+        string[] rawCommandSplit = Regex.Matches(text,
+            @"[^\s""']+|""([^""]*)""|'([^']*)'").Select(m => m.Value)
+            .ToArray();
+
+        object[] parameters = ConvertMethodParams(method, rawCommandSplit);
+
+        method.Invoke(instance, parameters);
+
+        return true;
+    }
+
+    ConsoleCommandInfo TryGetCommand(string text)
+    {
+        ConsoleCommandInfo cmd =
+            Commands.Find(cmd =>
+            {
+                // Does text match the command name?
+                bool nameMatch = cmd.Name.ToLower() == text;
+
+                if (nameMatch)
+                    return true;
+
+                // Does text match an alias in this command?
+                bool aliasMatch = cmd.Aliases
+                    .Where(x => x == text)
+                    .FirstOrDefault() != null;
+
+                if (aliasMatch)
+                    return true;
+
+                return false;
+            });
+
+        return cmd;
+    }
+
     void OnConsoleInputEntered(string text)
     {
         // case sensitivity and trailing spaces should not factor in here
@@ -101,20 +203,8 @@ public partial class UIConsole : PanelContainer
         // keep track of input history
         history.Add(inputToLowerTrimmed);
 
-        // check to see if the command is valid
-        Command command = cmdInstances.FirstOrDefault(x => x.IsMatch(cmd));
-
-        if (command != null)
-        {
-            // extract cmd args from input
-            string[] cmdArgs = inputArr.Skip(1).ToArray();
-
-            // run the command
-            command.Run(GetTree().Root, cmdArgs);
-        }
-        else
-            // command does not exist
-            Logger.Log($"The command '{cmd}' does not exist");
+        // process the command
+        ProcessCommand(text);
 
         // clear the input after the command is executed
         input.Clear();
@@ -178,4 +268,90 @@ public partial class UIConsole : PanelContainer
             ScrollDown();
         }
     }
+
+    #region Helper Functions
+    object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
+    {
+        ParameterInfo[] paramInfos = method.GetParameters();
+        object[] parameters = new object[paramInfos.Length];
+        for (int i = 0; i < paramInfos.Length; i++)
+        {
+            if (rawCmdSplit.Length > i + 1 && rawCmdSplit[i + 1] != null)
+            {
+                parameters[i] = ConvertStringToType(
+                    input: rawCmdSplit[i + 1],
+                    targetType: paramInfos[i].ParameterType);
+            }
+            else
+            {
+                parameters[i] = null;
+            }
+        }
+
+        return parameters;
+    }
+
+    object GetMethodInstance(Type type)
+    {
+        object instance;
+
+        if (type.IsSubclassOf(typeof(GodotObject)))
+        {
+            // This is a Godot Object, find it or create a new instance
+            instance = FindNodeByType(GetTree().Root, type) ??
+                Activator.CreateInstance(type);
+        }
+        else
+        {
+            // This is a generic class, create a new instance
+            instance = Activator.CreateInstance(type);
+        }
+
+        return instance;
+    }
+
+    object ConvertStringToType(string input, Type targetType)
+    {
+        if (targetType == typeof(string))
+            return input;
+
+        if (targetType == typeof(int))
+            return int.Parse(input);
+
+        if (targetType == typeof(float))
+        {
+            // Valk: Not entirely sure what is happening here other than
+            // convert the input to a float.
+            float.TryParse(input.Replace(',', '.'),
+                style: NumberStyles.Any,
+                provider: CultureInfo.InvariantCulture,
+                result: out var value);
+
+            return value;
+        }
+
+        if (targetType == typeof(bool))
+            return bool.Parse(input);
+
+        throw new ArgumentException($"Unsupported type: {targetType}");
+    }
+
+    // Valk: I have not tested this code to see if it works with 100%
+    // no errors.
+    Node FindNodeByType(Node root, Type targetType)
+    {
+        if (root.GetType() == targetType)
+            return root;
+
+        foreach (Node child in root.GetChildren())
+        {
+            Node foundNode = FindNodeByType(child, targetType);
+
+            if (foundNode != null)
+                return foundNode;
+        }
+
+        return null;
+    }
+    #endregion Utils
 }
