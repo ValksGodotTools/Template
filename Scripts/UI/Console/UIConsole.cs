@@ -6,15 +6,15 @@ using System.Reflection;
 public partial class UIConsole : PanelContainer
 {
     public static UIConsole Instance { get; private set; }
-    public static bool IsVisible { get => Instance.Visible; }
+    public bool IsVisible { get => Instance.Visible; }
 
-    static TextEdit feed;
+    TextEdit feed;
     LineEdit input;
     Button settingsBtn;
     PopupPanel settingsPopup;
     CheckBox settingsAutoScroll;
     readonly ConsoleHistory history = new();
-    static bool autoScroll = true;
+    bool autoScroll = true;
 
     public List<ConsoleCommandInfo> Commands { get; } = new();
 
@@ -45,7 +45,7 @@ public partial class UIConsole : PanelContainer
         InputNavigateHistory();
     }
 
-    public static void AddMessage(object message)
+    public void AddMessage(object message)
     {
         // UIConsole was not set up properly so return
         if (Instance == null)
@@ -71,7 +71,7 @@ public partial class UIConsole : PanelContainer
         ScrollDown();
     }
 
-    static void ScrollDown()
+    void ScrollDown()
     {
         if (autoScroll)
             feed.ScrollVertical = (int)feed.GetVScrollBar().MaxValue;
