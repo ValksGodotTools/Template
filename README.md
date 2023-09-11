@@ -85,6 +85,11 @@ void Debug()
 // "res://Scripts/Static/Prefabs.cs". Note that music and sounds are
 // loaded in very similarily and these scripts can be found in the
 // static folder as well.
+
+// NOTICE:
+// I realize now that Godot only loads a resource one time no matter
+// how many times it's used in different export variables so this
+// way of doing things may likely be scrapped in the future
 public static class Prefabs
 {
     public static PackedScene Options { get; } = Load("UI/options");
