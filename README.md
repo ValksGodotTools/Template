@@ -72,10 +72,12 @@ void Quit()
     GetTree().Root.GetNode<Global>("/root/Global").Quit();
 }
 
+// Method paramterers are supported
+
 [ConsoleCommand("debug")]
-void Debug()
+void Debug(int x, string y)
 {
-    Logger.Log("Debug");
+    Logger.Log($"Debug {x}, {y}");
 }
 ```
 
