@@ -11,8 +11,8 @@ public partial class OptionsManager : Resource
     public event Action<WindowMode> WindowModeChanged;
 
     public Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; set; }
-    public ResourceHotkeys Hotkeys { get; set; }
-    public ResourceOptions Options { get; set; }
+    public ResourceHotkeys Hotkeys { get; private set; }
+    public ResourceOptions Options { get; private set; }
     public string CurrentOptionsTab { get; set; } = "General";
 
     public OptionsManager()
