@@ -2,13 +2,15 @@ namespace Template;
 
 public partial class UIOptionsGraphics : Control
 {
+    [Export] OptionsManager optionsManager;
+
     ResourceOptions options;
 
     OptionButton optionBtnQualityPreset;
 
     public override void _Ready()
     {
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         SetupQualityPreset();
     }
 

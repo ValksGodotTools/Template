@@ -5,6 +5,8 @@ namespace Template;
 // using these functions anywhere at anytime.
 public partial class AudioManager : Node
 {
+    [Export] OptionsManager optionsManager;
+
     public static AudioManager Instance { get; private set; }
 
     GAudioPlayer musicPlayer;
@@ -16,7 +18,7 @@ public partial class AudioManager : Node
     {
         Instance = this;
 
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         musicPlayer = new GAudioPlayer(this);
 
         sfxPlayersParent = new Node();

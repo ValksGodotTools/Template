@@ -4,6 +4,8 @@ using Godot.Collections;
 
 public partial class UIOptionsInput : Control
 {
+    [Export] OptionsManager optionsManager;
+
     static BtnInfo btnNewInput; // the btn waiting for new input
     Dictionary<StringName, Array<InputEvent>> defaultActions;
     VBoxContainer content;
@@ -26,7 +28,7 @@ public partial class UIOptionsInput : Control
                 InputMap.ActionEraseEvent(action, btnNewInput.InputEvent);
 
                 // Update options
-                OptionsManager.Hotkeys.Actions[action].Remove(btnNewInput.InputEvent);
+                optionsManager.Hotkeys.Actions[action].Remove(btnNewInput.InputEvent);
 
                 // Update UI
                 btnNewInput.Btn.QueueFree();
@@ -95,7 +97,7 @@ public partial class UIOptionsInput : Control
         // Move the button to where it was originally at
         btnNewInput.HBox.MoveChild(btn, index);
 
-        var actions = OptionsManager.Hotkeys.Actions;
+        var actions = optionsManager.Hotkeys.Actions;
 
         // Clear the specific action event
         actions[action].Remove(btnNewInput.InputEvent);
@@ -188,7 +190,7 @@ public partial class UIOptionsInput : Control
     void CreateHotkeys()
     {
         // Loop through the actions in alphabetical order
-        foreach (StringName action in OptionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
+        foreach (StringName action in optionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
         {
             string actionStr = action.ToString();
 
@@ -215,7 +217,7 @@ public partial class UIOptionsInput : Control
             // Add all the events after the action label
             var hboxEvents = new HBoxContainer();
 
-            Array<InputEvent> events = OptionsManager.Hotkeys.Actions[action];
+            Array<InputEvent> events = optionsManager.Hotkeys.Actions[action];
 
             foreach (InputEvent @event in events)
             {
@@ -246,7 +248,7 @@ public partial class UIOptionsInput : Control
                 content.GetChild(i).QueueFree();
 
         btnNewInput = null;
-        OptionsManager.ResetHotkeys();
+        optionsManager.ResetHotkeys();
         CreateHotkeys();
     }
 }

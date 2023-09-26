@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://jnwu35ethg3x"]
+[gd_scene load_steps=3 format=3 uid="uid://jnwu35ethg3x"]
 
 [ext_resource type="Script" path="res://Scripts/Autoloads/AudioManager.cs" id="1_e4p82"]
+[ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Resources/options_manager.tres" id="2_haiu4"]
 
 [node name="audio_manager" type="Node"]
 script = ExtResource("1_e4p82")
+optionsManager = ExtResource("2_haiu4")

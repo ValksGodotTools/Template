@@ -2,11 +2,13 @@ namespace Template;
 
 public partial class UIOptionsGeneral : Control
 {
+    [Export] OptionsManager optionsManager;
+
     ResourceOptions options;
 
     public override void _Ready()
     {
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         SetupLanguage();
     }
 

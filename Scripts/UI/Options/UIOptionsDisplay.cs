@@ -4,6 +4,8 @@ namespace Template;
 
 public partial class UIOptionsDisplay : Control
 {
+    [Export] OptionsManager optionsManager;
+
     ResourceOptions options;
 
     // Max FPS
@@ -24,7 +26,7 @@ public partial class UIOptionsDisplay : Control
 
     public override void _Ready()
     {
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         SetupMaxFPS();
         SetupWindowSize();
         SetupWindowMode();
@@ -65,7 +67,7 @@ public partial class UIOptionsDisplay : Control
         optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
         optionBtnWindowMode.Select((int)options.WindowMode);
 
-        OptionsManager.WindowModeChanged += windowMode =>
+        optionsManager.WindowModeChanged += windowMode =>
             // Window mode select button could be null. If there was no null check
             // here then we would be assuming that the user can only change fullscreen
             // when in the options screen but this is not the case.
@@ -86,7 +88,7 @@ public partial class UIOptionsDisplay : Control
         Vector2I winSize = DisplayServer.WindowGetSize();
         DisplayServer.WindowSetPosition(DisplayServer.ScreenGetSize() / 2 - winSize / 2);
 
-        OptionsManager.Options.WindowSize = winSize;
+        options.WindowSize = winSize;
     }
 
     void _on_window_mode_item_selected(int index)

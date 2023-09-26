@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://7tfets4irkba"]
+[gd_scene load_steps=14 format=3 uid="uid://7tfets4irkba"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
 [ext_resource type="Texture2D" uid="uid://dp28a3uv7irs7" path="res://Sprites/Concept Art/monkey-mountain.JPG" id="2_65pdd"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsDisplay.cs" id="4_o6e7i"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGameplay.cs" id="5_eyimv"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsAudio.cs" id="5_hbpj8"]
+[ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Resources/options_manager.tres" id="6_3x0fd"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsInput.cs" id="6_n2qcv"]
 [ext_resource type="Script" path="res://Scripts/UI/Options/UIOptionsGraphics.cs" id="6_wctgl"]
 
@@ -49,6 +50,7 @@ theme = ExtResource("3_mvq8n")
 theme_override_constants/separation = 0
 alignment = 1
 script = ExtResource("2_w30yg")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="General" type="Button" parent="Margin/HBox/Nav"]
 custom_minimum_size = Vector2(150, 0)
@@ -87,6 +89,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ijcjj")
 visible = false
 layout_mode = 2
 script = ExtResource("3_vefex")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="Language" type="HBoxContainer" parent="Margin/HBox/Content/General"]
 layout_mode = 2
@@ -111,6 +114,7 @@ popup/item_2/id = 2
 [node name="Gameplay" type="VBoxContainer" parent="Margin/HBox/Content"]
 layout_mode = 2
 script = ExtResource("5_eyimv")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="Difficulty" type="HBoxContainer" parent="Margin/HBox/Content/Gameplay"]
 layout_mode = 2
@@ -137,6 +141,7 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="WindowMode" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
 layout_mode = 2
@@ -252,6 +257,7 @@ vertical_alignment = 1
 visible = false
 layout_mode = 2
 script = ExtResource("6_wctgl")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="QualityMode" type="HBoxContainer" parent="Margin/HBox/Content/Graphics"]
 layout_mode = 2
@@ -278,6 +284,7 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 20
 script = ExtResource("5_hbpj8")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="Music" type="HBoxContainer" parent="Margin/HBox/Content/Audio"]
 layout_mode = 2
@@ -313,6 +320,7 @@ value = 75.0
 visible = false
 layout_mode = 2
 script = ExtResource("6_n2qcv")
+optionsManager = ExtResource("6_3x0fd")
 
 [node name="Scroll" type="ScrollContainer" parent="Margin/HBox/Content/Input"]
 layout_mode = 2

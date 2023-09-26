@@ -2,11 +2,13 @@ namespace Template;
 
 public partial class UIOptionsAudio : Control
 {
+    [Export] OptionsManager optionsManager;
+
     ResourceOptions options;
 
     public override void _Ready()
     {
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         SetupMusic();
         SetupSounds();
     }

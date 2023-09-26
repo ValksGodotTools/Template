@@ -5,38 +5,63 @@ using Godot.Collections;
 // Members of this class were set to static because this will exist for the
 // duration of the applications life and there should be no issues with
 // using these functions anywhere at anytime.
-public partial class OptionsManager : Node
+[GlobalClass]
+public partial class OptionsManager : Resource
 {
-    public static event Action<WindowMode> WindowModeChanged;
+    public event Action<WindowMode> WindowModeChanged;
 
-    public static ResourceOptions Options { get; set; }
+    public Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; set; }
+    public ResourceHotkeys Hotkeys { get; set; }
+    public ResourceOptions Options { get; set; }
+    public string CurrentOptionsTab { get; set; } = "General";
 
-    public static Dictionary<StringName, Array<InputEvent>> DefaultHotkeys { get; set; }
-    public static ResourceHotkeys Hotkeys { get; set; }
+    public OptionsManager()
+    {
+        LoadOptions();
 
-    public static string CurrentOptionsTab { get; set; } = "General";
+        GetDefaultHotkeys();
+        LoadHotkeys();
 
-    public static void SaveOptions()
+        SetWindowMode();
+        SetVSyncMode();
+        SetWinSize();
+        SetMaxFPS();
+        SetLanguage();
+    }
+
+    public void ToggleFullscreen()
+    {
+        if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed)
+        {
+            SwitchToFullscreen();
+        }
+        else
+        {
+            SwitchToWindow();
+        }
+    }
+
+    public void SaveOptions()
     {
         Error error = ResourceSaver.Save(
-            resource: OptionsManager.Options, 
+            resource: Options,
             path: "user://options.tres");
 
         if (error != Error.Ok)
             GD.Print(error);
     }
 
-    public static void SaveHotkeys()
+    public void SaveHotkeys()
     {
         Error error = ResourceSaver.Save(
-            resource: OptionsManager.Hotkeys, 
+            resource: Hotkeys,
             path: "user://hotkeys.tres");
 
         if (error != Error.Ok)
             GD.Print(error);
     }
 
-    public static void ResetHotkeys()
+    public void ResetHotkeys()
     {
         // Deep clone default hotkeys over
         Hotkeys.Actions = new();
@@ -57,39 +82,6 @@ public partial class OptionsManager : Node
         LoadInputMap(DefaultHotkeys);
     }
 
-    public override void _Ready()
-    {
-        LoadOptions();
-
-        GetDefaultHotkeys();
-        LoadHotkeys();
-
-        SetWindowMode();
-        SetVSyncMode();
-        SetWinSize();
-        SetMaxFPS();
-        SetLanguage();
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (Input.IsActionJustPressed("fullscreen"))
-        {
-            if (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Windowed)
-            {
-                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-                Options.WindowMode = WindowMode.Borderless;
-                WindowModeChanged?.Invoke(WindowMode.Borderless);
-            }
-            else
-            {
-                DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-                Options.WindowMode = WindowMode.Windowed;
-                WindowModeChanged?.Invoke(WindowMode.Windowed);
-            }
-        }
-    }
-
     void LoadOptions()
     {
         bool fileExists = FileAccess.FileExists("user://options.tres");
@@ -98,7 +90,7 @@ public partial class OptionsManager : Node
             GD.Load<ResourceOptions>("user://options.tres") : new();
     }
 
-    static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
+    void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
     {
         Array<StringName> actions = InputMap.GetActions();
 
@@ -160,6 +152,20 @@ public partial class OptionsManager : Node
                 DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
                 break;
         }
+    }
+
+    void SwitchToFullscreen()
+    {
+        DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+        Options.WindowMode = WindowMode.Borderless;
+        WindowModeChanged?.Invoke(WindowMode.Borderless);
+    }
+
+    void SwitchToWindow()
+    {
+        DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+        Options.WindowMode = WindowMode.Windowed;
+        WindowModeChanged?.Invoke(WindowMode.Windowed);
     }
 
     void SetVSyncMode() => DisplayServer.WindowSetVsyncMode(Options.VSyncMode);

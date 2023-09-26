@@ -14,6 +14,8 @@ namespace Template;
 
 public partial class Global : Node
 {
+    [Export] OptionsManager optionsManager;
+
 	public override void _Ready()
 	{
         // Gradually fade out all SFX whenever the scene is changed
@@ -34,11 +36,17 @@ public partial class Global : Node
 		}
 	}
 
-	public void Quit()
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionJustPressed("fullscreen"))
+            optionsManager.ToggleFullscreen();
+    }
+
+    public void Quit()
 	{
         // Handle cleanup here
-        OptionsManager.SaveOptions();
-        OptionsManager.SaveHotkeys();
+        optionsManager.SaveOptions();
+        optionsManager.SaveHotkeys();
 
         // This must be here because buttons call Global::Quit()
         GetTree().Quit();

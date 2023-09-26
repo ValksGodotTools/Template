@@ -2,6 +2,8 @@ namespace Template;
 
 public partial class UIOptionsGameplay : Control
 {
+    [Export] OptionsManager optionsManager;
+
     ResourceOptions options;
 
     // Difficulty
@@ -9,7 +11,7 @@ public partial class UIOptionsGameplay : Control
 
     public override void _Ready()
     {
-        options = OptionsManager.Options;
+        options = optionsManager.Options;
         SetupDifficulty();
     }
 
