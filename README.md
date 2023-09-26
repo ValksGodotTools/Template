@@ -191,4 +191,6 @@ Any kind of contributions are very much welcomed!
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
 
+I realize the issue titles and descriptions are a mess. I have not been motivated to fix them because no one is contributing. Remind me to fix this if you contribute.
+
 If you have any questions, talk to me over Discord (`valk2023`)
