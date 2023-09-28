@@ -129,6 +129,14 @@ public partial class OptionsManager : Resource
         if (fileExists)
         {
             Hotkeys = GD.Load<ResourceHotkeys>("user://hotkeys.tres");
+
+            // InputMap in project settings has changed so reset all saved hotkeys
+            if (!ActionsAreEqual(DefaultHotkeys, Hotkeys.Actions))
+            {
+                Hotkeys = new();
+                ResetHotkeys();
+            }
+
             LoadInputMap(Hotkeys.Actions);
         }
         else
@@ -137,6 +145,11 @@ public partial class OptionsManager : Resource
             ResetHotkeys();
         }
     }
+
+    bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
+                         Dictionary<StringName, Array<InputEvent>> dict2) =>
+        dict1.Count == dict2.Count &&
+        dict1.All(pair => dict2.ContainsKey(pair.Key));
 
     void SetWindowMode()
     {
