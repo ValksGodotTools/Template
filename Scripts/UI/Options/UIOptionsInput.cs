@@ -38,6 +38,7 @@ public partial class UIOptionsInput : Control
             if (Input.IsActionJustPressed("ui_cancel"))
             {
                 btnNewInput.Btn.Text = btnNewInput.OriginalText;
+                btnNewInput.Btn.Disabled = false;
 
                 if (btnNewInput.Plus)
                     btnNewInput.Btn.QueueFree();
