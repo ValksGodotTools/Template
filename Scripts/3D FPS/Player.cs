@@ -13,14 +13,23 @@ public partial class Player : CharacterBody3D
     Vector3 cameraTarget;
     Vector3 cameraOffset;
     Vector3 gravityVec;
-    bool mouseCaptured;
+
+    UIPopupMenu popupMenu;
 
     public override void _Ready()
     {
         camera = GetNode<Camera3D>("Camera3D");
+        popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
+        popupMenu.OnOpened += () =>
+        {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        };
+        popupMenu.OnClosed += () =>
+        {
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        };
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        mouseCaptured = true;
     }
 
     public override void _PhysicsProcess(double d)
@@ -65,18 +74,8 @@ public partial class Player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("ui_cancel"))
-        {
-            mouseCaptured = !mouseCaptured;
-
-            Input.MouseMode = mouseCaptured ?
-                Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
-        }
-
-        if (@event is not InputEventMouseMotion motion)
-            return;
-
-        if (Input.MouseMode != Input.MouseModeEnum.Captured)
+        if (@event is not InputEventMouseMotion motion ||
+            Input.MouseMode != Input.MouseModeEnum.Captured)
             return;
 
         mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);

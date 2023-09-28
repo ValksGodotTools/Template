@@ -124,4 +124,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.598881, 0)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_bhqx1")]
+unique_name_in_owner = true
 visible = false

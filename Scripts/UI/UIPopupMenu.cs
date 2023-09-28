@@ -2,6 +2,9 @@ namespace Template;
 
 public partial class UIPopupMenu : Control
 {
+    public event Action OnOpened;
+    public event Action OnClosed;
+
     VBoxContainer vbox;
     PanelContainer menu;
     UIOptions options;
@@ -32,7 +35,12 @@ public partial class UIPopupMenu : Control
 
                 if (Visible)
                 {
+                    OnOpened?.Invoke();
                     // todo: pause the game
+                }
+                else
+                {
+                    OnClosed?.Invoke();
                 }
             }
         }
