@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4a5xfmaulku1"]
+[gd_scene load_steps=17 format=3 uid="uid://d4a5xfmaulku1"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_3ln8k"]
 [ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Sprites/Concept Art/floating-island-city.JPG" id="2_b1wex"]
 [ext_resource type="Resource" uid="uid://b42wyojsytvbi" path="res://Resources/game_state.tres" id="2_kslb2"]
 [ext_resource type="Script" path="res://Scripts/UI/UIMainMenuNav.cs" id="3_te57n"]
+[ext_resource type="Script" path="res://Scripts/UI/UIBackgroundNoise.cs" id="4_jki8y"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 
@@ -57,17 +58,12 @@ grow_vertical = 2
 script = ExtResource("1_3ln8k")
 gameState = ExtResource("2_kslb2")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(577, 324)
+scale = Vector2(0.365, 0.365)
 texture = ExtResource("2_b1wex")
-expand_mode = 1
-stretch_mode = 6
 flip_h = true
+script = ExtResource("4_jki8y")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
