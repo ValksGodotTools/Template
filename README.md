@@ -15,11 +15,6 @@ https://github.com/ValksGodotTools/Template/assets/6277739/a93ca8c8-0ea4-4d53-84
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 - And lots more!
 
-## FAQ
-Q: Why am I not seeing any messages appear in console?  
-
-A: The AddMessage(...) function has been commented out 3 times in Logger.cs because what if a project is using GodotUtils submodule where the Logger.cs is defined but it's not using Template where UIConsole.Instance.AddMessage(...) is defined. I have not found a solution to this so for now please just uncomment the calls to AddMessage(...) in Logger.cs.  
-
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone this repository with all its submodules
