@@ -60,8 +60,8 @@ public partial class UIPopupMenu : Control
 
     void _on_main_menu_pressed()
     {
-        AudioManager.Instance.PlayMusic(Music.Menu);
-        SceneManager.Instance.SwitchScene("main_menu");
+        Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
+        Global.Services.Get<SceneManager>().SwitchScene("main_menu");
     }
 
     void _on_quit_pressed() => 

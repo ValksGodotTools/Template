@@ -7,8 +7,6 @@ public partial class AudioManager : Node
 {
     [Export] OptionsManager optionsManager;
 
-    public static AudioManager Instance { get; private set; }
-
     GAudioPlayer musicPlayer;
     Node sfxPlayersParent;
     float lastPitch;
@@ -16,7 +14,7 @@ public partial class AudioManager : Node
 
     public override void _Ready()
     {
-        Instance = this;
+        Global.Services.Add(this);
 
         options = optionsManager.Options;
         musicPlayer = new GAudioPlayer(this);

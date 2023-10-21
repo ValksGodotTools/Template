@@ -14,18 +14,26 @@ namespace Template;
 
 public partial class Global : Node
 {
+    public static ServiceProvider Services { get; private set; }
+
     [Export] OptionsManager optionsManager;
 
 	public override void _Ready()
 	{
+        Services = new ServiceProvider();
+        GU.Init(Services);
+
+        // Temporary
+        Services.Add(GetNode<SceneManager>("/root/SceneManager"));
+
         // Gradually fade out all SFX whenever the scene is changed
-        SceneManager.SceneChanged += name => 
-            AudioManager.Instance.FadeOutSFX();
+        Services.Get<SceneManager>().SceneChanged += name => 
+            Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Logger.Update();
+		Services.Get<Logger>().Update();
 	}
 
     public override void _Notification(int what)

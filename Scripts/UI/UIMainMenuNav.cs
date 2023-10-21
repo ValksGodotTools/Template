@@ -9,21 +9,21 @@ public partial class UIMainMenuNav : Node
 
     void _on_play_pressed()
     {
-        AudioManager.Instance.PlayMusic(Music.Level1, false);
-        SceneManager.Instance.SwitchScene("level_2D_top_down", 
+        Global.Services.Get<AudioManager>().PlayMusic(Music.Level1, false);
+        Global.Services.Get<SceneManager>().SwitchScene("level_3D", 
             SceneManager.TransType.Fade);
     }
 
     void _on_options_pressed()
     {
-        AudioManager.Instance.PlayMusic(Music.Level4);
-        SceneManager.Instance.SwitchScene("Prefabs/UI/options");
+        Global.Services.Get<AudioManager>().PlayMusic(Music.Level4);
+        Global.Services.Get<SceneManager>().SwitchScene("Prefabs/UI/options");
     }
 
     void _on_credits_pressed()
     {
-        AudioManager.Instance.PlayMusic(Music.Level4);
-        SceneManager.Instance.SwitchScene("credits");
+        Global.Services.Get<AudioManager>().PlayMusic(Music.Level4);
+        Global.Services.Get<SceneManager>().SwitchScene("credits");
     }
 
     void _on_quit_pressed() => 

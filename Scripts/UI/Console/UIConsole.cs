@@ -135,7 +135,7 @@ public partial class UIConsole : PanelContainer
 
         if (cmd == null)
         {
-            Logger.Log($"The command '{text.Split()[0].ToLower()}' " +
+            Global.Services.Get<Logger>().Log($"The command '{text.Split()[0].ToLower()}' " +
                 $"does not exist");
 
             return false;

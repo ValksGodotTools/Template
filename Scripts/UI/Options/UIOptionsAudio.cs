@@ -26,8 +26,8 @@ public partial class UIOptionsAudio : Control
     }
 
     void _on_music_value_changed(float v) =>
-        AudioManager.Instance.SetMusicVolume(v);
+        Global.Services.Get<AudioManager>().SetMusicVolume(v);
 
     void _on_sounds_value_changed(float v) =>
-        AudioManager.Instance.SetSFXVolume(v);
+        Global.Services.Get<AudioManager>().SetSFXVolume(v);
 }
