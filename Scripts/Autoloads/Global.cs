@@ -25,6 +25,7 @@ public partial class Global : Node
 
         // Temporary
         Services.Add(GetNode<SceneManager>("/root/SceneManager"));
+        Services.Add(GetNode<UIConsole>("CanvasLayer/UIConsole"));
 
         // Gradually fade out all SFX whenever the scene is changed
         Services.Get<SceneManager>().SceneChanged += name => 

@@ -5,8 +5,7 @@ using System.Reflection;
 
 public partial class UIConsole : PanelContainer
 {
-    public static UIConsole Instance { get; private set; }
-    public bool IsVisible { get => Instance.Visible; }
+    public bool IsVisible { get => Visible; }
 
     TextEdit feed;
     LineEdit input;
@@ -21,7 +20,6 @@ public partial class UIConsole : PanelContainer
     public override void _Ready()
     {
         LoadCommands();
-        Instance = this;
 
         feed          = GetNode<TextEdit>("%Output");
         input         = GetNode<LineEdit>("%Input");
@@ -47,10 +45,6 @@ public partial class UIConsole : PanelContainer
 
     public void AddMessage(object message)
     {
-        // UIConsole was not set up properly so return
-        if (Instance == null)
-            return;
-
         double prevScroll = feed.ScrollVertical;
         
         // Prevent text feed from becoming too large

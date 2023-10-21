@@ -6,7 +6,7 @@ public partial class UIConsole
     void Help()
     {
         IEnumerable<string> cmds =
-            UIConsole.Instance.Commands.Select(x => x.Name);
+            Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
 
         Global.Services.Get<Logger>().Log(cmds.Print());
     }
