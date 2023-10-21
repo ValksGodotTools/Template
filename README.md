@@ -55,9 +55,9 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 void Help()
 {
     IEnumerable<string> cmds =
-        UIConsole.Instance.Commands.Select(x => x.Name);
+        Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
 
-    Logger.Log(cmds.Print());
+    Global.Services.Get<Logger>().Log(cmds.Print());
 }
 
 // Console commands can have aliases, this command has a
@@ -74,7 +74,7 @@ void Quit()
 [ConsoleCommand("debug")]
 void Debug(int x, string y)
 {
-    Logger.Log($"Debug {x}, {y}");
+    Global.Services.Get<Logger>().Log($"Debug {x}, {y}");
 }
 ```
 
@@ -98,29 +98,31 @@ UIOptions options = Prefabs.Options.Instantiate<UIOptions>();
 
 ## AudioManager
 ```cs
+AudioManager audioManager = Global.Services.Get<AudioManager>();
+
 // Play a soundtrack
-AudioManager.Instance.PlayMusic(Music.Menu);
+audioManager.PlayMusic(Music.Menu);
 
 // Play a sound
-AudioManager.Instance.PlaySFX(Sounds.GameOver);
+audioManager.PlaySFX(Sounds.GameOver);
 
 // Set the music volume
-AudioManager.Instance.SetMusicVolume(75);
+audioManager.SetMusicVolume(75);
 
 // Set the sound volume
-AudioManager.Instance.SetSFXVolume(100);
+audioManager.SetSFXVolume(100);
 
 // Gradually fade out all sounds
-AudioManager.Instance.FadeOutSFX();
+audioManager.FadeOutSFX();
 ```
 
 ## SceneManager
 ```cs
 // Switch to a scene instantly
-SceneManager.Instance.SwitchScene("main_menu");
+Global.Services.Get<SceneManager>().SwitchScene("main_menu");
 
 // Switch to a scene with a fade transition
-SceneManager.Instance.SwitchScene("level_2D_top_down", 
+Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down", 
     SceneManager.TransType.Fade);
 ```
 
