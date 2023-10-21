@@ -1,6 +1,8 @@
 # Template
 The template I use when starting a new Godot 4 C# game.
 
+https://github.com/ValksGodotTools/Template/assets/6277739/a93ca8c8-0ea4-4d53-8400-7bbfbe522c44
+
 ## Feature Summary
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
 - [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
@@ -12,11 +14,6 @@ The template I use when starting a new Godot 4 C# game.
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
 - [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
 - And lots more!
-
-## FAQ
-Q: Why am I not seeing any messages appear in console?  
-
-A: The AddMessage(...) function has been commented out 3 times in Logger.cs because what if a project is using GodotUtils submodule where the Logger.cs is defined but it's not using Template where UIConsole.Instance.AddMessage(...) is defined. I have not found a solution to this so for now please just uncomment the calls to AddMessage(...) in Logger.cs.  
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
@@ -87,11 +84,6 @@ void Debug(int x, string y)
 // "res://Scripts/Static/Prefabs.cs". Note that music and sounds are
 // loaded in very similarily and these scripts can be found in the
 // static folder as well.
-
-// NOTICE:
-// I realize now that Godot only loads a resource one time no matter
-// how many times it's used in different export variables so this
-// way of doing things may likely be scrapped in the future
 public static class Prefabs
 {
     public static PackedScene Options { get; } = Load("UI/options");
