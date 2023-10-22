@@ -1,9 +1,6 @@
 namespace Template;
 
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
-// Members of this class were set to static because this will exist for the
-// duration of the applications life and there should be no issues with
-// using these functions anywhere at anytime.
 public partial class SceneManager : Node
 {
     public event Action<string> SceneChanged;

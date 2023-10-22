@@ -85,7 +85,7 @@ public partial class UIConsole : PanelContainer
         foreach (Type type in types)
         {
             // BindingFlags.Instance must be added or the methods will not
-            // be seen. Not sure why static methods can't be added.
+            // be seen
             MethodInfo[] methods = type.GetMethods(
                 BindingFlags.Instance |
                 BindingFlags.Public |
