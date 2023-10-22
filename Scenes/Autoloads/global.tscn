@@ -1,14 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cj4fbh1a1lpq4"]
+[gd_scene load_steps=3 format=3 uid="uid://cj4fbh1a1lpq4"]
 
 [ext_resource type="Script" path="res://Scripts/Autoloads/Global.cs" id="1_ueahs"]
-[ext_resource type="PackedScene" uid="uid://jrjqky6ag6gg" path="res://Scenes/Prefabs/UI/console.tscn" id="2_ht13n"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Resources/options_manager.tres" id="2_rot82"]
 
 [node name="Global" type="Node2D"]
 script = ExtResource("1_ueahs")
 optionsManager = ExtResource("2_rot82")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 100
-
-[node name="UIConsole" parent="CanvasLayer" instance=ExtResource("2_ht13n")]

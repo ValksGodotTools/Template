@@ -22,14 +22,6 @@ public partial class Global : Node
 	{
         Services = new ServiceProvider();
         GU.Init(Services);
-
-        // Temporary
-        Services.Add(GetNode<SceneManager>("/root/SceneManager"));
-        Services.Add(GetNode<UIConsole>("CanvasLayer/UIConsole"));
-
-        // Gradually fade out all SFX whenever the scene is changed
-        Services.Get<SceneManager>().SceneChanged += name => 
-            Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 
 	public override void _PhysicsProcess(double delta)
