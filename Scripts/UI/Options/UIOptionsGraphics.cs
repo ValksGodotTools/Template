@@ -1,5 +1,7 @@
 namespace Template;
 
+using Environment = Godot.Environment;
+
 public partial class UIOptionsGraphics : Control
 {
     [Export] OptionsManager optionsManager;
@@ -12,6 +14,36 @@ public partial class UIOptionsGraphics : Control
         options = optionsManager.Options;
         SetupQualityPreset();
         SetupAntialiasing();
+        //SetupWorldEnvironmentSettings();
+    }
+
+    void SetupWorldEnvironmentSettings()
+    {
+        HBoxContainer hbox = new HBoxContainer();
+        hbox.AddChild(new Label
+        {
+            Text = "GLOW",
+            CustomMinimumSize = new Vector2(200, 0)
+        });
+        CheckBox checkBox = new CheckBox
+        {
+            ButtonPressed = true
+        };
+        checkBox.Pressed += () =>
+        {
+            // SHOULD ONLY DO THIS WHEN WORLD ENVIRONMENT NODE IS IN SCENE
+            /*WorldEnvironment worldEnvironment =
+                Global.Services.Get<UIPopupMenu>().WorldEnvironment;
+
+            if (worldEnvironment != null)
+            {
+                Environment environment = worldEnvironment.Environment;
+
+
+            }*/
+        };
+        hbox.AddChild(checkBox);
+        AddChild(hbox);
     }
 
     void SetupQualityPreset()
