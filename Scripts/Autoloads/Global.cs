@@ -14,13 +14,13 @@ namespace Template;
 
 public partial class Global : Node
 {
-    public static ServiceProvider Services { get; private set; }
+    public static GameServiceProvider Services { get; private set; }
 
     [Export] OptionsManager optionsManager;
 
 	public override void _Ready()
 	{
-        Services = new ServiceProvider();
+        Services = new GameServiceProvider();
         GU.Init(Services);
     }
 

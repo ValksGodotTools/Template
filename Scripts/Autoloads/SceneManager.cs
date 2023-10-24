@@ -3,7 +3,10 @@ namespace Template;
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
 public partial class SceneManager : Node
 {
-    public event Action<string> SceneChanged;
+    /// <summary>
+    /// The event is invoked right before the scene is changed
+    /// </summary>
+    public event Action<string> PreSceneChanged;
 
     public Node CurrentScene { get; set; }
 
@@ -15,7 +18,7 @@ public partial class SceneManager : Node
     /// </summary>
     public void SwitchScene(string name, TransType transType = TransType.None)
     {
-        SceneChanged?.Invoke(name);
+        PreSceneChanged?.Invoke(name);
 
         switch (transType)
         {
@@ -40,10 +43,10 @@ public partial class SceneManager : Node
         tree = GetTree();
         Window root = tree.Root;
         CurrentScene = root.GetChild(root.GetChildCount() - 1);
-        Global.Services.Add(this);
+        Global.Services.Add(this, persistent: true);
 
         // Gradually fade out all SFX whenever the scene is changed
-        SceneChanged += name =>
+        PreSceneChanged += name =>
             Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 

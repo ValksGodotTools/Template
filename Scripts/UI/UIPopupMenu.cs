@@ -5,12 +5,17 @@ public partial class UIPopupMenu : Control
     public event Action OnOpened;
     public event Action OnClosed;
 
+    public WorldEnvironment WorldEnvironment { get; private set; }
+
     VBoxContainer vbox;
     PanelContainer menu;
     UIOptions options;
 
     public override void _Ready()
     {
+        Global.Services.Add(this);
+        TryFindWorldEnvironmentNode();
+
         menu = GetNode<PanelContainer>("%Menu");
         vbox = GetNode<VBoxContainer>("%Navigation");
 
@@ -44,6 +49,15 @@ public partial class UIPopupMenu : Control
                 }
             }
         }
+    }
+
+    void TryFindWorldEnvironmentNode()
+    {
+        Node node = GetTree().Root.FindChild("WorldEnvironment", 
+            recursive: true, owned: false);
+
+        if (node != null && node is WorldEnvironment worldEnvironment)
+            WorldEnvironment = worldEnvironment;
     }
 
     void _on_resume_pressed()

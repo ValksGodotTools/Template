@@ -19,7 +19,7 @@ public partial class UIConsole : PanelContainer
 
     public override void _Ready()
     {
-        Global.Services.Add(this);
+        Global.Services.Add(this, persistent: true);
         LoadCommands();
 
         feed          = GetNode<TextEdit>("%Output");
