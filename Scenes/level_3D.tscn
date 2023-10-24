@@ -22,6 +22,8 @@ tonemap_exposure = 0.9
 ssr_enabled = true
 ssao_enabled = true
 ssil_enabled = true
+sdfgi_enabled = true
+sdfgi_read_sky_light = false
 glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_d5p2g"]
