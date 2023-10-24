@@ -68,7 +68,7 @@ public partial class UIVignette : ColorRect
 }
 ```
 
-Now you can get the instance of UIVignette from anywhere! No static or long GetNode<T> paths involved. It's magic.
+Now you can get the instance of UIVignette from anywhere! No static or long GetNode\<T\> paths involved. It's magic.
 ```cs
 UIVignette vignette = Global.Services.Get<UIVignette>();
 vignette.LightPulse();
