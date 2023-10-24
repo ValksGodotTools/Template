@@ -44,6 +44,36 @@ git clone --recursive https://github.com/ValksGodotTools/Template
   
 </details>
 
+## Services
+**Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
+
+In the `_Ready()` of any node add `Global.Services.Add(this)`. (if the script does not extend from node, you can use `Global.Services.Add<Type>`)
+```cs
+public partial class UIVignette : ColorRect
+{
+    public override void _Ready()
+    {
+        // Set persistent to true if this is an autoload script
+        // (scripts that do not extend from Node are persistent by default)
+
+        // Non persistent services will get removed just before the scene is changed
+        // Example of persistent service: AudioManager; a node like this should exist
+        // for the entire duration of the game
+
+        // However this UIVignette exists within the scene so it should not be persistent
+        Global.Services.Add(this, persistent: false); 
+    }
+
+    public void LightPulse() { ... }
+}
+```
+
+Now you can get the instance of UIVignette from anywhere! No static or long GetNode<T> paths involved. It's magic.
+```cs
+UIVignette vignette = Global.Services.Get<UIVignette>();
+vignette.LightPulse();
+```
+
 ## Console Commands
 ```cs
 // Simply add the "ConsoleCommand" attribute to any function
