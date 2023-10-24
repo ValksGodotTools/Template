@@ -24,6 +24,7 @@ public partial class OptionsManager : Resource
         SetWinSize();
         SetMaxFPS();
         SetLanguage();
+        SetAntialiasing();
     }
 
     public void ToggleFullscreen()
@@ -203,4 +204,16 @@ public partial class OptionsManager : Resource
 
     void SetLanguage() => TranslationServer.SetLocale(
         Options.Language.ToString().Substring(0, 2).ToLower());
+
+    void SetAntialiasing()
+    {
+        // Set both 2D and 3D settings to the same value
+        ProjectSettings.SetSetting(
+            name: "rendering/anti_aliasing/quality/msaa_2d", 
+            value: Options.Antialiasing);
+
+        ProjectSettings.SetSetting(
+            name: "rendering/anti_aliasing/quality/msaa_3d",
+            value: Options.Antialiasing);
+    }
 }

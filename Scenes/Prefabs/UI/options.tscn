@@ -112,6 +112,7 @@ popup/item_2/text = "Japanese"
 popup/item_2/id = 2
 
 [node name="Gameplay" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
 layout_mode = 2
 script = ExtResource("5_eyimv")
 optionsManager = ExtResource("6_3x0fd")
@@ -254,7 +255,6 @@ text = "UNLIMITED"
 vertical_alignment = 1
 
 [node name="Graphics" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
 layout_mode = 2
 script = ExtResource("6_wctgl")
 optionsManager = ExtResource("6_3x0fd")
@@ -278,6 +278,28 @@ popup/item_1/text = "MEDIUM"
 popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
+
+[node name="Anti-Aliasing" type="HBoxContainer" parent="Margin/HBox/Content/Graphics"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Graphics/Anti-Aliasing"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "ANTIALIASING"
+
+[node name="Antialiasing" type="OptionButton" parent="Margin/HBox/Content/Graphics/Anti-Aliasing"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 4
+selected = 0
+popup/item_0/text = "DISABLED"
+popup/item_0/id = 0
+popup/item_1/text = "2x"
+popup/item_1/id = 1
+popup/item_2/text = "4x"
+popup/item_2/id = 2
+popup/item_3/text = "8x"
+popup/item_3/id = 3
 
 [node name="Audio" type="VBoxContainer" parent="Margin/HBox/Content"]
 visible = false
@@ -347,6 +369,7 @@ text = "RESET_TO_DEFAULTS"
 [connection signal="drag_ended" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_drag_ended"]
 [connection signal="value_changed" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_value_changed"]
 [connection signal="item_selected" from="Margin/HBox/Content/Graphics/QualityMode/QualityMode" to="Margin/HBox/Content/Graphics" method="_on_quality_mode_item_selected"]
+[connection signal="item_selected" from="Margin/HBox/Content/Graphics/Anti-Aliasing/Antialiasing" to="Margin/HBox/Content/Graphics" method="_on_antialiasing_item_selected"]
 [connection signal="value_changed" from="Margin/HBox/Content/Audio/Music/Music" to="Margin/HBox/Content/Audio" method="_on_music_value_changed"]
 [connection signal="value_changed" from="Margin/HBox/Content/Audio/Sounds/Sounds" to="Margin/HBox/Content/Audio" method="_on_sounds_value_changed"]
 [connection signal="pressed" from="Margin/HBox/Content/Input/ResetToDefaults" to="Margin/HBox/Content/Input" method="_on_reset_to_defaults_pressed"]

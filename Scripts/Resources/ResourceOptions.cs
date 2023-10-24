@@ -20,13 +20,28 @@ using QualityP = QualityPreset;
  */
 public partial class ResourceOptions : Resource
 {
+    // General
+    [Export] public Language   Language      { get; set; } = Language.English;
+
+    // Volume
     [Export] public float      MusicVolume   { get; set; } = 100;
     [Export] public float      SFXVolume     { get; set; } = 100;
+
+    // Display
     [Export] public WindowMode WindowMode    { get; set; } = WindowMode.Windowed;
     [Export] public VSyncMode  VSyncMode     { get; set; } = VSyncMode.Enabled;
-    [Export] public QualityP   QualityPreset { get; set; } = QualityPreset.High;
-    [Export] public Difficulty Difficulty    { get; set; } = Difficulty.Normal;
     [Export] public Vector2I   WindowSize    { get; set; }
     [Export] public int        MaxFPS        { get; set; } = 60;
-    [Export] public Language   Language      { get; set; } = Language.English;
+
+    // Graphics
+    [Export] public QualityP   QualityPreset { get; set; } = QualityPreset.High;
+    // Antialiasing values can be
+    // 0 - Disabled
+    // 1 - 2x
+    // 2 - 4x
+    // 3 - 8x
+    [Export] public int        Antialiasing  { get; set; } = 3;
+
+    // Gameplay
+    [Export] public Difficulty Difficulty    { get; set; } = Difficulty.Normal;
 }
