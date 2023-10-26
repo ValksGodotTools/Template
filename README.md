@@ -206,3 +206,6 @@ Any kind of contributions are very much welcomed!
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)  
 
 Contact me over Discord (`valk2023`)
+
+## Credit
+See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)  
