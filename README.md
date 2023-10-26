@@ -32,16 +32,6 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 ## Hotkeys
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
-<details>
-  <summary>Old Video Previews</summary>
-  
-  <!--Spoiler text. Note that it's important to have a space after the summary tag. You should be able to write any markdown you want inside the `<details>` tag... just make sure you close `<details>` afterward.-->
-  https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a691-59e296c1b10f.mp4
-
-  https://user-images.githubusercontent.com/6277739/234088697-11d94789-3a14-4aee-bc5b-ba8dee9f4461.mp4
-  
-</details>
-
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
 
