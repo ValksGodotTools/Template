@@ -1,8 +1,6 @@
 # Template
 The template I use when starting a new Godot 4 C# game.
 
-https://github.com/ValksGodotTools/Template/assets/6277739/a93ca8c8-0ea4-4d53-8400-7bbfbe522c44
-
 ## Feature Summary
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
 - [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
@@ -33,16 +31,6 @@ git clone --recursive https://github.com/ValksGodotTools/Template
 
 ## Hotkeys
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
-
-<details>
-  <summary>Old Video Previews</summary>
-  
-  <!--Spoiler text. Note that it's important to have a space after the summary tag. You should be able to write any markdown you want inside the `<details>` tag... just make sure you close `<details>` afterward.-->
-  https://user-images.githubusercontent.com/6277739/233853220-cad1e927-8dcc-493d-a691-59e296c1b10f.mp4
-
-  https://user-images.githubusercontent.com/6277739/234088697-11d94789-3a14-4aee-bc5b-ba8dee9f4461.mp4
-  
-</details>
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
@@ -213,8 +201,11 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 ## Contributing
 Any kind of contributions are very much welcomed!
 
-[Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)
+[Roadmap](https://github.com/ValksGodotTools/Template/issues/12)  
 
-I realize the issue titles and descriptions are a mess. I have not been motivated to fix them because no one is contributing. Remind me to fix this if you contribute.
+[Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)  
 
-If you have any questions, talk to me over Discord (`valk2023`)
+Contact me over Discord (`valk2023`)
+
+## Credit
+See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)  
