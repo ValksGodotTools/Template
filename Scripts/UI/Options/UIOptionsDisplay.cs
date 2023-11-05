@@ -68,10 +68,15 @@ public partial class UIOptionsDisplay : Control
         optionBtnWindowMode.Select((int)options.WindowMode);
 
         optionsManager.WindowModeChanged += windowMode =>
+        {
+            if (!GodotObject.IsInstanceValid(optionBtnWindowMode))
+                return;
+
             // Window mode select button could be null. If there was no null check
             // here then we would be assuming that the user can only change fullscreen
             // when in the options screen but this is not the case.
             optionBtnWindowMode?.Select((int)windowMode);
+        };
     }
 
     void SetupVSyncMode()
