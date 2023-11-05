@@ -37,6 +37,7 @@ public partial class UIPopupMenu : Control
             else
             {
                 Visible = !Visible;
+                GetTree().Paused = Visible;
 
                 if (Visible)
                 {
@@ -74,6 +75,7 @@ public partial class UIPopupMenu : Control
 
     void _on_main_menu_pressed()
     {
+        GetTree().Paused = false;
         Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
         Global.Services.Get<SceneManager>().SwitchScene("main_menu");
     }
