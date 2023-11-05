@@ -5,6 +5,8 @@ using System.Reflection;
 
 public partial class UIConsole : PanelContainer
 {
+    public event Action<bool> OnToggleVisibility;
+
     public bool IsVisible { get => Visible; }
 
     TextEdit feed;
@@ -246,9 +248,10 @@ public partial class UIConsole : PanelContainer
         }
     }
 
-    async Task ToggleVisibility()
+    public async Task ToggleVisibility()
     {
         Visible = !Visible;
+        OnToggleVisibility?.Invoke(Visible);
 
         if (Visible)
         {

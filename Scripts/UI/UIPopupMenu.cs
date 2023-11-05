@@ -4,6 +4,7 @@ public partial class UIPopupMenu : Control
 {
     public event Action OnOpened;
     public event Action OnClosed;
+    public event Action OnMainMenuBtnPressed;
 
     public WorldEnvironment WorldEnvironment { get; private set; }
 
@@ -25,10 +26,18 @@ public partial class UIPopupMenu : Control
         Hide();
     }
 
-    public override void _Input(InputEvent @event)
+    public override async void _Input(InputEvent @event)
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
+            UIConsole console = Global.Services.Get<UIConsole>();
+
+            if (console.Visible)
+            {
+                await console.ToggleVisibility();
+                return;
+            }
+
             if (options.Visible)
             {
                 options.Hide();
@@ -75,6 +84,7 @@ public partial class UIPopupMenu : Control
 
     void _on_main_menu_pressed()
     {
+        OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
         Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
         Global.Services.Get<SceneManager>().SwitchScene("main_menu");
