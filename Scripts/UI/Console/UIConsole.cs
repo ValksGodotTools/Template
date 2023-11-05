@@ -126,7 +126,7 @@ public partial class UIConsole : PanelContainer
 
     bool ProcessCommand(string text)
     {
-        ConsoleCommandInfo cmd = TryGetCommand(text.ToLower());
+        ConsoleCommandInfo cmd = TryGetCommand(text.Split()[0].ToLower());
 
         if (cmd == null)
         {
