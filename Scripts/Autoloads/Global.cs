@@ -45,6 +45,8 @@ public partial class Global : Node
             optionsManager.ToggleFullscreen();
     }
 
+    public static void Log(object message) => Services.Get<Logger>().Log(message);
+
     public void Quit()
 	{
         // Handle cleanup here
