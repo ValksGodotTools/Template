@@ -167,9 +167,9 @@ public partial class OptionsManager : Resource
 
     void SwitchToFullscreen()
     {
-        DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-        Options.WindowMode = WindowMode.Borderless;
-        WindowModeChanged?.Invoke(WindowMode.Borderless);
+        DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
+        Options.WindowMode = WindowMode.Fullscreen;
+        WindowModeChanged?.Invoke(WindowMode.Fullscreen);
     }
 
     void SwitchToWindow()
