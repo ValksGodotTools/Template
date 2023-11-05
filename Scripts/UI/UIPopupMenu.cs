@@ -26,7 +26,7 @@ public partial class UIPopupMenu : Control
         Hide();
     }
 
-    public override async void _Input(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
@@ -34,7 +34,7 @@ public partial class UIPopupMenu : Control
 
             if (console.Visible)
             {
-                await console.ToggleVisibility();
+                console.ToggleVisibility();
                 return;
             }
 

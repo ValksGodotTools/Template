@@ -40,9 +40,9 @@ public partial class UIConsole : PanelContainer
         Hide();
     }
 
-    public override async void _Input(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
-        await InputVisibility(@event);
+        InputVisibility(@event);
         InputNavigateHistory();
     }
 
@@ -66,6 +66,18 @@ public partial class UIConsole : PanelContainer
 
         // Autoscroll if enabled
         ScrollDown();
+    }
+
+    public void ToggleVisibility()
+    {
+        Visible = !Visible;
+        OnToggleVisibility?.Invoke(Visible);
+
+        if (Visible)
+        {
+            input.GrabFocus();
+            CallDeferred(nameof(ScrollDown));
+        }
     }
 
     void ScrollDown()
@@ -207,14 +219,14 @@ public partial class UIConsole : PanelContainer
         input.Clear();
     }
 
-    async Task InputVisibility(InputEvent @event)
+    void InputVisibility(InputEvent @event)
     {
         if (@event is not InputEventKey inputEventKey)
             return;
 
         if (inputEventKey.IsJustPressed(Key.F12))
         {
-            await ToggleVisibility();
+            ToggleVisibility();
             return;
         }
     }
@@ -245,25 +257,6 @@ public partial class UIConsole : PanelContainer
             // if deferred is not use then something else will override these settings
             input.CallDeferred("grab_focus");
             input.CallDeferred("set", "caret_column", historyText.Length);
-        }
-    }
-
-    public async Task ToggleVisibility()
-    {
-        Visible = !Visible;
-        OnToggleVisibility?.Invoke(Visible);
-
-        if (Visible)
-        {
-            input.GrabFocus();
-
-            // This isn't ideal as you can see the scroll spas out for 1 frame
-            // But it is all I can think of doing right now
-            // If no task delay is set here then scroll down will not register
-            // at all
-            await Task.Delay(1);
-
-            ScrollDown();
         }
     }
 
