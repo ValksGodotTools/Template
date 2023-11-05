@@ -30,6 +30,16 @@ public partial class Player : CharacterBody3D
         };
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
+
+        UIConsole console = Global.Services.Get<UIConsole>();
+
+        console.OnToggleVisibility += HandleConsoleToggled;
+
+        popupMenu.OnMainMenuBtnPressed += () =>
+        {
+            // No longer need to listen for this
+            console.OnToggleVisibility -= HandleConsoleToggled;
+        };
     }
 
     public override void _PhysicsProcess(double d)
@@ -86,5 +96,23 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
+    }
+
+    void HandleConsoleToggled(bool visible)
+    {
+        SetPhysicsProcess(!visible);
+        SetProcessInput(!visible);
+
+        if (visible)
+        {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+        else
+        {
+            if (!popupMenu.Visible)
+            {
+                Input.MouseMode = Input.MouseModeEnum.Captured;
+            }
+        }
     }
 }
