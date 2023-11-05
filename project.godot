@@ -18,10 +18,10 @@ config/icon="res://Sprites/UI/icon.svg"
 
 [autoload]
 
+Console="*res://Scenes/Autoloads/console.tscn"
 Global="*res://Scenes/Autoloads/global.tscn"
 AudioManager="*res://Scenes/Autoloads/audio_manager.tscn"
 SceneManager="*res://Scripts/Autoloads/SceneManager.cs"
-Console="*res://Scenes/Autoloads/console.tscn"
 
 [dotnet]
 
