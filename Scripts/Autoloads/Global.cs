@@ -21,6 +21,9 @@ public partial class Global : Node
 	public override void _Ready()
 	{
         GU.Init(Services);
+
+        UIConsole console = Global.Services.Get<UIConsole>();
+        Global.Services.Get<Logger>().MessageLogged += console.AddMessage;
     }
 
 	public override void _PhysicsProcess(double delta)
