@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/Console/UIConsole.cs" id="1_gs4bw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4blkd"]
-bg_color = Color(0, 0, 0, 0.0392157)
+bg_color = Color(0, 0, 0, 0.196078)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cq5rj"]
 
