@@ -5,7 +5,17 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j3vts"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xx28n"]
-bg_color = Color(0, 0, 0, 0.196078)
+bg_color = Color(0, 0, 0, 0.345098)
+border_width_left = 100
+border_width_top = 100
+border_width_right = 100
+border_width_bottom = 100
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3nk4"]
 bg_color = Color(0, 0, 0, 0.470588)
@@ -49,10 +59,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_xx28n")
 
 [node name="Margin" type="MarginContainer" parent="Center/Menu"]
 layout_mode = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 75
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 75
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="Navigation" type="VBoxContainer" parent="Center/Menu/Margin"]
 unique_name_in_owner = true
