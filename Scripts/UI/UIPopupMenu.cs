@@ -26,7 +26,7 @@ public partial class UIPopupMenu : Control
         Hide();
     }
 
-    public override void _Input(InputEvent @event)
+    public override void _PhysicsProcess(double delta)
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {

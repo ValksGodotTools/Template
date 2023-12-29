@@ -44,6 +44,7 @@ public partial class UIOptionsInput : Control
                     btnNewInput.Btn.QueueFree();
 
                 btnNewInput = null;
+                @event.Dispose();
                 return;
             }
 
@@ -73,6 +74,8 @@ public partial class UIOptionsInput : Control
                 }
             }
         }
+
+        @event.Dispose();
     }
 
     void HandleInput(InputEvent @event)

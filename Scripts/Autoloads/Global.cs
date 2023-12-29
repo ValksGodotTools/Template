@@ -28,7 +28,10 @@ public partial class Global : Node
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Services.Get<Logger>().Update();
+        if (Input.IsActionJustPressed("fullscreen"))
+            optionsManager.ToggleFullscreen();
+        
+        Services.Get<Logger>().Update();
 	}
 
     public override void _Notification(int what)
@@ -38,12 +41,6 @@ public partial class Global : Node
 			Quit();
 		}
 	}
-
-    public override void _Input(InputEvent @event)
-    {
-        if (Input.IsActionJustPressed("fullscreen"))
-            optionsManager.ToggleFullscreen();
-    }
 
     public static void Log(object message) => Services.Get<Logger>().Log(message);
 

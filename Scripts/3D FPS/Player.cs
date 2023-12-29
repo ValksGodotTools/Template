@@ -86,7 +86,10 @@ public partial class Player : CharacterBody3D
     {
         if (@event is not InputEventMouseMotion motion ||
             Input.MouseMode != Input.MouseModeEnum.Captured)
+        {
+            @event.Dispose();
             return;
+        }
 
         mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
 
@@ -96,6 +99,8 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
+
+        @event.Dispose();
     }
 
     void HandleConsoleToggled(bool visible)

@@ -40,9 +40,14 @@ public partial class UIConsole : PanelContainer
         Hide();
     }
 
-    public override void _Input(InputEvent @event)
+    public override void _PhysicsProcess(double delta)
     {
-        InputVisibility(@event);
+        if (Input.IsActionJustPressed("toggle_console"))
+        {
+            ToggleVisibility();
+            return;
+        }
+
         InputNavigateHistory();
     }
 
@@ -219,25 +224,13 @@ public partial class UIConsole : PanelContainer
         input.Clear();
     }
 
-    void InputVisibility(InputEvent @event)
-    {
-        if (@event is not InputEventKey inputEventKey)
-            return;
-
-        if (inputEventKey.IsJustPressed(Key.F12))
-        {
-            ToggleVisibility();
-            return;
-        }
-    }
-
     void InputNavigateHistory()
     {
         // If console is not visible or there is no history to navigate do nothing
         if (!Visible || history.NoHistory())
             return;
 
-        if (Godot.Input.IsActionJustPressed("ui_up"))
+        if (Input.IsActionJustPressed("ui_up"))
         {
             string historyText = history.MoveUpOne();
 
@@ -248,7 +241,7 @@ public partial class UIConsole : PanelContainer
             input.CallDeferred("set", "caret_column", historyText.Length);
         }
 
-        if (Godot.Input.IsActionJustPressed("ui_down"))
+        if (Input.IsActionJustPressed("ui_down"))
         {
             string historyText = history.MoveDownOne();
 

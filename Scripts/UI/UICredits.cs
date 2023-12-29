@@ -88,10 +88,7 @@ public partial class UICredits : Node
             Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
             Global.Services.Get<SceneManager>().SwitchScene("main_menu");
         }
-    }
 
-    public override void _Input(InputEvent @event)
-    {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
             Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
