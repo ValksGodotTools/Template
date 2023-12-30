@@ -87,7 +87,7 @@ public partial class Player : CharacterBody3D
         if (@event is not InputEventMouseMotion motion ||
             Input.MouseMode != Input.MouseModeEnum.Captured)
         {
-            @event.Dispose();
+            @event.Dispose(); // Object count was increasing a lot when this function was executed
             return;
         }
 
@@ -100,7 +100,7 @@ public partial class Player : CharacterBody3D
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
 
-        @event.Dispose();
+        @event.Dispose(); // Object count was increasing a lot when this function was executed
     }
 
     void HandleConsoleToggled(bool visible)

@@ -44,7 +44,7 @@ public partial class UIOptionsInput : Control
                     btnNewInput.Btn.QueueFree();
 
                 btnNewInput = null;
-                @event.Dispose();
+                @event.Dispose(); // Object count was increasing a lot when this function was executed
                 return;
             }
 
@@ -75,7 +75,7 @@ public partial class UIOptionsInput : Control
             }
         }
 
-        @event.Dispose();
+        @event.Dispose(); // Object count was increasing a lot when this function was executed
     }
 
     void HandleInput(InputEvent @event)
@@ -133,7 +133,7 @@ public partial class UIOptionsInput : Control
         }
 
         // Create the button
-        var btn = new GButton(readable);
+        GButton btn = new GButton(readable);
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
@@ -206,7 +206,7 @@ public partial class UIOptionsInput : Control
             if (actionStr.StartsWith("ui"))
                 continue;
 
-            var hbox = new HBoxContainer();
+            HBoxContainer hbox = new HBoxContainer();
 
             // For example convert ui_left to UI_LEFT
             string name = action.ToString().ToUpper();
@@ -219,7 +219,7 @@ public partial class UIOptionsInput : Control
             });
 
             // Add all the events after the action label
-            var hboxEvents = new HBoxContainer();
+            HBoxContainer hboxEvents = new HBoxContainer();
 
             Array<InputEvent> events = optionsManager.Hotkeys.Actions[action];
 
@@ -254,6 +254,7 @@ public partial class UIOptionsInput : Control
         btnNewInput = null;
         optionsManager.ResetHotkeys();
         CreateHotkeys();
+        GC.Collect(); // Object count was increasing a lot when this function was executed
     }
 }
 
