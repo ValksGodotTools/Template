@@ -1,5 +1,5 @@
 # Template
-The template I use when starting a new Godot 4 C# game.
+The template I use when starting a new Godot C# game.
 
 ## Feature Summary
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
@@ -145,9 +145,7 @@ Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down",
 ```
 
 ## Experimental EventManager
-This is __one__ way of programming events, it may not be the best way but there is no harm in trying it out. 
-
-*In most tutorials about this on the internet you will find that they pass in a `Dictionary<string, string>` for the event params. This is very ugly but with the use of `dynamic` now you can pass in any kind of object you want and have beautiful params if you so desire.*
+If you like the idea of having a universal static event manager that handles everything then try out the code below in your own project.
 
 ### Event Enums
 ```cs
