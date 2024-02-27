@@ -20,6 +20,11 @@ The template I use when starting a new Godot C# game.
 git clone --recursive https://github.com/ValksGodotTools/Template
 ```
 
+If for whatever reason you forget to clone with the `--recursive` flag. Run the following command below to retrieve the submodules.
+```
+git submodule update --init --recursive
+```
+
 ## Main Menu
 ![1](https://user-images.githubusercontent.com/6277739/236582661-9e7a67d6-cf01-4457-9162-b3edd76dd999.png)
 
