@@ -3,15 +3,14 @@ The template I use when starting a new Godot C# game.
 
 ## Feature Summary
 - Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
-- [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
-- [UIConsole](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/Console/UIConsole.cs)
+- [Lots of Helper Functions](https://github.com/ValksGodotTools/GodotUtils)
+- [In-Game Console with Easy to Setup Commands](#console-commands)
 - [Hotkey Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/Options/UIOptionsInput.cs)
-- [Audio Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/AudioManager.cs)
-- [Several Options](https://github.com/ValksGodotTools/Template/tree/main/Scripts/UI/Options)
-- [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
-- [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
-- And lots more!
+- [Services](#services)
+
+## Todo
+- Direct mod support
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
