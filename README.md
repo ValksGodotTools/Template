@@ -1,17 +1,16 @@
 # Template
-The template I use when starting a new Godot C# game.
+Never again spend 5 minutes setting up a new project, ValksGodotTools/Template has got your back. ❤️
 
 ## Feature Summary
-- Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
-- [Godot Utils](https://github.com/ValksGodotTools/GodotUtils)
-- [UIConsole](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/Console/UIConsole.cs)
-- [Hotkey Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/Options/UIOptionsInput.cs)
-- [Audio Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/AudioManager.cs)
-- [Several Options](https://github.com/ValksGodotTools/Template/tree/main/Scripts/UI/Options)
-- [Global Autoload](https://github.com/ValksGodotTools/Template/blob/main/Scripts/Autoloads/Global.cs)
+- [Helper Functions](https://github.com/ValksGodotTools/GodotUtils)
+- [Hotkey Management](#hotkeys)
+- [In-Game Console](#console-commands)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
-- [Credits Scene](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/UICredits.cs)
-- And lots more!
+- [Scene Manager](#scenemanager)
+- [Services](#services)
+
+## Todo
+- Direct mod support
 
 ## Setup
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
@@ -208,7 +207,7 @@ Any kind of contributions are very much welcomed!
 
 [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)  
 
-Contact me over Discord (`valk2023`)
+Contact me over Discord (`valky5`)
 
 ## Credit
 See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)  
