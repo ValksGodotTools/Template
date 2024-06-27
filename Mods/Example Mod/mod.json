@@ -1,0 +1,12 @@
+{
+    "name": "Example Mod",
+    "id": "example_mod",
+    "modVersion": "1.0",
+    "gameVersion": "*",
+    "description": "Example description.",
+    "authors": [
+        "valkyrienyanko"
+    ],
+    "dependencies": {},
+    "incompatibilities": {}
+}
