@@ -129,22 +129,6 @@ text = "Authors:"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Logger" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Logger"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="Console" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Logger/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-scroll_following = true
-
 [node name="Buttons Nav" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
