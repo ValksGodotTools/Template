@@ -1,12 +1,12 @@
 # Template
-The template I use when starting a new Godot C# game.
+Never again spend 5 minutes setting up a new project, ValksGodotTools/Template has got your back. ❤️
 
 ## Feature Summary
-- Pre-configured [project.godot](https://github.com/ValksGodotTools/Template/blob/main/project.godot) [.csproj](https://github.com/ValksGodotTools/Template/blob/main/Template.csproj) [.editorconfig](https://github.com/ValksGodotTools/Template/blob/main/.editorconfig) [.gitignore](https://github.com/ValksGodotTools/Template/blob/main/.gitignore)
-- [Lots of Helper Functions](https://github.com/ValksGodotTools/GodotUtils)
-- [In-Game Console with Easy to Setup Commands](#console-commands)
-- [Hotkey Management](https://github.com/ValksGodotTools/Template/blob/main/Scripts/UI/Options/UIOptionsInput.cs)
+- [Helper Functions](https://github.com/ValksGodotTools/GodotUtils)
+- [Hotkey Management](#hotkeys)
+- [In-Game Console](#console-commands)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
+- [Scene Manager](#scenemanager)
 - [Services](#services)
 
 ## Todo
