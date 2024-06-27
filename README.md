@@ -6,11 +6,9 @@ Never again spend 5 minutes setting up a new project, ValksGodotTools/Template h
 - [Hotkey Management](#hotkeys)
 - [In-Game Console](#console-commands)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
+- [Mod Loader](#mod-loader)
 - [Scene Manager](#scenemanager)
 - [Services](#services)
-
-## Todo
-- Direct mod support
 
 ## Setup
 > Please note if you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
@@ -38,14 +36,12 @@ git submodule update --init --recursive
 ## Hotkeys
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
-## Mod Loader (wip)
-- [x] Execute code from example mod in-game
-- [ ] Expose API to example mod
-- [ ] Listen for mod file changes with file watcher class
-- [ ] Handle game version, dependency and incompatibility logic
-- [ ] Get at least 2 mods working side by side
+## Mod Loader
+You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
 
-![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/39ababe1-91d4-4f7a-ad93-1ea1167002e7)
+Mods can replace game assets and execute C# scripts.
+
+![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
