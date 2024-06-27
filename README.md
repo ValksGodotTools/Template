@@ -2,25 +2,25 @@
 Never again spend 5 minutes setting up a new project, ValksGodotTools/Template has got your back. ❤️
 
 ## Feature Summary
-### Useful Functions
+### ⭐ Mod Loader
+[Mods](#mod-loader) can replace game assets and execute C# scripts.
+
+### ⭐ In-Game Console
+Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
+
+### ⭐ Key Bindings
+Full configuration of [key bindings](#hotkeys) in-game.
+
+### ⭐ Useful Functions
 [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
 
 There are also useful classes like [Scene Manager](#scenemanager) and [Services](#services) that make your life easier.
 
-### Key Bindings
-Full configuration of [key bindings](#hotkeys) in-game.
-
-### In-Game Console
-Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
-
-### Localisation
+### ⭐ Localisation
 Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
-### Mod Loader
-[Mods](#mod-loader) can replace game assets and execute C# scripts.
-
 ## Setup
-> Please note if you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
+> ⚠️ If you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
 
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone this repository with all its submodules
