@@ -6,11 +6,9 @@ Never again spend 5 minutes setting up a new project, ValksGodotTools/Template h
 - [Hotkey Management](#hotkeys)
 - [In-Game Console](#console-commands)
 - [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
+- [Mod Loader](#mod-loader)
 - [Scene Manager](#scenemanager)
 - [Services](#services)
-
-## Todo
-- Direct mod support
 
 ## Setup
 > Please note if you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
