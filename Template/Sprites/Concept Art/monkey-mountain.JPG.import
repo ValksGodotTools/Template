@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q80kt62wvbpp"
-path="res://.godot/imported/icon.svg-562a916ecc739fd2166939c572007b10.ctex"
+uid="uid://dp28a3uv7irs7"
+path="res://.godot/imported/monkey-mountain.JPG-8a693c37df75bdc2b1109b8cf22a90de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/UI/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-562a916ecc739fd2166939c572007b10.ctex"]
+source_file="res://Template/Sprites/Concept Art/monkey-mountain.JPG"
+dest_files=["res://.godot/imported/monkey-mountain.JPG-8a693c37df75bdc2b1109b8cf22a90de.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

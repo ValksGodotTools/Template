@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://jrjqky6ag6gg"]
 
-[ext_resource type="Texture2D" uid="uid://ptgl7pv2t8a2" path="res://Sprites/UI/gear.png" id="1_cep3b"]
-[ext_resource type="Script" path="res://Scripts/UI/Console/UIConsole.cs" id="1_gs4bw"]
+[ext_resource type="Texture2D" uid="uid://ptgl7pv2t8a2" path="res://Template/Sprites/UI/gear.png" id="1_cep3b"]
+[ext_resource type="Script" path="res://Template/Scripts/UI/Console/UIConsole.cs" id="1_gs4bw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4blkd"]
 bg_color = Color(0, 0, 0, 0.196078)

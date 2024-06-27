@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://befic22eh3djm"
-path="res://.godot/imported/floating-island-city.JPG-df84664887205437533e00e9d1ad3a8e.ctex"
+uid="uid://m55ae6s1b6k1"
+path="res://.godot/imported/grass_dirt_16.png-430626fe3d83375750dcf3d9fbc0afd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Concept Art/floating-island-city.JPG"
-dest_files=["res://.godot/imported/floating-island-city.JPG-df84664887205437533e00e9d1ad3a8e.ctex"]
+source_file="res://Template/Sprites/Tilesets/grass_dirt_16.png"
+dest_files=["res://.godot/imported/grass_dirt_16.png-430626fe3d83375750dcf3d9fbc0afd8.ctex"]
 
 [params]
 

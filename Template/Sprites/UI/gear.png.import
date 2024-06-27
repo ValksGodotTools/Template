@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuq4e87b4hbos"
-path="res://.godot/imported/hero.png-5a7f1661e5d9ade9f7f733b9d164317b.ctex"
+uid="uid://ptgl7pv2t8a2"
+path="res://.godot/imported/gear.png-43014530bcfc7171f8e579c62321608e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/hero.png"
-dest_files=["res://.godot/imported/hero.png-5a7f1661e5d9ade9f7f733b9d164317b.ctex"]
+source_file="res://Template/Sprites/UI/gear.png"
+dest_files=["res://.godot/imported/gear.png-43014530bcfc7171f8e579c62321608e.ctex"]
 
 [params]
 

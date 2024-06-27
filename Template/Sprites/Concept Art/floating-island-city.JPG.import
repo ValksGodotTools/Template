@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ptgl7pv2t8a2"
-path="res://.godot/imported/gear.png-5dacb563b89362eb265b4f916acae8ff.ctex"
+uid="uid://befic22eh3djm"
+path="res://.godot/imported/floating-island-city.JPG-043f907fddc4eff347849fde2d6cee59.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/UI/gear.png"
-dest_files=["res://.godot/imported/gear.png-5dacb563b89362eb265b4f916acae8ff.ctex"]
+source_file="res://Template/Sprites/Concept Art/floating-island-city.JPG"
+dest_files=["res://.godot/imported/floating-island-city.JPG-043f907fddc4eff347849fde2d6cee59.ctex"]
 
 [params]
 

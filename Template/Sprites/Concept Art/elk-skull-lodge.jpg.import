@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mccj65gg1vgf"
-path="res://.godot/imported/water.png-a3fefb7dff2b947625504e4d8dad4308.ctex"
+uid="uid://dwlj12nl24bya"
+path="res://.godot/imported/elk-skull-lodge.jpg-159234b05f85e289442a3a949b046cf9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Tilesets/water.png"
-dest_files=["res://.godot/imported/water.png-a3fefb7dff2b947625504e4d8dad4308.ctex"]
+source_file="res://Template/Sprites/Concept Art/elk-skull-lodge.jpg"
+dest_files=["res://.godot/imported/elk-skull-lodge.jpg-159234b05f85e289442a3a949b046cf9.ctex"]
 
 [params]
 

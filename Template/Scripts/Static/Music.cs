@@ -2,7 +2,7 @@
 
 public static class Music
 {
-    public static AudioStream Menu { get; } = 
+    public static AudioStream Menu { get; } =
         Load("SubspaceAudio/5 Chiptunes/Title Screen.wav");
 
     public static AudioStream Level1 { get; } =

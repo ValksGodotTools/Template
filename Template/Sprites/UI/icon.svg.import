@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dwlj12nl24bya"
-path="res://.godot/imported/elk-skull-lodge.jpg-bfdcbc30cbab0d3d6e966167df5ac276.ctex"
+uid="uid://q80kt62wvbpp"
+path="res://.godot/imported/icon.svg-467adb58d982031fa7f6b20b0a7a9e14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Concept Art/elk-skull-lodge.jpg"
-dest_files=["res://.godot/imported/elk-skull-lodge.jpg-bfdcbc30cbab0d3d6e966167df5ac276.ctex"]
+source_file="res://Template/Sprites/UI/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-467adb58d982031fa7f6b20b0a7a9e14.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false
