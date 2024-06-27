@@ -24,6 +24,8 @@ public partial class Global : Node
 
         UIConsole console = Global.Services.Get<UIConsole>();
         Global.Services.Get<Logger>().MessageLogged += console.AddMessage;
+
+        new ModLoader().LoadMods(this);
     }
 
 	public override void _PhysicsProcess(double delta)
