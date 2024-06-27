@@ -23,7 +23,7 @@ public partial class UIMainMenuNav : Node
     void _on_credits_pressed()
     {
         Global.Services.Get<AudioManager>().PlayMusic(Music.Level4);
-        Global.Services.Get<SceneManager>().SwitchScene("credits");
+        Global.Services.Get<SceneManager>().SwitchScene("UI/credits");
     }
 
     void _on_quit_pressed() => 

@@ -69,7 +69,7 @@ public partial class UIOptionsInput : Control
                     if (btnNewInput == null)
                     {
                         Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
-                        Global.Services.Get<SceneManager>().SwitchScene("main_menu");
+                        Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
                     }
                 }
             }

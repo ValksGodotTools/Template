@@ -86,13 +86,13 @@ public partial class UICredits : Node
         if (pos.Y <= -vbox.Size.Y)
         {
             Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
-            Global.Services.Get<SceneManager>().SwitchScene("main_menu");
+            Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
         }
 
         if (Input.IsActionJustPressed("ui_cancel"))
         {
             Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
-            Global.Services.Get<SceneManager>().SwitchScene("main_menu");
+            Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
         }
     }
 
