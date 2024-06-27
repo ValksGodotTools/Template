@@ -86,7 +86,6 @@ public partial class UIPopupMenu : Control
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
-        Global.Services.Get<AudioManager>().PlayMusic(Music.Menu);
         Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
     }
 
