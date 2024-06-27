@@ -4,9 +4,7 @@
     "modVersion": "1.0",
     "gameVersion": "*",
     "description": "Example description.",
-    "authors": [
-        "valkyrienyanko"
-    ],
+    "author": "valkyrienyanko",
     "dependencies": {},
     "incompatibilities": {}
 }
