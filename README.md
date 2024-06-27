@@ -42,7 +42,7 @@ git submodule update --init --recursive
 ## Credits
 ![3](https://user-images.githubusercontent.com/6277739/236582668-738667a7-3bf1-4074-b852-7735f1d57100.png)
 
-## Hotkeys
+## Keybindings
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
 ## Mod Loader
