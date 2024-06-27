@@ -1,8 +1,8 @@
 [h1]TEMPLATE
 
-[h2]Lead Development
+[h2]TEMPLATE
 
-Valkyrienyanko
+Repo Link https://github.com/ValksGodotTools/Template
 
 
 
