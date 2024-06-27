@@ -2,13 +2,22 @@
 Never again spend 5 minutes setting up a new project, ValksGodotTools/Template has got your back. ❤️
 
 ## Feature Summary
-- [Helper Functions](https://github.com/ValksGodotTools/GodotUtils)
-- [Hotkey Management](#hotkeys)
-- [In-Game Console](#console-commands)
-- [Localisation](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv)
-- [Mod Loader](#mod-loader)
-- [Scene Manager](#scenemanager)
-- [Services](#services)
+### Useful Functions
+[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
+
+There are also useful classes like [Scene Manager](#scenemanager) and [Services](#services) that make your life easier.
+
+### Key Bindings
+Full configuration of [key bindings](#hotkeys) in-game.
+
+### In-Game Console
+Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
+
+### Localisation
+Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
+
+### Mod Loader
+[Mods](#mod-loader) can replace game assets and execute C# scripts.
 
 ## Setup
 > Please note if you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
@@ -38,8 +47,6 @@ git submodule update --init --recursive
 
 ## Mod Loader
 You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
-
-Mods can replace game assets and execute C# scripts.
 
 ![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
 
