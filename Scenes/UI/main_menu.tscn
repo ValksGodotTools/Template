@@ -86,6 +86,11 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "PLAY"
 
+[node name="Mods" type="Button" parent="PanelContainer/CenterContainer/Nav"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "MODS"
+
 [node name="Options" type="Button" parent="PanelContainer/CenterContainer/Nav"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -126,6 +131,7 @@ layout_mode = 2
 text = "GitHub"
 
 [connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Play" to="PanelContainer/CenterContainer/Nav" method="_on_play_pressed"]
+[connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Mods" to="PanelContainer/CenterContainer/Nav" method="_on_mods_pressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Options" to="PanelContainer/CenterContainer/Nav" method="_on_options_pressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Credits" to="PanelContainer/CenterContainer/Nav" method="_on_credits_pressed"]
 [connection signal="pressed" from="PanelContainer/CenterContainer/Nav/Quit" to="PanelContainer/CenterContainer/Nav" method="_on_quit_pressed"]
