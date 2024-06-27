@@ -1,17 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://cj4fbh1a1lpq4"]
+[gd_scene load_steps=4 format=3 uid="uid://cj4fbh1a1lpq4"]
 
 [ext_resource type="Script" path="res://Template/Scripts/Autoloads/Global.cs" id="1_ueahs"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/options_manager.tres" id="2_rot82"]
-[ext_resource type="Script" path="res://Template/Scripts/Autoloads/ModLoader.cs" id="3_77esm"]
 [ext_resource type="PackedScene" uid="uid://b1augjui20eux" path="res://Scenes/Prefabs/UI/debug_overlay.tscn" id="3_gpsxw"]
 
 [node name="Global" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_ueahs")
 optionsManager = ExtResource("2_rot82")
-
-[node name="ModLoader" type="Node2D" parent="."]
-script = ExtResource("3_77esm")
 
 [node name="Debug Layer" type="CanvasLayer" parent="."]
 layer = 128

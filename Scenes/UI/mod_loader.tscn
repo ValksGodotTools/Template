@@ -158,20 +158,13 @@ theme_override_constants/margin_bottom = 10
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer"]
 layout_mode = 2
 
-[node name="Load Mods" type="Button" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2"]
+[node name="Restart Game" type="Button" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-text = "Load Mods"
+text = "Restart Game"
 
 [node name="Open Mods Folder" type="Button" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Open Mods Folder"
 
-[node name="Enable All" type="Button" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Enable All"
-
-[node name="Disable All" type="Button" parent="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Disable All"
-
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2/Load Mods" to="." method="_on_load_mods_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2/Restart Game" to="." method="_on_restart_game_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons Nav/MarginContainer/HBoxContainer2/Open Mods Folder" to="." method="_on_open_mods_folder_pressed"]
