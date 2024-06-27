@@ -13,6 +13,8 @@ Never again spend 5 minutes setting up a new project, ValksGodotTools/Template h
 - Direct mod support
 
 ## Setup
+> Please note if you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
+
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone this repository with all its submodules
 ```
