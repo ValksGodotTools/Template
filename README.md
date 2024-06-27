@@ -38,14 +38,10 @@ git submodule update --init --recursive
 ## Hotkeys
 ![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
-## Mod Loader (wip)
-- [x] Execute code from example mod in-game
-- [ ] Expose API to example mod
-- [ ] Listen for mod file changes with file watcher class
-- [ ] Handle game version, dependency and incompatibility logic
-- [ ] Get at least 2 mods working side by side
+## Mod Loader
+You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
 
-![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/39ababe1-91d4-4f7a-ad93-1ea1167002e7)
+![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
