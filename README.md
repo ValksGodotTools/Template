@@ -9,7 +9,7 @@ Never again spend 5 minutes setting up a new project, ValksGodotTools/Template h
 Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
 
 ### ⭐ Key Bindings
-Full configuration of [key bindings](#hotkeys) in-game.
+Full configuration of [key bindings](#keybindings) in-game.
 
 ### ⭐ Useful Functions
 [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
