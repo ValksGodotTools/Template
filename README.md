@@ -39,6 +39,8 @@ git submodule update --init --recursive
 ## Mod Loader
 You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
 
+Mods can replace game assets and execute C# scripts.
+
 ![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
 
 ## Services
