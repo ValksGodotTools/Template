@@ -20,18 +20,10 @@ There are also useful classes like [Scene Manager](#scenemanager) and [Services]
 Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ## Setup
-> ⚠️ If you used this project before commit 45a5b58 ("Separated Template files from game files") and you are pulling the latest changes you will need to delete the following folder `C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Godot\app_userdata\Template`
-
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
-2. Clone this repository with all its submodules
-```
-git clone --recursive https://github.com/ValksGodotTools/Template
-```
+2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
 
-If for whatever reason you forget to clone with the `--recursive` flag. Run the following command below to retrieve the submodules.
-```
-git submodule update --init --recursive
-```
+If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
 ## Main Menu
 ![1](https://user-images.githubusercontent.com/6277739/236582661-9e7a67d6-cf01-4457-9162-b3edd76dd999.png)
