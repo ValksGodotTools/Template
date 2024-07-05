@@ -14,32 +14,9 @@ public partial class Player : CharacterBody3D
     Vector3 cameraOffset;
     Vector3 gravityVec;
 
-    UIPopupMenu popupMenu;
-
     public override void _Ready()
     {
         camera = GetNode<Camera3D>("Camera3D");
-        popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
-        popupMenu.OnOpened += () =>
-        {
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-        };
-        popupMenu.OnClosed += () =>
-        {
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-        };
-
-        Input.MouseMode = Input.MouseModeEnum.Captured;
-
-        UIConsole console = Global.Services.Get<UIConsole>();
-
-        console.OnToggleVisibility += HandleConsoleToggled;
-
-        popupMenu.OnMainMenuBtnPressed += () =>
-        {
-            // No longer need to listen for this
-            console.OnToggleVisibility -= HandleConsoleToggled;
-        };
     }
 
     public override void _PhysicsProcess(double d)
@@ -101,23 +78,5 @@ public partial class Player : CharacterBody3D
         cameraTarget = rotDeg;
 
         @event.Dispose(); // Object count was increasing a lot when this function was executed
-    }
-
-    void HandleConsoleToggled(bool visible)
-    {
-        SetPhysicsProcess(!visible);
-        SetProcessInput(!visible);
-
-        if (visible)
-        {
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-        }
-        else
-        {
-            if (!popupMenu.Visible)
-            {
-                Input.MouseMode = Input.MouseModeEnum.Captured;
-            }
-        }
     }
 }

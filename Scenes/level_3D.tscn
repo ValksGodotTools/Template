@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=14 format=3 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/Player.cs" id="1_3aas6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
 [ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Template/Scripts/3D FPS/material.tres" id="1_wx8rx"]
+[ext_resource type="Script" path="res://Template/Scripts/3D FPS/LevelUI.cs" id="3_u6p7k"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onqla"]
 sky_top_color = Color(0.780392, 0.992157, 1, 1)
@@ -124,6 +125,7 @@ mesh = SubResource("CapsuleMesh_50a6t")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.598881, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("3_u6p7k")
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_bhqx1")]
 unique_name_in_owner = true
