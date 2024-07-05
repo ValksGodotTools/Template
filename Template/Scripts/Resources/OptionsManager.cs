@@ -84,8 +84,32 @@ public partial class OptionsManager : Resource
     {
         bool fileExists = FileAccess.FileExists("user://options.tres");
 
-        Options = fileExists ?
-            GD.Load<ResourceOptions>("user://options.tres") : new();
+        if (!fileExists)
+        {
+            Options = new();
+            return;
+        }
+
+        // The options.tres file will have a line that looks like this.
+        // [ext_resource type="Script" path="res://Scripts/Resources/ResourceOptions.cs" id="1_xn0b0"]
+        // If the script is the wrong spot then the options.tres will fail to load.
+        // Lets verify that the file is not corrupt by checking the path to the script is valid.
+        string text = System.IO.File.ReadAllText(ProjectSettings.GlobalizePath("user://options.tres"));
+
+        Regex regex = new Regex("path=\"(?<path>.*?)\"");
+        Match match = regex.Match(text);
+        string path = match.Groups["path"].Value;
+
+        // Options file is corrupt
+        if (!FileAccess.FileExists(path))
+        {
+            GD.Print("Options file is corrupt. Deleting and creating a new one!");
+            System.IO.File.Delete(ProjectSettings.GlobalizePath("user://options.tres"));
+            Options = new();
+            return;
+        }
+
+        Options = GD.Load<ResourceOptions>("user://options.tres");
     }
 
     void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
