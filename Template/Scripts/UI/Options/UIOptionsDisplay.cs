@@ -147,7 +147,7 @@ public partial class UIOptionsDisplay : Control
 
     void _on_v_sync_mode_item_selected(int index)
     {
-        var vsyncMode = (DisplayServer.VSyncMode)index;
+        VSyncMode vsyncMode = (DisplayServer.VSyncMode)index;
         DisplayServer.WindowSetVsyncMode(vsyncMode);
         options.VSyncMode = vsyncMode;
 

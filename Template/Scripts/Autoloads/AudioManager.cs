@@ -27,7 +27,7 @@ public partial class AudioManager : Node
         if (!instant && musicPlayer.Playing)
         {
             // Transition from current song being played to new song
-            var tween = new GTween(musicPlayer.StreamPlayer);
+            GTween tween = new GTween(musicPlayer.StreamPlayer);
 
             // Fade out current song
             tween.Animate("volume_db", -80, fadeOut)
@@ -62,14 +62,14 @@ public partial class AudioManager : Node
     public void PlaySFX(AudioStream sound)
     {
         // Setup the SFX stream player
-        var sfxPlayer = new GAudioPlayer(sfxPlayersParent, true)
+        GAudioPlayer sfxPlayer = new GAudioPlayer(sfxPlayersParent, true)
         {
             Stream = sound,
             Volume = options.SFXVolume
         };
 
         // Randomize the pitch
-        var rng = new RandomNumberGenerator();
+        RandomNumberGenerator rng = new();
         rng.Randomize();
         float pitch = rng.RandfRange(0.8f, 1.2f);
 
@@ -94,7 +94,7 @@ public partial class AudioManager : Node
     {
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
-            var tween = new GTween(audioPlayer);
+            GTween tween = new GTween(audioPlayer);
             tween.Animate("volume_db", -80, fadeTime);
         }
     }

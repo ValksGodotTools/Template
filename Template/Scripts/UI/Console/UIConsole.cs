@@ -309,7 +309,7 @@ public partial class UIConsole : PanelContainer
             float.TryParse(input.Replace(',', '.'),
                 style: NumberStyles.Any,
                 provider: CultureInfo.InvariantCulture,
-                result: out var value);
+                result: out float value);
 
             return value;
         }

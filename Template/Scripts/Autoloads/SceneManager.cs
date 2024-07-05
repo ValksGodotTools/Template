@@ -56,7 +56,7 @@ public partial class SceneManager : Node
         CurrentScene.Free();
 
         // Load a new scene.
-        var nextScene = (PackedScene)GD.Load($"res://Scenes/{name}.tscn");
+        PackedScene nextScene = (PackedScene)GD.Load($"res://Scenes/{name}.tscn");
 
         // Instance the new scene.
         CurrentScene = nextScene.Instantiate();
@@ -67,7 +67,7 @@ public partial class SceneManager : Node
         // Optionally, to make it compatible with the SceneTree.change_scene_to_file() API.
         tree.CurrentScene = CurrentScene;
 
-        var transType = transTypeVariant.As<TransType>();
+        TransType transType = transTypeVariant.As<TransType>();
 
         switch (transType)
         {
@@ -82,7 +82,7 @@ public partial class SceneManager : Node
     void FadeTo(TransColor transColor, double duration, Action finished = null)
     {
         // Add canvas layer to scene
-        var canvasLayer = new CanvasLayer
+        CanvasLayer canvasLayer = new CanvasLayer
         {
             Layer = 10 // render on top of everything else
         };
@@ -90,7 +90,7 @@ public partial class SceneManager : Node
         CurrentScene.AddChild(canvasLayer);
 
         // Setup color rect
-        var colorRect = new ColorRect
+        ColorRect colorRect = new ColorRect
         {
             Color = new Color(0, 0, 0, transColor == TransColor.Black ? 0 : 1),
             MouseFilter = Control.MouseFilterEnum.Ignore
@@ -101,7 +101,7 @@ public partial class SceneManager : Node
         canvasLayer.AddChild(colorRect);
 
         // Animate color rect
-        var tween = new GTween(colorRect);
+        GTween tween = new GTween(colorRect);
         tween.AnimateColor(new Color(0, 0, 0, transColor == TransColor.Black ? 1 : 0), duration);
         tween.Callback(() =>
         {

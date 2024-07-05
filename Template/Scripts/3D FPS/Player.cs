@@ -21,11 +21,10 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double d)
     {
-        var delta = (float)d;
+        float delta = (float)d;
 
         camera.Rotation = cameraTarget + cameraOffset;
 
-        //var h_rot = GlobalTransform.basis.GetEuler().y;
         float h_rot = camera.Basis.GetEuler().Y;
 
         float f_input = -Input.GetAxis("move_down", "move_up");

@@ -100,7 +100,7 @@ public partial class UIOptionsInput : Control
         // Move the button to where it was originally at
         btnNewInput.HBox.MoveChild(btn, index);
 
-        var actions = optionsManager.Hotkeys.Actions;
+        Dictionary<StringName, Array<InputEvent>> actions = optionsManager.Hotkeys.Actions;
 
         // Clear the specific action event
         actions[action].Remove(btnNewInput.InputEvent);
@@ -162,7 +162,7 @@ public partial class UIOptionsInput : Control
     void CreateButtonPlus(string action, HBoxContainer hbox)
     {
         // Create the button
-        var btn = new GButton("+");
+        GButton btn = new GButton("+");
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input

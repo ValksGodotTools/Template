@@ -64,9 +64,9 @@ public partial class OptionsManager : Resource
         // Deep clone default hotkeys over
         Hotkeys.Actions = new();
 
-        foreach (var element in DefaultHotkeys)
+        foreach (KeyValuePair<StringName, Array<InputEvent>> element in DefaultHotkeys)
         {
-            var arr = new Array<InputEvent>();
+            Array<InputEvent> arr = new();
 
             foreach (InputEvent item in DefaultHotkeys[element.Key])
             {
@@ -107,7 +107,7 @@ public partial class OptionsManager : Resource
     void GetDefaultHotkeys()
     {
         // Get all the default actions defined in the input map
-        var actions = new Dictionary<StringName, Array<InputEvent>>();
+        Dictionary<StringName, Array<InputEvent>> actions = new();
 
         foreach (StringName action in InputMap.GetActions())
         {
