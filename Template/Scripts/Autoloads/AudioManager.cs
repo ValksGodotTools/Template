@@ -19,7 +19,7 @@ public partial class AudioManager : Node
         sfxPlayersParent = new Node();
         AddChild(sfxPlayersParent);
 
-        PlayMusic(Music.Menu);
+        //PlayMusic(Music.Menu);
     }
 
     public void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
