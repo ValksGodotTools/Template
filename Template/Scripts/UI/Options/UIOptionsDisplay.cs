@@ -126,7 +126,7 @@ public partial class UIOptionsDisplay : Control
     }
 
     void _on_window_width_text_changed(string text) =>
-        GUtils.ValidateNumber(
+        GU.ValidateNumber(
             text,
             resX,
             0,
@@ -134,7 +134,7 @@ public partial class UIOptionsDisplay : Control
             ref prevNumX);
 
     void _on_window_height_text_changed(string text) =>
-        GUtils.ValidateNumber(
+        GU.ValidateNumber(
             text,
             resY,
             0,
