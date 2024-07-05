@@ -2,6 +2,8 @@
 
 public static class Music
 {
+    // All audio assets were removed from the Template to reduce bloated file size
+
     //public static AudioStream Menu { get; } =
     //    Load("SubspaceAudio/5 Chiptunes/Title Screen.wav");
 
