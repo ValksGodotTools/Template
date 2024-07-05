@@ -13,16 +13,19 @@ public partial class Player : CharacterBody3D
     Vector3 cameraTarget;
     Vector3 cameraOffset;
     Vector3 gravityVec;
+    Vector3 camOffset;
 
     public override void _Ready()
     {
-        camera = GetNode<Camera3D>("Camera3D");
+        camera = GetNode<Camera3D>("%Camera3D");
+        camOffset = camera.Position - Position;
     }
 
     public override void _PhysicsProcess(double d)
     {
         float delta = (float)d;
 
+        camera.Position = Position + camOffset;
         camera.Rotation = cameraTarget + cameraOffset;
 
         float h_rot = camera.Basis.GetEuler().Y;
