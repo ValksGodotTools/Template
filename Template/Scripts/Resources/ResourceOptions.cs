@@ -32,6 +32,7 @@ public partial class ResourceOptions : Resource
     [Export] public VSyncMode  VSyncMode     { get; set; } = VSyncMode.Enabled;
     [Export] public Vector2I   WindowSize    { get; set; }
     [Export] public int        MaxFPS        { get; set; } = 60;
+    [Export] public int        Resolution    { get; set; } = 1;
 
     // Graphics
     [Export] public QualityP   QualityPreset { get; set; } = QualityPreset.High;

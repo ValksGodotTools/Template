@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using static Godot.DisplayServer;
 
 namespace Template;
@@ -13,16 +14,10 @@ public partial class UIOptionsDisplay : Control
     Label labelMaxFPSFeedback;
 
     // Window Size
-    LineEdit resX;
-    LineEdit resY;
+    LineEdit resX, resY;
 
     int prevNumX, prevNumY;
-
-    // Window Mode
-    OptionButton optionBtnWindowMode;
-
-    // VSync Mode
-    OptionButton optionBtnVSyncMode;
+    int min_resolution = 36;
 
     public override void _Ready()
     {
@@ -30,6 +25,7 @@ public partial class UIOptionsDisplay : Control
         SetupMaxFPS();
         SetupWindowSize();
         SetupWindowMode();
+        SetupResolution();
         SetupVSyncMode();
     }
 
@@ -64,7 +60,7 @@ public partial class UIOptionsDisplay : Control
 
     void SetupWindowMode()
     {
-        optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
+        OptionButton optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
         optionBtnWindowMode.Select((int)options.WindowMode);
 
         optionsManager.WindowModeChanged += windowMode =>
@@ -79,10 +75,16 @@ public partial class UIOptionsDisplay : Control
         };
     }
 
+    void SetupResolution()
+    {
+        // Since it's stored different I'm a little mind blocked on how to retrieve it here
+        //GD.Print("Resolution: " + (options.Resolution - min_resolution + 1));
+        //GetNode<HSlider>("%Resolution").Value = options.Resolution - min_resolution - 1;
+    }
+
     void SetupVSyncMode()
     {
-        optionBtnVSyncMode = GetNode<OptionButton>("%VSyncMode");
-        optionBtnVSyncMode.Select((int)options.VSyncMode);
+        GetNode<OptionButton>("%VSyncMode").Select((int)options.VSyncMode);
     }
 
     void ApplyWindowSize()
@@ -144,6 +146,12 @@ public partial class UIOptionsDisplay : Control
     void _on_window_width_text_submitted(string t) => ApplyWindowSize();
     void _on_window_height_text_submitted(string t) => ApplyWindowSize();
     void _on_window_size_apply_pressed() => ApplyWindowSize();
+
+    void _on_resolution_value_changed(float value)
+    {
+        options.Resolution = min_resolution - (int)value + 1;
+        //GD.Print($"Resolution value saved. Value: {options.Resolution}");
+    }
 
     void _on_v_sync_mode_item_selected(int index)
     {

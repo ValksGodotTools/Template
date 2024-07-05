@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=16 format=3 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/Player.cs" id="1_3aas6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
 [ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Template/Scripts/3D FPS/material.tres" id="1_wx8rx"]
+[ext_resource type="Script" path="res://Template/Scripts/3D FPS/SubViewport.cs" id="3_k7q3h"]
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/LevelUI.cs" id="3_u6p7k"]
+[ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/options_manager.tres" id="4_ayq1j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onqla"]
 sky_top_color = Color(0.780392, 0.992157, 1, 1)
@@ -124,11 +126,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
+stretch_shrink = 36
+script = ExtResource("3_k7q3h")
+options = ExtResource("4_ayq1j")
 
 [node name="SubViewport" type="SubViewport" parent="Player/SubViewportContainer"]
 handle_input_locally = false
 msaa_3d = 3
-size = Vector2i(1152, 648)
+size = Vector2i(32, 18)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Player/SubViewportContainer/SubViewport"]

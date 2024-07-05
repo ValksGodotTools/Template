@@ -138,7 +138,6 @@ popup/item_2/text = "HARD"
 popup/item_2/id = 2
 
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
@@ -196,6 +195,22 @@ alignment = 1
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 text = "APPLY"
+
+[node name="Resolution" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Display/Resolution"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "RESOLUTION"
+
+[node name="Resolution" type="HSlider" parent="Margin/HBox/Content/Display/Resolution"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 36.0
+value = 36.0
 
 [node name="VSyncMode" type="HBoxContainer" parent="Margin/HBox/Content/Display"]
 layout_mode = 2
@@ -255,6 +270,7 @@ text = "UNLIMITED"
 vertical_alignment = 1
 
 [node name="Graphics" type="VBoxContainer" parent="Margin/HBox/Content"]
+visible = false
 layout_mode = 2
 script = ExtResource("6_wctgl")
 optionsManager = ExtResource("6_3x0fd")
@@ -365,6 +381,7 @@ text = "RESET_TO_DEFAULTS"
 [connection signal="text_changed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowHeight" to="Margin/HBox/Content/Display" method="_on_window_height_text_changed"]
 [connection signal="text_submitted" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowHeight" to="Margin/HBox/Content/Display" method="_on_window_height_text_submitted"]
 [connection signal="pressed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowSizeApply" to="Margin/HBox/Content/Display" method="_on_window_size_apply_pressed"]
+[connection signal="value_changed" from="Margin/HBox/Content/Display/Resolution/Resolution" to="Margin/HBox/Content/Display" method="_on_resolution_value_changed"]
 [connection signal="item_selected" from="Margin/HBox/Content/Display/VSyncMode/VSyncMode" to="Margin/HBox/Content/Display" method="_on_v_sync_mode_item_selected"]
 [connection signal="drag_ended" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_drag_ended"]
 [connection signal="value_changed" from="Margin/HBox/Content/Display/MaxFPS/HBox/MaxFPS" to="Margin/HBox/Content/Display" method="_on_max_fps_value_changed"]
