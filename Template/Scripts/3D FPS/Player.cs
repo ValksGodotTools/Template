@@ -61,12 +61,8 @@ public partial class Player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is not InputEventMouseMotion motion ||
-            Input.MouseMode != Input.MouseModeEnum.Captured)
-        {
-            @event.Dispose(); // Object count was increasing a lot when this function was executed
+        if (@event is not InputEventMouseMotion motion || Input.MouseMode != Input.MouseModeEnum.Captured)
             return;
-        }
 
         mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
 
@@ -76,7 +72,5 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
-
-        @event.Dispose(); // Object count was increasing a lot when this function was executed
     }
 }
