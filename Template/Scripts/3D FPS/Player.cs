@@ -31,13 +31,9 @@ public partial class Player : CharacterBody3D
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");
 
-        // Normalized to prevent "fast strafing movement" by holding down 2
-        // movement keys at the same time
-        // Rotated to horizontal rotation to always move in the correct
-        // direction
-        var dir = new Vector3(h_input, 0, f_input)
-            .Rotated(Vector3.Up, h_rot)
-            .Normalized();
+        Vector3 dir = new Vector3(h_input, 0, f_input)
+            .Rotated(Vector3.Up, h_rot) // Always face correct direction
+            .Normalized(); // Prevent fast strafing movement
 
         if (IsOnFloor())
         {
