@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/Env.cs" id="1_7hkd7"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
 [ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Template/Scripts/3D FPS/material.tres" id="1_wx8rx"]
-[ext_resource type="Script" path="res://Template/Scripts/3D FPS/SubViewport.cs" id="3_k7q3h"]
+[ext_resource type="Script" path="res://Template/Scripts/3D FPS/SubView.cs" id="3_k7q3h"]
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/LevelUI.cs" id="3_u6p7k"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/options_manager.tres" id="4_ayq1j"]
 

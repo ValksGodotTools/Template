@@ -113,6 +113,7 @@ popup/item_2/id = 2
 
 [node name="Gameplay" type="VBoxContainer" parent="Margin/HBox/Content"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 script = ExtResource("5_eyimv")
 optionsManager = ExtResource("6_3x0fd")
@@ -288,7 +289,7 @@ text = "UNLIMITED"
 vertical_alignment = 1
 
 [node name="Graphics" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("6_wctgl")
 optionsManager = ExtResource("6_3x0fd")

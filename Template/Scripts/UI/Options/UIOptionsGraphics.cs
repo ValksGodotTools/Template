@@ -4,6 +4,8 @@ using Environment = Godot.Environment;
 
 public partial class UIOptionsGraphics : Control
 {
+    public event Action<int> OnAntialiasingChanged;
+
     [Export] OptionsManager optionsManager;
 
     ResourceOptions options;
@@ -109,6 +111,7 @@ public partial class UIOptionsGraphics : Control
     void _on_antialiasing_item_selected(int index)
     {
         options.Antialiasing = index;
+        OnAntialiasingChanged?.Invoke(index);
     }
 }
 
