@@ -10,7 +10,7 @@ public partial class UIPopupMenu : Control
 
     VBoxContainer vbox;
     PanelContainer menu;
-    UIOptions options;
+    public UIOptions Options;
 
     public override void _Ready()
     {
@@ -20,9 +20,9 @@ public partial class UIPopupMenu : Control
         menu = GetNode<PanelContainer>("%Menu");
         vbox = GetNode<VBoxContainer>("%Navigation");
 
-        options = Prefabs.Options.Instantiate<UIOptions>();
-        AddChild(options);
-        options.Hide();
+        Options = Prefabs.Options.Instantiate<UIOptions>();
+        AddChild(Options);
+        Options.Hide();
         Hide();
     }
 
@@ -38,9 +38,9 @@ public partial class UIPopupMenu : Control
                 return;
             }
 
-            if (options.Visible)
+            if (Options.Visible)
             {
-                options.Hide();
+                Options.Hide();
                 menu.Show();
             }
             else
@@ -78,7 +78,7 @@ public partial class UIPopupMenu : Control
 
     void _on_options_pressed()
     {
-        options.Show();
+        Options.Show();
         menu.Hide();
     }
 

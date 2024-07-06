@@ -5,6 +5,8 @@ namespace Template;
 
 public partial class UIOptionsDisplay : Control
 {
+    public event Action<int> OnResolutionChanged;
+
     [Export] OptionsManager optionsManager;
 
     ResourceOptions options;
@@ -148,6 +150,7 @@ public partial class UIOptionsDisplay : Control
     void _on_resolution_value_changed(float value)
     {
         options.Resolution = min_resolution - (int)value + 1;
+        OnResolutionChanged?.Invoke(options.Resolution);
     }
 
     void _on_v_sync_mode_item_selected(int index)

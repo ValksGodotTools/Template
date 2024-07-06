@@ -138,6 +138,7 @@ popup/item_2/text = "HARD"
 popup/item_2/id = 2
 
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
