@@ -299,8 +299,26 @@ public partial class UIConsole : PanelContainer
         if (targetType == typeof(string))
             return input;
 
-        if (targetType == typeof(int))
-            return int.Parse(input);
+        try
+        {
+            if (targetType == typeof(int))
+                return int.Parse(input);
+        } catch (FormatException e)
+        {
+            Global.Services.Get<Logger>().Log(e.Message);
+            return 0;
+        }
+
+        try
+        {
+            if (targetType == typeof(bool))
+                return bool.Parse(input);
+        }
+        catch (FormatException e)
+        {
+            Global.Services.Get<Logger>().Log(e.Message);
+            return false;
+        }
 
         if (targetType == typeof(float))
         {
@@ -313,9 +331,6 @@ public partial class UIConsole : PanelContainer
 
             return value;
         }
-
-        if (targetType == typeof(bool))
-            return bool.Parse(input);
 
         throw new ArgumentException($"Unsupported type: {targetType}");
     }

@@ -18,8 +18,8 @@ public partial class UIConsole
     }
 
     [ConsoleCommand("debug")]
-    void Debug()
+    void Debug(int x)
     {
-        Global.Services.Get<Logger>().Log("Debug");
+        Global.Services.Get<Logger>().Log(x);
     }
 }
