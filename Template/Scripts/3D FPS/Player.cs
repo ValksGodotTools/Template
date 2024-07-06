@@ -24,7 +24,7 @@ public partial class Player : CharacterBody3D
 
         mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
 
-        await GU.WaitOneFrame(this);
+        await this.WaitOneFrame();
 
         UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
             .Options.GetNode<UIOptionsGameplay>("%Gameplay");

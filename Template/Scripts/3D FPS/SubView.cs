@@ -13,7 +13,7 @@ public partial class SubView : SubViewportContainer
 
         // Need to wait one frame because there is no easy way that I know of to execute this
         // the below code after UIOptionsDisplay.cs gets instantiated
-        await GU.WaitOneFrame(this);
+        await this.WaitOneFrame();
 
         UIPopupMenu popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
 
