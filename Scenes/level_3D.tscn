@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=17 format=3 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/Player.cs" id="1_3aas6"]
+[ext_resource type="Script" path="res://Template/Scripts/3D FPS/Env.cs" id="1_7hkd7"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
 [ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Template/Scripts/3D FPS/material.tres" id="1_wx8rx"]
 [ext_resource type="Script" path="res://Template/Scripts/3D FPS/SubViewport.cs" id="3_k7q3h"]
@@ -20,9 +21,10 @@ sky_material = SubResource("ProceduralSkyMaterial_onqla")
 background_mode = 2
 sky = SubResource("Sky_w0xmk")
 ambient_light_source = 1
-tonemap_mode = 2
+tonemap_mode = 3
 tonemap_exposure = 0.9
 ssil_enabled = true
+sdfgi_read_sky_light = false
 glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_d5p2g"]
@@ -45,6 +47,8 @@ data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0,
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fx7rt")
+script = ExtResource("1_7hkd7")
+options = ExtResource("4_ayq1j")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.873772, 0.238744, -0.423702, 0, 0.871214, 0.490904, 0.486335, -0.428938, 0.761242, 0, 0, 0)

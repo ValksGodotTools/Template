@@ -42,6 +42,10 @@ public partial class ResourceOptions : Resource
     // 2 - 4x                                   
     // 3 - 8x                                   
     [Export] public int        Antialiasing     { get; set; } = 3;
+    [Export] public bool       AmbientOcclusion { get; set; }
+    [Export] public bool       Glow             { get; set; }
+    [Export] public bool       IndirectLighting { get; set; }
+    [Export] public bool       Reflections      { get; set; }
                                                 
     // Gameplay                                 
     [Export] public Difficulty Difficulty       { get; set; } = Difficulty.Normal;

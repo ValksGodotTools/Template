@@ -52,4 +52,8 @@ DIFFICULTY,Difficulty,Difficulté,困難
 ANTIALIASING,Antialiasing,Anchieiriashingu,アンチエイリアシング
 MODS,Mods,Mods,Mods
 RESOLUTION,Resolution,Resolution,Resolution
-SENSITIVITY,Sensitivity,Sensitivity,Sensitivity
+MOUSE_SENSITIVITY,Mouse Sensitivity,Mouse Sensitivity,Mouse Sensitivity
+GLOW,Glow,Glow,Glow
+AMBIENT_OCCLUSION,Ambient Occlusion,Ambient Occlusion,Ambient Occlusion
+INDIRECT_LIGHTING,Indirect Lighting,Indirect Lighting,Indirect Lighting
+REFLECTIONS,Reflections,Reflections,Reflections
