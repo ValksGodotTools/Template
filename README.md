@@ -26,21 +26,25 @@ Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/mai
 If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
 ## Main Menu
-![1](https://user-images.githubusercontent.com/6277739/236582661-9e7a67d6-cf01-4457-9162-b3edd76dd999.png)
+![1](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)
 
 ## Options
-![2](https://user-images.githubusercontent.com/6277739/236582663-34dc44b2-7c29-4acd-b3b6-5a733ac7988d.png)
+![2](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)
 
 ## Credits
-![3](https://user-images.githubusercontent.com/6277739/236582668-738667a7-3bf1-4074-b852-7735f1d57100.png)
+![3](https://github.com/ValksGodotTools/Template/assets/6277739/91c976bc-bc46-4171-9f76-ef5c0bce75dc)  
+The Example Mod replaces the credits background image with a picture of a cat.
 
 ## Keybindings
-![Untitled](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
+![4](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
 ## Mod Loader
 You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
 
-![Untitled](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
+![5](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
+
+## FPS Scene
+![6](https://github.com/ValksGodotTools/Template/assets/6277739/282a0355-7aea-4e17-a5ea-6056a177871d)
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
