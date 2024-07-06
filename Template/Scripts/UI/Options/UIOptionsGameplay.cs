@@ -2,23 +2,27 @@ namespace Template;
 
 public partial class UIOptionsGameplay : Control
 {
+    public event Action<float> OnMouseSensitivityChanged;
+
     [Export] OptionsManager optionsManager;
 
     ResourceOptions options;
-
-    // Difficulty
-    OptionButton optionBtnDifficulty;
 
     public override void _Ready()
     {
         options = optionsManager.Options;
         SetupDifficulty();
+        SetupMouseSensitivity();
     }
 
     void SetupDifficulty()
     {
-        optionBtnDifficulty = GetNode<OptionButton>("%Difficulty");
-        optionBtnDifficulty.Select((int)options.Difficulty);
+        GetNode<OptionButton>("%Difficulty").Select((int)options.Difficulty);
+    }
+
+    void SetupMouseSensitivity()
+    {
+        GetNode<HSlider>("%Sensitivity").Value = options.MouseSensitivity;
     }
 
     void _on_difficulty_item_selected(int index)
@@ -26,6 +30,12 @@ public partial class UIOptionsGameplay : Control
         // todo: update the difficulty in realtime
 
         options.Difficulty = (Difficulty)index;
+    }
+
+    void _on_sensitivity_value_changed(float value)
+    {
+        options.MouseSensitivity = value;
+        OnMouseSensitivityChanged?.Invoke(value);
     }
 }
 

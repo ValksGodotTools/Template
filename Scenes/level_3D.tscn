@@ -112,6 +112,7 @@ shape = SubResource("ConcavePolygonShape3D_er703")
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3aas6")
+options = ExtResource("4_ayq1j")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_6psqc")
@@ -126,14 +127,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
-stretch_shrink = 36
 script = ExtResource("3_k7q3h")
 options = ExtResource("4_ayq1j")
 
 [node name="SubViewport" type="SubViewport" parent="Player/SubViewportContainer"]
 handle_input_locally = false
 msaa_3d = 3
-size = Vector2i(32, 18)
+size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Player/SubViewportContainer/SubViewport"]

@@ -2,7 +2,9 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    float mouseSensitivity = 0.005f;
+    [Export] OptionsManager options;
+
+    float mouseSensitivity;
     float gravityForce = 10;
     float jumpForce = 150;
     float moveSpeed = 10;
@@ -15,10 +17,22 @@ public partial class Player : CharacterBody3D
     Vector3 gravityVec;
     Vector3 camOffset;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         camera = GetNode<Camera3D>("%Camera3D");
         camOffset = camera.Position - Position;
+
+        mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
+
+        await GU.WaitOneFrame(this);
+
+        UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
+            .Options.GetNode<UIOptionsGameplay>("%Gameplay");
+
+        gameplay.OnMouseSensitivityChanged += value =>
+        {
+            mouseSensitivity = value * 0.0001f;
+        };
     }
 
     public override void _PhysicsProcess(double d)

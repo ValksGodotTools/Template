@@ -112,7 +112,7 @@ popup/item_2/text = "Japanese"
 popup/item_2/id = 2
 
 [node name="Gameplay" type="VBoxContainer" parent="Margin/HBox/Content"]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("5_eyimv")
 optionsManager = ExtResource("6_3x0fd")
@@ -137,8 +137,25 @@ popup/item_1/id = 1
 popup/item_2/text = "HARD"
 popup/item_2/id = 2
 
+[node name="Sensitivity" type="HBoxContainer" parent="Margin/HBox/Content/Gameplay"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Margin/HBox/Content/Gameplay/Sensitivity"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "SENSITIVITY"
+
+[node name="Sensitivity" type="HSlider" parent="Margin/HBox/Content/Gameplay/Sensitivity"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+min_value = 1.0
+max_value = 50.0
+value = 25.0
+
 [node name="Display" type="VBoxContainer" parent="Margin/HBox/Content"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("4_o6e7i")
@@ -376,6 +393,7 @@ text = "RESET_TO_DEFAULTS"
 
 [connection signal="item_selected" from="Margin/HBox/Content/General/Language/Language" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
 [connection signal="item_selected" from="Margin/HBox/Content/Gameplay/Difficulty/Difficulty" to="Margin/HBox/Content/Gameplay" method="_on_difficulty_item_selected"]
+[connection signal="value_changed" from="Margin/HBox/Content/Gameplay/Sensitivity/Sensitivity" to="Margin/HBox/Content/Gameplay" method="_on_sensitivity_value_changed"]
 [connection signal="item_selected" from="Margin/HBox/Content/Display/WindowMode/WindowMode" to="Margin/HBox/Content/Display" method="_on_window_mode_item_selected"]
 [connection signal="text_changed" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_changed"]
 [connection signal="text_submitted" from="Margin/HBox/Content/Display/WindowSize/HBox/WindowWidth" to="Margin/HBox/Content/Display" method="_on_window_width_text_submitted"]
