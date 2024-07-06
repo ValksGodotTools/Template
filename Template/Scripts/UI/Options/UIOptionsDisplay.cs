@@ -77,9 +77,7 @@ public partial class UIOptionsDisplay : Control
 
     void SetupResolution()
     {
-        // Since it's stored different I'm a little mind blocked on how to retrieve it here
-        //GD.Print("Resolution: " + (options.Resolution - min_resolution + 1));
-        //GetNode<HSlider>("%Resolution").Value = options.Resolution - min_resolution - 1;
+        GetNode<HSlider>("%Resolution").Value = 1 + min_resolution - options.Resolution;
     }
 
     void SetupVSyncMode()
@@ -150,7 +148,6 @@ public partial class UIOptionsDisplay : Control
     void _on_resolution_value_changed(float value)
     {
         options.Resolution = min_resolution - (int)value + 1;
-        //GD.Print($"Resolution value saved. Value: {options.Resolution}");
     }
 
     void _on_v_sync_mode_item_selected(int index)
