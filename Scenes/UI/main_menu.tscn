@@ -1,10 +1,10 @@
 [gd_scene load_steps=17 format=3 uid="uid://d4a5xfmaulku1"]
 
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIMainMenu.cs" id="1_cqe0w"]
+[ext_resource type="Script" path="res://Scripts/UI/UIMainMenu.cs" id="1_cqe0w"]
 [ext_resource type="Resource" uid="uid://b42wyojsytvbi" path="res://Template/Resources/game_state.tres" id="2_qsxg3"]
 [ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Template/Sprites/Concept Art/floating-island-city.JPG" id="3_3urlq"]
 [ext_resource type="Script" path="res://Template/Scripts/UI/UIBackgroundNoise.cs" id="4_wcnwk"]
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIMainMenuNav.cs" id="5_sc4as"]
+[ext_resource type="Script" path="res://Scripts/UI/UIMainMenuNav.cs" id="5_sc4as"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuq4e87b4hbos"
-path="res://.godot/imported/hero.png-974a5d276f063424e983ff3f094fdb41.ctex"
+uid="uid://mccj65gg1vgf"
+path="res://.godot/imported/water.png-0185724feaf399a6070ab3d13cbceec3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Template/Sprites/hero.png"
-dest_files=["res://.godot/imported/hero.png-974a5d276f063424e983ff3f094fdb41.ctex"]
+source_file="res://2D Platformer/Tilesets/water.png"
+dest_files=["res://.godot/imported/water.png-0185724feaf399a6070ab3d13cbceec3.ctex"]
 
 [params]
 
