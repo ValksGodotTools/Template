@@ -4,10 +4,43 @@ namespace Template;
 
 public partial class Setup : Node
 {
+    string prevGameName = "";
+    LineEdit lineEditGameName;
+
+    public override void _Ready()
+    {
+        lineEditGameName = GetNode<LineEdit>("%GameName");
+    }
+
+    void _on_game_name_text_changed(string newText)
+    {
+        if (string.IsNullOrWhiteSpace(newText))
+            return;
+
+        // Since this name is being used for the namespace its first character must not be
+        // a number and every other character must be alphanumeric
+        if (!IsAlphaNumeric(newText) || char.IsNumber(newText.Trim()[0]))
+        {
+            lineEditGameName.Text = prevGameName;
+            lineEditGameName.CaretColumn = prevGameName.Length;
+            return;
+        }
+
+        prevGameName = newText;
+    }
+
     void _on_apply_changes_pressed()
     {
-        string path = ProjectSettings.GlobalizePath("res://");
-        RenameAllNamespaces(path, "Banana");
+        string gameName = lineEditGameName.Text.Trim().ToTitleCase().Replace(" ", "");
+
+        if (string.IsNullOrWhiteSpace(gameName))
+        {
+            GD.Print("Please type in a game name first!");
+            return;
+        }
+
+        //string path = ProjectSettings.GlobalizePath("res://");
+        //RenameAllNamespaces(path, gameName);
     }
 
     void RenameAllNamespaces(string path, string name)
@@ -49,5 +82,11 @@ public partial class Setup : Node
         }
 
         dir.ListDirEnd();
+    }
+
+    bool IsAlphaNumeric(string str)
+    {
+        Regex rg = new Regex(@"^[a-zA-Z0-9\s,]*$");
+        return rg.IsMatch(str);
     }
 }
