@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnmu3cujgayk2"]
+
+[ext_resource type="Script" path="res://0 Setup/Setup.cs" id="1_g3v0h"]
+
+[node name="Setup" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g3v0h")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "What is the name of this game?"
+
+[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "What is the genre?"
+
+[node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+item_count = 3
+selected = 2
+popup/item_0/text = "2D Platformer"
+popup/item_0/id = 0
+popup/item_1/text = "2D Top Down"
+popup/item_1/id = 1
+popup/item_2/text = "3D FPS"
+popup/item_2/id = 2
+
+[node name="ApplyChanges" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Apply Changes"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ApplyChanges" to="." method="_on_apply_changes_pressed"]
