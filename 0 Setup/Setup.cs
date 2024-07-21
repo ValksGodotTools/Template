@@ -151,7 +151,7 @@ public partial class Setup : Node
 
     void DeleteDirectoryIfEmpty(string path)
     {
-        if (Directory.GetFiles(path).Length == 0)
+        if (Directory.Exists(path) && Directory.GetFiles(path).Length == 0)
         {
             Directory.Delete(path);
         }
