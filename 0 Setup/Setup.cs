@@ -113,6 +113,9 @@ public partial class Setup : Node
                 Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
 
                 // Move Materials folder to res://
+                if (Directory.Exists($"{path}Materials"))
+                    Directory.Delete($"{path}Materials");
+
                 Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
 
                 // Move main scene file
