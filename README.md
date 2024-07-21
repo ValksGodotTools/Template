@@ -260,5 +260,5 @@ Any kind of contributions are very much welcomed!
 
 Contact me over Discord (`valky5`)
 
-## Credit
+## Credits
 See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)  
