@@ -65,9 +65,16 @@ public partial class Setup : Node
         // project.godot
         {
             string text = File.ReadAllText($"{path}project.godot");
+
             text = text.Replace(
                 "project/assembly_name=\"Template\"", 
                 $"project/assembly_name=\"{name}\"");
+
+            text = text.Replace(
+                "config/name=\"Template\"",
+                $"config/name=\"{name}\""
+                );
+
             File.WriteAllText($"{path}project.godot", text);
         }
     }
@@ -99,11 +106,16 @@ public partial class Setup : Node
             }
             else
             {
+                // Modify all scripts
                 if (fileName.EndsWith(".cs"))
                 {
-                    string text = File.ReadAllText(fullPath);
-                    text = text.Replace("namespace Template", $"namespace {name}");
-                    File.WriteAllText(fullPath, text);
+                    // Do not modify this script
+                    if (!fileName.EndsWith("Setup.cs"))
+                    {
+                        string text = File.ReadAllText(fullPath);
+                        text = text.Replace("namespace Template", $"namespace {name}");
+                        File.WriteAllText(fullPath, text);
+                    }
                 }
             }
 
