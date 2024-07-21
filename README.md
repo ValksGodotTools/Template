@@ -35,13 +35,17 @@ Enter a name for your game, this could be something like `muffin blaster 3`, thi
 
 Select the genre for your game. Currently there are only 3 types, "3D FPS", "2D Platformer" and "2D Top Down". Lets say you select "3D FPS", this means the "2D Platformer" and "2D Top Down" assets will be deleted and the 3D FPS assets will be moved to more accessible locations.
 
+In all cases you will no longer see the following directories in your project.  
+
+![asset-folders](https://github.com/user-attachments/assets/b04cd7bc-662f-4dc6-b89c-cb46f10799e8)  
+
 ### :three: Click "Apply Changes"
 
 The following popup will appear, click "Reload"
 
 ![popup1](https://github.com/user-attachments/assets/8e037a68-235f-4df7-b3d1-94e0c9431808)
 
-Close the Godot project and click "Don't Save"
+Close the Godot project and click "Don't Save" and close any text editors you may have opened
 
 ![popup2](https://github.com/user-attachments/assets/0d51ca08-adbc-4df3-9e5a-27cf1e5717d2)
 
