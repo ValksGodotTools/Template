@@ -66,7 +66,7 @@ public partial class Setup : Node
 
         text = text.Replace(
             "run/main_scene=\"res://0 Setup/Setup.tscn\"",
-           $"run/main_scene=\"res://Scenes/{scene}.tscn\"");
+           $"run/main_scene=\"res://Scenes/{scene}\"");
 
         File.WriteAllText($"{path}project.godot", text);
     }
