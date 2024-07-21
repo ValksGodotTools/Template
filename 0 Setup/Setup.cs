@@ -61,6 +61,15 @@ public partial class Setup : Node
             File.Delete($"{path}Template.sln");
             File.WriteAllText($"{path}{name}.sln", text);
         }
+
+        // project.godot
+        {
+            string text = File.ReadAllText($"{path}project.godot");
+            text = text.Replace(
+                "project/assembly_name=\"Template\"", 
+                $"project/assembly_name=\"{name}\"");
+            File.WriteAllText($"{path}project.godot", text);
+        }
     }
 
     void RenameAllNamespaces(string path, string name)
