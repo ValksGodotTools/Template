@@ -6,6 +6,7 @@ public partial class Setup : Node
 {
     string prevGameName = "";
     LineEdit lineEditGameName;
+    PopupPanel popupPanel;
     Genre genre;
     
     enum Genre
@@ -18,6 +19,7 @@ public partial class Setup : Node
     public override void _Ready()
     {
         lineEditGameName = GetNode<LineEdit>("%GameName");
+        popupPanel = GetNode<PopupPanel>("%PopupPanel");
         genre = (Genre)GetNode<OptionButton>("%Genre").Selected;
     }
 
@@ -43,13 +45,18 @@ public partial class Setup : Node
         prevGameName = newText;
     }
 
-    void _on_apply_changes_pressed()
+    void _on_no_pressed()
+    {
+        popupPanel.Hide();
+    }
+
+    void _on_yes_pressed()
     {
         string gameName = lineEditGameName.Text.Trim().ToTitleCase().Replace(" ", "");
 
         if (string.IsNullOrWhiteSpace(gameName))
         {
-            GD.Print("Please type in a game name first!");
+            GD.Print("Please type a game name first!");
             return;
         }
 
@@ -63,6 +70,11 @@ public partial class Setup : Node
         GD.Print("Please close the entire editor and re-open it.");
 
         GetTree().Quit();
+    }
+
+    void _on_apply_changes_pressed()
+    {
+        popupPanel.PopupCentered();
     }
 
     void SetMainScene(string path, string scene)

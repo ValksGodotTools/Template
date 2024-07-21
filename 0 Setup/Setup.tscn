@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnmu3cujgayk2"]
+[gd_scene load_steps=4 format=3 uid="uid://dnmu3cujgayk2"]
 
 [ext_resource type="Script" path="res://0 Setup/Setup.cs" id="1_g3v0h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv57m"]
+bg_color = Color(0.6, 0, 0.0470588, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
+bg_color = Color(0, 0.6, 0.0784314, 1)
 
 [node name="Setup" type="PanelContainer"]
 anchors_preset = 15
@@ -19,21 +25,31 @@ theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 25
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "What is the name of this game?"
 
-[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 max_length = 40
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "What is the genre?"
 
-[node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+[node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
@@ -46,9 +62,62 @@ popup/item_2/text = "3D FPS"
 popup/item_2/id = 2
 
 [node name="ApplyChanges" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 0
 text = "Apply Changes"
 
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/GameName" to="." method="_on_game_name_text_changed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "NOTICE: Please read the setup guide in the GitHub readme first. Pressing \"Apply Changes\" will move around several files, change several project settings and delete resources including this scene you are viewing right now. The only way to reverse the action is to discard the changes via GitHub Desktop App or download the entire repository again."
+autowrap_mode = 2
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+unique_name_in_owner = true
+size = Vector2i(366, 130)
+
+[node name="PanelContainer" type="PanelContainer" parent="PopupPanel"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 362.0
+offset_bottom = 126.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupPanel/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PopupPanel/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Are you sure you want to do this?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupPanel/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="No" type="Button" parent="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mv57m")
+text = "No
+"
+
+[node name="Yes" type="Button" parent="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_1payf")
+text = "Yes"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ApplyChanges" to="." method="_on_apply_changes_pressed"]
+[connection signal="pressed" from="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/No" to="." method="_on_no_pressed"]
+[connection signal="pressed" from="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Yes" to="." method="_on_yes_pressed"]
