@@ -1,9 +1,15 @@
 # Template
 Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template` has got your back. ❤️
 
+Want to get right into it? Start off by reading the [setup guide](#setup-guide).
+
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
+
 ## Feature Summary
 ### ⭐ Mod Loader
-[Mods](#mod-loader) can replace game assets and execute C# scripts.
+Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### ⭐ In-Game Console
 Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
@@ -19,7 +25,7 @@ There are also useful classes like [Scene Manager](#scenemanager) and [Services]
 ### ⭐ Localisation
 Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
-## Setup
+## Setup Guide
 ### :one: Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
@@ -61,31 +67,6 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 > ℹ️ Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
 
 > ℹ️ A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
-
-## Previews
-![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
-
-------------------
-
-![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
-
-------------------
-
-![credits](https://github.com/ValksGodotTools/Template/assets/6277739/91c976bc-bc46-4171-9f76-ef5c0bce75dc)  
-The Example Mod replaces the credits background image with a picture of a cat.
-
-------------------
-
-![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
-
-------------------
-
-![mod-loader](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
-You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
-
-------------------
-
-![fps-scene](https://github.com/ValksGodotTools/Template/assets/6277739/282a0355-7aea-4e17-a5ea-6056a177871d)
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
