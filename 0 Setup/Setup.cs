@@ -104,6 +104,16 @@ public partial class Setup : Node
                 Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
                 Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
                 mainSceneName = "level_3D";
+
+                TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}", 
+                    fullPathFile =>
+                    {
+                        if (fullPathFile.EndsWith(".cs"))
+                        {
+                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                        }
+                    },
+                    directoryName => true);
                 break;
         }
 
@@ -158,6 +168,33 @@ public partial class Setup : Node
     /// </summary>
     void RenameAllNamespaces(string path, string name)
     {
+        TraverseDirectory(path, 
+            fullPathFile =>
+            {
+                // Modify all scripts
+                if (fullPathFile.EndsWith(".cs"))
+                {
+                    // Do not modify this script
+                    if (!fullPathFile.EndsWith("Setup.cs"))
+                    {
+                        string text = File.ReadAllText(fullPathFile);
+                        text = text.Replace("namespace Template", $"namespace {name}");
+                        File.WriteAllText(fullPathFile, text);
+                    }
+                }
+            }, 
+            fullPathDir => !fullPathDir.EndsWith(".godot") && !fullPathDir.EndsWith("GodotUtils"));
+    }
+
+    /// <summary>
+    /// <para>Traverse a directory given by 'path'.</para>
+    /// <para>The action 'actionFile' has a full path to the file param.</para>
+    /// <para>The action 'actionDirectory' has a full path to the directory param. 
+    /// Returning true will recursively traverse this directory. Returning false 
+    /// will not traverse the directory.</para>
+    /// </summary>
+    void TraverseDirectory(string path, Action<string> actionFile, Func<string, bool> actionDirectory)
+    {
         using DirAccess dir = DirAccess.Open(path);
 
         if (dir == null)
@@ -176,24 +213,14 @@ public partial class Setup : Node
 
             if (dir.CurrentIsDir())
             {
-                if (fileName != ".godot" && fileName != "GodotUtils")
+                if (actionDirectory(fullPath))
                 {
-                    RenameAllNamespaces(fullPath, name);
+                    TraverseDirectory(fullPath, actionFile, actionDirectory);
                 }
             }
             else
             {
-                // Modify all scripts
-                if (fileName.EndsWith(".cs"))
-                {
-                    // Do not modify this script
-                    if (!fileName.EndsWith("Setup.cs"))
-                    {
-                        string text = File.ReadAllText(fullPath);
-                        text = text.Replace("namespace Template", $"namespace {name}");
-                        File.WriteAllText(fullPath, text);
-                    }
-                }
+                actionFile(fullPath);
             }
 
             fileName = dir.GetNext();
