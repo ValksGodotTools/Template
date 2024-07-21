@@ -1,14 +1,29 @@
-using System.IO;
 namespace Template;
+
+using System.IO;
 
 public partial class Setup : Node
 {
     string prevGameName = "";
     LineEdit lineEditGameName;
+    Genre genre;
+    
+    enum Genre
+    {
+        Platformer2D,
+        TopDown2D,
+        FPS3D
+    }
 
     public override void _Ready()
     {
         lineEditGameName = GetNode<LineEdit>("%GameName");
+        genre = (Genre)GetNode<OptionButton>("%Genre").Selected;
+    }
+
+    void _on_genre_item_selected(int index)
+    {
+        genre = (Genre)index;
     }
 
     void _on_game_name_text_changed(string newText)
@@ -40,8 +55,30 @@ public partial class Setup : Node
 
         string path = ProjectSettings.GlobalizePath("res://");
 
-        RenameProjectFiles(path, gameName);
+        //RenameProjectFiles(path, gameName);
         //RenameAllNamespaces(path, gameName);
+        DeleteFiles(path);
+    }
+
+    void DeleteFiles(string path)
+    {
+        Directory.Delete($"{path}0 Setup", true);
+
+        switch (genre)
+        {
+            case Genre.Platformer2D:
+                Directory.Delete($"{path}2D Top Down", true);
+                Directory.Delete($"{path}3D FPS", true);
+                break;
+            case Genre.TopDown2D:
+                Directory.Delete($"{path}2D Platformer", true);
+                Directory.Delete($"{path}3D FPS", true);
+                break;
+            case Genre.FPS3D:
+                Directory.Delete($"{path}2D Platformer", true);
+                Directory.Delete($"{path}2D Top Down", true);
+                break;
+        }
     }
 
     void RenameProjectFiles(string path, string name)
