@@ -57,30 +57,66 @@ public partial class Setup : Node
 
         //RenameProjectFiles(path, gameName);
         //RenameAllNamespaces(path, gameName);
-        DeleteFiles(path);
+        //MoveProjectFiles(path);
     }
 
-    void DeleteFiles(string path)
+    void SetMainScene(string path, string scene)
+    {
+        string text = File.ReadAllText($"{path}project.godot");
+
+        text = text.Replace(
+            "run/main_scene=\"res://0 Setup/Setup.tscn\"",
+           $"run/main_scene=\"res://Scenes/{scene}.tscn\"");
+
+        File.WriteAllText($"{path}project.godot", text);
+    }
+
+    /// <summary>
+    /// Deletes game assets that are not specific to the selected genre. For example if
+    /// the 3D FPS genre was selected, the 2D Platformer and 2D Top Down folders would be
+    /// deleted. The scene level_3D.tscn would be moved to res://Scenes and would be set as
+    /// the new main project scene. In all cases the folder "0 Setup" is deleted.
+    /// </summary>
+    void MoveProjectFiles(string path)
     {
         Directory.Delete($"{path}0 Setup", true);
+
+        string mainSceneName = "";
+
+        const string FOLDER_NAME_FPS3D = "3D FPS";
+        const string FOLDER_NAME_TOP_DOWN_2D = "2D Top Down";
+        const string FOLDER_NAME_PLATFORMER_2D = "2D Platformer";
 
         switch (genre)
         {
             case Genre.Platformer2D:
-                Directory.Delete($"{path}2D Top Down", true);
-                Directory.Delete($"{path}3D FPS", true);
+                Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
+                Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
+                mainSceneName = "level_2D_platformer";
                 break;
             case Genre.TopDown2D:
-                Directory.Delete($"{path}2D Platformer", true);
-                Directory.Delete($"{path}3D FPS", true);
+                Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
+                Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
+                mainSceneName = "level_2D_top_down";
                 break;
             case Genre.FPS3D:
-                Directory.Delete($"{path}2D Platformer", true);
-                Directory.Delete($"{path}2D Top Down", true);
+                Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
+                Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
+                Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
+                mainSceneName = "level_3D";
                 break;
         }
+
+        Debug.Assert(mainSceneName != "");
+
+        SetMainScene(path, mainSceneName);
+        File.Move($"{path}{mainSceneName}", $"{path}Scenes/{mainSceneName}");
     }
 
+    /// <summary>
+    /// Replaces all instances of the keyword "Template" with the new
+    /// specified game name in several project files.
+    /// </summary>
     void RenameProjectFiles(string path, string name)
     {
         // .csproj
@@ -116,6 +152,10 @@ public partial class Setup : Node
         }
     }
 
+    /// <summary>
+    /// Renames the default "Template" namespace to the new specified game
+    /// name in all scripts.
+    /// </summary>
     void RenameAllNamespaces(string path, string name)
     {
         using DirAccess dir = DirAccess.Open(path);
