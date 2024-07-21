@@ -95,7 +95,7 @@ public partial class Setup : Node
                 Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
 
                 // Move main scene file
-                mainSceneName = "level_2D_platformer";
+                mainSceneName = "level_2D_platformer.tscn";
                 File.Move($"{path}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
                 break;
             case Genre.TopDown2D:
@@ -104,7 +104,7 @@ public partial class Setup : Node
                 Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
 
                 // Move main scene file
-                mainSceneName = "level_2D_top_down";
+                mainSceneName = "level_2D_top_down.tscn";
                 File.Move($"{path}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
                 break;
             case Genre.FPS3D:
@@ -119,7 +119,7 @@ public partial class Setup : Node
                 Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
 
                 // Move main scene file
-                mainSceneName = "level_3D";
+                mainSceneName = "level_3D.tscn";
                 File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
 
                 // Move all scripts to res://Scripts
