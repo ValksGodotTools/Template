@@ -1,5 +1,4 @@
 using System.IO;
-
 namespace Template;
 
 public partial class Setup : Node
@@ -39,8 +38,29 @@ public partial class Setup : Node
             return;
         }
 
-        //string path = ProjectSettings.GlobalizePath("res://");
+        string path = ProjectSettings.GlobalizePath("res://");
+
+        RenameProjectFiles(path, gameName);
         //RenameAllNamespaces(path, gameName);
+    }
+
+    void RenameProjectFiles(string path, string name)
+    {
+        // .csproj
+        {
+            string text = File.ReadAllText($"{path}Template.csproj");
+            text = text.Replace("Template", name);
+            File.Delete($"{path}Template.csproj");
+            File.WriteAllText($"{path}{name}.csproj", text);
+        }
+
+        // .sln
+        {
+            string text = File.ReadAllText($"{path}Template.sln");
+            text = text.Replace("Template", name);
+            File.Delete($"{path}Template.sln");
+            File.WriteAllText($"{path}{name}.sln", text);
+        }
     }
 
     void RenameAllNamespaces(string path, string name)
