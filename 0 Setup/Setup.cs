@@ -55,9 +55,14 @@ public partial class Setup : Node
 
         string path = ProjectSettings.GlobalizePath("res://");
 
-        //RenameProjectFiles(path, gameName);
-        //RenameAllNamespaces(path, gameName);
+        RenameProjectFiles(path, gameName);
+        RenameAllNamespaces(path, gameName);
         MoveProjectFiles(path);
+
+        GD.Print("The settings have been changed. Select \"Reload\" if prompted with it.");
+        GD.Print("Please close the entire editor and re-open it.");
+
+        GetTree().Quit();
     }
 
     void SetMainScene(string path, string scene)
@@ -121,21 +126,21 @@ public partial class Setup : Node
                 // Move main scene file
                 mainSceneName = "level_3D.tscn";
                 File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
-
-                // Move all scripts to res://Scripts
-                TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}", 
-                    fullPathFile =>
-                    {
-                        if (fullPathFile.EndsWith(".cs"))
-                        {
-                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
-                        }
-                    },
-                    directoryName => true);
                 break;
         }
 
         Debug.Assert(mainSceneName != "");
+
+        // Move all scripts to res://Scripts
+        TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}",
+            fullPathFile =>
+            {
+                if (fullPathFile.EndsWith(".cs"))
+                {
+                    File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                }
+            },
+            directoryName => true);
 
         SetMainScene(path, mainSceneName);
     }
