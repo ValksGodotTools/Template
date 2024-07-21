@@ -143,6 +143,18 @@ public partial class Setup : Node
             directoryName => true);
 
         SetMainScene(path, mainSceneName);
+
+        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_TOP_DOWN_2D}");
+        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_PLATFORMER_2D}");
+        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_FPS3D}");
+    }
+
+    void DeleteDirectoryIfEmpty(string path)
+    {
+        if (Directory.GetFiles(path).Length == 0)
+        {
+            Directory.Delete(path);
+        }
     }
 
     /// <summary>
