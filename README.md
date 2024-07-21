@@ -1,5 +1,5 @@
 # Template
-Never again spend 5 minutes setting up a new project, ValksGodotTools/Template has got your back. ❤️
+Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template` has got your back. ❤️
 
 ## Feature Summary
 ### ⭐ Mod Loader
@@ -52,7 +52,11 @@ Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicki
 ![popup3](https://github.com/user-attachments/assets/b0cae7be-21fa-46cd-8ee1-ee1f4b30cfad)
 ![popup4](https://github.com/user-attachments/assets/a4ab7d67-da32-46ef-9aa4-d5472eb18ec5)
 
-If you selected "3D FPS" as an example then the 3D FPS scene should run when you press `F5`. This concludes the setup guide.
+If you selected "3D FPS" as an example then the 3D FPS scene should run when you press `F5`.
+
+> ℹ️ Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
+
+> ℹ️ A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
 ## Previews
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
