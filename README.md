@@ -31,7 +31,7 @@ You should see something like this
 
 ![setup-scene](https://github.com/user-attachments/assets/00262157-26e1-4909-9a71-7a3357a8c126)  
 
-Enter a name for your game, this could be something like `muffin blaster 3`, this will be auto formatted to `MuffinBlaster3`. All namespaces in all scripts will be replaces with this name. The `.csproj`, `.sln` and `project.godot` files will also be modified with this new name.
+Enter a name for your game, this could be something like `muffin blaster 3`, this will be auto formatted to `MuffinBlaster3`. All namespaces in all scripts will be replaced with this name. The `.csproj`, `.sln` and `project.godot` files will also be modified with this new name.
 
 Select the genre for your game. Currently there are only 3 types, "3D FPS", "2D Platformer" and "2D Top Down". Lets say you select "3D FPS", this means the "2D Platformer" and "2D Top Down" assets will be deleted and the 3D FPS assets will be moved to more accessible locations.
 
