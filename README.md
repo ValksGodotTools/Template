@@ -20,31 +20,64 @@ There are also useful classes like [Scene Manager](#scenemanager) and [Services]
 Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ## Setup
+### :one: Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
 
 If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
-## Main Menu
-![1](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)
+### :two: Run the game with `F5`
+You should see something like this
 
-## Options
-![2](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)
+![setup-scene](https://github.com/user-attachments/assets/00262157-26e1-4909-9a71-7a3357a8c126)  
 
-## Credits
-![3](https://github.com/ValksGodotTools/Template/assets/6277739/91c976bc-bc46-4171-9f76-ef5c0bce75dc)  
+Enter a name for your game, this could be something like `muffin blaster 3`, this will be auto formatted to `MuffinBlaster3`. All namespaces in all scripts will be replaces with this name. The `.csproj`, `.sln` and `project.godot` files will also be modified with this new name.
+
+Select the genre for your game. Currently there are only 3 types, "3D FPS", "2D Platformer" and "2D Top Down". Lets say you select "3D FPS", this means the "2D Platformer" and "2D Top Down" assets will be deleted and the 3D FPS assets will be moved to more accessible locations.
+
+### :three: Click "Apply Changes"
+
+The following popup will appear, click "Reload"
+
+![popup1](https://github.com/user-attachments/assets/8e037a68-235f-4df7-b3d1-94e0c9431808)
+
+Close the Godot project and click "Don't Save"
+
+![popup2](https://github.com/user-attachments/assets/0d51ca08-adbc-4df3-9e5a-27cf1e5717d2)
+
+### :four: Open the Godot Project
+
+Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicking "Fix Broken", click on "Open Anyway"
+
+![popup3](https://github.com/user-attachments/assets/b0cae7be-21fa-46cd-8ee1-ee1f4b30cfad)
+![popup4](https://github.com/user-attachments/assets/a4ab7d67-da32-46ef-9aa4-d5472eb18ec5)
+
+If you selected "3D FPS" as an example then the 3D FPS scene should run when you press `F5`. This concludes the setup guide.
+
+## Previews
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
+
+------------------
+
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
+
+------------------
+
+![credits](https://github.com/ValksGodotTools/Template/assets/6277739/91c976bc-bc46-4171-9f76-ef5c0bce75dc)  
 The Example Mod replaces the credits background image with a picture of a cat.
 
-## Keybindings
-![4](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
+------------------
 
-## Mod Loader
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
+
+------------------
+
+![mod-loader](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
 You can find the example mod repo [here](https://github.com/ValksGodotTools/ExampleMod)
 
-![5](https://github.com/ValksGodotTools/Template/assets/6277739/8c360277-7da0-4cd6-8b10-24c6cfe084db)
+------------------
 
-## FPS Scene
-![6](https://github.com/ValksGodotTools/Template/assets/6277739/282a0355-7aea-4e17-a5ea-6056a177871d)
+![fps-scene](https://github.com/ValksGodotTools/Template/assets/6277739/282a0355-7aea-4e17-a5ea-6056a177871d)
 
 ## Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
