@@ -41,19 +41,19 @@ public partial class OptionsManager : Resource
 
     public void SaveOptions()
     {
-        Error error = ResourceSaver.Save(
-            resource: Options,
-            path: "user://options.tres");
-
-        if (error != Error.Ok)
-            GD.Print(error);
+        SaveResource(Options, nameof(Options));
     }
 
     public void SaveHotkeys()
     {
+        SaveResource(Hotkeys, nameof(Hotkeys));
+    }
+
+    void SaveResource(Resource resource, string name)
+    {
         Error error = ResourceSaver.Save(
-            resource: Hotkeys,
-            path: "user://hotkeys.tres");
+            resource: resource,
+            path: $"user://{name.ToLower()}.tres");
 
         if (error != Error.Ok)
             GD.Print(error);
