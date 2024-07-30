@@ -7,7 +7,10 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
 
-## Feature Summary
+## Highlighted Features
+### ⭐ Automated Setup
+Project settings are set for you and assets you do not need are deleted. See the start of the setup guide [here](#setup-guide).
+
 ### ⭐ Mod Loader
 Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
@@ -26,6 +29,7 @@ There are also useful classes like [Scene Manager](#scenemanager) and [Services]
 Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ## Setup Guide
+
 ### :one: Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
@@ -33,6 +37,8 @@ Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/mai
 If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
 ### :two: Run the game with `F5`
+> ℹ️ Steps 2 to 4 are optional but doing them with change arguably tedious to setup settings and delete unneeded assets.
+
 You should see something like this
 
 ![setup-scene](https://github.com/user-attachments/assets/00262157-26e1-4909-9a71-7a3357a8c126)  
@@ -68,7 +74,8 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 
 > ℹ️ A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
-## Services
+## Features
+### Services
 **Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
 
 In the `_Ready()` of any node add `Global.Services.Add(this)`. (if the script does not extend from node, you can use `Global.Services.Add<Type>`)
@@ -98,7 +105,7 @@ UIVignette vignette = Global.Services.Get<UIVignette>();
 vignette.LightPulse();
 ```
 
-## Console Commands
+### Console Commands
 ```cs
 // Simply add the "ConsoleCommand" attribute to any function
 // it will be registered as a new console command
@@ -132,7 +139,7 @@ void Debug(int x, string y)
 }
 ```
 
-## Prefabs
+### Prefabs
 ```cs
 // Load all your scene prefabs here. This script can be found in
 // "res://Scripts/Static/Prefabs.cs". Note that music and sounds are
@@ -150,7 +157,7 @@ public static class Prefabs
 UIOptions options = Prefabs.Options.Instantiate<UIOptions>();
 ```
 
-## AudioManager
+### AudioManager
 ```cs
 AudioManager audioManager = Global.Services.Get<AudioManager>();
 
@@ -170,7 +177,7 @@ audioManager.SetSFXVolume(100);
 audioManager.FadeOutSFX();
 ```
 
-## SceneManager
+### SceneManager
 ```cs
 // Switch to a scene instantly
 Global.Services.Get<SceneManager>().SwitchScene("main_menu");
@@ -180,10 +187,69 @@ Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down",
     SceneManager.TransType.Fade);
 ```
 
-## Experimental EventManager
+### State Manager
+This state manager uses functions as states as suppose to using classes for states. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is given.
+
+Create a new file named `Player.cs` and add the following script to it.
+```cs
+public partial class Player : Entity // This script extends from Entity but it may extend from CharacterBody3D for you
+{
+    State curState;
+
+    public override void _Ready()
+    {
+        curState = Idle();
+        curState.Enter();
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        curState.Update(delta);
+    }
+
+    public void SwitchState(State newState)
+    {
+        GD.Print($"Switched from {curState} to {newState}"); // Useful for debugging. May be more appealing to just say "Switched to {newState}" instead.
+
+        curState.Exit();
+        newState.Enter();
+        curState = newState;
+    }
+}
+```
+Create another file named `PlayerIdle.cs` and add the following.
+```cs
+public partial class Player
+{
+    State Idle()
+    {
+        var state = new State(this, nameof(Idle));
+
+        state.Enter = () =>
+        {
+            // What happens on entering the idle state?
+        };
+
+        state.Update = delta =>
+        {
+            // What happens on every frame in the idle state?
+        };
+
+        state.Exit = () =>
+        {
+            // What happens on exiting the idle state?
+        }
+
+        return state;
+    }
+}
+```
+Do the same process when adding new states.
+
+### Experimental EventManager
 If you like the idea of having a universal static event manager that handles everything then try out the code below in your own project.
 
-### Event Enums
+#### Event Enums
 ```cs
 public enum EventGeneric
 {
@@ -196,7 +262,7 @@ public enum EventPlayer
 }
 ```
 
-### Event Dictionaries
+#### Event Dictionaries
 ```cs
 public static class Events
 {
@@ -205,7 +271,7 @@ public static class Events
 }
 ```
 
-### Example #1
+#### Example #1
 ```cs
 Events.Generic.AddListener(EventGeneric.OnKeyboardInput, (args) => 
 {
@@ -220,7 +286,7 @@ Events.Generic.RemoveListeners(EventGeneric.OnKeyboardInput, "someId");
 Events.Generic.Notify(EventGeneric.OnKeyboardInput, 1, 2, 3);
 ```
 
-### Example #2
+#### Example #2
 ```cs
 Events.Player.AddListener<PlayerSpawnArgs>(EventPlayer.OnPlayerSpawn, (args) => 
 {
