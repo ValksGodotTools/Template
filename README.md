@@ -244,7 +244,7 @@ public partial class Player
     }
 }
 ```
-Do the same process when adding new states.
+Do a similar process when adding new states.
 
 ### Experimental EventManager
 If you like the idea of having a universal static event manager that handles everything then try out the code below in your own project.
