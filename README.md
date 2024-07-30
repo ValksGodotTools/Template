@@ -3,6 +3,19 @@ Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template`
 
 Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
+1. [Highlighted Features](#highlighted-features)
+2. [Setup Guide](#setup-guide)
+3. [Features](#features)
+    - [Services](#services)
+    - [Console Commands](#console-commands)
+    - [Prefabs](#prefabs)
+    - [Audio Manager](#audiomanager)
+    - [Scene Manager](#scenemanager)
+    - [State Manager](#state-manager)
+    - [Experimental Event Manager](#experimental-eventmanager)
+4. [Contributing](#contributing)
+5. [Credits](#credits)
+
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
