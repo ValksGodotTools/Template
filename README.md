@@ -14,7 +14,8 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
     - [State Manager](#state-manager)
     - [Experimental Event Manager](#experimental-eventmanager)
 4. [Contributing](#contributing)
-5. [Credits](#credits)
+5. [Roadmap](#roadmap)
+6. [Credits](#credits)
 
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
@@ -312,13 +313,30 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 ```
 
 ## Contributing
-Any kind of contributions are very much welcomed!
+Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
 
-[Roadmap](https://github.com/ValksGodotTools/Template/issues/12)  
+## Roadmap
+### 3D FPS
+- Add an animated weapon model from Blender and add logic for it in game
+- Add a test environment
 
-[Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style)  
+### 2D Platformer
+- Add example states
 
-Contact me over Discord (`valky5`)
+### 2D Top Down
+- Add a sword swing system
+- Add example states
+
+### Mod Loader
+- Beautify the mod loader scene and add the appropriate logic that follows it
+- Figure out how to ignore scripts in mods. For example I want to add a script in each mod that helps modders export the C# dll mods but this script can't be included because it will conflict with the same script from other mods.
+- Figure out how to allow duplicate scripts from different mods
+
+## Msc
+- Add a dialogue system that translates dialogue and choices in a text file to game logic
+- Add a inventory system
+- Add the ability to scroll in the credits scene
+- Implement a dedicated server authorative multiplayer model
 
 ## Credits
-See [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt)  
+For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
