@@ -1,4 +1,4 @@
-# Template
+# Godot 4 C# Template
 Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template` has got your back. ❤️
 
 Want to get right into it? Start off by reading the [setup guide](#setup-guide).
