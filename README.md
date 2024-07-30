@@ -188,7 +188,7 @@ Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down",
 ```
 
 ### State Manager
-This state manager uses functions as states as suppose to using classes for states. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is given.
+This state manager uses **functions as states** as suppose to using classes for states. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is given.
 
 Create a new file named `Player.cs` and add the following script to it.
 ```cs
