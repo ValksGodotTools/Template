@@ -4,8 +4,10 @@ Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template`
 Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
-2. [Highlighted Features](#highlighted-features)
-3. [Features](#features)
+2. [Features](#features)
+    - [Mod Loader](#mod-loader)
+    - [Godot Utils](#godot-utils)
+    - [Localisation](#localisation)
     - [Services](#services)
     - [Console Commands](#console-commands)
     - [Prefabs](#prefabs)
@@ -70,30 +72,24 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 > [!IMPORTANT]
 > A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
-## Highlighted Features
-### ⭐ Automated Setup
-Project settings are set for you and assets you do not need are deleted. See the start of the setup guide [here](#setup-guide).
-
-### ⭐ Mod Loader
-Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
-
-### ⭐ In-Game Console
-Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
-
-### ⭐ Key Bindings
-Full configuration of [key bindings](#keybindings) in-game.
-
-### ⭐ Useful Functions
-[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
-
-There are also useful classes like [Scene Manager](#scenemanager) and [Services](#services) that make your life easier.
-
-### ⭐ Localisation
-Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
-
 ## Features
+### Mod Loader
+Mods can replace game assets and execute C# scripts, although there are some limitations. 
+
+You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+
+### Godot Utils
+[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`. 
+
+More functions will be added in time.
+
+### Localisation
+Currently English, French and Japanese are supported for all the UI elements. 
+
+You can add in your own languages [here](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
+
 ### Services
-**Stop using static everywhere!** Static exists for the lifetime of the application wasting valuable game memory. Instead lets make use of `Global.Services`.
+**Stop using static everywhere!** Static exists for the lifetime of the application meaning if you leave a scene, the static will still remain active! Instead lets make use of `Global.Services`.
 
 In the `_Ready()` of any node add `Global.Services.Add(this)`. (if the script does not extend from node, you can use `Global.Services.Add<Type>`)
 ```cs
