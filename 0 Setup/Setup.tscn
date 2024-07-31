@@ -27,18 +27,26 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "What is the name of this game?"
 
-[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 max_length = 40
+
+[node name="GameNamePreview" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
@@ -116,7 +124,7 @@ size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_1payf")
 text = "Yes"
 
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ApplyChanges" to="." method="_on_apply_changes_pressed"]
 [connection signal="pressed" from="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/No" to="." method="_on_no_pressed"]

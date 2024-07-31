@@ -6,6 +6,7 @@ public partial class Setup : Node
 {
     string prevGameName = "";
     LineEdit lineEditGameName;
+    Label gameNamePreview;
     PopupPanel popupPanel;
     Genre genre;
     
@@ -19,40 +20,45 @@ public partial class Setup : Node
     public override void _Ready()
     {
         lineEditGameName = GetNode<LineEdit>("%GameName");
+        gameNamePreview = GetNode<Label>("%GameNamePreview");
         popupPanel = GetNode<PopupPanel>("%PopupPanel");
         genre = (Genre)GetNode<OptionButton>("%Genre").Selected;
     }
 
-    void _on_genre_item_selected(int index)
-    {
-        genre = (Genre)index;
-    }
+    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
+
+    void DisplayGameNamePreview(string inputName) =>
+        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
+
+    void _on_genre_item_selected(int index) => genre = (Genre)index;
 
     void _on_game_name_text_changed(string newText)
     {
         if (string.IsNullOrWhiteSpace(newText))
+        {
+            gameNamePreview.Text = "";
             return;
+        }
 
         // Since this name is being used for the namespace its first character must not be
         // a number and every other character must be alphanumeric
         if (!IsAlphaNumeric(newText) || char.IsNumber(newText.Trim()[0]))
         {
+            DisplayGameNamePreview(prevGameName);
             lineEditGameName.Text = prevGameName;
             lineEditGameName.CaretColumn = prevGameName.Length;
             return;
         }
 
+        DisplayGameNamePreview(newText);
         prevGameName = newText;
     }
 
-    void _on_no_pressed()
-    {
-        popupPanel.Hide();
-    }
+    void _on_no_pressed() => popupPanel.Hide();
 
     void _on_yes_pressed()
     {
-        string gameName = lineEditGameName.Text.Trim().ToTitleCase().Replace(" ", "");
+        string gameName = FormatGameName(lineEditGameName.Text);
 
         if (string.IsNullOrWhiteSpace(gameName))
         {
@@ -72,10 +78,7 @@ public partial class Setup : Node
         GetTree().Quit();
     }
 
-    void _on_apply_changes_pressed()
-    {
-        popupPanel.PopupCentered();
-    }
+    void _on_apply_changes_pressed() => popupPanel.PopupCentered();
 
     void SetMainScene(string path, string scene)
     {
