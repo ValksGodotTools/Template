@@ -3,8 +3,8 @@ Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template`
 
 Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
-1. [Highlighted Features](#highlighted-features)
-2. [Setup Guide](#setup-guide)
+1. [Setup Guide](#setup-guide)
+2. [Highlighted Features](#highlighted-features)
 3. [Features](#features)
     - [Services](#services)
     - [Console Commands](#console-commands)
@@ -20,27 +20,6 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
-
-## Highlighted Features
-### ⭐ Automated Setup
-Project settings are set for you and assets you do not need are deleted. See the start of the setup guide [here](#setup-guide).
-
-### ⭐ Mod Loader
-Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
-
-### ⭐ In-Game Console
-Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
-
-### ⭐ Key Bindings
-Full configuration of [key bindings](#keybindings) in-game.
-
-### ⭐ Useful Functions
-[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
-
-There are also useful classes like [Scene Manager](#scenemanager) and [Services](#services) that make your life easier.
-
-### ⭐ Localisation
-Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ## Setup Guide
 
@@ -90,6 +69,27 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 
 > [!IMPORTANT]
 > A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
+
+## Highlighted Features
+### ⭐ Automated Setup
+Project settings are set for you and assets you do not need are deleted. See the start of the setup guide [here](#setup-guide).
+
+### ⭐ Mod Loader
+Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+
+### ⭐ In-Game Console
+Press `F12` to bring up the [console](#console-commands) in game. New commands are very easy to code in.
+
+### ⭐ Key Bindings
+Full configuration of [key bindings](#keybindings) in-game.
+
+### ⭐ Useful Functions
+[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`.
+
+There are also useful classes like [Scene Manager](#scenemanager) and [Services](#services) that make your life easier.
+
+### ⭐ Localisation
+Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ## Features
 ### Services
