@@ -98,7 +98,7 @@ public partial class ModLoader
                 }
 
                 Node mod = importedScene.Instantiate<Node>();
-                node.GetTree().Root.CallDeferred("add_child", mod);
+                node.GetTree().Root.CallDeferred(Node.MethodName.AddChild, mod);
             }
 
         Next:

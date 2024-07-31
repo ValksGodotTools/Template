@@ -236,9 +236,8 @@ public partial class UIConsole : PanelContainer
 
             input.Text = historyText;
 
-            // if deferred is not use then something else will override these settings
-            input.CallDeferred("grab_focus");
-            input.CallDeferred("set", "caret_column", historyText.Length);
+            // if deferred is not used then something else will override these settings
+            SetCaretColumn(historyText.Length);
         }
 
         if (Input.IsActionJustPressed("ui_down"))
@@ -247,13 +246,18 @@ public partial class UIConsole : PanelContainer
 
             input.Text = historyText;
 
-            // if deferred is not use then something else will override these settings
-            input.CallDeferred("grab_focus");
-            input.CallDeferred("set", "caret_column", historyText.Length);
+            // if deferred is not used then something else will override these settings
+            SetCaretColumn(historyText.Length);
         }
     }
 
     #region Helper Functions
+    void SetCaretColumn(int pos)
+    {
+        input.CallDeferred(LineEdit.MethodName.GrabFocus);
+        input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
+    }
+
     object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
     {
         ParameterInfo[] paramInfos = method.GetParameters();
