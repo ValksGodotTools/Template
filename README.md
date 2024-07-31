@@ -51,7 +51,8 @@ Add in your own [languages](https://github.com/ValksGodotTools/Template/blob/mai
 If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
 ### :two: Run the game with `F5`
-> ℹ️ Steps 2 to 4 are optional but doing them with change arguably tedious to setup settings and delete unneeded assets.
+> [!NOTE]
+> Steps 2 to 4 change setup settings and delete unneeded assets. These steps are optional.
 
 You should see something like this
 
@@ -84,9 +85,11 @@ Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicki
 
 If you selected "3D FPS" as an example then the 3D FPS scene should run when you press `F5`.
 
-> ℹ️ Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
+> [!CAUTION]
+> Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
 
-> ℹ️ A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
+> [!IMPORTANT]
+> A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
 ## Features
 ### Services
