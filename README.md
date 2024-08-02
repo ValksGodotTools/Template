@@ -15,6 +15,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
     - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
     - [Experimental Event Manager](#experimental-eventmanager)
+3. [Tips](#tips)
 4. [Contributing](#contributing)
 5. [Roadmap](#roadmap)
 6. [Credits](#credits)
@@ -310,6 +311,18 @@ Events.Player.AddListener<PlayerSpawnArgs>(EventPlayer.OnPlayerSpawn, (args) =>
 
 Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, location, player));
 ```
+
+## Tips
+> [!TIP]
+> If you need to execute code before the game quits you can listen to OnQuit.
+> ```cs
+> // This is an async function because you way want to await certain processes before the game exists
+> Global.Services.Get<Global>().OnQuit += async () =>
+> {
+>     // Execute your code here
+>     await Task.FromResult(1);
+> }
+> ```
 
 ## Contributing
 Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
