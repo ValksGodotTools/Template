@@ -70,11 +70,7 @@ public partial class UIPopupMenu : Control
             WorldEnvironment = worldEnvironment;
     }
 
-    void _on_resume_pressed()
-    {
-        // todo: unpause the game
-        Hide();
-    }
+    void _on_resume_pressed() => Hide();
 
     void _on_options_pressed()
     {
@@ -89,6 +85,5 @@ public partial class UIPopupMenu : Control
         Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
     }
 
-    void _on_quit_pressed() => 
-        GetNode<Global>("/root/Global").Quit();
+    async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
 }

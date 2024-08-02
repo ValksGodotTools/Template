@@ -12,9 +12,9 @@ public partial class UIConsole
     }
 
     [ConsoleCommand("quit", "exit")]
-    void Quit()
+    async void Quit()
     {
-        GetTree().Root.GetNode<Global>("/root/Global").Quit();
+        await GetTree().Root.GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
     [ConsoleCommand("debug")]

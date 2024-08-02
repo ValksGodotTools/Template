@@ -97,11 +97,11 @@ public partial class UIModLoader : Node
         uiAuthors.Text = modInfo.Author;
     }
 
-    void _on_restart_game_pressed()
+    async void _on_restart_game_pressed()
     {
         //OS.CreateProcess(OS.GetExecutablePath(), null);
         OS.CreateInstance(null);
-        GetNode<Global>("/root/Global").Quit();
+        await GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
     void _on_open_mods_folder_pressed()

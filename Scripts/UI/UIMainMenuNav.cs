@@ -37,7 +37,7 @@ public partial class UIMainMenuNav : Node
         sceneManager.SwitchScene("UI/credits");
     }
 
-    void _on_quit_pressed() => GetNode<Global>("/root/Global").Quit();
+    async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
 
     void _on_discord_pressed() => OS.ShellOpen("https://discord.gg/j8HQZZ76r8");
     void _on_github_pressed() => OS.ShellOpen("https://github.com/ValksGodotTools/Template");
