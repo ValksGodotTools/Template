@@ -9,10 +9,10 @@ public partial class Player : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        MoveAndSlide();
+
         // Velocity is mutiplied by delta for us already
         Velocity += Utils.GetMovementInput() * speed;
         Velocity = Velocity.Lerp(Vector2.Zero, friction);
-
-        MoveAndSlide();
     }
 }
