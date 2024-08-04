@@ -48,9 +48,11 @@ public partial class Level : Node
         OtherPlayers.Remove(id);
     }
 
+    #region Prefabs
     private class Prefabs
     {
         public static Player Player { get; } = GU.LoadPrefab<Player>("player");
         public static OtherPlayer OtherPlayer { get; } = GU.LoadPrefab<OtherPlayer>("other_player");
     }
+    #endregion
 }
