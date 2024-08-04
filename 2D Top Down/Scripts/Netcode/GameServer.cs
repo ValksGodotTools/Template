@@ -38,6 +38,19 @@ public partial class GameServer : ENetServer
     protected override void Disconnected(Event netEvent)
     {
         Players.Remove(netEvent.Peer.ID);
+
+        // Tell everyone that this player has left
+        foreach (uint id in Players.Keys)
+        {
+            if (id == netEvent.Peer.ID)
+                continue;
+
+            Send(new SPacketPlayerJoinLeave
+            {
+                Id = netEvent.Peer.ID,
+                Joined = false
+            }, Peers[id]);
+        }
     }
 
     protected override void Stopped()
