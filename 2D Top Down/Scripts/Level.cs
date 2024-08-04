@@ -25,7 +25,7 @@ public partial class Level : Node
 
     public void AddLocalPlayer()
     {
-        Player = Prefabs.Player;
+        Player = GU.LoadPrefab<Player>("player");
         AddChild(Player);
         Player.Position = new Vector2(100, 100);
         Player.StartNet();
@@ -33,7 +33,7 @@ public partial class Level : Node
 
     public void AddOtherPlayer(uint id, Vector2 position)
     {
-        OtherPlayer otherPlayer = Prefabs.OtherPlayer;
+        OtherPlayer otherPlayer = GU.LoadPrefab<OtherPlayer>("other_player");
 
         AddChild(otherPlayer);
         otherPlayer.Position = position;
@@ -47,12 +47,4 @@ public partial class Level : Node
         OtherPlayers[id].QueueFree();
         OtherPlayers.Remove(id);
     }
-
-    #region Prefabs
-    private class Prefabs
-    {
-        public static Player Player { get; } = GU.LoadPrefab<Player>("player");
-        public static OtherPlayer OtherPlayer { get; } = GU.LoadPrefab<OtherPlayer>("other_player");
-    }
-    #endregion
 }
