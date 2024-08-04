@@ -125,7 +125,16 @@ public partial class Setup : Node
                         if (fullPathFile.EndsWith(".cs"))
                         {
                             new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
-                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+
+                            try
+                            {
+                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                            }
+                            catch (IOException)
+                            {
+                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
+                            }
+                            
                         }
                     },
                     directoryName => true);
@@ -146,7 +155,14 @@ public partial class Setup : Node
                         if (fullPathFile.EndsWith(".cs"))
                         {
                             new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
-                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                            try
+                            {
+                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                            }
+                            catch (IOException)
+                            {
+                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
+                            }
                         }
                     },
                     directoryName => true);
@@ -167,7 +183,14 @@ public partial class Setup : Node
                         if (fullPathFile.EndsWith(".cs"))
                         {
                             new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
-                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                            try
+                            {
+                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                            }
+                            catch (IOException)
+                            {
+                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
+                            }
                         }
                     },
                     directoryName => true);
