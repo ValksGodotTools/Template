@@ -78,15 +78,114 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 The 2D Top Down genre has a **client authorative** multiplayer setup for showing players positions updating on each others screens. This netcode is the result of redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find the multiplayer as useful as I have.
 
 > [!NOTE]
+> A lot of this netcode is specific to the 2D Top Down scene. There will be future efforts to abstract this code across all 3 genres.
+
+> [!NOTE]
+> Packets with a `C` prefix are packets sent by a client and packets with a `S` prefix are packets sent by the server.
+
+> [!IMPORTANT]
+> A very common mistake is to write one data type and read another. For example lets say you have `playerCount` which is a integer and you do `writer.Write(playerCount)` and then `playerCount = reader.ReadByte()`. Since you did not cast playerCount to byte on writing, you will get malformed data. Lets always cast our data values before writing them even if it may seem redundant at times.
+
+> [!CAUTION]
+> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. Try to avoid the use of `GD.Print(...)` as much as you can, it is not thread safe, use `Global.Services.Get<Logger>().Log(...)` instead.
+
+Here is what a client packet could look like. The client is using this packet to tell the server its position. The `Handle(...)` is executed on the server thread so only things on that thread should be accessed.
+```cs
+public class CPacketPosition : ClientPacket
+{
+    public Vector2 Position { get; set; }
+
+    public override void Write(PacketWriter writer)
+    {
+        writer.Write((Vector2)Position);
+    }
+
+    public override void Read(PacketReader reader)
+    {
+        Position = reader.ReadVector2();
+    }
+
+    public override void Handle(ENetServer s, Peer client)
+    {
+        GameServer server = (GameServer)s;
+        server.Players[client.ID].Position = Position;
+    }
+}
+```
+
+Here is what a server packet could look like. The server is telling each client about all the others client position updates. The `Handle(...)` is executed on the client thread so only things on that thread should be accessed.
+```cs
+public class SPacketPlayerPositions : ServerPacket
+{
+    public Dictionary<uint, Vector2> Positions { get; set; }
+
+    public override void Write(PacketWriter writer)
+    {
+        writer.Write((byte)Positions.Count);
+
+        foreach (KeyValuePair<uint, Vector2> pair in Positions)
+        {
+            writer.Write((uint)pair.Key);
+            writer.Write((Vector2)pair.Value);
+        }
+    }
+
+    public override void Read(PacketReader reader)
+    {
+        Positions = new();
+
+        byte count = reader.ReadByte();
+
+        for (int i = 0; i < count; i++)
+        {
+            uint id = reader.ReadUInt();
+            Vector2 position = reader.ReadVector2();
+
+            Positions.Add(id, position);
+        }
+    }
+
+    public override void Handle(ENetClient client)
+    {
+        Level level = Global.Services.Get<Level>();
+
+        foreach (KeyValuePair <uint, Vector2> pair in Positions)
+        {
+            if (level.OtherPlayers.ContainsKey(pair.Key))
+                level.OtherPlayers[pair.Key].Position = pair.Value;
+        }
+    }
+}
+```
+
+Sending a packet from the client
+```cs
+// Player.cs
+Net net = Global.Services.Get<Net>();
+
+net.Client.Send(new CPacketPosition
+{
+    Position = Position
+});
+```
+
+Sending a packet from the server
+```cs
+Send(new SPacketPlayerPositions
+{
+    Positions = GetOtherPlayers(pair.Key).ToDictionary(x => x.Key, x => x.Value.Position)
+}, Peers[pair.Key]);
+```
+
+> [!NOTE]
 > Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
 
-> [!WARNING]
+> [!CAUTION]
 > Multiplayer is still very much WIP. Expect missing features.
 
 ### Mod Loader
-Mods can replace game assets and execute C# scripts, although there are some limitations. 
-
-You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+> [!NOTE]
+> Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
 The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions including netcode scripts.
@@ -140,12 +239,12 @@ vignette.LightPulse();
 ```
 
 ### Console Commands
+Adding the `ConsoleCommand` attribute to any function will register it as a new console command.
+
+> [!NOTE]
+> The in-game console can be brought up with `F12`
+
 ```cs
-// Simply add the "ConsoleCommand" attribute to any function
-// it will be registered as a new console command
-
-// Note to bring up the console in-game press F12
-
 [ConsoleCommand("help")]
 void Help()
 {
@@ -154,18 +253,19 @@ void Help()
 
     Global.Services.Get<Logger>().Log(cmds.Print());
 }
+```
 
-// Console commands can have aliases, this command has a
-// alias called "exit"
-
+Console commands can have aliases, this command has an alias named "exit"
+```cs
 [ConsoleCommand("quit", "exit")]
 void Quit()
 {
     GetTree().Root.GetNode<Global>("/root/Global").Quit();
 }
+```
 
-// Method parameters are supported
-
+Method parameters are supported
+```cs
 [ConsoleCommand("debug")]
 void Debug(int x, string y)
 {
