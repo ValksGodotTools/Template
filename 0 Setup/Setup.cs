@@ -154,7 +154,7 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            string newPath = fullPathFile.Replace(FOLDER_NAME_TOP_DOWN_2D, "Scripts");
+                            string newPath = fullPathFile.Replace(FOLDER_NAME_TOP_DOWN_2D, "");
 
                             new FileInfo(newPath).Directory.Create();
                             try
