@@ -118,26 +118,7 @@ public partial class Setup : Node
                 mainSceneName = "level_2D_platformer.tscn";
                 File.Move($"{path}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
 
-                // Move all scripts to res://Scripts
-                TraverseDirectory($"{path}{FOLDER_NAME_PLATFORMER_2D}",
-                    fullPathFile =>
-                    {
-                        if (fullPathFile.EndsWith(".cs"))
-                        {
-                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
-
-                            try
-                            {
-                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
-                            }
-                            catch (IOException)
-                            {
-                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
-                            }
-                            
-                        }
-                    },
-                    directoryName => true);
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_PLATFORMER_2D);
                 break;
             case Genre.TopDown2D:
                 // Delete unneeded genre folders
@@ -148,26 +129,7 @@ public partial class Setup : Node
                 mainSceneName = "level_2D_top_down.tscn";
                 File.Move($"{path}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
 
-                // Move all scripts to res://Scripts
-                TraverseDirectory($"{path}{FOLDER_NAME_TOP_DOWN_2D}",
-                    fullPathFile =>
-                    {
-                        if (fullPathFile.EndsWith(".cs"))
-                        {
-                            string newPath = fullPathFile.Replace(FOLDER_NAME_TOP_DOWN_2D, "");
-
-                            new FileInfo(newPath).Directory.Create();
-                            try
-                            {
-                                File.Move(fullPathFile, newPath);
-                            }
-                            catch (IOException)
-                            {
-                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
-                            }
-                        }
-                    },
-                    directoryName => true);
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_TOP_DOWN_2D);
                 break;
             case Genre.FPS3D:
                 // Delete unneeded genre folders
@@ -178,24 +140,7 @@ public partial class Setup : Node
                 mainSceneName = "level_3D.tscn";
                 File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
 
-                // Move all scripts to res://Scripts
-                TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}",
-                    fullPathFile =>
-                    {
-                        if (fullPathFile.EndsWith(".cs"))
-                        {
-                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
-                            try
-                            {
-                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
-                            }
-                            catch (IOException)
-                            {
-                                GD.Print($"Failed to move {fullPathFile.GetFile()}");
-                            }
-                        }
-                    },
-                    directoryName => true);
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_FPS3D);
                 break;
         }
 
@@ -206,6 +151,28 @@ public partial class Setup : Node
         DeleteDirectoryIfEmpty(path + FOLDER_NAME_TOP_DOWN_2D);
         DeleteDirectoryIfEmpty(path + FOLDER_NAME_PLATFORMER_2D);
         DeleteDirectoryIfEmpty(path + FOLDER_NAME_FPS3D);
+    }
+
+    void MoveFilesAndPreserveFolderStructure(string path, string folder)
+    {
+        // Move all scripts to res://Scripts
+        TraverseDirectory(path + folder,
+            fullPathFile =>
+            {
+                string newPath = fullPathFile.Replace(folder, "");
+
+                new FileInfo(newPath).Directory.Create();
+
+                try
+                {
+                    File.Move(fullPathFile, newPath);
+                }
+                catch (IOException)
+                {
+                    GD.Print($"Failed to move {fullPathFile.GetFile()}");
+                }
+            },
+            directoryName => true);
     }
 
     void DeleteDirectoryIfEmpty(string path)
