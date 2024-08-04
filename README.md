@@ -87,7 +87,7 @@ The 2D Top Down genre has a **client authorative** multiplayer setup for showing
 > A very common mistake is to write one data type and read another. For example lets say you have `playerCount` which is a integer and you do `writer.Write(playerCount)` and then `playerCount = reader.ReadByte()`. Since you did not cast playerCount to byte on writing, you will get malformed data. Lets always cast our data values before writing them even if it may seem redundant at times.
 
 > [!CAUTION]
-> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. Try to avoid the use of `GD.Print(...)` as much as you can, it is not thread safe, use `Global.Services.Get<Logger>().Log(...)` instead.
+> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. Try to avoid the use of `GD.Print(...)` as much as you can, it is not thread safe, use `Game.Log(...)` instead.
 
 Here is what a client packet could look like. The client is using this packet to tell the server its position. The `Handle(...)` is executed on the server thread so only things on that thread should be accessed.
 ```cs
@@ -251,7 +251,7 @@ void Help()
     IEnumerable<string> cmds =
         Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
 
-    Global.Services.Get<Logger>().Log(cmds.Print());
+    Game.Log(cmds.Print());
 }
 ```
 
@@ -269,7 +269,7 @@ Method parameters are supported
 [ConsoleCommand("debug")]
 void Debug(int x, string y)
 {
-    Global.Services.Get<Logger>().Log($"Debug {x}, {y}");
+    Game.Log($"Debug {x}, {y}");
 }
 ```
 
