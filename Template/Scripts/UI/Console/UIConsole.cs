@@ -149,9 +149,7 @@ public partial class UIConsole : PanelContainer
 
         if (cmd == null)
         {
-            Global.Services.Get<Logger>().Log($"The command '{text.Split()[0].ToLower()}' " +
-                $"does not exist");
-
+            Game.Log($"The command '{text.Split()[0].ToLower()}' does not exist");
             return false;
         }
 
@@ -309,7 +307,7 @@ public partial class UIConsole : PanelContainer
                 return int.Parse(input);
         } catch (FormatException e)
         {
-            Global.Services.Get<Logger>().Log(e.Message);
+            Game.Log(e.Message);
             return 0;
         }
 
@@ -320,7 +318,7 @@ public partial class UIConsole : PanelContainer
         }
         catch (FormatException e)
         {
-            Global.Services.Get<Logger>().Log(e.Message);
+            Game.Log(e.Message);
             return false;
         }
 

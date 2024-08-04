@@ -8,7 +8,7 @@ public partial class UIConsole
         IEnumerable<string> cmds =
             Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
 
-        Global.Services.Get<Logger>().Log(cmds.Print());
+        Game.Log(cmds.Print());
     }
 
     [ConsoleCommand("quit", "exit")]
@@ -20,6 +20,6 @@ public partial class UIConsole
     [ConsoleCommand("debug")]
     void Debug(int x)
     {
-        Global.Services.Get<Logger>().Log(x);
+        Game.Log(x);
     }
 }
