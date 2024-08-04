@@ -5,6 +5,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
 2. [Features](#features)
+    - [Multiplayer](#multiplayer)
     - [Mod Loader](#mod-loader)
     - [Godot Utils](#godot-utils)
     - [Localisation](#localisation)
@@ -74,6 +75,17 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 > A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
 ## Features
+### Multiplayer
+`res://2D Top Down/level_2D_top_down.tscn` has a client authorative multiplayer setup for showing players positions updating on each others screens. This took a very long time and I'm still not done. This netcode is the result of years of me redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find this as useful as I have.
+
+This is not peer to peer, there is a dedicated server and clients connect to that server.
+
+This is still very WIP. Expect missing features.
+
+I have plans to pursue a server authorative model (again).
+
+Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
+
 ### Mod Loader
 Mods can replace game assets and execute C# scripts, although there are some limitations. 
 
