@@ -1,6 +1,5 @@
 namespace Template;
 
-using System.IO;
 using Template.TopDown2D;
 
 public partial class Level : Node
@@ -18,7 +17,7 @@ public partial class Level : Node
         {
             client.OnDisconnected += opcode =>
             {
-                Player.QueueFree();
+                Game.SceneManager.ResetCurrentScene();
             };
         };
     }

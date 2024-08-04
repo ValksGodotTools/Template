@@ -2,6 +2,8 @@
 
 public class Game
 {
+    public static SceneManager SceneManager { get => Global.Services.Get<SceneManager>(); }
+
     public static void Log(object message, BBColor color = BBColor.Gray) =>
         Global.Services.Get<Logger>().Log(message);
 
