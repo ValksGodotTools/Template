@@ -159,19 +159,15 @@ public partial class Setup : Node
 
         SetMainScene(path, mainSceneName);
 
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_TOP_DOWN_2D}");
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_PLATFORMER_2D}");
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_FPS3D}");
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_TOP_DOWN_2D);
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_PLATFORMER_2D);
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_FPS3D);
     }
 
     void DeleteDirectoryIfEmpty(string path)
     {
-        if (Directory.Exists(path) 
-            && Directory.GetFiles(path).Length == 0
-            && Directory.GetDirectories(path).Length == 0)
-        {
-            Directory.Delete(path);
-        }
+        GU.DeleteEmptyFolders(path);
+        GU.DeleteEmptyFolder(path);
     }
 
     /// <summary>
