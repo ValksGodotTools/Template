@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dnmu3cujgayk2"]
+[gd_scene load_steps=5 format=3 uid="uid://dnmu3cujgayk2"]
 
 [ext_resource type="Script" path="res://0 Setup/Setup.cs" id="1_g3v0h"]
+[ext_resource type="Script" path="res://0 Setup/SetupToolScript.cs" id="2_73b4h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv57m"]
 bg_color = Color(0.6, 0, 0.0470588, 1)
@@ -123,6 +124,9 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_1payf")
 text = "Yes"
+
+[node name="Tool Script" type="Node" parent="."]
+script = ExtResource("2_73b4h")
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
