@@ -75,15 +75,13 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 
 ## Features
 ### Multiplayer
-`res://2D Top Down/level_2D_top_down.tscn` has a client authorative multiplayer setup for showing players positions updating on each others screens. This took a very long time and I'm still not done. This netcode is the result of years of me redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find this as useful as I have.
+The 2D Top Down genre has a **client authorative** multiplayer setup for showing players positions updating on each others screens. This netcode is the result of redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find the multiplayer as useful as I have.
 
-This is not peer to peer, there is a dedicated server and clients connect to that server.
+> [!NOTE]
+> Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
 
-This is still very WIP. Expect missing features.
-
-I have plans to pursue a server authorative model (again).
-
-Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
+> [!WARNING]
+> Multiplayer is still very much WIP. Expect missing features.
 
 ### Mod Loader
 Mods can replace game assets and execute C# scripts, although there are some limitations. 
@@ -91,19 +89,30 @@ Mods can replace game assets and execute C# scripts, although there are some lim
 You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
-[Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains several useful extensions such as `.PrintFull()`, `.ForEach()` and `.QueueFreeChildren()`. 
+The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions including netcode scripts.
 
-More functions will be added in time.
+Highlighted Classes
+- `ServiceProvider` *(see [Services](#services))*
+- `EventManager` *(see [Event Manager](#experimental-eventmanager))*
+- `Logger` *(thread safe logger)*
+- `State` *(see [State Manager](#state-manager))*
+- `GTween` *(wrapper for Godot.Tween)*
+- `GTimer` *(wrapper for Godot.Timer)*
+
+Highlighted Extensions
+- `.PrintFull()` *(e.g. `GD.Print(player.PrintFull())`)*
+- `.ForEach()`
+- `.QueueFreeChildren()`
 
 ### Localisation
-Currently English, French and Japanese are supported for all the UI elements. 
-
-You can add in your own languages [here](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
+> [!NOTE]
+> Currently English, French and Japanese are supported for most of the UI elements. You can add in your own languages [here](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
 
 ### Services
-**Stop using static everywhere!** Static exists for the lifetime of the application meaning if you leave a scene, the static will still remain active! Instead lets make use of `Global.Services`.
+> [!IMPORTANT]
+> In order to understand how useful `Global.Services` is, let me tell you why using the static keyword should be avoided. Lets say you are coding a multiplayer game and you make every property in `GameServer.cs` static. Everything works fine at first and you can easily access the game servers properties from *almost* anywhere but once you restart the server or leave the scene where the game server shouldn't be alive anymore, the old values for each static property will still exist from the last time the server was online. You would have to keep track of each individual property you made static and reset them. This is why static should be avoided.
 
-In the `_Ready()` of any node add `Global.Services.Add(this)`. (if the script does not extend from node, you can use `Global.Services.Add<Type>`)
+In the `_Ready()` of any node add `Global.Services.Add(this)` *(if the script does not extend from node, you can use `Global.Services.Add<Type>`)*
 ```cs
 public partial class UIVignette : ColorRect
 {
@@ -318,7 +327,8 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > ```
 
 ## Contributing
-Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
+> [!NOTE]
+> Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
 
 ## Roadmap
 ### 3D FPS
@@ -347,4 +357,5 @@ Please have a quick look at the [Projects Coding Style](https://github.com/Valks
 - Implement a dedicated server authorative multiplayer model
 
 ## Credits
-For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
+> [!NOTE]
+> For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
