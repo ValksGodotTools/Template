@@ -324,13 +324,16 @@ Please have a quick look at the [Projects Coding Style](https://github.com/Valks
 ### 3D FPS
 - Add an animated weapon model from Blender and add logic for it in game
 - Add a test environment
+- Fully implement multiplayer
 
 ### 2D Platformer
 - Add example states
+- Fully implement multiplayer
 
 ### 2D Top Down
 - Add a sword swing system
 - Add example states
+- Fully implement multiplayer
 
 ### Mod Loader
 - Beautify the mod loader scene and add the appropriate logic that follows it
