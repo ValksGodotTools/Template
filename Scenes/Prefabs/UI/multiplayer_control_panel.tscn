@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://ca2xb7tvce5xj"]
+
+[ext_resource type="Script" path="res://Scripts/UI/UINetControlPanel.cs" id="1_pj2ql"]
+
+[node name="VBox" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_pj2ql")
+
+[node name="Server" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Start Server" type="Button" parent="Server"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start Server"
+
+[node name="Stop Server" type="Button" parent="Server"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop Server"
+
+[node name="Client" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Start Client" type="Button" parent="Client"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start Client"
+
+[node name="Stop Client" type="Button" parent="Client"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop Client"

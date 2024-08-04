@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://uiqfgmj1e1x7"]
+
+[ext_resource type="Script" path="res://Scripts/OtherPlayer.cs" id="1_4r8fl"]
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_0jav4"]
+
+[node name="Other Player" type="Node2D"]
+script = ExtResource("1_4r8fl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_0jav4")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -121.0
+offset_right = 20.0
+offset_bottom = -71.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
+vertical_alignment = 1

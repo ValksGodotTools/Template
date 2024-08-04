@@ -117,6 +117,8 @@ public partial class Setup : Node
                 // Move main scene file
                 mainSceneName = "level_2D_platformer.tscn";
                 File.Move($"{path}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_PLATFORMER_2D);
                 break;
             case Genre.TopDown2D:
                 // Delete unneeded genre folders
@@ -126,49 +128,59 @@ public partial class Setup : Node
                 // Move main scene file
                 mainSceneName = "level_2D_top_down.tscn";
                 File.Move($"{path}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_TOP_DOWN_2D);
                 break;
             case Genre.FPS3D:
                 // Delete unneeded genre folders
                 Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
                 Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
 
-                // Move Materials folder to res://
-                if (Directory.Exists($"{path}Materials"))
-                    Directory.Delete($"{path}Materials");
-
-                Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
-
                 // Move main scene file
                 mainSceneName = "level_3D.tscn";
                 File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_FPS3D);
                 break;
         }
 
         Debug.Assert(mainSceneName != "");
 
+        SetMainScene(path, mainSceneName);
+
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_TOP_DOWN_2D);
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_PLATFORMER_2D);
+        DeleteDirectoryIfEmpty(path + FOLDER_NAME_FPS3D);
+    }
+
+    void MoveFilesAndPreserveFolderStructure(string path, string folder)
+    {
         // Move all scripts to res://Scripts
-        TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}",
+        TraverseDirectory(path + folder,
             fullPathFile =>
             {
-                if (fullPathFile.EndsWith(".cs"))
+                string newPath = fullPathFile.Replace(folder, "");
+
+                new FileInfo(newPath).Directory.Create();
+
+                try
                 {
-                    File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                    File.Move(fullPathFile, newPath);
+                }
+                catch (IOException)
+                {
+                    GD.Print($"Failed to move {fullPathFile.GetFile()}");
                 }
             },
             directoryName => true);
-
-        SetMainScene(path, mainSceneName);
-
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_TOP_DOWN_2D}");
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_PLATFORMER_2D}");
-        DeleteDirectoryIfEmpty($"{path}{FOLDER_NAME_FPS3D}");
     }
 
     void DeleteDirectoryIfEmpty(string path)
     {
-        if (Directory.Exists(path) && Directory.GetFiles(path).Length == 0)
+        if (Directory.Exists(path))
         {
-            Directory.Delete(path);
+            GU.DeleteEmptyFolders(path);
+            GU.DeleteEmptyFolder(path);
         }
     }
 
@@ -228,6 +240,7 @@ public partial class Setup : Node
                     {
                         string text = File.ReadAllText(fullPathFile);
                         text = text.Replace("namespace Template", $"namespace {name}");
+                        text = text.Replace("using Template", $"using {name}");
                         File.WriteAllText(fullPathFile, text);
                     }
                 }

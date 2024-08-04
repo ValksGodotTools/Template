@@ -20,7 +20,7 @@ public partial class UIPopupMenu : Control
         menu = GetNode<PanelContainer>("%Menu");
         vbox = GetNode<VBoxContainer>("%Navigation");
 
-        Options = Prefabs.Options.Instantiate<UIOptions>();
+        Options = Prefabs.UIOptions;
         AddChild(Options);
         Options.Hide();
         Hide();
@@ -86,4 +86,9 @@ public partial class UIPopupMenu : Control
     }
 
     async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
+
+    private class Prefabs
+    {
+        public static UIOptions UIOptions = GU.LoadPrefab<UIOptions>("UI/options");
+    }
 }

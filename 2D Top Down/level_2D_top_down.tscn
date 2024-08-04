@@ -1,26 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://btkfgi3rc5wm1"]
+[gd_scene load_steps=4 format=3 uid="uid://btkfgi3rc5wm1"]
 
-[ext_resource type="Script" path="res://2D Top Down/Player.cs" id="1_hrosf"]
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_83qsm"]
+[ext_resource type="Script" path="res://Scripts/Level.cs" id="1_jdty6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4su66"]
-size = Vector2(125, 125)
+[ext_resource type="PackedScene" uid="uid://ca2xb7tvce5xj" path="res://Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
 
 [node name="Level" type="Node2D"]
-
-[node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(531, 300)
-motion_mode = 1
-script = ExtResource("1_hrosf")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("RectangleShape2D_4su66")
-
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-texture = ExtResource("2_83qsm")
+script = ExtResource("1_jdty6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
 visible = false
+
+[node name="VBox" parent="CanvasLayer" instance=ExtResource("3_uykib")]
