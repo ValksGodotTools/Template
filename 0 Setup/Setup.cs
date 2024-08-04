@@ -240,6 +240,7 @@ public partial class Setup : Node
                     {
                         string text = File.ReadAllText(fullPathFile);
                         text = text.Replace("namespace Template", $"namespace {name}");
+                        text = text.Replace("using Template", $"using {name}");
                         File.WriteAllText(fullPathFile, text);
                     }
                 }
