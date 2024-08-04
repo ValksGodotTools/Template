@@ -40,7 +40,7 @@ public class SPacketPlayerPositions : ServerPacket
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {
             if (level.OtherPlayers.ContainsKey(pair.Key))
-                level.OtherPlayers[pair.Key].Position = pair.Value;
+                level.OtherPlayers[pair.Key].PrevCurPos.Add(pair.Value);
         }
     }
 }
