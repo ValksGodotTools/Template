@@ -154,10 +154,12 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            new FileInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Directory.Create();
+                            string newPath = fullPathFile.Replace(FOLDER_NAME_TOP_DOWN_2D, "Scripts");
+
+                            new FileInfo(newPath).Directory.Create();
                             try
                             {
-                                File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                                File.Move(fullPathFile, newPath);
                             }
                             catch (IOException)
                             {
