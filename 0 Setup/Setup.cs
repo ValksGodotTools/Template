@@ -117,6 +117,17 @@ public partial class Setup : Node
                 // Move main scene file
                 mainSceneName = "level_2D_platformer.tscn";
                 File.Move($"{path}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                // Move all scripts to res://Scripts
+                TraverseDirectory($"{path}{FOLDER_NAME_PLATFORMER_2D}",
+                    fullPathFile =>
+                    {
+                        if (fullPathFile.EndsWith(".cs"))
+                        {
+                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                        }
+                    },
+                    directoryName => true);
                 break;
             case Genre.TopDown2D:
                 // Delete unneeded genre folders
@@ -126,36 +137,41 @@ public partial class Setup : Node
                 // Move main scene file
                 mainSceneName = "level_2D_top_down.tscn";
                 File.Move($"{path}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                // Move all scripts to res://Scripts
+                TraverseDirectory($"{path}{FOLDER_NAME_TOP_DOWN_2D}",
+                    fullPathFile =>
+                    {
+                        if (fullPathFile.EndsWith(".cs"))
+                        {
+                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                        }
+                    },
+                    directoryName => true);
                 break;
             case Genre.FPS3D:
                 // Delete unneeded genre folders
                 Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
                 Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
 
-                // Move Materials folder to res://
-                if (Directory.Exists($"{path}Materials"))
-                    Directory.Delete($"{path}Materials");
-
-                Directory.Move($@"{path}{FOLDER_NAME_FPS3D}/Materials", $"{path}Materials");
-
                 // Move main scene file
                 mainSceneName = "level_3D.tscn";
                 File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+
+                // Move all scripts to res://Scripts
+                TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}",
+                    fullPathFile =>
+                    {
+                        if (fullPathFile.EndsWith(".cs"))
+                        {
+                            File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
+                        }
+                    },
+                    directoryName => true);
                 break;
         }
 
         Debug.Assert(mainSceneName != "");
-
-        // Move all scripts to res://Scripts
-        TraverseDirectory($"{path}{FOLDER_NAME_FPS3D}",
-            fullPathFile =>
-            {
-                if (fullPathFile.EndsWith(".cs"))
-                {
-                    File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
-                }
-            },
-            directoryName => true);
 
         SetMainScene(path, mainSceneName);
 
