@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Level.cs" id="1_jdty6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
-[ext_resource type="PackedScene" path="res://Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
+[ext_resource type="PackedScene" uid="uid://ca2xb7tvce5xj" path="res://Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_jdty6")
