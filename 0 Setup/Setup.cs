@@ -166,8 +166,11 @@ public partial class Setup : Node
 
     void DeleteDirectoryIfEmpty(string path)
     {
-        GU.DeleteEmptyFolders(path);
-        GU.DeleteEmptyFolder(path);
+        if (Directory.Exists(path))
+        {
+            GU.DeleteEmptyFolders(path);
+            GU.DeleteEmptyFolder(path);
+        }
     }
 
     /// <summary>
