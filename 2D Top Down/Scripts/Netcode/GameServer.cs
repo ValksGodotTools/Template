@@ -25,13 +25,13 @@ public partial class GameServer : ENetServer
             return;
 
         // Send all the other players positions to each player
-        foreach (KeyValuePair<uint, PlayerData> pair in Players)
+        foreach (uint id in Players.Keys)
         {
             Send(new SPacketPlayerPositions
             {
-                Positions = GetOtherPlayers(pair.Key)
+                Positions = GetOtherPlayers(id)
                     .ToDictionary(x => x.Key, x => x.Value.Position)
-            }, Peers[pair.Key]);
+            }, Peers[id]);
         }
     }
 
