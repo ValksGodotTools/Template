@@ -8,35 +8,9 @@ public partial class SceneManager : Node
     /// </summary>
     public event Action<string> PreSceneChanged;
 
-    public Node CurrentScene { get; set; }
+    public Node CurrentScene { get; private set; }
 
     SceneTree tree;
-
-    /// <summary>
-    /// Scenes are loaded from the 'res://Scenes/' directory. For example a name with 
-    /// "level_1" would be 'res://Scenes/level_1.tscn'
-    /// </summary>
-    public void SwitchScene(string name, TransType transType = TransType.None)
-    {
-        PreSceneChanged?.Invoke(name);
-
-        switch (transType)
-        {
-            case TransType.None:
-                ChangeScene(transType);
-                break;
-            case TransType.Fade:
-                FadeTo(TransColor.Black, 2, () => ChangeScene(transType));
-                break;
-        }
-
-        void ChangeScene(TransType transType)
-        {
-            // Wait for engine to be ready to switch scene
-            CallDeferred(nameof(DeferredSwitchScene), name,
-                Variant.From(transType));
-        }
-    }
 
     public override void _Ready()
     {
@@ -50,13 +24,55 @@ public partial class SceneManager : Node
             Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 
-    void DeferredSwitchScene(string name, Variant transTypeVariant)
+    /// <summary>
+    /// Scenes are loaded from the 'res://Scenes/' directory. For example a name with 
+    /// "level_1" would be 'res://Scenes/level_1.tscn'
+    /// </summary>
+    public void SwitchScene(string name, TransType transType = TransType.None)
+    {
+        PreSceneChanged?.Invoke(name);
+
+        switch (transType)
+        {
+            case TransType.None:
+                ChangeScene(name, transType);
+                break;
+            case TransType.Fade:
+                FadeTo(TransColor.Black, 2, () => ChangeScene(name, transType));
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Resets the currently active scene.
+    /// </summary>
+    public void ResetCurrentScene()
+    {
+        string sceneFilePath = tree.CurrentScene.SceneFilePath;
+
+        string[] words = sceneFilePath.Split("/");
+        string sceneName = words[words.Length - 1].Replace(".tscn", "");
+
+        PreSceneChanged?.Invoke(sceneName);
+
+        // Wait for engine to be ready before switching scenes
+        CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
+    }
+
+    void ChangeScene(string name, TransType transType)
+    {
+        // Wait for engine to be ready before switching scenes
+        CallDeferred(nameof(DeferredSwitchScene), $"res://Scenes/{name}.tscn",
+            Variant.From(transType));
+    }
+
+    void DeferredSwitchScene(string rawName, Variant transTypeVariant)
     {
         // Safe to remove scene now
         CurrentScene.Free();
 
         // Load a new scene.
-        PackedScene nextScene = (PackedScene)GD.Load($"res://Scenes/{name}.tscn");
+        PackedScene nextScene = (PackedScene)GD.Load(rawName);
 
         // Instance the new scene.
         CurrentScene = nextScene.Instantiate();
