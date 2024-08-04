@@ -154,7 +154,7 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
+                            new FileInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Directory.Create();
                             try
                             {
                                 File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
