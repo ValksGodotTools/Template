@@ -11,7 +11,6 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
     - [Localisation](#localisation)
     - [Services](#services)
     - [Console Commands](#console-commands)
-    - [Prefabs](#prefabs)
     - [Audio Manager](#audiomanager)
     - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
@@ -163,24 +162,6 @@ void Debug(int x, string y)
 {
     Global.Services.Get<Logger>().Log($"Debug {x}, {y}");
 }
-```
-
-### Prefabs
-```cs
-// Load all your scene prefabs here. This script can be found in
-// "res://Scripts/Static/Prefabs.cs". Note that music and sounds are
-// loaded in very similarily and these scripts can be found in the
-// static folder as well.
-public static class Prefabs
-{
-    public static PackedScene Options { get; } = Load("UI/options");
-
-    static PackedScene Load(string path) =>
-        GD.Load<PackedScene>($"res://Scenes/Prefabs/{path}.tscn");
-}
-
-// Prefabs are instantiated like this
-UIOptions options = Prefabs.Options.Instantiate<UIOptions>();
 ```
 
 ### AudioManager
