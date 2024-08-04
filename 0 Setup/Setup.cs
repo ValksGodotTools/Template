@@ -124,7 +124,7 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            new FileInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Directory.Create();
+                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
                             File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
                         }
                     },
@@ -145,7 +145,7 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            new FileInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Directory.Create();
+                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
                             File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
                         }
                     },
@@ -166,7 +166,7 @@ public partial class Setup : Node
                     {
                         if (fullPathFile.EndsWith(".cs"))
                         {
-                            new FileInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Directory.Create();
+                            new DirectoryInfo($@"{path}Scripts/{fullPathFile.GetFile()}").Create();
                             File.Move(fullPathFile, $@"{path}Scripts/{fullPathFile.GetFile()}");
                         }
                     },
