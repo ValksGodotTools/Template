@@ -177,6 +177,10 @@ Send(new SPacketPlayerPositions
 }, Peers[pair.Key]);
 ```
 
+https://github.com/user-attachments/assets/68b06201-3788-4c99-9c09-7b324f850d01
+
+The video above shows 4 clients sending their positions to the server every 100ms. At the time of writing this the clients send their position regardless if their moving or not and the server is doing the same. I mention this here because it may be the reason why you see some lag. If there are 4 players then the server player positions packet is `1` (overhead) + `1` (player count) + `(4 + 8) * 3` (player id + position) = `38` bytes * `4` players = `152` bytes and the client position packet would be `1` (overhead) + `8` (position) = `9` bytes * `4` players = `36` bytes. If we add these numbers together we get `188` bytes per 100ms. I may be wrong with these numbers but regardless future efforts will be made to reduce this number.
+
 > [!NOTE]
 > Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
 
