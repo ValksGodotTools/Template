@@ -18,6 +18,7 @@ public class SPacketPlayerConnectionAcknowledged : ServerPacket
         foreach (KeyValuePair<uint, PlayerData> pair in OtherPlayers)
         {
             writer.Write((uint)pair.Key);
+            writer.Write((string)pair.Value.Username);
             writer.Write((Vector2)pair.Value.Position);
         }
     }
@@ -31,10 +32,12 @@ public class SPacketPlayerConnectionAcknowledged : ServerPacket
         for (int i = 0; i < playerCount; i++)
         {
             uint id = reader.ReadUInt();
+            string username = reader.ReadString();
             Vector2 position = reader.ReadVector2();
 
             OtherPlayers.Add(id, new()
             {
+                Username = username,
                 Position = position
             });
         }
@@ -50,7 +53,7 @@ public class SPacketPlayerConnectionAcknowledged : ServerPacket
 
         foreach (KeyValuePair<uint, PlayerData> pair in OtherPlayers)
         {
-            level.AddOtherPlayer(pair.Key, pair.Value.Position);
+            level.AddOtherPlayer(pair.Key, pair.Value);
         }
     }
 }

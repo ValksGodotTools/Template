@@ -3,6 +3,10 @@ namespace Template;
 public partial class UINetControlPanel : Node
 {
     Net net;
+    string ip = "127.0.0.1";
+    ushort port = 25565;
+    string username = "";
+    string prevUsername;
 
     public override void _Ready()
     {
@@ -14,8 +18,31 @@ public partial class UINetControlPanel : Node
         btnStartServer.Pressed += net.StartServer;
         btnStopServer.Pressed += () => net.Server.Stop();
 
-        GetNode<Button>("%Start Client").Pressed += net.StartClient;
+        GetNode<Button>("%Start Client").Pressed += () => net.StartClient(ip, port, username);
         GetNode<Button>("%Stop Client").Pressed += net.StopClient;
+
+        GetNode<LineEdit>("%IP").TextChanged += text =>
+        {
+            string[] words = text.Split(":");
+
+            ip = words[0];
+
+            if (words.Length < 2)
+                return;
+
+            if (ushort.TryParse(words[1], out ushort result))
+            {
+                if (result.CountDigits() > 2)
+                    port = result;
+            }
+        };
+
+        LineEdit lineEditUsername = GetNode<LineEdit>("%Username");
+        
+        lineEditUsername.TextChanged += text =>
+        {
+            username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
+        };
 
         net.OnClientCreated += client =>
         {

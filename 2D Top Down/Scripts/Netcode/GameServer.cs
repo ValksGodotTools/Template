@@ -62,5 +62,6 @@ public partial class GameServer : ENetServer
 
 public class PlayerData
 {
+    public string Username { get; set; }
     public Vector2 Position { get; set; }
 }

@@ -40,7 +40,7 @@ public class Net
         });
     }
 
-    public void StartClient()
+    public void StartClient(string ip, ushort port, string username)
     {
         if (Client.IsRunning)
         {
@@ -50,7 +50,7 @@ public class Net
 
         Client = new();
         OnClientCreated?.Invoke(Client);
-        Client.Connect("127.0.0.1", 25565, new ENetOptions
+        Client.Connect(ip, port, new ENetOptions
         {
             PrintPacketByteSize = false,
             PrintPacketData = false,
@@ -60,7 +60,10 @@ public class Net
 
         Client.OnConnected += () =>
         {
-            Client.Send(new CPacketJoin());
+            Client.Send(new CPacketJoin
+            {
+                Username = username
+            });
         };
     }
 

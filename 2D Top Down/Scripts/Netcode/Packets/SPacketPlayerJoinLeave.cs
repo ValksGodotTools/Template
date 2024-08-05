@@ -9,6 +9,7 @@ using GodotUtils.Netcode.Client;
 public class SPacketPlayerJoinLeave : ServerPacket
 {
     public uint Id { get; set; }
+    public string Username { get; set; }
     public Vector2 Position { get; set; }
     public bool Joined { get; set; }
 
@@ -18,16 +19,23 @@ public class SPacketPlayerJoinLeave : ServerPacket
         writer.Write((bool)Joined);
 
         if (Joined)
+        {
+            writer.Write((string)Username);
             writer.Write((Vector2)Position);
+        }
     }
 
     public override void Read(PacketReader reader)
     {
         Id = reader.ReadUInt();
+
         Joined = reader.ReadBool();
 
         if (Joined)
+        {
+            Username = reader.ReadString();
             Position = reader.ReadVector2();
+        }
     }
 
     public override void Handle(ENetClient client)
@@ -36,7 +44,11 @@ public class SPacketPlayerJoinLeave : ServerPacket
 
         if (Joined)
         {
-            level.AddOtherPlayer(Id, Position);
+            level.AddOtherPlayer(Id, new PlayerData
+            {
+                Username = Username,
+                Position = Position
+            });
         }
         else
         {

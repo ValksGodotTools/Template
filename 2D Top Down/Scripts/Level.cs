@@ -30,13 +30,13 @@ public partial class Level : Node
         Player.StartNet();
     }
 
-    public void AddOtherPlayer(uint id, Vector2 position)
+    public void AddOtherPlayer(uint id, PlayerData playerData)
     {
         OtherPlayer otherPlayer = GU.LoadPrefab<OtherPlayer>("other_player");
 
         AddChild(otherPlayer);
-        otherPlayer.Position = position;
-        otherPlayer.SetLabelText(id + "");
+        otherPlayer.Position = playerData.Position;
+        otherPlayer.SetLabelText($"{playerData.Username} ({id})");
 
         OtherPlayers.Add(id, otherPlayer);
     }
