@@ -32,7 +32,7 @@ public partial class Player : CharacterBody2D
         Net net = Global.Services.Get<Net>();
 
         positionEmitInterval = new(this,
-            milliseconds: GameServer.HeartbeatPosition, looping: true);
+            milliseconds: Net.HeartbeatPosition, looping: true);
 
         positionEmitInterval.Timeout += () =>
         {

@@ -6,8 +6,6 @@ using GodotUtils.Netcode.Server;
 
 public partial class GameServer : ENetServer
 {
-    public const int HeartbeatPosition = 100;
-
     public Dictionary<uint, PlayerData> Players { get; set; } = new();
 
     public Dictionary<uint, PlayerData> GetOtherPlayers(uint excludeId) => 
@@ -17,7 +15,7 @@ public partial class GameServer : ENetServer
 
     protected override void Starting()
     {
-        EmitLoop.SetDelay(HeartbeatPosition);
+        EmitLoop.SetDelay(Net.HeartbeatPosition);
     }
 
     protected override void Emit()

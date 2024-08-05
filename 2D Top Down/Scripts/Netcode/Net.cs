@@ -9,6 +9,8 @@ public class Net
     public event Action<GameClient> OnClientCreated;
     public event Action<GameServer> OnServerCreated;
 
+    public static int HeartbeatPosition { get; } = 100;
+
     public GameClient Client { get; private set; } = new();
     public GameServer Server { get; private set; } = new();
 
