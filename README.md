@@ -431,8 +431,11 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > ```
 
 ## Contributing
-> [!NOTE]
+> [!IMPORTANT]
 > Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
+
+> [!NOTE]
+> Here are some [good first issues](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to tackle.
 
 ## Roadmap
 ### 3D FPS
