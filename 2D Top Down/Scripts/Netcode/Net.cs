@@ -10,6 +10,7 @@ public class Net
     public event Action<GameServer> OnServerCreated;
 
     public static int HeartbeatPosition { get; } = 100;
+    public static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
     public GameClient Client { get; private set; } = new();
     public GameServer Server { get; private set; } = new();
@@ -64,7 +65,8 @@ public class Net
         {
             Client.Send(new CPacketJoin
             {
-                Username = username
+                Username = username,
+                Position = PlayerSpawnPosition
             });
         };
     }

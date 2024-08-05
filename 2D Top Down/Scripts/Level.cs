@@ -26,7 +26,7 @@ public partial class Level : Node
     {
         Player = GU.LoadPrefab<Player>("player");
         AddChild(Player);
-        Player.Position = new Vector2(100, 100);
+        Player.Position = Net.PlayerSpawnPosition;
         Player.StartNet();
     }
 
@@ -34,9 +34,9 @@ public partial class Level : Node
     {
         OtherPlayer otherPlayer = GU.LoadPrefab<OtherPlayer>("other_player");
 
+        otherPlayer.PrevCurPos.Add(playerData.Position);
         AddChild(otherPlayer);
         otherPlayer.Position = playerData.Position;
-        otherPlayer.PrevCurPos.Add(playerData.Position);
         otherPlayer.SetLabelText($"{playerData.Username} ({id})");
 
         OtherPlayers.Add(id, otherPlayer);

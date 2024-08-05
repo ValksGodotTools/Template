@@ -7,15 +7,18 @@ using GodotUtils.Netcode.Server;
 public class CPacketJoin : ClientPacket
 {
     public string Username { get; set; }
+    public Vector2 Position { get; set; }
 
     public override void Write(PacketWriter writer)
     {
         writer.Write((string)Username);
+        writer.Write((Vector2)Position);
     }
 
     public override void Read(PacketReader reader)
     {
         Username = reader.ReadString();
+        Position = reader.ReadVector2();
     }
 
     public override void Handle(ENetServer s, Peer client)
@@ -25,7 +28,8 @@ public class CPacketJoin : ClientPacket
         // Keep track of this new player server-side
         server.Players.Add(client.ID, new()
         {
-            Username = Username
+            Username = Username,
+            Position = Position
         });
 
         // Acknowledge connection and tell player about the other players
