@@ -77,6 +77,8 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 ### Multiplayer
 The 2D Top Down genre has a **client authorative** multiplayer setup for showing players positions updating on each others screens. This netcode is the result of redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find the multiplayer as useful as I have.
 
+https://github.com/user-attachments/assets/68b06201-3788-4c99-9c09-7b324f850d01
+
 > [!NOTE]
 > A lot of this netcode is specific to the 2D Top Down scene. There will be future efforts to abstract this code across all 3 genres.
 
@@ -177,15 +179,11 @@ Send(new SPacketPlayerPositions
 }, Peers[pair.Key]);
 ```
 
-https://github.com/user-attachments/assets/68b06201-3788-4c99-9c09-7b324f850d01
-
-The video above shows 4 clients sending their positions to the server every 100ms. At the time of writing this the clients send their position regardless if their moving or not and the server is doing the same. I mention this here because it may be the reason why you see some lag. If there are 4 players then the server player positions packet is `1` (overhead) + `1` (player count) + `(4 + 8) * 3` (player id + position) = `38` bytes * `4` players = `152` bytes and the client position packet would be `1` (overhead) + `8` (position) = `9` bytes * `4` players = `36` bytes. If we add these numbers together we get `188` bytes per 100ms. I may be wrong with these numbers but regardless future efforts will be made to reduce this number.
-
 > [!NOTE]
 > Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
 
 > [!CAUTION]
-> Multiplayer is still very much WIP. Expect missing features.
+> Multiplayer is still very much WIP. Expect issues.
 
 ### Mod Loader
 > [!NOTE]
