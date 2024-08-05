@@ -31,27 +31,10 @@ public partial class GameServer : ENetServer
             // Retrieve all players except for player with 'id'
             Dictionary<uint, PlayerData> otherPlayers = GetOtherPlayers(id);
 
-            // These are the players positions that will get sent over the network
-            Dictionary<uint, Vector2> otherPlayerPositionsFinal = new();
-
-            // Do not send a players position if it has not changed
-            foreach (KeyValuePair<uint, PlayerData> otherPlayer in otherPlayers)
-            {
-                // The positions are not the same, it's okay to send this position
-                if (otherPlayer.Value.Position != otherPlayer.Value.PrevPosition)
-                {
-                    // Keep track of this new position
-                    otherPlayerPositionsFinal.Add(otherPlayer.Key, otherPlayer.Value.Position);
-                }
-
-                // Keep track of the previous position
-                Players[otherPlayer.Key].PrevPosition = otherPlayer.Value.Position;
-            }
-
             // Send these player positions to player with 'id'
             Send(new SPacketPlayerPositions
             {
-                Positions = otherPlayerPositionsFinal
+                Positions = otherPlayers.ToDictionary(x => x.Key, x => x.Value.Position)
             }, Peers[id]);
         }
     }
