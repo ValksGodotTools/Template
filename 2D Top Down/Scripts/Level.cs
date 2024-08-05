@@ -36,6 +36,7 @@ public partial class Level : Node
 
         AddChild(otherPlayer);
         otherPlayer.Position = playerData.Position;
+        otherPlayer.PrevCurPos.Add(playerData.Position);
         otherPlayer.SetLabelText($"{playerData.Username} ({id})");
 
         OtherPlayers.Add(id, otherPlayer);
