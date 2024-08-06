@@ -17,7 +17,16 @@ public partial class Level : Node
         {
             client.OnDisconnected += opcode =>
             {
-                Game.SceneManager.ResetCurrentScene();
+                // The entire scene cannot be reset here because this will also reset the
+                // instance stored for both GameServer and GameClient. These run on separate
+                // threads, so resetting them here won't stop them on the other threads. Not
+                // to mention they shouldn't be reset in the first place! So this is why the
+                // entire scene is no longer reset when the client disconnects.
+                // See https://github.com/ValksGodotTools/Template/issues/20 for more info
+                // about this.
+                Player.QueueFree();
+
+                OtherPlayers.Values.ForEach(x => x.QueueFree());
             };
         };
     }
