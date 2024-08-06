@@ -29,7 +29,9 @@ public partial class GameServer : ENetServer
         foreach (uint id in Players.Keys)
         {
             // Retrieve all players except for player with 'id'
-            Dictionary<uint, PlayerData> otherPlayers = GetOtherPlayers(id);
+            Dictionary<uint, PlayerData> otherPlayers = GetOtherPlayers(id)
+                .Where(x => x.Value.Position != x.Value.PrevPosition)
+                .ToDictionary(x => x.Key, x => x.Value);
 
             // Send these player positions to player with 'id'
             Send(new SPacketPlayerPositions
@@ -37,6 +39,11 @@ public partial class GameServer : ENetServer
                 Positions = otherPlayers.ToDictionary(x => x.Key, x => x.Value.Position)
             }, Peers[id]);
         }
+
+        // This must not be in the previous foreach loop above or weird things will happen
+        // This has to execute AFTER the previous foreach loop has completed
+        foreach (PlayerData player in Players.Values)
+            player.PrevPosition = player.Position;
     }
 
     protected override void Disconnected(Event netEvent)
