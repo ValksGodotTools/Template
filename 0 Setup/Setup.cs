@@ -4,25 +4,17 @@ using System.IO;
 
 public partial class Setup : Node
 {
+    [Export] LineEdit lineEditGameName;
+    [Export] Label gameNamePreview;
+    [Export] PopupPanel popupPanel;
+    [Export] OptionButton genreOptionBtn;
+
     string prevGameName = "";
-    LineEdit lineEditGameName;
-    Label gameNamePreview;
-    PopupPanel popupPanel;
     Genre genre;
     
-    enum Genre
-    {
-        Platformer2D,
-        TopDown2D,
-        FPS3D
-    }
-
     public override void _Ready()
     {
-        lineEditGameName = GetNode<LineEdit>("%GameName");
-        gameNamePreview = GetNode<Label>("%GameNamePreview");
-        popupPanel = GetNode<PopupPanel>("%PopupPanel");
-        genre = (Genre)GetNode<OptionButton>("%Genre").Selected;
+        genre = (Genre)genreOptionBtn.Selected;
     }
 
     string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
@@ -42,7 +34,7 @@ public partial class Setup : Node
 
         // Since this name is being used for the namespace its first character must not be
         // a number and every other character must be alphanumeric
-        if (!IsAlphaNumeric(newText) || char.IsNumber(newText.Trim()[0]))
+        if (!IsAlphaNumericAndAllowSpaces(newText) || char.IsNumber(newText.Trim()[0]))
         {
             DisplayGameNamePreview(prevGameName);
             lineEditGameName.Text = prevGameName;
@@ -291,9 +283,16 @@ public partial class Setup : Node
         dir.ListDirEnd();
     }
 
-    bool IsAlphaNumeric(string str)
+    bool IsAlphaNumericAndAllowSpaces(string str)
     {
         Regex rg = new Regex(@"^[a-zA-Z0-9\s,]*$");
         return rg.IsMatch(str);
+    }
+
+    enum Genre
+    {
+        Platformer2D,
+        TopDown2D,
+        FPS3D
     }
 }

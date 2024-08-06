@@ -9,13 +9,17 @@ bg_color = Color(0.6, 0, 0.0470588, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
 bg_color = Color(0, 0.6, 0.0784314, 1)
 
-[node name="Setup" type="PanelContainer"]
+[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "gameNamePreview", "popupPanel", "genreOptionBtn")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_g3v0h")
+lineEditGameName = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
+gameNamePreview = NodePath("MarginContainer/VBoxContainer/HBoxContainer/GameNamePreview")
+popupPanel = NodePath("PopupPanel")
+genreOptionBtn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Genre")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -41,12 +45,10 @@ layout_mode = 2
 text = "What is the name of this game?"
 
 [node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
-unique_name_in_owner = true
 layout_mode = 2
 max_length = 40
 
 [node name="GameNamePreview" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -59,7 +61,6 @@ layout_mode = 2
 text = "What is the genre?"
 
 [node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
 layout_mode = 2
 item_count = 3
 selected = 2
@@ -83,7 +84,6 @@ text = "NOTICE: Please read the setup guide in the GitHub readme first. Pressing
 autowrap_mode = 2
 
 [node name="PopupPanel" type="PopupPanel" parent="."]
-unique_name_in_owner = true
 size = Vector2i(366, 130)
 
 [node name="PanelContainer" type="PanelContainer" parent="PopupPanel"]
