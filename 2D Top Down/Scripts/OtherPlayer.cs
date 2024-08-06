@@ -1,6 +1,6 @@
 namespace Template;
 
-using GodotUtils.Netcode;
+using Template.Netcode;
 
 public partial class OtherPlayer : Node2D
 {

@@ -1,6 +1,6 @@
 namespace Template;
 
-using GodotUtils.Netcode.Client;
+using Template.Netcode.Client;
 
 public partial class GameClient : ENetClient
 {

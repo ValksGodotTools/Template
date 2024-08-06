@@ -1,7 +1,7 @@
 ﻿namespace Template;
 
-using GodotUtils.Netcode;
-using GodotUtils.Netcode.Client;
+using Template.Netcode;
+using Template.Netcode.Client;
 
 public class SPacketPlayerPositions : ServerPacket
 {

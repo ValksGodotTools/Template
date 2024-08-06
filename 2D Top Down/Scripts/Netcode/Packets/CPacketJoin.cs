@@ -1,8 +1,8 @@
 ﻿namespace Template;
 
 using ENet;
-using GodotUtils.Netcode;
-using GodotUtils.Netcode.Server;
+using Template.Netcode;
+using Template.Netcode.Server;
 
 public class CPacketJoin : ClientPacket
 {

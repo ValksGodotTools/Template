@@ -1,7 +1,7 @@
 ﻿namespace Template;
 
-using GodotUtils.Netcode;
-using GodotUtils.Netcode.Client;
+using Template.Netcode;
+using Template.Netcode.Client;
 
 /// <summary>
 /// The server has acknowledged this players connection. The server is informing
