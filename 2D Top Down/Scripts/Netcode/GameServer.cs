@@ -8,10 +8,8 @@ public partial class GameServer : ENetServer
 {
     public Dictionary<uint, PlayerData> Players { get; set; } = new();
 
-    public Dictionary<uint, PlayerData> GetOtherPlayers(uint excludeId) => 
-        Players
-            .Where(x => x.Key != excludeId)
-            .ToDictionary(x => x.Key, x => x.Value);
+    public IEnumerable<KeyValuePair<uint, PlayerData>> GetOtherPlayers(uint excludeId) => 
+        Players.Where(x => x.Key != excludeId);
 
     protected override void Starting()
     {
@@ -29,9 +27,8 @@ public partial class GameServer : ENetServer
         foreach (uint id in Players.Keys)
         {
             // Retrieve all players except for player with 'id'
-            Dictionary<uint, PlayerData> otherPlayers = GetOtherPlayers(id)
-                .Where(x => x.Value.Position != x.Value.PrevPosition)
-                .ToDictionary(x => x.Key, x => x.Value);
+            IEnumerable<KeyValuePair<uint, PlayerData>> otherPlayers = GetOtherPlayers(id)
+                .Where(x => x.Value.Position != x.Value.PrevPosition);
 
             // Send these player positions to player with 'id'
             Send(new SPacketPlayerPositions

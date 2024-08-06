@@ -37,6 +37,7 @@ public class CPacketJoin : ClientPacket
         {
             // Other players means all players except the player that just joined
             OtherPlayers = server.GetOtherPlayers(client.ID)
+                .ToDictionary(x => x.Key, x => x.Value)
         }, client);
 
         // Tell everyone else about this new player
