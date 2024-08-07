@@ -8,32 +8,23 @@ using System.Collections.Generic;
 
 public class PrevCurNetQueue<T>
 {
-    public float Progress { get; set; }
+    public float TimeSinceLastUpdate { get; set; }
 
     public T Previous { get; set; }
     public T Current { get; set; }
 
-    /// <summary>
-    /// Should this keep updating even after a Progress of 1.0 has been reached?
-    /// If this is set to true then if say a position packet is not received in
-    /// time, then the player will continue moving in the last known direction.
-    /// If this is set to false then the player will just come to a direct halt
-    /// when a Progress value of 1.0 is reached.
-    /// </summary>
-    public bool KeepUpdating { get; set; }
-
     readonly List<T> data = new();
-    int interval;
+    int updateInterval;
 
     public PrevCurNetQueue(int interval)
     {
-        this.interval = interval;
+        this.updateInterval = interval;
         Current = default(T);
     }
 
     public void Add(T newData)
     {
-        Progress = 0; // reset progress as this is new incoming data
+        TimeSinceLastUpdate = 0; // reset progress as this is new incoming data
 
         if (data.Count == 0)
         {
@@ -79,16 +70,11 @@ public class PrevCurNetQueue<T>
     /// should be set to 50ms
     /// </para>
     /// </summary>
-    public void UpdateProgress(double delta)
+    public void UpdateTimeSinceLastUpdate(double delta)
     {
-        if (Progress < 1.0)
-            AddToProgress(delta);
-        else
-        {
-            if (KeepUpdating)
-                AddToProgress(delta);
-        }
-    }
+        TimeSinceLastUpdate += (float)delta * (1000 / updateInterval);
 
-    void AddToProgress(double delta) => Progress += (float)delta * (1000f / interval);
+        if (TimeSinceLastUpdate > 1.0)
+            TimeSinceLastUpdate = 1.0f;
+    }
 }
