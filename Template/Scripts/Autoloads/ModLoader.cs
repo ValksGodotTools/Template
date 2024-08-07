@@ -68,9 +68,8 @@ public partial class ModLoader
 
             if (File.Exists(dllPath))
             {
-                byte[] file = File.ReadAllBytes(dllPath);
                 AssemblyLoadContext context = AssemblyLoadContext.GetLoadContext(typeof(Godot.Bridge.ScriptManagerBridge).Assembly);
-                Assembly assembly = context.LoadFromStream(new MemoryStream(file));
+                Assembly assembly = context.LoadFromAssemblyPath(dllPath);
                 Godot.Bridge.ScriptManagerBridge.LookupScriptsInAssembly(assembly);
             }
 
