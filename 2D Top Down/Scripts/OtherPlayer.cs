@@ -10,8 +10,8 @@ public partial class OtherPlayer : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
-        PrevCurPos.UpdateProgress(delta);
+        PrevCurPos.UpdateTimeSinceLastUpdate(delta);
 
-        Position = PrevCurPos.Previous.Lerp(PrevCurPos.Current, PrevCurPos.Progress);
+        Position = PrevCurPos.Previous.Lerp(PrevCurPos.Current, PrevCurPos.TimeSinceLastUpdate);
     }
 }
