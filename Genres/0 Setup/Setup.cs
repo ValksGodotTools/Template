@@ -91,7 +91,7 @@ public partial class Setup : Node
     /// </summary>
     void MoveProjectFiles(string pathFrom, string pathTo)
     {
-        //Directory.Delete($"{pathFrom}0 Setup", true);
+        Directory.Delete($"{pathFrom}0 Setup", true);
 
         string mainSceneName = "";
 
@@ -141,9 +141,6 @@ public partial class Setup : Node
         SetMainScene(pathTo, mainSceneName);
 
         DeleteDirectoryIfEmpty(pathFrom);
-        //DeleteDirectoryIfEmpty(pathFrom + FOLDER_NAME_TOP_DOWN_2D);
-        //DeleteDirectoryIfEmpty(pathFrom + FOLDER_NAME_PLATFORMER_2D);
-        //DeleteDirectoryIfEmpty(pathFrom + FOLDER_NAME_FPS3D);
     }
 
     void MoveFilesAndPreserveFolderStructure(string path, string folder)
