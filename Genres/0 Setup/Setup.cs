@@ -110,7 +110,7 @@ public partial class Setup : Node
                 mainSceneName = "level_2D_platformer.tscn";
                 File.Move($"{pathFrom}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres/" + FOLDER_NAME_PLATFORMER_2D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_PLATFORMER_2D);
                 break;
             case Genre.TopDown2D:
                 // Delete unneeded genre folders
@@ -121,7 +121,7 @@ public partial class Setup : Node
                 mainSceneName = "level_2D_top_down.tscn";
                 File.Move($"{pathFrom}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres/" + FOLDER_NAME_TOP_DOWN_2D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_TOP_DOWN_2D);
                 break;
             case Genre.FPS3D:
                 // Delete unneeded genre folders
@@ -132,7 +132,7 @@ public partial class Setup : Node
                 mainSceneName = "level_3D.tscn";
                 File.Move($"{pathFrom}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres/" + FOLDER_NAME_FPS3D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_FPS3D);
                 break;
         }
 
@@ -264,7 +264,7 @@ public partial class Setup : Node
 
         while (fileName != "")
         {
-            string fullPath = $@"{path}/{fileName}";
+            string fullPath = $"{path}/{fileName}";
 
             if (dir.CurrentIsDir())
             {
