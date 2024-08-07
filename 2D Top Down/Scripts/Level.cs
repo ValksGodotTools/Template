@@ -44,7 +44,7 @@ public partial class Level : Node
     {
         OtherPlayer otherPlayer = GU.LoadPrefab<OtherPlayer>("other_player");
 
-        otherPlayer.PrevCurPos.Add(playerData.Position);
+        otherPlayer.LastServerPosition = playerData.Position;
         AddChild(otherPlayer);
         otherPlayer.Position = playerData.Position;
         otherPlayer.SetLabelText($"{playerData.Username} ({id})");
