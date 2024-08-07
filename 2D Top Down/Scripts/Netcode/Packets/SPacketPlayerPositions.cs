@@ -42,5 +42,9 @@ public class SPacketPlayerPositions : ServerPacket
             if (level.OtherPlayers.ContainsKey(pair.Key))
                 level.OtherPlayers[pair.Key].PrevCurPos.Add(pair.Value);
         }
+
+        // Send a client position packet to the server immediately right after
+        // a server positions packet is received
+        level.Player.NetSendPosition();
     }
 }

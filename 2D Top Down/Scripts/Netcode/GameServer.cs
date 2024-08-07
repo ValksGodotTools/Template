@@ -30,6 +30,12 @@ public partial class GameServer : ENetServer
             IEnumerable<KeyValuePair<uint, PlayerData>> otherPlayers = GetOtherPlayers(id)
                 .Where(x => x.Value.Position != x.Value.PrevPosition);
 
+            // Server position packets are still sent regardless if there are zero other player
+            // positions as SPacketPlayerPositions also acts as a heartbeat for the client to
+            // listen to. As soon as a client receives one of these packets it will immediately
+            // send a CPacketPlayerPosition packet back to the server. This way the position
+            // packets are always in sync.
+
             // Send these player positions to player with 'id'
             Send(new SPacketPlayerPositions
             {

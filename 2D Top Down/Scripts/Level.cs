@@ -38,7 +38,6 @@ public partial class Level : Node
         Player = GU.LoadPrefab<Player>("player");
         AddChild(Player);
         Player.Position = Net.PlayerSpawnPosition;
-        Player.StartNet();
     }
 
     public void AddOtherPlayer(uint id, PlayerData playerData)

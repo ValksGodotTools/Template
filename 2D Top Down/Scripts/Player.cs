@@ -13,10 +13,15 @@ public partial class Player : CharacterBody2D
 
     #region Variables
 
-    GTimer positionEmitInterval;
+    Net net;
     Vector2 prevPosition;
 
     #endregion
+
+    public override void _Ready()
+    {
+        net = Global.Services.Get<Net>();
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -27,25 +32,16 @@ public partial class Player : CharacterBody2D
         Velocity = Velocity.Lerp(Vector2.Zero, friction);
     }
 
-    public void StartNet()
+    public void NetSendPosition()
     {
-        Net net = Global.Services.Get<Net>();
-
-        positionEmitInterval = new(this,
-            milliseconds: Net.HeartbeatPosition, looping: true);
-
-        positionEmitInterval.Timeout += () =>
+        if (Position != prevPosition)
         {
-            if (Position != prevPosition)
+            net.Client.Send(new CPacketPosition
             {
-                net.Client.Send(new CPacketPosition
-                {
-                    Position = Position
-                });
-            } 
+                Position = Position
+            });
+        }
 
-            prevPosition = Position;
-        };
-        positionEmitInterval.Start();
+        prevPosition = Position;
     }
 }

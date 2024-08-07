@@ -9,7 +9,7 @@ public class Net
     public event Action<GameClient> OnClientCreated;
     public event Action<GameServer> OnServerCreated;
 
-    public static int HeartbeatPosition { get; } = 100;
+    public static int HeartbeatPosition { get; } = 150;
     public static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
     public GameClient Client { get; private set; } = new();
