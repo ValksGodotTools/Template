@@ -55,6 +55,8 @@ public partial class Setup : Node
 
         string path = ProjectSettings.GlobalizePath("res://");
 
+        GU.DeleteEmptyFolders(path);
+
         RenameProjectFiles(path, gameName);
         RenameAllNamespaces(path, gameName);
         MoveProjectFiles(path + @"Genres/", path);
