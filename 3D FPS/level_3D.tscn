@@ -45,6 +45,13 @@ data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0,
 
 [node name="Level" type="Node3D"]
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("3_u6p7k")
+
+[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_bhqx1")]
+unique_name_in_owner = true
+visible = false
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fx7rt")
 script = ExtResource("1_7hkd7")
@@ -144,10 +151,3 @@ render_target_update_mode = 4
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.59888, 0)
 current = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("3_u6p7k")
-
-[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("1_bhqx1")]
-unique_name_in_owner = true
-visible = false

@@ -17,14 +17,12 @@ public partial class Player : CharacterBody3D
     Vector3 gravityVec;
     Vector3 camOffset;
 
-    public override async void _Ready()
+    public override void _Ready()
     {
         camera = GetNode<Camera3D>("%Camera3D");
         camOffset = camera.Position - Position;
 
         mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
-
-        await this.WaitOneFrame();
 
         UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
             .Options.GetNode<UIOptionsGameplay>("%Gameplay");
