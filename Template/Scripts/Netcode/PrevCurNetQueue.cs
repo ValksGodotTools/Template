@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-public class PrevCurQueue<T>
+public class PrevCurNetQueue<T>
 {
     public float Progress { get; set; }
 
@@ -25,7 +25,7 @@ public class PrevCurQueue<T>
     readonly List<T> data = new();
     int interval;
 
-    public PrevCurQueue(int interval)
+    public PrevCurNetQueue(int interval)
     {
         this.interval = interval;
         Current = default(T);

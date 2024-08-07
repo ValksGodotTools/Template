@@ -4,7 +4,7 @@ using Template.Netcode;
 
 public partial class OtherPlayer : Node2D
 {
-    public PrevCurQueue<Vector2> PrevCurPos { get; } = new(Net.HeartbeatPosition);
+    public PrevCurNetQueue<Vector2> PrevCurPos { get; } = new(Net.HeartbeatPosition);
 
     public void SetLabelText(string text) => GetNode<Label>("Label").Text = text;
 
