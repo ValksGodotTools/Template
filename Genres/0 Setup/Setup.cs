@@ -91,7 +91,7 @@ public partial class Setup : Node
     /// </summary>
     void MoveProjectFiles(string pathFrom, string pathTo)
     {
-        Directory.Delete($"{pathFrom}0 Setup", true);
+        //Directory.Delete($"{pathFrom}0 Setup", true);
 
         string mainSceneName = "";
 
@@ -149,7 +149,7 @@ public partial class Setup : Node
     void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
         // Move all scripts to res://Scripts
-        TraverseDirectory(path + folder,
+        TraverseDirectory(path,
             fullPathFile =>
             {
                 string newPath = fullPathFile.Replace(folder, "");
