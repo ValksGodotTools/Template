@@ -17,11 +17,6 @@ public partial class Setup : Node
         genre = (Genre)genreOptionBtn.Selected;
     }
 
-    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
-
-    void DisplayGameNamePreview(string inputName) =>
-        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
-
     void _on_genre_item_selected(int index) => genre = (Genre)index;
 
     void _on_game_name_text_changed(string newText)
@@ -71,6 +66,11 @@ public partial class Setup : Node
     }
 
     void _on_apply_changes_pressed() => popupPanel.PopupCentered();
+
+    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
+
+    void DisplayGameNamePreview(string inputName) =>
+        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
 
     void SetMainScene(string path, string scene)
     {
