@@ -77,7 +77,7 @@ If you selected "3D FPS" as an example then the 3D FPS scene should run when you
 ### Multiplayer
 The 2D Top Down genre has a **client authorative** multiplayer setup for showing players positions updating on each others screens. This netcode is the result of redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find the multiplayer as useful as I have.
 
-https://github.com/user-attachments/assets/68b06201-3788-4c99-9c09-7b324f850d01
+https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
 > [!NOTE]
 > A lot of this netcode is specific to the 2D Top Down scene. There will be future efforts to abstract this code across all 3 genres.
