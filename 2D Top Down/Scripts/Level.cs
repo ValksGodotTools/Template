@@ -25,8 +25,10 @@ public partial class Level : Node
                 // See https://github.com/ValksGodotTools/Template/issues/20 for more info
                 // about this.
                 Player.QueueFree();
+                Player = null;
 
                 OtherPlayers.Values.ForEach(x => x.QueueFree());
+                OtherPlayers.Clear();
             };
         };
     }
