@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://uiqfgmj1e1x7"]
 
-[ext_resource type="Script" path="res://2D Top Down/Scripts/OtherPlayer.cs" id="1_4r8fl"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/OtherPlayer.cs" id="1_4r8fl"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_0jav4"]
 
 [node name="Other Player" type="Node2D"]
