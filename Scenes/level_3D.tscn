@@ -1,11 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=17 format=3 uid="uid://dodv5gpni4pt7"]
 
-[ext_resource type="Script" path="res://3D FPS/Scripts/Player.cs" id="1_3aas6"]
-[ext_resource type="Script" path="res://3D FPS/Scripts/Env.cs" id="1_7hkd7"]
+[ext_resource type="Script" path="res://Scripts/Player.cs" id="1_3aas6"]
+[ext_resource type="Script" path="res://Scripts/Env.cs" id="1_7hkd7"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="1_bhqx1"]
-[ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://3D FPS/Materials/material.tres" id="1_wx8rx"]
-[ext_resource type="Script" path="res://3D FPS/Scripts/SubView.cs" id="3_k7q3h"]
-[ext_resource type="Script" path="res://3D FPS/Scripts/LevelUI.cs" id="3_u6p7k"]
+[ext_resource type="Material" path="res://Materials/material.tres" id="1_wx8rx"]
+[ext_resource type="Script" path="res://Scripts/SubView.cs" id="3_k7q3h"]
+[ext_resource type="Script" path="res://Scripts/LevelUI.cs" id="3_u6p7k"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/options_manager.tres" id="4_ayq1j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onqla"]

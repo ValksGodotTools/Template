@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dnmu3cujgayk2"]
 
-[ext_resource type="Script" path="res://0 Setup/Setup.cs" id="1_g3v0h"]
-[ext_resource type="Script" path="res://0 Setup/SetupToolScript.cs" id="2_73b4h"]
+[ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_g3v0h"]
+[ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_73b4h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv57m"]
 bg_color = Color(0.6, 0, 0.0470588, 1)

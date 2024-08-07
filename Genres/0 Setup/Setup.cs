@@ -17,11 +17,6 @@ public partial class Setup : Node
         genre = (Genre)genreOptionBtn.Selected;
     }
 
-    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
-
-    void DisplayGameNamePreview(string inputName) =>
-        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
-
     void _on_genre_item_selected(int index) => genre = (Genre)index;
 
     void _on_game_name_text_changed(string newText)
@@ -62,7 +57,7 @@ public partial class Setup : Node
 
         RenameProjectFiles(path, gameName);
         RenameAllNamespaces(path, gameName);
-        MoveProjectFiles(path);
+        MoveProjectFiles(path + @"Genres/", path);
 
         GD.Print("The settings have been changed. Select \"Reload\" if prompted with it.");
         GD.Print("Please close the entire editor and re-open it.");
@@ -71,6 +66,11 @@ public partial class Setup : Node
     }
 
     void _on_apply_changes_pressed() => popupPanel.PopupCentered();
+
+    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
+
+    void DisplayGameNamePreview(string inputName) =>
+        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
 
     void SetMainScene(string path, string scene)
     {
@@ -89,9 +89,9 @@ public partial class Setup : Node
     /// deleted. The scene level_3D.tscn would be moved to res://Scenes and would be set as
     /// the new main project scene. In all cases the folder "0 Setup" is deleted.
     /// </summary>
-    void MoveProjectFiles(string path)
+    void MoveProjectFiles(string pathFrom, string pathTo)
     {
-        Directory.Delete($"{path}0 Setup", true);
+        Directory.Delete($"{pathFrom}0 Setup", true);
 
         string mainSceneName = "";
 
@@ -103,52 +103,50 @@ public partial class Setup : Node
         {
             case Genre.Platformer2D:
                 // Delete unneeded genre folders
-                Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
-                Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_TOP_DOWN_2D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_FPS3D}", true);
 
                 // Move main scene file
                 mainSceneName = "level_2D_platformer.tscn";
-                File.Move($"{path}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+                File.Move($"{pathFrom}{FOLDER_NAME_PLATFORMER_2D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_PLATFORMER_2D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_PLATFORMER_2D);
                 break;
             case Genre.TopDown2D:
                 // Delete unneeded genre folders
-                Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
-                Directory.Delete($"{path}{FOLDER_NAME_FPS3D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_PLATFORMER_2D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_FPS3D}", true);
 
                 // Move main scene file
                 mainSceneName = "level_2D_top_down.tscn";
-                File.Move($"{path}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+                File.Move($"{pathFrom}{FOLDER_NAME_TOP_DOWN_2D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_TOP_DOWN_2D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_TOP_DOWN_2D);
                 break;
             case Genre.FPS3D:
                 // Delete unneeded genre folders
-                Directory.Delete($"{path}{FOLDER_NAME_PLATFORMER_2D}", true);
-                Directory.Delete($"{path}{FOLDER_NAME_TOP_DOWN_2D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_PLATFORMER_2D}", true);
+                Directory.Delete($"{pathFrom}{FOLDER_NAME_TOP_DOWN_2D}", true);
 
                 // Move main scene file
                 mainSceneName = "level_3D.tscn";
-                File.Move($"{path}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{path}Scenes/{mainSceneName}");
+                File.Move($"{pathFrom}{FOLDER_NAME_FPS3D}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
 
-                MoveFilesAndPreserveFolderStructure(path, FOLDER_NAME_FPS3D);
+                MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + FOLDER_NAME_FPS3D);
                 break;
         }
 
         Debug.Assert(mainSceneName != "");
 
-        SetMainScene(path, mainSceneName);
+        SetMainScene(pathTo, mainSceneName);
 
-        DeleteDirectoryIfEmpty(path + FOLDER_NAME_TOP_DOWN_2D);
-        DeleteDirectoryIfEmpty(path + FOLDER_NAME_PLATFORMER_2D);
-        DeleteDirectoryIfEmpty(path + FOLDER_NAME_FPS3D);
+        DeleteDirectoryIfEmpty(pathFrom);
     }
 
     void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
         // Move all scripts to res://Scripts
-        TraverseDirectory(path + folder,
+        TraverseDirectory(path,
             fullPathFile =>
             {
                 string newPath = fullPathFile.Replace(folder, "");
@@ -263,7 +261,7 @@ public partial class Setup : Node
 
         while (fileName != "")
         {
-            string fullPath = $@"{path}/{fileName}";
+            string fullPath = $"{path}/{fileName}";
 
             if (dir.CurrentIsDir())
             {
