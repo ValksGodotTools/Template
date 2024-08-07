@@ -79,17 +79,11 @@ The 2D Top Down genre has a **client authorative** multiplayer setup for showing
 
 https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
-> [!NOTE]
-> A lot of this netcode is specific to the 2D Top Down scene. There will be future efforts to abstract this code across all 3 genres.
-
-> [!NOTE]
-> Packets with a `C` prefix are packets sent by a client and packets with a `S` prefix are packets sent by the server.
-
 > [!IMPORTANT]
-> A very common mistake is to write one data type and read another. For example lets say you have `playerCount` which is a integer and you do `writer.Write(playerCount)` and then `playerCount = reader.ReadByte()`. Since you did not cast playerCount to byte on writing, you will get malformed data. Lets always cast our data values before writing them even if it may seem redundant at times.
+> A very common mistake is to write one data type and read another data type. For example lets say you have the integer `playerCount` and you do `writer.Write(playerCount)` and then `playerCount = reader.ReadByte()`. Since you did not cast playerCount to byte on writing, you will receive malformed data. Lets always cast our data values before writing them even if it may seem redundant at times.
 
 > [!CAUTION]
-> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. Try to avoid the use of `GD.Print(...)` as much as you can, it is not thread safe, use `Game.Log(...)` instead.
+> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. If you want to avoid logs getting jumbled use `Game.Log(...)` over `GD.Print(...)`.
 
 Here is what a client packet could look like. The client is using this packet to tell the server its position. The `Handle(...)` is executed on the server thread so only things on that thread should be accessed.
 ```cs
@@ -154,8 +148,12 @@ public class SPacketPlayerPositions : ServerPacket
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {
             if (level.OtherPlayers.ContainsKey(pair.Key))
-                level.OtherPlayers[pair.Key].Position = pair.Value;
+                level.OtherPlayers[pair.Key].LastServerPosition = pair.Value;
         }
+
+        // Send a client position packet to the server immediately right after
+        // a server positions packet is received
+        level.Player.NetSendPosition();
     }
 }
 ```
@@ -178,12 +176,6 @@ Send(new SPacketPlayerPositions
     Positions = GetOtherPlayers(pair.Key).ToDictionary(x => x.Key, x => x.Value.Position)
 }, Peers[pair.Key]);
 ```
-
-> [!NOTE]
-> Multiplayer achieved with [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp).
-
-> [!CAUTION]
-> Multiplayer is still very much WIP. Expect issues.
 
 ### Mod Loader
 > [!NOTE]
