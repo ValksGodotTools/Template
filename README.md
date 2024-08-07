@@ -54,11 +54,11 @@ The following popup will appear, click "Reload"
 
 ![popup1](https://github.com/user-attachments/assets/8e037a68-235f-4df7-b3d1-94e0c9431808)
 
-Close the Godot project and click "Don't Save" and close any text editors you may have opened
+Click "Don't Save" and close any IDE's you may have open
 
 ![popup2](https://github.com/user-attachments/assets/0d51ca08-adbc-4df3-9e5a-27cf1e5717d2)
 
-### :four: Open the Godot Project
+### :four: Double click on the main scene in `res://Scenes/<your_scene>.tscn`
 
 Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicking "Fix Broken", click on "Open Anyway"
 
