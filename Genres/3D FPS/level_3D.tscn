@@ -2477,8 +2477,8 @@ shape = SubResource("ConcavePolygonShape3D_er703")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3aas6")
 options = ExtResource("4_ayq1j")
-fpsRig = NodePath("SubViewportContainer/SubViewport/Camera3D/FPS Rig")
-cameraBone = NodePath("SubViewportContainer/SubViewport/Camera Bone")
+fpsRig = NodePath("SubViewportContainer/SubViewport/FPS Rig")
+cameraBone = NodePath("SubViewportContainer/SubViewport/FPS Rig/Camera Bone")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Player"]
 anchors_preset = 15
@@ -2496,25 +2496,26 @@ msaa_3d = 3
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
-[node name="Camera Bone" type="BoneAttachment3D" parent="Player/SubViewportContainer/SubViewport"]
-transform = Transform3D(-1, 8.74228e-08, -6.3573e-08, -6.3573e-08, 0, 1, 8.74228e-08, 1, 0, 0, 1.6, 0)
-bone_name = "Camera"
-bone_idx = 19
-use_external_skeleton = true
-external_skeleton = NodePath("../Camera3D/FPS Rig/Arms/Arms Rig/Skeleton3D")
-
 [node name="Camera3D" type="Camera3D" parent="Player/SubViewportContainer/SubViewport"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 current = true
 
-[node name="FPS Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport/Camera3D"]
+[node name="FPS Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
-[node name="Arms" type="Node3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig"]
+[node name="Camera Bone" type="BoneAttachment3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
+transform = Transform3D(-1, 8.74228e-08, -6.3573e-08, -6.3573e-08, 0, 1, 8.74228e-08, 1, 0, 0, 0, 0)
+bone_name = "Camera"
+bone_idx = 19
+use_external_skeleton = true
+external_skeleton = NodePath("../Arms/Arms Rig/Skeleton3D")
 
-[node name="Arms Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Arms"]
+[node name="Arms" type="Node3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 
-[node name="Skeleton3D" type="Skeleton3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Arms/Arms Rig"]
+[node name="Arms Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Arms"]
+
+[node name="Skeleton3D" type="Skeleton3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Arms/Arms Rig"]
 bones/0/name = "Root"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
@@ -2782,20 +2783,20 @@ bones/37/position = Vector3(-2.79397e-09, 0.024463, -3.1665e-08)
 bones/37/rotation = Quaternion(-0.510019, 0.0368142, -0.0599395, 0.857282)
 bones/37/scale = Vector3(1, 1, 1)
 
-[node name="Arms Mesh" type="MeshInstance3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Arms/Arms Rig/Skeleton3D"]
+[node name="Arms Mesh" type="MeshInstance3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Arms/Arms Rig/Skeleton3D"]
 mesh = SubResource("ArrayMesh_rwsq7")
 skin = SubResource("Skin_wxo32")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Arms"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Arms"]
 libraries = {
 "": SubResource("AnimationLibrary_034ud")
 }
 
-[node name="Gun" type="Node3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig"]
+[node name="Gun" type="Node3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 
-[node name="Assault Rifle Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Gun"]
+[node name="Assault Rifle Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Gun"]
 
-[node name="Skeleton3D" type="Skeleton3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Gun/Assault Rifle Rig"]
+[node name="Skeleton3D" type="Skeleton3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Gun/Assault Rifle Rig"]
 bones/0/name = "Gun Root"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.106088, 0)
@@ -2811,11 +2812,11 @@ bones/1/position = Vector3(0.000201527, 0.147134, -0.137837)
 bones/1/rotation = Quaternion(-0.630653, 0, 0, 0.776065)
 bones/1/scale = Vector3(1, 1, 1)
 
-[node name="AssaultRifle2_1" type="MeshInstance3D" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Gun/Assault Rifle Rig/Skeleton3D"]
+[node name="AssaultRifle2_1" type="MeshInstance3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Gun/Assault Rifle Rig/Skeleton3D"]
 mesh = SubResource("ArrayMesh_y37xp")
 skin = SubResource("Skin_vmlbc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SubViewportContainer/SubViewport/Camera3D/FPS Rig/Gun"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/SubViewportContainer/SubViewport/FPS Rig/Gun"]
 libraries = {
 "": SubResource("AnimationLibrary_bcg08")
 }
