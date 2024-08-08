@@ -440,7 +440,6 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 ### 2D Top Down
 - Add a sword swing system
 - Add example states
-- Fully implement multiplayer
 
 ### Mod Loader
 - Beautify the mod loader scene and add the appropriate logic that follows it
