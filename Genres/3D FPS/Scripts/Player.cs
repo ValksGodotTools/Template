@@ -50,7 +50,7 @@ public partial class Player : CharacterBody3D
         float delta = (float)d;
 
         camera.Position = Position + camOffset;
-        camera.Rotation = cameraTarget + cameraBone.Rotation;
+        camera.Rotation = cameraTarget - cameraBone.Rotation - new Vector3(90f.ToRadians(), 180f.ToRadians(), 0);
 
         float h_rot = camera.Basis.GetEuler().Y;
 
