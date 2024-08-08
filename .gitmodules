@@ -1,3 +1,3 @@
 [submodule "GodotUtils"]
-	path = GodotUtils
+	path = Template/GodotUtils/GodotUtils
 	url = https://github.com/Valks-Games/GodotUtils
