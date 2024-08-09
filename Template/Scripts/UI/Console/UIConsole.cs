@@ -7,8 +7,6 @@ public partial class UIConsole : PanelContainer
 {
     public event Action<bool> OnToggleVisibility;
 
-    public bool IsVisible { get => Visible; }
-
     TextEdit feed;
     LineEdit input;
     Button settingsBtn;
