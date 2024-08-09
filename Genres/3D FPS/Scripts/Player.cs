@@ -52,12 +52,13 @@ public partial class Player : CharacterBody3D
         Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
         Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
         Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
-        Quaternion finalQuat = (camBoneQuat * offset * camTarget).Normalized();
+        Quaternion finalQuat = (camBoneQuat * offset).Normalized();
 
         camera.Position = Position + camOffset;
-        camera.Quaternion = finalQuat;
+        camera.Quaternion = (finalQuat * camTarget).Normalized();
 
         fpsRig.Position = camera.Position;
+        fpsRig.Quaternion = camTarget;
 
         float h_rot = camera.Basis.GetEuler().Y;
 
