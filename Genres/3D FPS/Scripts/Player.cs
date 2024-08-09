@@ -5,6 +5,8 @@ public partial class Player : CharacterBody3D
     [Export] OptionsManager options;
     [Export] Node3D fpsRig;
     [Export] BoneAttachment3D cameraBone;
+    [Export] AnimationTree animTreeArms;
+    [Export] AnimationTree animTreeGun;
 
     float mouseSensitivity;
     float gravityForce = 10;
@@ -17,9 +19,6 @@ public partial class Player : CharacterBody3D
     Vector3 cameraTarget;
     Vector3 gravityVec;
     Vector3 camOffset;
-
-    AnimationPlayer animPlayerArms;
-    AnimationPlayer animPlayerGun;
 
     public override void _Ready()
     {
@@ -34,30 +33,6 @@ public partial class Player : CharacterBody3D
         gameplay.OnMouseSensitivityChanged += value =>
         {
             mouseSensitivity = value * 0.0001f;
-        };
-
-        // Godots AnimationTree node is currently broken
-        // See https://github.com/godotengine/godot/issues/91639
-        // Animations fail to be played with looping Animations in AnimationTree.
-        // So that is why we will try to re-create the AnimationTree logic using
-        // nothing but AnimationPlayer in script.
-
-        // Edit: This is impossible. I'm going to wait for AnimationTree's to get fixed!
-        animPlayerArms = (AnimationPlayer)fpsRig
-            .GetNode("Arms")
-            .FindChild("AnimationPlayer");
-
-        animPlayerGun = (AnimationPlayer)fpsRig
-            .GetNode("Gun")
-            .FindChild("AnimationPlayer");
-
-        animPlayerArms.AnimationFinished += anim =>
-        {
-            if (anim == "arms_reload")
-            {
-                animPlayerArms.Play("arms_rest");
-                animPlayerGun.Play("assault_rifle_rest");
-            }
         };
     }
 
@@ -81,14 +56,13 @@ public partial class Player : CharacterBody3D
 
         if (Input.IsActionJustPressed("reload"))
         {
-            animPlayerArms.Play("arms_reload");
-            animPlayerGun.Play("assault_rifle_reload");
+            animTreeArms.SetCondition("reload", true);
+            animTreeGun.SetCondition("reload", true);
         }
 
         if (Input.IsActionJustPressed("ads"))
         {
-            animPlayerArms.Play("arms_rest_to_ads_v5");
-            animPlayerGun.Play("assault_rifle_rest_to_ads_v2");
+            
         }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
