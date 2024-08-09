@@ -49,8 +49,14 @@ public partial class Player : CharacterBody3D
     {
         float delta = (float)d;
 
+        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
+        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
+        Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
+        Quaternion finalQuat = (camBoneQuat * camTarget * offset).Normalized();
+
         camera.Position = Position + camOffset;
-        camera.Rotation = cameraTarget - cameraBone.Rotation - new Vector3(90f.ToRadians(), 180f.ToRadians(), 0);
+
+        camera.Quaternion = finalQuat;
 
         float h_rot = camera.Basis.GetEuler().Y;
 
