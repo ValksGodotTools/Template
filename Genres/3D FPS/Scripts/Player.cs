@@ -36,6 +36,11 @@ public partial class Player : CharacterBody3D
             mouseSensitivity = value * 0.0001f;
         };
 
+        // Godots AnimationTree node is currently broken
+        // See https://github.com/godotengine/godot/issues/91639
+        // Animations fail to be played with looping Animations in AnimationTree.
+        // So that is why we will try to re-create the AnimationTree logic using
+        // nothing but AnimationPlayer in script.
         animPlayerArms = (AnimationPlayer)fpsRig
             .GetNode("Arms")
             .FindChild("AnimationPlayer");
@@ -43,6 +48,15 @@ public partial class Player : CharacterBody3D
         animPlayerGun = (AnimationPlayer)fpsRig
             .GetNode("Gun")
             .FindChild("AnimationPlayer");
+
+        animPlayerArms.AnimationFinished += anim =>
+        {
+            if (anim == "arms_reload")
+            {
+                animPlayerArms.Play("arms_rest", 1);
+                animPlayerGun.Play("assault_rifle_rest", 1);
+            }
+        };
     }
 
     public override void _PhysicsProcess(double d)
@@ -74,8 +88,8 @@ public partial class Player : CharacterBody3D
 
         if (Input.IsActionJustPressed("reload"))
         {
-            animPlayerArms.Play("arms_reload");
-            animPlayerGun.Play("assault_rifle_reload");
+            animPlayerArms.Play("arms_reload", 0.5);
+            animPlayerGun.Play("assault_rifle_reload", 0.5);
         }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
