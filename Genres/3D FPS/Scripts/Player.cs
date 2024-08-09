@@ -3,6 +3,8 @@ namespace Template.FPS3D;
 public partial class Player : CharacterBody3D
 {
     [Export] OptionsManager options;
+    [Export] Node3D fpsRig;
+    [Export] BoneAttachment3D cameraBone;
 
     float mouseSensitivity;
     float gravityForce = 10;
@@ -13,9 +15,11 @@ public partial class Player : CharacterBody3D
     Camera3D camera;
     Vector2 mouseInput;
     Vector3 cameraTarget;
-    Vector3 cameraOffset;
     Vector3 gravityVec;
     Vector3 camOffset;
+
+    AnimationPlayer animPlayerArms;
+    AnimationPlayer animPlayerGun;
 
     public override void _Ready()
     {
@@ -31,19 +35,48 @@ public partial class Player : CharacterBody3D
         {
             mouseSensitivity = value * 0.0001f;
         };
+
+        animPlayerArms = (AnimationPlayer)fpsRig
+            .GetNode("Arms")
+            .FindChild("AnimationPlayer");
+
+        animPlayerGun = (AnimationPlayer)fpsRig
+            .GetNode("Gun")
+            .FindChild("AnimationPlayer");
     }
 
     public override void _PhysicsProcess(double d)
     {
         float delta = (float)d;
 
+        // The camera bone
+        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
+
+        // Account for annoying offset from the camera bone
+        Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
+
+        // The end result (multiplying order matters and always normalize to prevent errors)
+        Quaternion animationRotations = (camBoneQuat * offset).Normalized();
+
+        // Mouse motion
+        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
+
         camera.Position = Position + camOffset;
-        camera.Rotation = cameraTarget + cameraOffset;
+        camera.Quaternion = (camTarget * animationRotations).Normalized();
+
+        fpsRig.Position = camera.Position;
+        fpsRig.Quaternion = camTarget;
 
         float h_rot = camera.Basis.GetEuler().Y;
 
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");
+
+        if (Input.IsActionJustPressed("reload"))
+        {
+            animPlayerArms.Play("arms_reload");
+            animPlayerGun.Play("assault_rifle_reload");
+        }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
             .Rotated(Vector3.Up, h_rot) // Always face correct direction
@@ -74,11 +107,13 @@ public partial class Player : CharacterBody3D
         if (@event is not InputEventMouseMotion motion || Input.MouseMode != Input.MouseModeEnum.Captured)
             return;
 
-        mouseInput = new Vector2(motion.Relative.X, motion.Relative.Y);
+        mouseInput = motion.Relative;
 
-        cameraTarget += new Vector3(-motion.Relative.Y * mouseSensitivity, -motion.Relative.X * mouseSensitivity, 0);
+        cameraTarget += new Vector3(
+            -motion.Relative.Y * mouseSensitivity, 
+            -motion.Relative.X * mouseSensitivity, 0);
 
-        // prevent camera from looking too far up or down
+        // Prevent camera from looking too far up or down
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
