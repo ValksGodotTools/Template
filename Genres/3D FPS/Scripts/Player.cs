@@ -62,7 +62,7 @@ public partial class Player : CharacterBody3D
         Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
 
         camera.Position = Position + camOffset;
-        camera.Quaternion = (animationRotations * camTarget).Normalized();
+        camera.Quaternion = (camTarget * animationRotations).Normalized();
 
         fpsRig.Position = camera.Position;
         fpsRig.Quaternion = camTarget;
