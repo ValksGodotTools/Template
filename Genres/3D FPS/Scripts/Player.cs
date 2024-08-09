@@ -65,20 +65,11 @@ public partial class Player : CharacterBody3D
     {
         float delta = (float)d;
 
-        // The camera bone
-        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
-
-        // Account for annoying offset from the camera bone
-        Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
-
-        // The end result (multiplying order matters and always normalize to prevent errors)
-        Quaternion animationRotations = (camBoneQuat * offset).Normalized();
-
         // Mouse motion
         Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
 
         camera.Position = Position + camOffset;
-        camera.Quaternion = (camTarget * animationRotations).Normalized();
+        camera.Quaternion = (camTarget * GetAnimationRotations()).Normalized();
 
         fpsRig.Position = camera.Position;
         fpsRig.Quaternion = camTarget;
@@ -139,5 +130,17 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
+    }
+
+    Quaternion GetAnimationRotations()
+    {
+        // The camera bone
+        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
+
+        // Account for annoying offset from the camera bone
+        Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
+
+        // The end result (multiplying order matters and always normalize to prevent errors)
+        return (camBoneQuat * offset).Normalized();
     }
 }
