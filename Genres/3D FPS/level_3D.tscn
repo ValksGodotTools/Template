@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dtn5ce8giw6w1" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms/Arms_SpacePirate_diffuse.png" id="8_1nylj"]
 [ext_resource type="Texture2D" uid="uid://cgcy8qqbt5dah" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms/Arms_SpacePirate_normal.png" id="9_66sgg"]
 [ext_resource type="Animation" uid="uid://d27priu5u2o28" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_reload.res" id="10_o1jlh"]
-[ext_resource type="Animation" uid="uid://b5dgfikiqgcpb" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_rest_baked_v2.res" id="11_m03p6"]
+[ext_resource type="Animation" uid="uid://b5dgfikiqgcpb" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_rest.res" id="11_m03p6"]
 [ext_resource type="Animation" uid="uid://coh8to3hq7w1x" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/assault_rifle_rest.res" id="12_8r10p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onqla"]
@@ -194,7 +194,7 @@ bind/37/pose = Transform3D(-0.212945, 0.0174912, 0.976908, 0.959571, -0.184605, 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_034ud"]
 _data = {
 "arms_reload": ExtResource("10_o1jlh"),
-"arms_rest_baked_v2": ExtResource("11_m03p6")
+"arms_rest": ExtResource("11_m03p6")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgxyr"]
