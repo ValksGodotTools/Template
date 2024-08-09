@@ -18,8 +18,8 @@ public partial class Player : CharacterBody3D
     Vector3 gravityVec;
     Vector3 camOffset;
 
-    AnimationTree animTreeArms;
-    AnimationTree animTreeGun;
+    AnimationPlayer animPlayerArms;
+    AnimationPlayer animPlayerGun;
 
     public override void _Ready()
     {
@@ -36,8 +36,13 @@ public partial class Player : CharacterBody3D
             mouseSensitivity = value * 0.0001f;
         };
 
-        animTreeArms = fpsRig.GetNode<AnimationTree>("AnimationTreeArms");
-        animTreeGun = fpsRig.GetNode<AnimationTree>("AnimationTreeGun");
+        animPlayerArms = (AnimationPlayer)fpsRig
+            .GetNode("Arms")
+            .FindChild("AnimationPlayer");
+
+        animPlayerGun = (AnimationPlayer)fpsRig
+            .GetNode("Gun")
+            .FindChild("AnimationPlayer");
     }
 
     public override void _PhysicsProcess(double d)
@@ -69,8 +74,8 @@ public partial class Player : CharacterBody3D
 
         if (Input.IsActionJustPressed("reload"))
         {
-            animTreeArms.SetCondition("reload", true);
-            animTreeGun.SetCondition("reload", true);
+            animPlayerArms.Play("arms_reload");
+            animPlayerGun.Play("assault_rifle_reload");
         }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
