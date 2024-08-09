@@ -49,13 +49,20 @@ public partial class Player : CharacterBody3D
     {
         float delta = (float)d;
 
+        // The camera bone
         Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
-        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
+
+        // Account for annoying offset from the camera bone
         Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
-        Quaternion finalQuat = (camBoneQuat * offset).Normalized();
+
+        // The end result (multiplying order matters and always normalize to prevent errors)
+        Quaternion animationRotations = (camBoneQuat * offset).Normalized();
+
+        // Mouse motion
+        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
 
         camera.Position = Position + camOffset;
-        camera.Quaternion = (finalQuat * camTarget).Normalized();
+        camera.Quaternion = (animationRotations * camTarget).Normalized();
 
         fpsRig.Position = camera.Position;
         fpsRig.Quaternion = camTarget;
