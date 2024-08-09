@@ -57,6 +57,8 @@ public partial class Player : CharacterBody3D
         camera.Position = Position + camOffset;
         camera.Quaternion = finalQuat;
 
+        fpsRig.Position = camera.Position;
+
         float h_rot = camera.Basis.GetEuler().Y;
 
         float f_input = -Input.GetAxis("move_down", "move_up");
