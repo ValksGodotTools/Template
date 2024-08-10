@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=49 format=4 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Player.cs" id="1_3aas6"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Env.cs" id="1_7hkd7"]
@@ -243,8 +243,12 @@ bind/37/name = &"Little 03 R"
 bind/37/bone = -1
 bind/37/pose = Transform3D(-0.212945, 0.0174912, 0.976908, 0.959571, -0.184605, 0.212471, 0.184058, 0.982657, 0.0225266, 0.0922654, -0.868194, -0.241571)
 
+[sub_resource type="Animation" id="Animation_akr10"]
+length = 0.001
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_034ud"]
 _data = {
+"RESET": SubResource("Animation_akr10"),
 "arms_reload": ExtResource("10_o1jlh"),
 "arms_rest": ExtResource("11_m03p6"),
 "arms_rest_to_ads_v5": ExtResource("12_81agu")
@@ -352,9 +356,25 @@ tracks/2/path = NodePath("Assault Rifle Rig/Skeleton3D:Mag")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, 0.000201527, 0.147134, -0.137837, 0.833333, 1, 0.00020152, 0.147134, -0.137837, 0.866667, 1, 0.000653748, 0.147061, -0.142296, 0.9, 1, 0.00192617, 0.146854, -0.154845, 0.933333, 1, 0.00389263, 0.146534, -0.174237, 0.966667, 1, 0.00642698, 0.146123, -0.19923, 1, 1, 0.00940304, 0.145639, -0.228578, 1.03333, 1, 0.0126945, 0.145104, -0.261037, 1.06667, 1, 0.0161753, 0.144538, -0.295363, 1.1, 1, 0.0197192, 0.143962, -0.330311, 1.13333, 1, 0.0232, 0.143396, -0.364637, 1.16667, 1, 0.0264914, 0.142861, -0.397096, 1.2, 1, 0.0294675, 0.142378, -0.426445, 1.23333, 1, 0.0320018, 0.141966, -0.451437, 1.26667, 1, 0.0339683, 0.141646, -0.47083, 1.3, 1, 0.0352407, 0.141439, -0.483378, 1.33333, 1, 0.0356929, 0.141366, -0.487837, 1.66667, 1, 0.0356929, 0.141366, -0.487837, 1.7, 1, 0.0352408, 0.141439, -0.483378, 1.73333, 1, 0.0339683, 0.141646, -0.47083, 1.76667, 1, 0.0320018, 0.141966, -0.451437, 1.8, 1, 0.0294675, 0.142378, -0.426445, 1.83333, 1, 0.0264915, 0.142861, -0.397096, 1.86667, 1, 0.0232, 0.143396, -0.364637, 1.9, 1, 0.0197191, 0.143962, -0.330311, 1.93333, 1, 0.0161753, 0.144538, -0.295363, 1.96667, 1, 0.0126945, 0.145104, -0.261037, 2, 1, 0.00940299, 0.145639, -0.228578, 2.03333, 1, 0.00642696, 0.146123, -0.19923, 2.06667, 1, 0.00389263, 0.146534, -0.174237, 2.1, 1, 0.00192615, 0.146854, -0.154844, 2.13333, 1, 0.000653714, 0.147061, -0.142296, 2.16667, 1, 0.000201529, 0.147134, -0.137837, 3, 1, 0.000201527, 0.147134, -0.137837)
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../AnimationTreeGun:parameters/conditions/reload")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_crbt0"]
+length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bcg08"]
 _data = {
+"RESET": SubResource("Animation_crbt0"),
 "assault_rifle_reload": SubResource("Animation_w7pqi"),
 "assault_rifle_rest": ExtResource("12_8r10p"),
 "assault_rifle_rest_to_ads_v2": ExtResource("14_vnpkl")
@@ -510,7 +530,7 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(-0.0778564, -0.995034, 0.0620203, 0.0620205, 0.0572547, 0.996431, -0.995034, 0.0814251, 0.0572549, -0.211094, 0.0547319, 0.0341427)
 bones/1/enabled = true
 bones/1/position = Vector3(-0.34723, -0.117413, -0.0639479)
-bones/1/rotation = Quaternion(-0.644262, -0.565125, 0.51523, 0.00988175)
+bones/1/rotation = Quaternion(-0.64425, -0.565152, 0.515216, 0.0098851)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "Lower Arm L"
 bones/2/parent = 1
@@ -524,7 +544,7 @@ bones/3/parent = 2
 bones/3/rest = Transform3D(0.911249, -0.0545937, 0.408222, 0.148465, 0.968079, -0.201943, -0.384166, 0.244627, 0.890266, -2.10842e-09, 0.236574, -3.11807e-09)
 bones/3/enabled = true
 bones/3/position = Vector3(-2.10842e-09, 0.236574, -3.11807e-09)
-bones/3/rotation = Quaternion(0.00664339, -0.229876, 0.250198, 0.940486)
+bones/3/rotation = Quaternion(0.00667376, -0.229882, 0.250227, 0.940477)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "Thumb 01 L"
 bones/4/parent = 3
@@ -643,21 +663,21 @@ bones/20/parent = 0
 bones/20/rest = Transform3D(-0.0778564, 0.995034, -0.0620203, -0.0620205, 0.0572547, 0.996431, 0.995034, 0.0814251, 0.0572549, 0.211094, 0.0547319, 0.0341427)
 bones/20/enabled = true
 bones/20/position = Vector3(0.216831, -0.067224, 0.155605)
-bones/20/rotation = Quaternion(-0.769512, 0.0140525, -0.567431, 0.292705)
+bones/20/rotation = Quaternion(-0.769496, 0.0140857, -0.567437, 0.292733)
 bones/20/scale = Vector3(1, 1, 1)
 bones/21/name = "Lower Arm R"
 bones/21/parent = 20
 bones/21/rest = Transform3D(0.991398, -0.11525, -0.0620205, 0.118816, 0.991264, 0.0572548, 0.05488, -0.0641313, 0.996431, 9.31323e-10, 0.291113, -6.98492e-10)
 bones/21/enabled = true
 bones/21/position = Vector3(9.31323e-10, 0.291113, -6.98492e-10)
-bones/21/rotation = Quaternion(-0.395352, -0.0150462, 0.762351, 0.512143)
+bones/21/rotation = Quaternion(-0.395361, -0.0150452, 0.762369, 0.51211)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/name = "Hand R"
 bones/22/parent = 21
 bones/22/rest = Transform3D(0.911249, 0.0545937, -0.408222, -0.148465, 0.968079, -0.201943, 0.384166, 0.244627, 0.890266, 2.10842e-09, 0.236574, -3.11807e-09)
 bones/22/enabled = true
 bones/22/position = Vector3(2.10842e-09, 0.236574, -3.11807e-09)
-bones/22/rotation = Quaternion(0.568165, -0.19901, -0.304824, 0.738015)
+bones/22/rotation = Quaternion(0.56816, -0.199013, -0.30488, 0.737995)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/name = "Thumb 01 R"
 bones/23/parent = 22
@@ -773,7 +793,6 @@ skin = SubResource("Skin_wxo32")
 libraries = {
 "": SubResource("AnimationLibrary_034ud")
 }
-autoplay = "arms_rest"
 
 [node name="Gun" type="Node3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 
@@ -784,7 +803,7 @@ bones/0/name = "Gun Root"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.106088, 0)
 bones/0/enabled = true
-bones/0/position = Vector3(0.106731, -0.0862231, -0.135732)
+bones/0/position = Vector3(0.106731, -0.0859522, -0.135732)
 bones/0/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 bones/0/scale = Vector3(1, 1, 1)
 bones/1/name = "Mag"
@@ -803,7 +822,6 @@ skin = SubResource("Skin_vmlbc")
 libraries = {
 "": SubResource("AnimationLibrary_bcg08")
 }
-autoplay = "assault_rifle_rest"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_6psqc")
