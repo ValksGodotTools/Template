@@ -20,9 +20,6 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 5. [Roadmap](#roadmap)
 6. [Credits](#credits)
 
-> [!IMPORTANT]
-> I need help figuring out the following issue -> https://github.com/ValksGodotTools/Template/issues/28
-
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
