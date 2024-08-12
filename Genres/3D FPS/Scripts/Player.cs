@@ -8,12 +8,15 @@ public partial class Player : CharacterBody3D
     [Export] AnimationTree animTreeArms;
     [Export] AnimationTree animTreeGun;
 
+    bool isReloading { get => animTreeArms.GetCondition("reload"); }
+
     float mouseSensitivity;
     float gravityForce = 10;
     float jumpForce = 150;
     float moveSpeed = 10;
     float moveDampening = 20; // the higher the value, the less the player will slide
-                                   
+    float blendSpaceAdsPosition;
+
     Camera3D camera;
     Vector2 mouseInput;
     Vector3 cameraTarget;
@@ -54,15 +57,20 @@ public partial class Player : CharacterBody3D
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");
 
+        SetBlendSpace1DPosition("Rest", blendSpaceAdsPosition);
+
         if (Input.IsActionJustPressed("reload"))
         {
-            animTreeArms.SetCondition("reload", true);
-            animTreeGun.SetCondition("reload", true);
+            SetAnimCondition("reload", true);
         }
 
-        if (Input.IsActionJustPressed("ads"))
+        if (Input.IsActionPressed("ads"))
         {
-            
+            blendSpaceAdsPosition = blendSpaceAdsPosition.Lerp(1, 0.1f);
+        }
+        else
+        {
+            blendSpaceAdsPosition = blendSpaceAdsPosition.Lerp(0, 0.1f);
         }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
@@ -104,6 +112,18 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
+    }
+
+    void SetAnimCondition(StringName path, bool v)
+    {
+        animTreeArms.SetCondition(path, v);
+        animTreeGun.SetCondition(path, v);
+    }
+
+    void SetBlendSpace1DPosition(StringName path, float value)
+    {
+        animTreeArms.SetBlendSpace1DPosition(path, value);
+        animTreeGun.SetBlendSpace1DPosition(path, value);
     }
 
     Quaternion GetAnimationRotations()

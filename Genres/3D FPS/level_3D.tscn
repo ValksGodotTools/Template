@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=4 uid="uid://b5cjboi5sgqg4"]
+[gd_scene load_steps=53 format=4 uid="uid://b5cjboi5sgqg4"]
 
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Player.cs" id="1_3aas6"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Env.cs" id="1_7hkd7"]
@@ -12,8 +12,8 @@
 [ext_resource type="Animation" uid="uid://d27priu5u2o28" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_reload.res" id="10_o1jlh"]
 [ext_resource type="Animation" uid="uid://b5dgfikiqgcpb" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_rest.res" id="11_m03p6"]
 [ext_resource type="Animation" uid="uid://coh8to3hq7w1x" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/assault_rifle_rest.res" id="12_8r10p"]
-[ext_resource type="Animation" uid="uid://bchprlguln1qc" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_rest_to_ads_v5.res" id="12_81agu"]
-[ext_resource type="Animation" uid="uid://c2lxex4cbjtc0" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/assault_rifle_rest_to_ads_v2.res" id="14_vnpkl"]
+[ext_resource type="Animation" uid="uid://bkiyi7wl8vae0" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/arms_ads.res" id="12_v5pil"]
+[ext_resource type="Animation" uid="uid://hw8exjmbcf73" path="res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/assault_rifle_ads.res" id="14_m2wml"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_onqla"]
 sky_top_color = Color(0.780392, 0.992157, 1, 1)
@@ -46,55 +46,78 @@ size = Vector2(30, 30)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_er703"]
 data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0, -15, 15, 0, -15)
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4jopf"]
+animation = &"arms_rest"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5j8yc"]
+animation = &"arms_ads"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_a5nfy"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_4jopf")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_5j8yc")
+blend_point_1/pos = 1.0
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7sjg0"]
 animation = &"arms_reload"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6hh7l"]
-animation = &"arms_rest"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3afxt"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tenwh"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ttseh"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ixny7"]
+xfade_time = 2.0
 advance_mode = 2
 advance_condition = &"reload"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rljs5"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ahfb7"]
+xfade_time = 2.0
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_irfcm"]
+states/End/position = Vector2(950, 135)
+states/Rest/node = SubResource("AnimationNodeBlendSpace1D_a5nfy")
+states/Rest/position = Vector2(354, 100)
 states/arms_reload/node = SubResource("AnimationNodeAnimation_7sjg0")
 states/arms_reload/position = Vector2(354, 0)
-states/arms_rest/node = SubResource("AnimationNodeAnimation_6hh7l")
-states/arms_rest/position = Vector2(354, 100)
-transitions = ["Start", "arms_rest", SubResource("AnimationNodeStateMachineTransition_3afxt"), "arms_rest", "arms_reload", SubResource("AnimationNodeStateMachineTransition_ttseh"), "arms_reload", "arms_rest", SubResource("AnimationNodeStateMachineTransition_rljs5")]
-graph_offset = Vector2(-7, -74)
+transitions = ["Start", "Rest", SubResource("AnimationNodeStateMachineTransition_tenwh"), "Rest", "arms_reload", SubResource("AnimationNodeStateMachineTransition_ixny7"), "arms_reload", "Rest", SubResource("AnimationNodeStateMachineTransition_ahfb7")]
+graph_offset = Vector2(-83, -52)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dhmb3"]
+animation = &"assault_rifle_rest"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lecow"]
+animation = &"assault_rifle_ads"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_vfcud"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_dhmb3")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_lecow")
+blend_point_1/pos = 1.0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ryag5"]
 animation = &"assault_rifle_reload"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p6l5k"]
-animation = &"assault_rifle_rest"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_autio"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n30e8"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e1p1a"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fcb36"]
+xfade_time = 2.0
 advance_mode = 2
 advance_condition = &"reload"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s2oi4"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0gbwi"]
+xfade_time = 2.0
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_mim50"]
+states/Rest/node = SubResource("AnimationNodeBlendSpace1D_vfcud")
+states/Rest/position = Vector2(382, 100)
 states/assault_rifle_reload/node = SubResource("AnimationNodeAnimation_ryag5")
 states/assault_rifle_reload/position = Vector2(382, -4)
-states/assault_rifle_rest/node = SubResource("AnimationNodeAnimation_p6l5k")
-states/assault_rifle_rest/position = Vector2(382, 100)
-transitions = ["Start", "assault_rifle_rest", SubResource("AnimationNodeStateMachineTransition_autio"), "assault_rifle_rest", "assault_rifle_reload", SubResource("AnimationNodeStateMachineTransition_e1p1a"), "assault_rifle_reload", "assault_rifle_rest", SubResource("AnimationNodeStateMachineTransition_s2oi4")]
-graph_offset = Vector2(-5, -56)
+transitions = ["Start", "Rest", SubResource("AnimationNodeStateMachineTransition_n30e8"), "Rest", "assault_rifle_reload", SubResource("AnimationNodeStateMachineTransition_fcb36"), "assault_rifle_reload", "Rest", SubResource("AnimationNodeStateMachineTransition_0gbwi")]
+graph_offset = Vector2(-65, -63)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sfmo5"]
 resource_name = "SpacePirate_M"
@@ -249,9 +272,9 @@ length = 0.001
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_034ud"]
 _data = {
 "RESET": SubResource("Animation_akr10"),
+"arms_ads": ExtResource("12_v5pil"),
 "arms_reload": ExtResource("10_o1jlh"),
-"arms_rest": ExtResource("11_m03p6"),
-"arms_rest_to_ads_v5": ExtResource("12_81agu")
+"arms_rest": ExtResource("11_m03p6")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgxyr"]
@@ -332,6 +355,9 @@ bind/1/name = &"Mag"
 bind/1/bone = -1
 bind/1/pose = Transform3D(1, 0, 0, 0, -0.978855, -0.204555, 0, 0.204555, -0.978855, -0.000201527, -0.061175, -0.137529)
 
+[sub_resource type="Animation" id="Animation_crbt0"]
+length = 0.001
+
 [sub_resource type="Animation" id="Animation_w7pqi"]
 resource_name = "assault_rifle_reload"
 length = 3.0
@@ -369,15 +395,12 @@ tracks/3/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_crbt0"]
-length = 0.001
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bcg08"]
 _data = {
 "RESET": SubResource("Animation_crbt0"),
+"assault_rifle_ads": ExtResource("14_m2wml"),
 "assault_rifle_reload": SubResource("Animation_w7pqi"),
-"assault_rifle_rest": ExtResource("12_8r10p"),
-"assault_rifle_rest_to_ads_v2": ExtResource("14_vnpkl")
+"assault_rifle_rest": ExtResource("12_8r10p")
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6psqc"]
@@ -499,12 +522,14 @@ root_node = NodePath("../Arms")
 tree_root = SubResource("AnimationNodeStateMachine_irfcm")
 anim_player = NodePath("../Arms/AnimationPlayer")
 parameters/conditions/reload = false
+parameters/Rest/blend_position = -0.242124
 
 [node name="AnimationTreeGun" type="AnimationTree" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 root_node = NodePath("../Gun")
 tree_root = SubResource("AnimationNodeStateMachine_mim50")
 anim_player = NodePath("../Gun/AnimationPlayer")
 parameters/conditions/reload = false
+parameters/Rest/blend_position = -0.121512
 
 [node name="Camera Bone" type="BoneAttachment3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 transform = Transform3D(-1, 8.74228e-08, -6.3573e-08, -6.3573e-08, 0, 1, 8.74228e-08, 1, 0, 0, 0, 0)
@@ -530,7 +555,7 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(-0.0778564, -0.995034, 0.0620203, 0.0620205, 0.0572547, 0.996431, -0.995034, 0.0814251, 0.0572549, -0.211094, 0.0547319, 0.0341427)
 bones/1/enabled = true
 bones/1/position = Vector3(-0.34723, -0.117413, -0.0639479)
-bones/1/rotation = Quaternion(-0.64425, -0.565152, 0.515216, 0.0098851)
+bones/1/rotation = Quaternion(-0.644217, -0.565224, 0.515178, 0.00989449)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "Lower Arm L"
 bones/2/parent = 1
@@ -544,7 +569,7 @@ bones/3/parent = 2
 bones/3/rest = Transform3D(0.911249, -0.0545937, 0.408222, 0.148465, 0.968079, -0.201943, -0.384166, 0.244627, 0.890266, -2.10842e-09, 0.236574, -3.11807e-09)
 bones/3/enabled = true
 bones/3/position = Vector3(-2.10842e-09, 0.236574, -3.11807e-09)
-bones/3/rotation = Quaternion(0.00667376, -0.229882, 0.250227, 0.940477)
+bones/3/rotation = Quaternion(0.00675451, -0.229899, 0.250303, 0.940452)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "Thumb 01 L"
 bones/4/parent = 3
@@ -663,21 +688,21 @@ bones/20/parent = 0
 bones/20/rest = Transform3D(-0.0778564, 0.995034, -0.0620203, -0.0620205, 0.0572547, 0.996431, 0.995034, 0.0814251, 0.0572549, 0.211094, 0.0547319, 0.0341427)
 bones/20/enabled = true
 bones/20/position = Vector3(0.216831, -0.067224, 0.155605)
-bones/20/rotation = Quaternion(-0.769496, 0.0140857, -0.567437, 0.292733)
+bones/20/rotation = Quaternion(-0.769455, 0.014174, -0.567452, 0.292807)
 bones/20/scale = Vector3(1, 1, 1)
 bones/21/name = "Lower Arm R"
 bones/21/parent = 20
 bones/21/rest = Transform3D(0.991398, -0.11525, -0.0620205, 0.118816, 0.991264, 0.0572548, 0.05488, -0.0641313, 0.996431, 9.31323e-10, 0.291113, -6.98492e-10)
 bones/21/enabled = true
 bones/21/position = Vector3(9.31323e-10, 0.291113, -6.98492e-10)
-bones/21/rotation = Quaternion(-0.395361, -0.0150452, 0.762369, 0.51211)
+bones/21/rotation = Quaternion(-0.395385, -0.0150426, 0.762416, 0.512021)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/name = "Hand R"
 bones/22/parent = 21
 bones/22/rest = Transform3D(0.911249, 0.0545937, -0.408222, -0.148465, 0.968079, -0.201943, 0.384166, 0.244627, 0.890266, 2.10842e-09, 0.236574, -3.11807e-09)
 bones/22/enabled = true
 bones/22/position = Vector3(2.10842e-09, 0.236574, -3.11807e-09)
-bones/22/rotation = Quaternion(0.56816, -0.199013, -0.30488, 0.737995)
+bones/22/rotation = Quaternion(0.568147, -0.199022, -0.305029, 0.737941)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/name = "Thumb 01 R"
 bones/23/parent = 22
@@ -803,7 +828,7 @@ bones/0/name = "Gun Root"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.106088, 0)
 bones/0/enabled = true
-bones/0/position = Vector3(0.106731, -0.0859522, -0.135732)
+bones/0/position = Vector3(0.106731, -0.0860764, -0.135732)
 bones/0/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 bones/0/scale = Vector3(1, 1, 1)
 bones/1/name = "Mag"
