@@ -35,6 +35,14 @@ public partial class Player : CharacterBody3D
         {
             mouseSensitivity = value * 0.0001f;
         };
+
+        animTree.AnimationFinished += anim =>
+        {
+            if (anim == "ADS" && !Input.IsActionPressed("ads"))
+            {
+                animTree.SetCondition("rest", true);
+            }
+        };
     }
 
     public override void _PhysicsProcess(double d)
@@ -63,6 +71,11 @@ public partial class Player : CharacterBody3D
         if (Input.IsActionJustPressed("ads"))
         {
             animTree.SetCondition("ads", true);
+        }
+
+        if (Input.IsActionJustReleased("ads"))
+        {
+            animTree.SetCondition("rest", true);
         }
 
         if (Input.IsActionJustPressed("inspect"))

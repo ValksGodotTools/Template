@@ -125,7 +125,7 @@ states/Rest/position = Vector2(353, 100)
 "states/Rest to ADS/position" = Vector2(503, 70)
 states/Start/position = Vector2(204, 100)
 transitions = ["Rest to ADS", "ADS", SubResource("AnimationNodeStateMachineTransition_hnse0"), "Start", "Rest", SubResource("AnimationNodeStateMachineTransition_8qeli"), "Rest", "Rest to ADS", SubResource("AnimationNodeStateMachineTransition_ge0y4"), "ADS", "ADS to Rest", SubResource("AnimationNodeStateMachineTransition_y8lb6"), "ADS to Rest", "Rest", SubResource("AnimationNodeStateMachineTransition_equym"), "Rest", "Inspect", SubResource("AnimationNodeStateMachineTransition_171qg"), "Inspect", "Rest", SubResource("AnimationNodeStateMachineTransition_tx3tp"), "Rest", "Reload", SubResource("AnimationNodeStateMachineTransition_gldjb"), "Reload", "Rest", SubResource("AnimationNodeStateMachineTransition_jh5yx")]
-graph_offset = Vector2(-57, -37)
+graph_offset = Vector2(-23, -19)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2ney"]
 resource_name = "SpacePirate_M"
