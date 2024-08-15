@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://tpcsogafd3y4"
-path="res://.godot/imported/Arms with Assault Rifle.glb-b96df8ab1885dd4cbab5c15dfc1255f0.scn"
+uid="uid://cwxjjylxg01i8"
+path="res://.godot/imported/Arms with Assault Rifle.glb-27487ba3dbfd3c590b4f1ffea9e656ea.scn"
 
 [deps]
 
-source_file="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms with Assault Rifle.glb"
-dest_files=["res://.godot/imported/Arms with Assault Rifle.glb-b96df8ab1885dd4cbab5c15dfc1255f0.scn"]
+source_file="res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Arms with Assault Rifle.glb"
+dest_files=["res://.godot/imported/Arms with Assault Rifle.glb-27487ba3dbfd3c590b4f1ffea9e656ea.scn"]
 
 [params]
 
@@ -36,7 +36,7 @@ _subresources={
 "ADS": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/ADS.res",
+"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/ADS.res",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -1835,7 +1835,7 @@ _subresources={
 "Inspect": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/Inspect.res",
+"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/Inspect.res",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -3634,7 +3634,7 @@ _subresources={
 "Reload": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/Reload.res",
+"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/Reload.res",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -5433,7 +5433,7 @@ _subresources={
 "Rest": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/Rest.res",
+"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/Rest.res",
 "settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
@@ -7232,8 +7232,8 @@ _subresources={
 "Rest to ADS": {
 "save_to_file/enabled": true,
 "save_to_file/keep_custom_tracks": "",
-"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Assault Rifle/Animations/Rest to ADS.res",
-"settings/loop_mode": 0,
+"save_to_file/path": "res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/Rest to ADS.res",
+"settings/loop_mode": 1,
 "slice_1/end_frame": 0,
 "slice_1/loop_mode": 0,
 "slice_1/name": "",

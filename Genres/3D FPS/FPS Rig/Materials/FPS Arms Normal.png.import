@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://63c81a2g6x0m"
-path.s3tc="res://.godot/imported/Arms with Assault Rifle_SpacePirate_diffuse.png-867adf543109cfa38d42926b5945c1ee.s3tc.ctex"
+uid="uid://ctpem4y3wuhoc"
+path.s3tc="res://.godot/imported/FPS Arms Normal.png-3542ebd2026f0ca563b258c6f88522a3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "3de18acfe777fd6e17825aded4cc64c1"
+"md5": "3174facab3907188b296d16b53309d17"
 }
 
 [deps]
 
-source_file="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms with Assault Rifle_SpacePirate_diffuse.png"
-dest_files=["res://.godot/imported/Arms with Assault Rifle_SpacePirate_diffuse.png-867adf543109cfa38d42926b5945c1ee.s3tc.ctex"]
+source_file="res://Genres/3D FPS/FPS Rig/Materials/FPS Arms Normal.png"
+dest_files=["res://.godot/imported/FPS Arms Normal.png-3542ebd2026f0ca563b258c6f88522a3.s3tc.ctex"]
 
 [params]
 
@@ -23,12 +23,12 @@ compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=1
+roughness/src_normal="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms with Assault Rifle_SpacePirate_normal.png"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

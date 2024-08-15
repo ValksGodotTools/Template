@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dw13liglejwak"
-path="res://.godot/imported/Arms with Assault Rifle_SpacePirate_specular.png-a6772d7d7b695401ed8521676476e276.ctex"
+path="res://.godot/imported/FPS Arms Specular.png-9116207c101ec34f822b50d5537c784b.ctex"
 metadata={
 "vram_texture": false
 }
@@ -13,8 +13,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://Genres/3D FPS/FPS Rig/Assault Rifle/Arms with Assault Rifle_SpacePirate_specular.png"
-dest_files=["res://.godot/imported/Arms with Assault Rifle_SpacePirate_specular.png-a6772d7d7b695401ed8521676476e276.ctex"]
+source_file="res://Genres/3D FPS/FPS Rig/Materials/FPS Arms Specular.png"
+dest_files=["res://.godot/imported/FPS Arms Specular.png-9116207c101ec34f822b50d5537c784b.ctex"]
 
 [params]
 
