@@ -10,6 +10,17 @@ Repo Link https://github.com/ValksGodotTools/Template
 
 [h1]Assets
 
+[h2]Valkyrienyanko
+
+All FPS animations made by Valkyrienyanko LICENSED CC0: https://github.com/ValksGodotTools/Template
+
+"Dirt & Grass Tileset" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/dirt-grass-tileset
+
+"Flag (Captured / Uncaptured)" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/flag-captured-uncaptured
+
+
+
+
 [h2]Audio
 
 "5 Chiptunes (Action)" by SubspaceAudio LICENSED CC0: https://opengameart.org/content/5-chiptunes-action
@@ -18,10 +29,6 @@ Repo Link https://github.com/ValksGodotTools/Template
 
 
 [h2]Art
-
-"Dirt & Grass Tileset" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/dirt-grass-tileset
-
-"Flag (Captured / Uncaptured)" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/flag-captured-uncaptured
 
 "Concept Art Series Bundle 1" by Eon Cire LICENSED CC0: https://opengameart.org/content/concept-art-studies-bundle-1
 
