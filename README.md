@@ -428,29 +428,8 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > Here are some [good first issues](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to tackle.
 
 ## Roadmap
-### 3D FPS
-- Add an animated weapon model from Blender and add logic for it in game
-- Add a test environment
-- Fully implement multiplayer
-
-### 2D Platformer
-- Add example states
-- Fully implement multiplayer
-
-### 2D Top Down
-- Add a sword swing system
-- Add example states
-
-### Mod Loader
-- Beautify the mod loader scene and add the appropriate logic that follows it
-- Figure out how to ignore scripts in mods. For example I want to add a script in each mod that helps modders export the C# dll mods but this script can't be included because it will conflict with the same script from other mods.
-- Figure out how to allow duplicate scripts from different mods
-
-## Msc
-- Add a dialogue system that translates dialogue and choices in a text file to game logic
-- Add a inventory system
-- Add the ability to scroll in the credits scene
-- Implement a dedicated server authorative multiplayer model
+> [!NOTE]
+> The roadmap has been moved to [my Discord](https://discord.gg/5e7FkWCMRb). I find it easier to edit it here.
 
 ## Credits
 > [!NOTE]
