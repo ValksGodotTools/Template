@@ -5,17 +5,15 @@ public partial class Player : CharacterBody3D
     [Export] OptionsManager options;
     [Export] Node3D fpsRig;
     [Export] BoneAttachment3D cameraBone;
-    [Export] AnimationTree animTreeArms;
-    [Export] AnimationTree animTreeGun;
+    [Export] AnimationTree animTree;
 
-    bool isReloading { get => animTreeArms.GetCondition("reload"); }
+    //bool isReloading { get => animTree.GetCondition("reload"); }
 
     float mouseSensitivity;
     float gravityForce = 10;
     float jumpForce = 150;
     float moveSpeed = 10;
     float moveDampening = 20; // the higher the value, the less the player will slide
-    float blendSpaceAdsPosition;
 
     Camera3D camera;
     Vector2 mouseInput;
@@ -57,20 +55,19 @@ public partial class Player : CharacterBody3D
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");
 
-        SetBlendSpace1DPosition("Rest", blendSpaceAdsPosition);
-
         if (Input.IsActionJustPressed("reload"))
         {
-            SetAnimCondition("reload", true);
+            animTree.SetCondition("reload", true);
         }
 
-        if (Input.IsActionPressed("ads"))
+        if (Input.IsActionJustPressed("ads"))
         {
-            blendSpaceAdsPosition = blendSpaceAdsPosition.Lerp(1, 0.1f);
+            animTree.SetCondition("ads", true);
         }
-        else
+
+        if (Input.IsActionJustPressed("inspect"))
         {
-            blendSpaceAdsPosition = blendSpaceAdsPosition.Lerp(0, 0.1f);
+            animTree.SetCondition("inspect", true);
         }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
@@ -112,18 +109,6 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
-    }
-
-    void SetAnimCondition(StringName path, bool v)
-    {
-        animTreeArms.SetCondition(path, v);
-        animTreeGun.SetCondition(path, v);
-    }
-
-    void SetBlendSpace1DPosition(StringName path, float value)
-    {
-        animTreeArms.SetBlendSpace1DPosition(path, value);
-        animTreeGun.SetBlendSpace1DPosition(path, value);
     }
 
     Quaternion GetAnimationRotations()
