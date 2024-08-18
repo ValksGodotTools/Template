@@ -23,18 +23,21 @@ public partial class Player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is not InputEventMouseMotion motion || Input.MouseMode != Input.MouseModeEnum.Captured)
+        if (Input.MouseMode != Input.MouseModeEnum.Captured)
             return;
 
-        mouseInput = motion.Relative;
+        if (@event is InputEventMouseMotion motion)
+        {
+            mouseInput = motion.Relative;
 
-        cameraTarget += new Vector3(
-            -motion.Relative.Y * mouseSensitivity,
-            -motion.Relative.X * mouseSensitivity, 0);
+            cameraTarget += new Vector3(
+                -motion.Relative.Y * mouseSensitivity,
+                -motion.Relative.X * mouseSensitivity, 0);
 
-        // Prevent camera from looking too far up or down
-        Vector3 rotDeg = cameraTarget;
-        rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
-        cameraTarget = rotDeg;
+            // Prevent camera from looking too far up or down
+            Vector3 rotDeg = cameraTarget;
+            rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
+            cameraTarget = rotDeg;
+        }
     }
 }

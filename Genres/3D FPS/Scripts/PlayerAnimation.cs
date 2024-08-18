@@ -18,14 +18,16 @@ public partial class Player : CharacterBody3D
 
         animTree.AnimationFinished += anim =>
         {
-            if (anim == "Rest to ADS" && !Input.IsActionPressed("ads"))
+            switch (anim)
             {
-                animTree.SetCondition("rest", true);
-            }
-
-            if (anim == "ADS" && !Input.IsActionPressed("ads"))
-            {
-                animTree.SetCondition("rest", true);
+                case "Rest to ADS":
+                case "ADS":
+                    if (!Input.IsActionPressed("ads"))
+                        animTree.SetCondition("rest", true);
+                    break;
+                case "Reload":
+                    OnFinishedReload?.Invoke();
+                    break;
             }
         };
     }
