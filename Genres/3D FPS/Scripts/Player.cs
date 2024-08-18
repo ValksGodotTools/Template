@@ -38,6 +38,11 @@ public partial class Player : CharacterBody3D
 
         animTree.AnimationFinished += anim =>
         {
+            if (anim == "Rest to ADS" && !Input.IsActionPressed("ads"))
+            {
+                animTree.SetCondition("rest", true);
+            }
+
             if (anim == "ADS" && !Input.IsActionPressed("ads"))
             {
                 animTree.SetCondition("rest", true);
