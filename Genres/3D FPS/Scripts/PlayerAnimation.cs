@@ -57,11 +57,12 @@ public partial class Player : CharacterBody3D
 
                         animTree.AnimPlayer = items[nextItemIndex].AnimationPlayer.GetPath();
                         cameraBone.SetExternalSkeleton(items[nextItemIndex].SkeletonRig.GetPath());
+                        cameraBone.SetUseExternalSkeleton(true);
                         items[curItemIndex].SetVisible(false);
-
                         // If we do not wait for one frame then the wrong animation will play
                         // in the next frame creating a sort of visual glitch. This appears to
                         // be a bug with the Godot engine.
+
                         await this.WaitOneFrame();
 
                         items[nextItemIndex].SetVisible(true);
