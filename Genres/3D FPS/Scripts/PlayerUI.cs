@@ -21,7 +21,20 @@ public partial class Player : CharacterBody3D
         };
     }
 
-    public override void _Input(InputEvent @event)
+    void OnPhysicsProcessUI()
+    {
+        if (Input.IsActionJustPressed("next_held_item"))
+        {
+            animTree.SetCondition("holster", true);
+        }
+
+        if (Input.IsActionJustPressed("previous_held_item"))
+        {
+            //animTree.SetCondition("holster", true);
+        }
+    }
+
+    void OnInputUI(InputEvent @event)
     {
         if (Input.MouseMode != Input.MouseModeEnum.Captured)
             return;

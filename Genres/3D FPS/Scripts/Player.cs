@@ -12,7 +12,13 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        OnPhysicsProcessUI();
         OnPhysicsProcessMotion(delta);
         OnPhysicsProcessAnimation();
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        OnInputUI(@event);
     }
 }
