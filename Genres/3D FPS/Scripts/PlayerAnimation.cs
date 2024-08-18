@@ -27,6 +27,8 @@ public partial class Player : CharacterBody3D
             items.Add(new Item(node));
         }
 
+        RecreateCameraBone(curItemIndex);
+
         animTree.AnimationStarted += anim =>
         {
             switch (anim)
@@ -56,15 +58,15 @@ public partial class Player : CharacterBody3D
                         int nextItemIndex = (curItemIndex + 1) % items.Count;
 
                         animTree.AnimPlayer = items[nextItemIndex].AnimationPlayer.GetPath();
-                        cameraBone.SetExternalSkeleton(items[nextItemIndex].SkeletonRig.GetPath());
-                        cameraBone.SetUseExternalSkeleton(true);
+                        
                         items[curItemIndex].SetVisible(false);
+                        
                         // If we do not wait for one frame then the wrong animation will play
                         // in the next frame creating a sort of visual glitch. This appears to
                         // be a bug with the Godot engine.
-
                         await this.WaitOneFrame();
 
+                        RecreateCameraBone(nextItemIndex);
                         items[nextItemIndex].SetVisible(true);
 
                         AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
@@ -119,6 +121,25 @@ public partial class Player : CharacterBody3D
 
         // The end result (multiplying order matters and always normalize to prevent errors)
         return (camBoneQuat * offset).Normalized();
+    }
+
+    // We have to re-create the camera bone everytime because if we do not, for some reason
+    // Godot has decided to output an error if we try to set the external skeleton to
+    // another skeleton
+    void RecreateCameraBone(int itemIndex)
+    {
+        if (GodotObject.IsInstanceValid(cameraBone))
+            cameraBone.QueueFree();
+
+        cameraBone = new();
+        fpsRig.AddChild(cameraBone);
+        cameraBone.BoneName = "Camera";
+
+        cameraBone.SetExternalSkeleton(items[itemIndex].SkeletonRig.GetPath());
+
+        // Will output an error if this is the same camera bone so that's why we re-create
+        // it every time
+        cameraBone.SetUseExternalSkeleton(true);
     }
 }
 

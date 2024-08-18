@@ -763,7 +763,7 @@ shape = SubResource("ConcavePolygonShape3D_er703")
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("cameraBone", "animTree", "fpsRig", "nodeItems")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3aas6")
-cameraBone = NodePath("SubViewportContainer/SubViewport/FPS Rig/Camera Bone")
+cameraBone = NodePath("")
 animTree = NodePath("SubViewportContainer/SubViewport/FPS Rig/AnimationTree")
 fpsRig = NodePath("SubViewportContainer/SubViewport/FPS Rig")
 nodeItems = NodePath("SubViewportContainer/SubViewport/FPS Rig/Items")
@@ -792,13 +792,6 @@ current = true
 
 [node name="FPS Rig" type="Node3D" parent="Player/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-
-[node name="Camera Bone" type="BoneAttachment3D" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
-transform = Transform3D(-1, 8.74228e-08, -6.3573e-08, -6.3573e-08, 0, 1, 8.74228e-08, 1, 0, 0, 0, 0)
-bone_name = "Camera"
-bone_idx = 19
-use_external_skeleton = true
-external_skeleton = NodePath("../Items/Arms with Assault Rifle/Armature/Skeleton3D")
 
 [node name="AnimationTree" type="AnimationTree" parent="Player/SubViewportContainer/SubViewport/FPS Rig"]
 root_node = NodePath("../Items/Arms with Assault Rifle")
@@ -829,7 +822,7 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(-0.0778564, -0.995034, 0.0620204, 0.0620206, 0.0572547, 0.996431, -0.995034, 0.0814251, 0.0572549, -0.211094, 0.0547319, 0.0341427)
 bones/1/enabled = true
 bones/1/position = Vector3(-0.34723, -0.117413, -0.0639479)
-bones/1/rotation = Quaternion(-0.625551, -0.583597, 0.517692, 0.00981434)
+bones/1/rotation = Quaternion(-0.625987, -0.582702, 0.518174, 0.00973611)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "Lower Arm L"
 bones/2/parent = 1
@@ -843,7 +836,7 @@ bones/3/parent = 2
 bones/3/rest = Transform3D(0.911249, -0.0545937, 0.408222, 0.148465, 0.968079, -0.201943, -0.384166, 0.244627, 0.890266, -2.10842e-09, 0.236574, -3.11807e-09)
 bones/3/enabled = true
 bones/3/position = Vector3(-2.10842e-09, 0.236574, -3.11807e-09)
-bones/3/rotation = Quaternion(-0.00747774, -0.219752, 0.246029, 0.943993)
+bones/3/rotation = Quaternion(-0.00898409, -0.219465, 0.244607, 0.944416)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "Thumb 01 L"
 bones/4/parent = 3
@@ -962,21 +955,21 @@ bones/20/parent = 0
 bones/20/rest = Transform3D(-0.0778564, 0.995034, -0.0620204, -0.0620206, 0.0572547, 0.996431, 0.995034, 0.0814251, 0.0572549, 0.211094, 0.0547319, 0.0341427)
 bones/20/enabled = true
 bones/20/position = Vector3(0.216831, -0.067224, 0.155605)
-bones/20/rotation = Quaternion(-0.744929, 0.0524102, -0.624761, 0.22805)
+bones/20/rotation = Quaternion(-0.745951, 0.0495823, -0.624355, 0.226447)
 bones/20/scale = Vector3(1, 1, 1)
 bones/21/name = "Lower Arm R"
 bones/21/parent = 20
 bones/21/rest = Transform3D(0.991398, -0.11525, -0.0620205, 0.118816, 0.991264, 0.0572547, 0.05488, -0.0641313, 0.996431, 9.31323e-10, 0.291113, -6.98492e-10)
 bones/21/enabled = true
 bones/21/position = Vector3(9.31323e-10, 0.291113, -6.98492e-10)
-bones/21/rotation = Quaternion(-0.392865, -0.015309, 0.757555, 0.521089)
+bones/21/rotation = Quaternion(-0.392293, -0.0153685, 0.756453, 0.523115)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/name = "Hand R"
 bones/22/parent = 21
 bones/22/rest = Transform3D(0.911249, 0.0545937, -0.408222, -0.148465, 0.968079, -0.201943, 0.384166, 0.244627, 0.890266, 2.10842e-09, 0.236574, -3.11807e-09)
 bones/22/enabled = true
 bones/22/position = Vector3(2.10842e-09, 0.236574, -3.11807e-09)
-bones/22/rotation = Quaternion(0.503552, -0.266249, -0.300918, 0.764849)
+bones/22/rotation = Quaternion(0.504151, -0.265498, -0.295951, 0.766653)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/name = "Thumb 01 R"
 bones/23/parent = 22
@@ -1087,7 +1080,7 @@ bones/38/name = "Gun Root"
 bones/38/parent = -1
 bones/38/rest = Transform3D(1, 0, 0, 0, -3.57628e-07, 1, 0, -1, -3.57628e-07, 2.15528e-17, 0.0970653, -0.0699691)
 bones/38/enabled = true
-bones/38/position = Vector3(0.106731, -0.0926941, -0.205701)
+bones/38/position = Vector3(0.106731, -0.0947205, -0.205701)
 bones/38/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 bones/38/scale = Vector3(1, 1, 1)
 bones/39/name = "Mag"
