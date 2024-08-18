@@ -6,6 +6,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 1. [Setup Guide](#setup-guide)
 2. [Features](#features)
     - [Multiplayer](#multiplayer)
+    - [FPS Scene](#fps-scene)
     - [Mod Loader](#mod-loader)
     - [Godot Utils](#godot-utils)
     - [Localisation](#localisation)
@@ -176,6 +177,18 @@ Send(new SPacketPlayerPositions
     Positions = GetOtherPlayers(pair.Key).ToDictionary(x => x.Key, x => x.Value.Position)
 }, Peers[pair.Key]);
 ```
+
+### FPS Scene
+
+https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
+
+> [!NOTE]
+> All animations were made by myself from Blender. You are free to use them in your game.
+
+![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
+
+> [!TIP]
+> Are you tired of weird rotational glitches? Quaternions are your friend! Every `Node3D` has a `.Quaternion` property. Quaternions are multiplied together and always normalized. For example `(A * B * C).Normalized()`. The order of which you multiply quaternions matters! This is what I used to get the weapon camera movements working.
 
 ### Mod Loader
 > [!NOTE]
