@@ -3,12 +3,7 @@ namespace Template.FPS3D;
 public partial class Player : CharacterBody3D
 {
     [Export] OptionsManager options;
-    [Export] Node3D fpsRig;
-    [Export] BoneAttachment3D cameraBone;
-    [Export] AnimationTree animTree;
-
-    //bool isReloading { get => animTree.GetCondition("reload"); }
-
+    
     float mouseSensitivity;
     float gravityForce = 10;
     float jumpForce = 150;
@@ -36,57 +31,18 @@ public partial class Player : CharacterBody3D
             mouseSensitivity = value * 0.0001f;
         };
 
-        animTree.AnimationFinished += anim =>
-        {
-            if (anim == "Rest to ADS" && !Input.IsActionPressed("ads"))
-            {
-                animTree.SetCondition("rest", true);
-            }
-
-            if (anim == "ADS" && !Input.IsActionPressed("ads"))
-            {
-                animTree.SetCondition("rest", true);
-            }
-        };
+        OnReadyAnimation();
     }
 
     public override void _PhysicsProcess(double d)
     {
+        MoveAndSlide();
+
         float delta = (float)d;
-
-        // Mouse motion
-        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
-
-        camera.Position = Position + camOffset;
-        camera.Quaternion = (camTarget * GetAnimationRotations()).Normalized();
-
-        fpsRig.Position = camera.Position;
-        fpsRig.Quaternion = camTarget;
-
         float h_rot = camera.Basis.GetEuler().Y;
 
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");
-
-        if (Input.IsActionJustPressed("reload"))
-        {
-            animTree.SetCondition("reload", true);
-        }
-
-        if (Input.IsActionJustPressed("ads"))
-        {
-            animTree.SetCondition("ads", true);
-        }
-
-        if (Input.IsActionJustReleased("ads"))
-        {
-            animTree.SetCondition("rest", true);
-        }
-
-        if (Input.IsActionJustPressed("inspect"))
-        {
-            animTree.SetCondition("inspect", true);
-        }
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
             .Rotated(Vector3.Up, h_rot) // Always face correct direction
@@ -109,7 +65,7 @@ public partial class Player : CharacterBody3D
         Velocity = Velocity.Lerp(dir * moveSpeed, moveDampening * delta);
         Velocity += gravityVec;
 
-        MoveAndSlide();
+        OnPhysicsProcessAnimation();
     }
 
     public override void _Input(InputEvent @event)
@@ -127,17 +83,5 @@ public partial class Player : CharacterBody3D
         Vector3 rotDeg = cameraTarget;
         rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
         cameraTarget = rotDeg;
-    }
-
-    Quaternion GetAnimationRotations()
-    {
-        // The camera bone
-        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
-
-        // Account for annoying offset from the camera bone
-        Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
-
-        // The end result (multiplying order matters and always normalize to prevent errors)
-        return (camBoneQuat * offset).Normalized();
     }
 }
