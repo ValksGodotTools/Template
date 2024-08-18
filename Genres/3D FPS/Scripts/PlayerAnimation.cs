@@ -11,7 +11,6 @@ public partial class Player : CharacterBody3D
 
     List<Item> items = new();
     int curItemIndex;
-    int nextItemIndex;
 
     Camera3D camera;
     Vector3 camOffset;
@@ -30,8 +29,6 @@ public partial class Player : CharacterBody3D
 
         animTree.AnimationStarted += anim =>
         {
-            GD.Print(anim);
-
             switch (anim)
             {
                 case "Holster":
@@ -56,27 +53,23 @@ public partial class Player : CharacterBody3D
                 case "Holster":
                     if (switchingGuns)
                     {
-                        nextItemIndex = curItemIndex + 1;
+                        int nextItemIndex = (curItemIndex + 1) % items.Count;
 
-                        if (nextItemIndex >= items.Count - 1)
-                        {
-                            curItemIndex = items.Count - 1;
-                            nextItemIndex = 0;
-                        }
-
-                        animTree.AnimPlayer = items[1].AnimationPlayer.GetPath();
-                        cameraBone.SetExternalSkeleton(items[1].SkeletonRig.GetPath());
-                        items[0].SetVisible(false);
+                        animTree.AnimPlayer = items[nextItemIndex].AnimationPlayer.GetPath();
+                        cameraBone.SetExternalSkeleton(items[nextItemIndex].SkeletonRig.GetPath());
+                        items[curItemIndex].SetVisible(false);
 
                         // If we do not wait for one frame then the wrong animation will play
                         // in the next frame creating a sort of visual glitch. This appears to
                         // be a bug with the Godot engine.
                         await this.WaitOneFrame();
 
-                        items[1].SetVisible(true);
+                        items[nextItemIndex].SetVisible(true);
 
                         AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
                         stateMachine.Start("Draw");
+
+                        curItemIndex = (curItemIndex + 1) % items.Count;
                     }
                     break;
             }
