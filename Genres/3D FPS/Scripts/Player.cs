@@ -1,36 +1,17 @@
 namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
-{
-    [Export] OptionsManager options;
-    
-    float mouseSensitivity;
+{   
     float gravityForce = 10;
     float jumpForce = 150;
     float moveSpeed = 10;
     float moveDampening = 20; // the higher the value, the less the player will slide
 
-    Camera3D camera;
-    Vector2 mouseInput;
-    Vector3 cameraTarget;
     Vector3 gravityVec;
-    Vector3 camOffset;
 
     public override void _Ready()
     {
-        camera = GetNode<Camera3D>("%Camera3D");
-        camOffset = camera.Position - Position;
-
-        mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
-
-        UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
-            .Options.GetNode<UIOptionsGameplay>("%Gameplay");
-
-        gameplay.OnMouseSensitivityChanged += value =>
-        {
-            mouseSensitivity = value * 0.0001f;
-        };
-
+        OnReadyUI();
         OnReadyAnimation();
     }
 
@@ -66,22 +47,5 @@ public partial class Player : CharacterBody3D
         Velocity += gravityVec;
 
         OnPhysicsProcessAnimation();
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is not InputEventMouseMotion motion || Input.MouseMode != Input.MouseModeEnum.Captured)
-            return;
-
-        mouseInput = motion.Relative;
-
-        cameraTarget += new Vector3(
-            -motion.Relative.Y * mouseSensitivity, 
-            -motion.Relative.X * mouseSensitivity, 0);
-
-        // Prevent camera from looking too far up or down
-        Vector3 rotDeg = cameraTarget;
-        rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
-        cameraTarget = rotDeg;
     }
 }

@@ -8,8 +8,14 @@ public partial class Player : CharacterBody3D
 
     //bool isReloading { get => animTree.GetCondition("reload"); }
 
+    Camera3D camera;
+    Vector3 camOffset;
+
     void OnReadyAnimation()
     {
+        camera = GetNode<Camera3D>("%Camera3D");
+        camOffset = camera.Position - Position;
+
         animTree.AnimationFinished += anim =>
         {
             if (anim == "Rest to ADS" && !Input.IsActionPressed("ads"))
