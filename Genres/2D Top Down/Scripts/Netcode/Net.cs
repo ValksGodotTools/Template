@@ -1,8 +1,6 @@
 namespace Template;
 
 using Template.Netcode;
-using Template.Netcode.Client;
-using Template.Netcode.Server;
 
 public class Net
 {

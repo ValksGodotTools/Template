@@ -1,7 +1,4 @@
 namespace Template;
-
-using Template.Netcode;
-
 public partial class OtherPlayer : Node2D
 {
     public Vector2 LastServerPosition { get; set; }

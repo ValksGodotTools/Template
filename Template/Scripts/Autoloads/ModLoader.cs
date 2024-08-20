@@ -2,7 +2,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace Template;
 

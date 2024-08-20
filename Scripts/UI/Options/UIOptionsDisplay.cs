@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Linq;
 using static Godot.DisplayServer;
 
 namespace Template;

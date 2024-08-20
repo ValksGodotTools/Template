@@ -1,7 +1,6 @@
 namespace Template;
 
 using ENet;
-using Template.Netcode;
 using Template.Netcode.Server;
 
 public partial class GameServer : ENetServer
