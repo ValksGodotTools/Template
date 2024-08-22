@@ -35,7 +35,7 @@ public class SPacketPlayerPositions : ServerPacket
 
     public override void Handle(ENetClient client)
     {
-        Level level = Global.Services.Get<Level>();
+        INetLevel level = Global.Services.Get<Level>();
 
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {

@@ -2,7 +2,7 @@ namespace Template.TopDown2D;
 
 using GodotUtils.World2D.TopDown;
 
-public partial class Player : CharacterBody2D
+public partial class Player : CharacterBody2D, INetPlayer
 {
     #region Config
 
