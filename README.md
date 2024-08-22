@@ -67,7 +67,7 @@ Click "Don't Save" and close any IDE's you may have open
 Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicking "Fix Broken", click on "Open Anyway"
 
 > [!CAUTION]
-> The main scene may not be the only scene where the dependencies are broken. Make sure you check all the scenes within the main scene and repeat the same process to fix their dependencies.
+> The main scene may not be the only scene where the dependencies are broken. Make sure you check all the scenes within the main scene and repeat the same process to fix their dependencies. Due to how annoying this is, the setup guide may change in the future, see https://github.com/ValksGodotTools/Template/issues/18 for more info.
 
 ![popup3](https://github.com/user-attachments/assets/b0cae7be-21fa-46cd-8ee1-ee1f4b30cfad)
 ![popup4](https://github.com/user-attachments/assets/a4ab7d67-da32-46ef-9aa4-d5472eb18ec5)
