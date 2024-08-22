@@ -34,6 +34,9 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
 
 ### :two: Run the game with `F5`
+> [!IMPORTANT]
+> I may have forgot to set the main scene back to the setup scene. You can easily switch it back to this, it is located in `res://Genres/0 Setup/setup.tscn`
+
 > [!NOTE]
 > Steps 2 to 4 change setup settings and delete unneeded assets. These steps are optional.
 
@@ -62,6 +65,9 @@ Click "Don't Save" and close any IDE's you may have open
 ### :four: Double click on the main scene in `res://Scenes/<your_scene>.tscn`
 
 Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicking "Fix Broken", click on "Open Anyway"
+
+> [!CAUTION]
+> The main scene may not be the only scene where the dependencies are broken. Make sure you check all the scenes within the main scene and repeat the same process to fix their dependencies.
 
 ![popup3](https://github.com/user-attachments/assets/b0cae7be-21fa-46cd-8ee1-ee1f4b30cfad)
 ![popup4](https://github.com/user-attachments/assets/a4ab7d67-da32-46ef-9aa4-d5472eb18ec5)
