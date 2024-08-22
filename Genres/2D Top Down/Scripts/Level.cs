@@ -2,7 +2,7 @@ namespace Template;
 
 using Template.TopDown2D;
 
-public partial class Level : Node
+public partial class Level : Node, INetLevel
 {
     public Player Player { get; set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = new();

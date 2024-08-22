@@ -47,7 +47,7 @@ public class SPacketPlayerConnectionAcknowledged : ServerPacket
     {
         client.Log("Client received server acknowledgement");
 
-        Level level = Global.Services.Get<Level>();
+        INetLevel level = Global.Services.Get<Level>();
 
         level.AddLocalPlayer();
 
