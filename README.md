@@ -198,7 +198,7 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 
 ### Mod Loader
 > [!NOTE]
-> Mods can replace game assets and execute C# scripts, although there are some limitations. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+> Mods can replace game assets and execute C# scripts. There is currently a big problem with C# mod scripts, see https://github.com/ValksGodotTools/Template/issues/15. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
 The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions including netcode scripts.
