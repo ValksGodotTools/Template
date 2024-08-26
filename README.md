@@ -201,20 +201,48 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 > Mods can replace game assets and execute C# scripts. There is currently a big problem with C# mod scripts, see https://github.com/ValksGodotTools/Template/issues/15. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
-The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions including netcode scripts.
+The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions.
 
-Highlighted Classes
-- `ServiceProvider` *(see [Services](#services))*
-- `EventManager` *(see [Event Manager](#experimental-eventmanager))*
-- `Logger` *(thread safe logger)*
-- `State` *(see [State Manager](#state-manager))*
-- `GTween` *(wrapper for Godot.Tween)*
-- `GTimer` *(wrapper for Godot.Timer)*
+#### Creating Tweens
+```cs
+GTween tween = new(this);
+tween.SetAnimatingProp(ColorRect.PropertyName.Color);
+tween.AnimateProp(Colors.Red, 0.5).Sine().EaseIn();
+tween.AnimateProp(Colors.Green, 0.5).Sine().EaseOut();
+tween.Animate(ColorRect.PropertyName.Scale, Vector2.One * 2, 0.5, parallel: true).Sine();
+tween.Callback(() => GD.Print("Finished!"));
+tween.Loop();
+```
 
-Highlighted Extensions
-- `.PrintFull()` *(e.g. `GD.Print(player.PrintFull())`)*
-- `.ForEach()`
-- `.QueueFreeChildren()`
+#### Highlighted Functions
+```cs
+// Prints all public properties and fields from this node
+GD.Print(node.PrintFull());
+
+// Recursively searches the nodes children for node of type T
+T node = node.GetNode<T>();
+
+// Thread safe logger
+Game.Log()
+
+// Fetches the first animation frame and crops it to only non-transparent pixels
+animatedSprite.GetScaledSize();
+
+// Useful shortcut extensions
+animationTree.SetCondition()
+animationTree.SetParam()
+
+// Other useful functions
+node.QueueFreeChildren();
+node.AddChildDeferred();
+node.WaitOneFrame();
+IEnumerable<T>.ForEach()
+lineEdit.Filter()
+GU.GetLayerValues()
+GU.LoadPrefab<T>()
+
+// AND MANY MORE!!!
+```
 
 ### Localisation
 > [!NOTE]
