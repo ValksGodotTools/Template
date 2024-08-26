@@ -114,7 +114,7 @@ public partial class Player : CharacterBody3D
     Quaternion GetAnimationRotations()
     {
         // The camera bone
-        Quaternion camBoneQuat = new Quaternion(cameraBone.Basis);
+        Quaternion camBoneQuat = new(cameraBone.Basis);
 
         // Account for annoying offset from the camera bone
         Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));

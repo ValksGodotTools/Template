@@ -4,7 +4,7 @@ public partial class Player
 {
     State Slide()
     {
-        State state = new State(this, nameof(Slide));
+        State state = new(this, nameof(Slide));
 
         state.Enter = () =>
         {

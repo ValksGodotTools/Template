@@ -56,7 +56,7 @@ public partial class UIOptionsGraphics : Control
 
     void AddNewSetting(string name, Action<CheckBox> setPressed, Action<bool> saveOption, Action<Environment, bool> applyInGame)
     {
-        HBoxContainer hbox = new HBoxContainer();
+        HBoxContainer hbox = new();
 
         hbox.AddChild(new Label
         {
@@ -64,7 +64,7 @@ public partial class UIOptionsGraphics : Control
             CustomMinimumSize = new Vector2(200, 0)
         });
 
-        CheckBox checkBox = new CheckBox();
+        CheckBox checkBox = new();
         setPressed(checkBox);
 
         checkBox.Pressed += () =>

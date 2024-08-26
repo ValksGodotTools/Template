@@ -285,7 +285,7 @@ public partial class Setup : Node
 
     bool IsAlphaNumericAndAllowSpaces(string str)
     {
-        Regex rg = new Regex(@"^[a-zA-Z0-9\s,]*$");
+        Regex rg = new(@"^[a-zA-Z0-9\s,]*$");
         return rg.IsMatch(str);
     }
 

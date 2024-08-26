@@ -16,7 +16,7 @@ public abstract class GamePacket
 
     public void Write()
     {
-        using (PacketWriter writer = new PacketWriter())
+        using (PacketWriter writer = new())
         {
             writer.Write(GetOpcode());
             this?.Write(writer);

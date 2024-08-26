@@ -96,7 +96,7 @@ public partial class OptionsManager : Resource
         // Lets verify that the file is not corrupt by checking the path to the script is valid.
         string text = System.IO.File.ReadAllText(ProjectSettings.GlobalizePath("user://options.tres"));
 
-        Regex regex = new Regex("path=\"(?<path>.*?)\"");
+        Regex regex = new("path=\"(?<path>.*?)\"");
         Match match = regex.Match(text);
         string path = match.Groups["path"].Value;
 

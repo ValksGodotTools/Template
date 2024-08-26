@@ -27,7 +27,7 @@ public partial class AudioManager : Node
         if (!instant && musicPlayer.Playing)
         {
             // Transition from current song being played to new song
-            GTween tween = new GTween(musicPlayer.StreamPlayer);
+            GTween tween = new(musicPlayer.StreamPlayer);
 
             tween.SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb);
 
@@ -64,7 +64,7 @@ public partial class AudioManager : Node
     public void PlaySFX(AudioStream sound)
     {
         // Setup the SFX stream player
-        GAudioPlayer sfxPlayer = new GAudioPlayer(sfxPlayersParent, true)
+        GAudioPlayer sfxPlayer = new(sfxPlayersParent, true)
         {
             Stream = sound,
             Volume = options.SFXVolume
@@ -96,7 +96,7 @@ public partial class AudioManager : Node
     {
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
-            GTween tween = new GTween(audioPlayer);
+            GTween tween = new(audioPlayer);
             tween.Animate(AudioStreamPlayer.PropertyName.VolumeDb, -80, fadeTime);
         }
     }

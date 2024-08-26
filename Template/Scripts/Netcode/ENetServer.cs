@@ -255,7 +255,7 @@ public abstract class ENetServer : ENetLow
         // Incoming
         while (incoming.TryDequeue(out (ENet.Packet, Peer) packetPeer))
         {
-            PacketReader packetReader = new PacketReader(packetPeer.Item1);
+            PacketReader packetReader = new(packetPeer.Item1);
             byte opcode = packetReader.ReadByte();
 
             if (!ClientPacket.PacketMapBytes.ContainsKey(opcode))

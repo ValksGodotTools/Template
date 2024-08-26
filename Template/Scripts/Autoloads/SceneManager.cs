@@ -98,7 +98,7 @@ public partial class SceneManager : Node
     void FadeTo(TransColor transColor, double duration, Action finished = null)
     {
         // Add canvas layer to scene
-        CanvasLayer canvasLayer = new CanvasLayer
+        CanvasLayer canvasLayer = new()
         {
             Layer = 10 // render on top of everything else
         };
@@ -106,7 +106,7 @@ public partial class SceneManager : Node
         CurrentScene.AddChild(canvasLayer);
 
         // Setup color rect
-        ColorRect colorRect = new ColorRect
+        ColorRect colorRect = new()
         {
             Color = new Color(0, 0, 0, transColor == TransColor.Black ? 0 : 1),
             MouseFilter = Control.MouseFilterEnum.Ignore
@@ -117,7 +117,7 @@ public partial class SceneManager : Node
         canvasLayer.AddChild(colorRect);
 
         // Animate color rect
-        GTween tween = new GTween(colorRect);
+        GTween tween = new(colorRect);
         tween.Animate(ColorRect.PropertyName.Color, new Color(0, 0, 0, transColor == TransColor.Black ? 1 : 0), duration);
         tween.Callback(() =>
         {

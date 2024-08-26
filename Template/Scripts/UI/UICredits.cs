@@ -101,12 +101,13 @@ public partial class UICredits : Node
         string textDesc = text.Substring(0, indexOfHttp);
         string textLink = text.Substring(indexOfHttp);
 
-        HBoxContainer hbox = new HBoxContainer {
+        HBoxContainer hbox = new()
+        {
             SizeFlagsHorizontal = Control.SizeFlags.ShrinkCenter
         };
 
-        GLabel labelText = new GLabel(textDesc);
-        GLinkButton btnLink = new GLinkButton(textLink);
+        GLabel labelText = new(textDesc);
+        GLinkButton btnLink = new(textLink);
 
         hbox.AddChild(labelText);
         hbox.AddChild(btnLink);

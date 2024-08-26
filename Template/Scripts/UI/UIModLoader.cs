@@ -28,7 +28,7 @@ public partial class UIModLoader : Node
 
         foreach (ModInfo modInfo in mods.Values)
         {
-            Button btn = new Button();
+            Button btn = new();
             btn.ToggleMode = true;
             btn.Text = modInfo.Name;
             btn.Pressed += () =>

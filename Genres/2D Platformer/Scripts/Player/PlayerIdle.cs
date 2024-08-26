@@ -4,7 +4,7 @@ public partial class Player
 {
     State Idle()
     {
-        State state = new State(this, nameof(Idle));
+        State state = new(this, nameof(Idle));
 
         state.Enter = () =>
         {

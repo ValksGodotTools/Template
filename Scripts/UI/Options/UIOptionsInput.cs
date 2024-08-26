@@ -132,7 +132,7 @@ public partial class UIOptionsInput : Control
         }
 
         // Create the button
-        GButton btn = new GButton(readable);
+        GButton btn = new(readable);
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
@@ -162,7 +162,7 @@ public partial class UIOptionsInput : Control
     void CreateButtonPlus(string action, HBoxContainer hbox)
     {
         // Create the button
-        GButton btn = new GButton("+");
+        GButton btn = new("+");
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
@@ -205,7 +205,7 @@ public partial class UIOptionsInput : Control
             if (actionStr.StartsWith("ui"))
                 continue;
 
-            HBoxContainer hbox = new HBoxContainer();
+            HBoxContainer hbox = new();
 
             // For example convert ui_left to UI_LEFT
             string name = action.ToString().ToUpper();
@@ -218,7 +218,7 @@ public partial class UIOptionsInput : Control
             });
 
             // Add all the events after the action label
-            HBoxContainer hboxEvents = new HBoxContainer();
+            HBoxContainer hboxEvents = new();
 
             Array<InputEvent> events = optionsManager.Hotkeys.Actions[action];
 

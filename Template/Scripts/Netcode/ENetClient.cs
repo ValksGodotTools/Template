@@ -186,7 +186,7 @@ public abstract class ENetClient : ENetLow
         // Incoming
         while (incoming.TryDequeue(out ENet.Packet packet))
         {
-            PacketReader packetReader = new PacketReader(packet);
+            PacketReader packetReader = new(packet);
             byte opcode = packetReader.ReadByte();
 
             Type type = ServerPacket.PacketMapBytes[opcode];
@@ -266,7 +266,7 @@ public abstract class ENetClient : ENetLow
     void WorkerThread(string ip, ushort port)
     {
         Host = new Host();
-        Address address = new Address
+        Address address = new()
         {
             Port = port
         };
