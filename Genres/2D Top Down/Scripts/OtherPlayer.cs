@@ -15,23 +15,14 @@ public partial class OtherPlayer : Node2D
         // If the smooth factor is too low then the player will start to lag behind
         // If the smooth factor is too high then you will start to see glitchy movements because the
         // the position is constantly being clamped the last received server position
-        switch (Net.HeartbeatPosition)
+        smoothFactor = Net.HeartbeatPosition switch
         {
-            case 20:
-                smoothFactor = 0.1f;
-                break;
-            case 50:
-                smoothFactor = 0.075f;
-                break;
-            case 100:
-                smoothFactor = 0.05f;
-                break;
-            case 200:
-                smoothFactor = 0.02f;
-                break;
-            default:
-                throw new Exception("A smooth factor has not been defined for this heartbeat!");
-        }
+            20 => 0.1f,
+            50 => 0.075f,
+            100 => 0.05f,
+            200 => 0.02f,
+            _ => throw new Exception("A smooth factor has not been defined for this heartbeat!"),
+        };
     }
 
     public override void _PhysicsProcess(double delta)

@@ -61,32 +61,14 @@ public partial class UIModLoader : Node
         uiModVersion.Text = modInfo.ModVersion;
         uiGameVersion.Text = modInfo.GameVersion;
 
-        if (modInfo.Dependencies.Count != 0)
-        {
-            uiDependencies.Text = modInfo.Dependencies.Print();
-        }
-        else
-        {
-            uiDependencies.Text = "None";
-        }
+        uiDependencies.Text = modInfo.Dependencies.Count != 0 ? 
+            modInfo.Dependencies.Print() : "None";
 
-        if (modInfo.Incompatibilities.Count != 0)
-        {
-            uiIncompatibilities.Text = modInfo.Incompatibilities.Print();
-        }
-        else
-        {
-            uiIncompatibilities.Text = "None";
-        }
+        uiIncompatibilities.Text = modInfo.Incompatibilities.Count != 0 ? 
+            modInfo.Incompatibilities.Print() : "None";
 
-        if (!string.IsNullOrWhiteSpace(modInfo.Description))
-        {
-            uiDescription.Text = modInfo.Description;
-        }
-        else
-        {
-            uiDescription.Text = "The author did not set a description for this mod";
-        }
+        uiDescription.Text = !string.IsNullOrWhiteSpace(modInfo.Description) ? 
+            modInfo.Description : "The author did not set a description for this mod";
 
         uiAuthors.Text = modInfo.Author;
     }

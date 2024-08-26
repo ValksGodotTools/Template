@@ -38,11 +38,7 @@ public partial class UIOptionsDisplay : Control
 
         sliderMaxFPS = GetNode<HSlider>("%MaxFPS");
         sliderMaxFPS.Value = options.MaxFPS;
-
-        if (options.VSyncMode != DisplayServer.VSyncMode.Disabled)
-            sliderMaxFPS.Editable = false;
-        else
-            sliderMaxFPS.Editable = true;
+        sliderMaxFPS.Editable = options.VSyncMode == VSyncMode.Disabled;
     }
 
     void SetupWindowSize()
@@ -154,14 +150,10 @@ public partial class UIOptionsDisplay : Control
 
     void _on_v_sync_mode_item_selected(int index)
     {
-        VSyncMode vsyncMode = (DisplayServer.VSyncMode)index;
-        DisplayServer.WindowSetVsyncMode(vsyncMode);
+        VSyncMode vsyncMode = (VSyncMode)index;
+        WindowSetVsyncMode(vsyncMode);
         options.VSyncMode = vsyncMode;
-
-        if (options.VSyncMode != DisplayServer.VSyncMode.Disabled)
-            sliderMaxFPS.Editable = false;
-        else
-            sliderMaxFPS.Editable = true;
+        sliderMaxFPS.Editable = options.VSyncMode == VSyncMode.Disabled;
     }
 
     void _on_max_fps_value_changed(float value)

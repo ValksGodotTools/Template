@@ -27,7 +27,7 @@ public abstract partial class Entity : CharacterBody2D
         MoveAndSlide();
 
         Update();
-        curState.Update();
+        curState.Update((float)delta);
         curState.Transitions();
     }
 

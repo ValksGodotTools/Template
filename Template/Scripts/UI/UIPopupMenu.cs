@@ -66,7 +66,7 @@ public partial class UIPopupMenu : Control
         Node node = GetTree().Root.FindChild("WorldEnvironment", 
             recursive: true, owned: false);
 
-        if (node != null && node is WorldEnvironment worldEnvironment)
+        if (node is not null and WorldEnvironment worldEnvironment)
             WorldEnvironment = worldEnvironment;
     }
 

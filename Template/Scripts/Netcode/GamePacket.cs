@@ -16,14 +16,12 @@ public abstract class GamePacket
 
     public void Write()
     {
-        using (PacketWriter writer = new())
-        {
-            writer.Write(GetOpcode());
-            this?.Write(writer);
+        using PacketWriter writer = new();
+        writer.Write(GetOpcode());
+        this?.Write(writer);
 
-            data = writer.Stream.ToArray();
-            size = writer.Stream.Length;
-        }
+        data = writer.Stream.ToArray();
+        size = writer.Stream.Length;
     }
 
     public void SetPeer(Peer peer) => Peers = new Peer[] { peer };
@@ -35,7 +33,7 @@ public abstract class GamePacket
 
     protected ENet.Packet CreateENetPacket()
     {
-        ENet.Packet enetPacket = default(ENet.Packet);
+        ENet.Packet enetPacket = default;
         enetPacket.Create(data, packetFlags);
         return enetPacket;
     }

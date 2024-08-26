@@ -9,8 +9,8 @@ using System.Reflection;
 
 public class PacketReader : IDisposable
 {
-    MemoryStream stream;
-    BinaryReader reader;
+    readonly MemoryStream stream;
+    readonly BinaryReader reader;
     readonly byte[] readBuffer = new byte[GamePacket.MaxSize];
 
     public PacketReader(ENet.Packet packet)

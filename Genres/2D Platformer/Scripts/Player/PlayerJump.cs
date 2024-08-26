@@ -6,8 +6,7 @@ public partial class Player
 
     State Jump()
     {
-        State state = new(this, nameof(Jump));
-
+        State state = new(nameof(Jump));
 
         state.Enter = () =>
         {
@@ -16,8 +15,7 @@ public partial class Player
             Velocity -= new Vector2(0, jumpVars.Force);
         };
 
-
-        state.Update = () =>
+        state.Update = delta =>
         {
             if (Input.IsActionPressed("jump") && jumpVars.HoldingKey)
             {

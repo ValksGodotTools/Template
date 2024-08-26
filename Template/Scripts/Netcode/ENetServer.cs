@@ -132,25 +132,13 @@ public abstract class ENetServer : ENetLow
             string byteSize = options.PrintPacketByteSize ?
                 $"({packet.GetSize()} bytes)" : "";
 
-            string start = $"Broadcasting packet {type.Name} {byteSize}";
-
             string peerArr = clients.Select(x => x.ID).Print();
 
-            string middle = "";
-
-            string end = options.PrintPacketData ?
-                $"\n{packet.PrintFull()}" : "";
-
-            if (clients.Count() == 0)
-                middle = "to everyone";
-
-            else if (clients.Count() == 1)
-                middle = $"to everyone except peer {peerArr}";
-
-            else
-                middle = $"to peers {peerArr}";
-
-            string message = start + middle + end;
+            string message = $"Broadcasting packet {type.Name} {byteSize}" + (clients.Length == 0 ?
+                 "to everyone" : clients.Length == 1 ?
+                $"to everyone except peer {peerArr}" :
+                $"to peers {peerArr}") + (options.PrintPacketData ?
+                $"\n{packet.PrintFull()}" : "");
 
             Log(message);
         }

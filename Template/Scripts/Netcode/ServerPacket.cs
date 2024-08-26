@@ -29,11 +29,11 @@ public abstract class ServerPacket : GamePacket
     {
         ENet.Packet enetPacket = CreateENetPacket();
 
-        if (Peers.Count() == 0)
+        if (Peers.Length == 0)
         {
             host.Broadcast(ChannelId, ref enetPacket);
         }
-        else if (Peers.Count() == 1)
+        else if (Peers.Length == 1)
         {
             host.Broadcast(ChannelId, ref enetPacket, Peers[0]);
         }

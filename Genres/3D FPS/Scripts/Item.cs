@@ -5,7 +5,7 @@ public class Item // An item the player can hold
     public Skeleton3D SkeletonRig { get; set; }
     public AnimationPlayer AnimationPlayer { get; set; }
 
-    Node3D parent;
+    readonly Node3D parent;
 
     public Item(Node3D parent)
     {

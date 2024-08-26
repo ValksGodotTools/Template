@@ -147,7 +147,7 @@ public abstract class ENetClient : ENetLow
     protected ConcurrentQueue<ClientPacket> Outgoing { get; } = new();
 
     // Private
-    private ConcurrentQueue<Cmd<GodotOpcode>> godotCmdsInternal = new();
+    private readonly ConcurrentQueue<Cmd<GodotOpcode>> godotCmdsInternal = new();
     private const uint PING_INTERVAL = 1000;
     private const uint PEER_TIMEOUT = 5000;
     private const uint PEER_TIMEOUT_MINIMUM = 5000;

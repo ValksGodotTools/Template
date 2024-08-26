@@ -54,11 +54,11 @@ public partial class UIConsole : PanelContainer
         double prevScroll = feed.ScrollVertical;
         
         // Prevent text feed from becoming too large
-        if (feed.Text.Count() > 1000)
+        if (feed.Text.Length > 1000)
             // If there are say 2353 characters then 2353 - 1000 = 1353 characters
             // which is how many characters we need to remove to get back down to
             // 1000 characters
-            feed.Text = feed.Text.Remove(0, feed.Text.Count() - 1000);
+            feed.Text = feed.Text.Remove(0, feed.Text.Length - 1000);
         
         feed.Text += $"\n{message}";
 
@@ -188,10 +188,7 @@ public partial class UIConsole : PanelContainer
                     .Where(x => x == text)
                     .FirstOrDefault() != null;
 
-                if (aliasMatch)
-                    return true;
-
-                return false;
+                return aliasMatch;
             });
 
         return cmd;
@@ -260,16 +257,11 @@ public partial class UIConsole : PanelContainer
         object[] parameters = new object[paramInfos.Length];
         for (int i = 0; i < paramInfos.Length; i++)
         {
-            if (rawCmdSplit.Length > i + 1 && rawCmdSplit[i + 1] != null)
-            {
-                parameters[i] = ConvertStringToType(
+            parameters[i] = rawCmdSplit.Length > i + 1 && rawCmdSplit[i + 1] != null
+                ? ConvertStringToType(
                     input: rawCmdSplit[i + 1],
-                    targetType: paramInfos[i].ParameterType);
-            }
-            else
-            {
-                parameters[i] = null;
-            }
+                    targetType: paramInfos[i].ParameterType)
+                : null;
         }
 
         return parameters;
