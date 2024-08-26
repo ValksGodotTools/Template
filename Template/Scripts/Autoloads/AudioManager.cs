@@ -29,10 +29,12 @@ public partial class AudioManager : Node
             // Transition from current song being played to new song
             GTween tween = new GTween(musicPlayer.StreamPlayer);
 
+            tween.SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb);
+
             // Fade out current song
-            tween.Animate("volume_db", -80, fadeOut)
-                .SetTrans(Tween.TransitionType.Sine)
-                .SetEase(Tween.EaseType.In);
+            tween.AnimateProp(-80, fadeOut)
+                .Sine()
+                .EaseIn();
 
             // Set to new song
             tween.Callback(() =>
@@ -46,9 +48,9 @@ public partial class AudioManager : Node
             float volumeRemapped = 
                 volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
 
-            tween.Animate("volume_db", volumeRemapped, fadeIn)
-                .SetTrans(Tween.TransitionType.Sine)
-                .SetEase(Tween.EaseType.In);
+            tween.AnimateProp(volumeRemapped, fadeIn)
+                .Sine()
+                .EaseIn();
         }
         else
         {
@@ -95,7 +97,7 @@ public partial class AudioManager : Node
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
             GTween tween = new GTween(audioPlayer);
-            tween.Animate("volume_db", -80, fadeTime);
+            tween.Animate(AudioStreamPlayer.PropertyName.VolumeDb, -80, fadeTime);
         }
     }
 
