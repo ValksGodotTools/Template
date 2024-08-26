@@ -32,9 +32,7 @@ public partial class AudioManager : Node
             tween.SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb);
 
             // Fade out current song
-            tween.AnimateProp(-80, fadeOut)
-                .Sine()
-                .EaseIn();
+            tween.AnimateProp(-80, fadeOut).EaseIn();
 
             // Set to new song
             tween.Callback(() =>
@@ -48,9 +46,7 @@ public partial class AudioManager : Node
             float volumeRemapped = 
                 volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
 
-            tween.AnimateProp(volumeRemapped, fadeIn)
-                .Sine()
-                .EaseIn();
+            tween.AnimateProp(volumeRemapped, fadeIn).EaseIn();
         }
         else
         {
