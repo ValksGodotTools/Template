@@ -204,15 +204,28 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions.
 
 #### Creating Tweens
+Tweening has never been so easy :fire:
 ```cs
-GTween tween = new(this);
-tween.SetAnimatingProp(ColorRect.PropertyName.Color);
-tween.AnimateProp(Colors.Red, 0.5).Sine().EaseIn();
-tween.AnimateProp(Colors.Green, 0.5).Sine().EaseOut();
-tween.Animate(ColorRect.PropertyName.Scale, Vector2.One * 2, 0.5, parallel: true).Sine();
-tween.Callback(() => GD.Print("Finished!"));
-tween.Loop();
+new GTween(colorRect)
+    .SetParallel()
+    .Animate("scale", Vector2.One * 2, 2).Elastic()
+    .Animate("color", Colors.Green, 2).Sine().EaseIn()
+    .Animate("rotation", Mathf.Pi, 2).Elastic().EaseOut();
+
+new GTween(colorRect)
+    .SetAnimatingProp("color")
+    .AnimateProp(Colors.Red, 0.5).Sine().EaseIn()
+    .Parallel().AnimateProp(Colors.Green, 0.5).Sine().EaseOut()
+    .Parallel().Animate("scale", Vector2.One * 2, 0.5, parallel: true).Sine()
+    .Callback(() => GD.Print("Finished!"))
+    .Loop();
 ```
+
+> [!TIP]
+> Use tweens to execute delayed code. Tweens are attached to nodes so if the node gets destroyed so will the tween.
+> ```cs
+> GTween.Delay(node, duration, () => callback);
+> ```
 
 #### Highlighted Functions
 ```cs
