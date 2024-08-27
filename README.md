@@ -212,19 +212,21 @@ new GTween(colorRect)
     .Animate("color", Colors.Green, 2).Sine().EaseIn()
     .Animate("rotation", Mathf.Pi, 2).Elastic().EaseOut();
 
-new GTween(colorRect)
+GTween tween = new GTween(colorRect)
     .SetAnimatingProp("color")
     .AnimateProp(Colors.Red, 0.5).Sine().EaseIn()
     .Parallel().AnimateProp(Colors.Green, 0.5).Sine().EaseOut()
-    .Parallel().Animate("scale", Vector2.One * 2, 0.5, parallel: true).Sine()
+    .Parallel().Animate("scale", Vector2.One * 2, 0.5).Sine()
     .Callback(() => GD.Print("Finished!"))
     .Loop();
+
+tween.Stop();
 ```
 
 > [!TIP]
 > Use tweens to execute delayed code. Tweens are attached to nodes so if the node gets destroyed so will the tween.
 > ```cs
-> GTween.Delay(node, duration, () => callback);
+> GTween.Delay(node, seconds, () => callback);
 > ```
 
 #### Highlighted Functions
