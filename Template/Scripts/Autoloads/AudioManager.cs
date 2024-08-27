@@ -26,27 +26,23 @@ public partial class AudioManager : Node
     {
         if (!instant && musicPlayer.Playing)
         {
-            // Transition from current song being played to new song
-            GTween tween = new(musicPlayer.StreamPlayer);
-
-            tween.SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb);
-
-            // Fade out current song
-            tween.AnimateProp(-80, fadeOut).EaseIn();
-
-            // Set to new song
-            tween.Callback(() =>
-            {
-                musicPlayer.Stream = song;
-                musicPlayer.Play();
-            });
-
-            // Fade in to current song
             float volume = options.MusicVolume;
-            float volumeRemapped = 
+            float volumeRemapped =
                 volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
 
-            tween.AnimateProp(volumeRemapped, fadeIn).EaseIn();
+            // Transition from current song being played to new song
+            new GTween(musicPlayer.StreamPlayer)
+                .SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb)
+                // Fade out current song
+                .AnimateProp(-80, fadeOut).EaseIn()
+                // Set to new song
+                .Callback(() =>
+                {
+                    musicPlayer.Stream = song;
+                    musicPlayer.Play();
+                })
+                // Fade in to current song
+                .AnimateProp(volumeRemapped, fadeIn).EaseIn();
         }
         else
         {
@@ -92,8 +88,8 @@ public partial class AudioManager : Node
     {
         foreach (AudioStreamPlayer audioPlayer in sfxPlayersParent.GetChildren())
         {
-            GTween tween = new(audioPlayer);
-            tween.Animate(AudioStreamPlayer.PropertyName.VolumeDb, -80, fadeTime);
+            new GTween(audioPlayer)
+                .Animate(AudioStreamPlayer.PropertyName.VolumeDb, -80, fadeTime);
         }
     }
 
