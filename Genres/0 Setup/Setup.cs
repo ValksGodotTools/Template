@@ -92,11 +92,12 @@ public partial class Setup : Node
         File.WriteAllText($"{path}project.godot", text);
     }
 
-    /// <summary>
-    /// Deletes game assets that are not specific to the selected genre. For example if
-    /// the 3D FPS genre was selected, the 2D Platformer and 2D Top Down folders would be
-    /// deleted. The scene level_3D.tscn would be moved to res://Scenes and would be set as
-    /// the new main project scene. In all cases the folder "0 Setup" is deleted.
+    /// <summary> 
+    /// Moves game assets specific to the selected genre to more accessible locations, 
+    /// sets the main project scene, and removes any unnecessary files or folders. 
+    /// For example, if the 3D FPS genre was chosen, this method would move the level_3D.tscn 
+    /// file to res://Scenes, set it as the new main project scene, delete the "0 Setup" folder, 
+    /// and remove any other genres' assets (such as 2D Platformer or 2D Top Down). 
     /// </summary>
     void MoveProjectFiles(string pathFrom, string pathTo)
     {
