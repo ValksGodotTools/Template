@@ -18,8 +18,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
     - [Experimental Event Manager](#experimental-eventmanager)
 3. [Tips](#tips)
 4. [Contributing](#contributing)
-5. [Roadmap](#roadmap)
-6. [Credits](#credits)
+5. [Credits](#credits)
 
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
