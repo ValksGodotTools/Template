@@ -127,6 +127,7 @@ public partial class Setup : Node
         string gameName = FormatGameName(lineEditGameName.Text);
         string path = ProjectSettings.GlobalizePath("res://");
 
+        // The IO functions ran below will break if empty folders exist
         GU.DeleteEmptyFolders(path);
 
         RenameProjectFiles(path, gameName);
@@ -144,6 +145,9 @@ public partial class Setup : Node
             // Delete the "0 Setup" directory
             Directory.Delete(path + @"Genres/0 Setup", true);
         }
+
+        // Ensure all empty folders are deleted when finished
+        GU.DeleteEmptyFolders(path);
 
         GetTree().Quit();
     }
