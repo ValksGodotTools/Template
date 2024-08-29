@@ -27,9 +27,6 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
 
-> [!TIP]
-> If you use the [GitHub Desktop App](https://github.com/apps/desktop), you don't need to worry about cloning recursively
-
 ### 🔧 Run the game with `F5`
 
 Fill in the fields and click `Apply`. This will close the game.
@@ -457,18 +454,20 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 ## FAQ
 ### Q: Why am I getting errors when I load the project for the first time?
 A: This could be caused by 2 different reasons:
-  - You forgot to clone this repository with the `--recursive` flag. Simply run the command `git submodule update --init --recursive` to fix this.  
+  - You forgot to clone this repository with the `--recursive` flag. Simply run the command `git submodule update --init --recursive` to fix this. I highly recommend installing [GitHub Desktop App](https://github.com/apps/desktop) as it takes cares of things like this for you.  
   - You are trying to run the project without an internet connection. The first time you run the project a internet connection is required, after that no internet connection is required.
 
 ### Q: How do I fix the left hand in all the FPS animations sticking to where the right hand is?
 A: Closing and opening the Godot editor should fix it.
 
 ### Q: Why am I getting errors in the console after switching to `X` genre?
-A: This could have happened due to 4 different reasons I know of:  
+A: This could have happened due to 3 different reasons I know of:  
   - You forgot to close the Godot editor and re-open it.  
   - You clicked on "Save Changes" when a popup came up. You will need to re-download this repository and start over if this is the case.  
   - You saved a scene that was deleted by the setup script. Simply delete the scene and the errors in the console will go away.  
-  - This is a bug in the repository and is not your fault. If this is the case please open up a [new issue](https://github.com/ValksGodotTools/Template/issues/new) describing the problem in detail.  
+
+### Q: My issue is not listed here.
+A: Try searching for your issue in [issues](https://github.com/ValksGodotTools/Template/issues), if no one else has reported this please open up a [new issue](https://github.com/ValksGodotTools/Template/issues/new).
     
 ## Contributing
 > [!IMPORTANT]
