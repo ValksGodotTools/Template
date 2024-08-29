@@ -1,7 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnmu3cujgayk2"]
+[gd_scene load_steps=10 format=3 uid="uid://dnmu3cujgayk2"]
 
 [ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_mtg8u"]
 [ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_nv4n1"]
+
+[sub_resource type="SystemFont" id="SystemFont_ax7t0"]
+font_names = PackedStringArray("Segoe UI")
+multichannel_signed_distance_field = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5lq2"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_rop0o"]
+Label/colors/font_color = Color(0.99, 1, 0.7, 1)
+Label/fonts/font = SubResource("SystemFont_ax7t0")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_v5lq2")
 
 [sub_resource type="SystemFont" id="SystemFont_cg4td"]
 font_names = PackedStringArray("Segoe UI")
@@ -24,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_rop0o")
 script = ExtResource("1_mtg8u")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
@@ -145,6 +158,7 @@ text = "Move Project Files"
 custom_minimum_size = Vector2(250, 75)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 0.79, 0.9615, 1)
 theme_override_font_sizes/font_size = 28
 text = "Apply Changes"
 
