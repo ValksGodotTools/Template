@@ -68,8 +68,7 @@ public partial class Setup : Node
         RenameAllNamespaces(path, gameName);
         MoveProjectFiles(path + @"Genres/", path);
 
-        GD.Print("The settings have been changed. Select \"Reload\" if prompted with it.");
-        GD.Print("Please close the entire editor and re-open it.");
+        GSceneFileUtils.FixBrokenDependencies();
 
         GetTree().Quit();
     }
