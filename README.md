@@ -27,55 +27,20 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 ## Setup Guide
 
-### :one: Download the repo
+### 🌐 Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
 
-If the GodotUtils folder is still empty for whatever reason, run `git submodule update --init --recursive`
+*If the GodotUtils folder is still empty, run `git submodule update --init --recursive`*
 
-### :two: Run the game with `F5`
-> [!IMPORTANT]
-> I may have forgot to set the main scene back to the setup scene. You can easily switch it back to this, it is located in `res://Genres/0 Setup/setup.tscn`
-
-> [!NOTE]
-> Steps 2 to 4 change setup settings and delete unneeded assets. These steps are optional.
-
-You should see something like this
+### 🔧 Run the game with `F5`
+Fill in the fields and click `Apply`. This will close the game.
 
 ![setup-scene](https://github.com/user-attachments/assets/00262157-26e1-4909-9a71-7a3357a8c126)  
 
-Enter a name for your game, this could be something like `muffin blaster 3`, this will be auto formatted to `MuffinBlaster3`. All namespaces in all scripts will be replaced with this name. The `.csproj`, `.sln` and `project.godot` files will also be modified with this new name.
+### 🚀 Press `F5` one more time!
 
-Select the genre for your game. Currently there are only 3 types, "3D FPS", "2D Platformer" and "2D Top Down". Lets say you select "3D FPS", this means the "2D Platformer" and "2D Top Down" assets will be deleted and the 3D FPS assets will be moved to more accessible locations.
-
-In all cases you will no longer see the following directories in your project.  
-
-![asset-folders](https://github.com/user-attachments/assets/b04cd7bc-662f-4dc6-b89c-cb46f10799e8)  
-
-### :three: Click "Apply Changes"
-
-The following popup will appear, click "Reload"
-
-![popup1](https://github.com/user-attachments/assets/8e037a68-235f-4df7-b3d1-94e0c9431808)
-
-Click "Don't Save" and close any IDE's you may have open
-
-![popup2](https://github.com/user-attachments/assets/0d51ca08-adbc-4df3-9e5a-27cf1e5717d2)
-
-### :four: Double click on the main scene in `res://Scenes/<your_scene>.tscn`
-
-Click "Fix Dependencies" and then click "Fix Broken". Then and only after clicking "Fix Broken", click on "Open Anyway"
-
-> [!CAUTION]
-> The main scene may not be the only scene where the dependencies are broken. Make sure you check all the scenes within the main scene and repeat the same process to fix their dependencies. Due to how annoying this is, the setup guide may change in the future, see https://github.com/ValksGodotTools/Template/issues/18 for more info.
-
-![popup3](https://github.com/user-attachments/assets/b0cae7be-21fa-46cd-8ee1-ee1f4b30cfad)
-![popup4](https://github.com/user-attachments/assets/a4ab7d67-da32-46ef-9aa4-d5472eb18ec5)
-
-If you selected "3D FPS" as an example then the 3D FPS scene should run when you press `F5`.
-
-> [!CAUTION]
-> Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
+You are done! If you selected the 3D FPS genre then the 3D FPS scene will load!
 
 > [!IMPORTANT]
 > A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
@@ -481,6 +446,9 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 >     await Task.FromResult(1);
 > }
 > ```
+
+> [!CAUTION]
+> Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
 
 ## Contributing
 > [!IMPORTANT]
