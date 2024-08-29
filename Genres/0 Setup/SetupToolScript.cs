@@ -5,18 +5,11 @@ public partial class SetupToolScript : Node
 {
     [Export] public bool RemoveEmptyFolders
     {
-        get => _removeEmptyFolders;
+        get => false;
         set
         {
-            _removeEmptyFolders = value;
-
-            if (_removeEmptyFolders)
-            {
-                GD.Print("Removing empty folders");
-                GU.DeleteEmptyFolders(ProjectSettings.GlobalizePath("res://"));
-            }
+            GU.DeleteEmptyFolders(ProjectSettings.GlobalizePath("res://"));
+            GD.Print("Removed all empty folders from the project");
         }
     }
-
-    bool _removeEmptyFolders;
 }
