@@ -106,13 +106,15 @@ horizontal_alignment = 1
 [node name="Genre" type="OptionButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
-selected = 2
-item_count = 3
-popup/item_0/text = "2D Platformer"
-popup/item_1/text = "2D Top Down"
+selected = 0
+item_count = 4
+popup/item_0/text = "No Genre"
+popup/item_1/text = "2D Platformer"
 popup/item_1/id = 1
-popup/item_2/text = "3D FPS"
+popup/item_2/text = "2D Top Down"
 popup/item_2/id = 2
+popup/item_3/text = "3D FPS"
+popup/item_3/id = 3
 
 [node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 75)

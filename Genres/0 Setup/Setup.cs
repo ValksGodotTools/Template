@@ -15,6 +15,7 @@ public partial class Setup : Node
 
     readonly Dictionary<Genre, string> folderNames = new()
     {
+        { Genre.None, "No Genre" },
         { Genre.Platformer2D, "2D Platformer" },
         { Genre.TopDown2D, "2D Top Down" },
         { Genre.FPS3D, "3D FPS" }
@@ -22,6 +23,7 @@ public partial class Setup : Node
 
     enum Genre
     {
+        None,
         Platformer2D,
         TopDown2D,
         FPS3D
@@ -161,6 +163,7 @@ public partial class Setup : Node
 
     private static string GetMainSceneName(Genre genre) => genre switch
     {
+        Genre.None => "main",
         Genre.Platformer2D => "level_2D_platformer",
         Genre.TopDown2D => "level_2D_top_down",
         Genre.FPS3D => "level_3D",
