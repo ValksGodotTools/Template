@@ -35,7 +35,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 ### 🔧 Run the game with `F5`
 Fill in the fields and click `Apply`. This will close the game.
 
-![setup-scene](https://github.com/user-attachments/assets/00262157-26e1-4909-9a71-7a3357a8c126)  
+![setup-scene](https://github.com/user-attachments/assets/8b6fd52f-e974-4ec6-bc2f-cb63d36ec0f8)
 
 ### 🚀 Press `F5` one more time!
 
