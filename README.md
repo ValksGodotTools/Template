@@ -20,10 +20,6 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 4. [Contributing](#contributing)
 5. [Credits](#credits)
 
-![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
-![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
-![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
-
 ## Setup Guide
 
 ### 🌐 Download the repo
@@ -32,17 +28,24 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 *If the GodotUtils folder is still empty, run `git submodule update --init --recursive`*
 
+> [!IMPORTANT]
+> A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
+
 ### 🔧 Run the game with `F5`
+
 Fill in the fields and click `Apply`. This will close the game.
 
 ![setup-scene](https://github.com/user-attachments/assets/8b6fd52f-e974-4ec6-bc2f-cb63d36ec0f8)
 
-### 🚀 Press `F5` one more time!
+### 🚀 Almost there!
 
-You are done! If you selected the 3D FPS genre then the 3D FPS scene will load!
+1. Disregard any changes made and close the entire Godot editor
+2. Open the project and press `F5`
+3. If you selected the 3D FPS genre then the 3D FPS scene will load!
 
-> [!IMPORTANT]
-> A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
 
 ## Features
 ### Multiplayer
