@@ -31,7 +31,7 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 Fill in the fields and click `Apply`. This will close the game.
 
-![setup-scene](https://github.com/user-attachments/assets/8b6fd52f-e974-4ec6-bc2f-cb63d36ec0f8)
+![setup-scene](https://github.com/user-attachments/assets/ee2adf8a-56dc-4a6f-9db6-ddb7f74f1e56)
 
 ### 🚀 Almost there!
 
