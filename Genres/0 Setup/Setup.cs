@@ -70,6 +70,9 @@ public partial class Setup : Node
 
         GSceneFileUtils.FixBrokenDependencies();
 
+        // Delete the "0 Setup" directory
+        Directory.Delete(path + @"Genres/", true);
+
         GetTree().Quit();
     }
 
@@ -95,14 +98,11 @@ public partial class Setup : Node
     /// Moves game assets specific to the selected genre to more accessible locations, 
     /// sets the main project scene, and removes any unnecessary files or folders. 
     /// For example, if the 3D FPS genre was chosen, this method would move the level_3D.tscn 
-    /// file to res://Scenes, set it as the new main project scene, delete the "0 Setup" folder, 
-    /// and remove any other genres' assets (such as 2D Platformer or 2D Top Down). 
+    /// file to res://Scenes, set it as the new main project scene and remove any other genre 
+    /// assets (such as 2D Platformer or 2D Top Down). 
     /// </summary>
     void MoveProjectFiles(string pathFrom, string pathTo)
     {
-        // Deletes the "0 Setup" directory
-        Directory.Delete($"{pathFrom}0 Setup", true);
-
         // Gets the name of the main scene file based on the current genre
         string mainSceneName = GetMainSceneName();
 
