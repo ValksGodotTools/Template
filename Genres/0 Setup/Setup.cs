@@ -8,6 +8,7 @@ public partial class Setup : Node
     [Export] Label gameNamePreview;
     [Export] PopupPanel popupPanel;
     [Export] OptionButton genreOptionBtn;
+    [Export] Label genreSelectedInfo;
 
     string prevGameName = "";
     Genre genre;
@@ -19,79 +20,37 @@ public partial class Setup : Node
         { Genre.FPS3D, "3D FPS" }
     };
 
+    enum Genre
+    {
+        Platformer2D,
+        TopDown2D,
+        FPS3D
+    }
+
     public override void _Ready()
     {
         genre = (Genre)genreOptionBtn.Selected;
+        SetGenreSelectedInfo(genre);
+        DisplayGameNamePreview("Undefined");
     }
 
-    void _on_genre_item_selected(int index) => genre = (Genre)index;
-
-    void _on_game_name_text_changed(string newText)
+    private void SetGenreSelectedInfo(Genre genre)
     {
-        if (string.IsNullOrWhiteSpace(newText))
-        {
-            gameNamePreview.Text = "";
-            return;
-        }
+        string text = $"The {folderNames[genre]} genre has been selected. The main scene will be set to " +
+            $"res://Scenes/{GetMainSceneName(genre)}. All other assets not specific to {folderNames[genre]} " +
+            $"will be deleted.";
 
-        // Since this name is being used for the namespace its first character must not be
-        // a number and every other character must be alphanumeric
-        if (!IsAlphaNumericAndAllowSpaces(newText) || char.IsNumber(newText.Trim()[0]))
-        {
-            DisplayGameNamePreview(prevGameName);
-            lineEditGameName.Text = prevGameName;
-            lineEditGameName.CaretColumn = prevGameName.Length;
-            return;
-        }
-
-        DisplayGameNamePreview(newText);
-        prevGameName = newText;
+        genreSelectedInfo.Text = text;
     }
 
-    void _on_no_pressed() => popupPanel.Hide();
-
-    void _on_yes_pressed()
+    private void DisplayGameNamePreview(string inputName)
     {
-        string gameName = FormatGameName(lineEditGameName.Text);
-
-        if (string.IsNullOrWhiteSpace(gameName))
-        {
-            GD.Print("Please type a game name first!");
-            return;
-        }
-
-        string path = ProjectSettings.GlobalizePath("res://");
-
-        GU.DeleteEmptyFolders(path);
-
-        RenameProjectFiles(path, gameName);
-        RenameAllNamespaces(path, gameName);
-        MoveProjectFiles(path + @"Genres/", path);
-
-        GSceneFileUtils.FixBrokenDependencies();
-
-        // Delete the "0 Setup" directory
-        Directory.Delete(path + @"Genres/", true);
-
-        GetTree().Quit();
-    }
-
-    void _on_apply_changes_pressed() => popupPanel.PopupCentered();
-
-    string FormatGameName(string name) => name.Trim().ToTitleCase().Replace(" ", "");
-
-    void DisplayGameNamePreview(string inputName) =>
-        gameNamePreview.Text = "The name will be " + FormatGameName(inputName);
-
-    void SetMainScene(string path, string scene)
-    {
-        string text = File.ReadAllText($"{path}project.godot");
-
-        text = text.Replace(
-            "run/main_scene=\"res://Genres/0 Setup/Setup.tscn\"",
-           $"run/main_scene=\"res://Scenes/{scene}\"");
-
-        File.WriteAllText($"{path}project.godot", text);
+        string name = FormatGameName(inputName);
+        
+        string text = $"The name of the project will be {name}. The root namespace for all scripts will " +
+            $"be {name}. Please ensure the name is in PascalFormat.";
+        
+        gameNamePreview.Text = text;
     }
 
     /// <summary> 
@@ -101,10 +60,10 @@ public partial class Setup : Node
     /// file to res://Scenes, set it as the new main project scene and remove any other genre 
     /// assets (such as 2D Platformer or 2D Top Down). 
     /// </summary>
-    void MoveProjectFiles(string pathFrom, string pathTo)
+    private void MoveProjectFiles(string pathFrom, string pathTo)
     {
         // Gets the name of the main scene file based on the current genre
-        string mainSceneName = GetMainSceneName();
+        string mainSceneName = GetMainSceneName(genre);
 
         // Moves the main scene file from its original location to a new location
         File.Move($"{pathFrom}{folderNames[genre]}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
@@ -126,7 +85,81 @@ public partial class Setup : Node
         DeleteDirectoryIfEmpty(pathFrom);
     }
 
-    string GetMainSceneName() => genre switch
+    private void _on_genre_item_selected(int index)
+    {
+        genre = (Genre)index;
+        SetGenreSelectedInfo(genre);
+    }
+
+    private void _on_game_name_text_changed(string newText)
+    {
+        if (string.IsNullOrWhiteSpace(newText))
+        {
+            return;
+        }
+
+        // Since this name is being used for the namespace its first character must not be
+        // a number and every other character must be alphanumeric
+        if (!IsAlphaNumericAndAllowSpaces(newText) || char.IsNumber(newText.Trim()[0]))
+        {
+            DisplayGameNamePreview(prevGameName);
+            lineEditGameName.Text = prevGameName;
+            lineEditGameName.CaretColumn = prevGameName.Length;
+            return;
+        }
+
+        DisplayGameNamePreview(newText);
+        prevGameName = newText;
+    }
+
+    private void _on_no_pressed() => popupPanel.Hide();
+
+    private void _on_yes_pressed()
+    {
+        string gameName = FormatGameName(lineEditGameName.Text);
+        string path = ProjectSettings.GlobalizePath("res://");
+
+        GU.DeleteEmptyFolders(path);
+
+        RenameProjectFiles(path, gameName);
+        RenameAllNamespaces(path, gameName);
+        MoveProjectFiles(path + @"Genres/", path);
+
+        GSceneFileUtils.FixBrokenDependencies();
+
+        // Delete the "0 Setup" directory
+        Directory.Delete(path + @"Genres/", true);
+
+        GetTree().Quit();
+    }
+
+    private void _on_apply_changes_pressed() 
+    {
+        string gameName = FormatGameName(lineEditGameName.Text);
+
+        if (string.IsNullOrWhiteSpace(gameName))
+        {
+            GD.Print("Please type a game name first!");
+            return;
+        }
+
+        popupPanel.PopupCentered();
+    } 
+
+    private static string FormatGameName(string name) => name.Trim().FirstCharToUpper().Replace(" ", "");
+
+    private static void SetMainScene(string path, string scene)
+    {
+        string text = File.ReadAllText($"{path}project.godot");
+
+        text = text.Replace(
+            "run/main_scene=\"res://Genres/0 Setup/Setup.tscn\"",
+           $"run/main_scene=\"res://Scenes/{scene}\"");
+
+        File.WriteAllText($"{path}project.godot", text);
+    }
+
+    private static string GetMainSceneName(Genre genre) => genre switch
     {
         Genre.Platformer2D => "level_2D_platformer",
         Genre.TopDown2D => "level_2D_top_down",
@@ -134,7 +167,7 @@ public partial class Setup : Node
         _ => throw new NotImplementedException()
     } + ".tscn";
 
-    void MoveFilesAndPreserveFolderStructure(string path, string folder)
+    private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
         // Move all scripts to res://Scripts
         TraverseDirectory(path,
@@ -156,7 +189,7 @@ public partial class Setup : Node
             directoryName => true);
     }
 
-    void DeleteDirectoryIfEmpty(string path)
+    private static void DeleteDirectoryIfEmpty(string path)
     {
         if (Directory.Exists(path))
         {
@@ -169,7 +202,7 @@ public partial class Setup : Node
     /// Replaces all instances of the keyword "Template" with the new
     /// specified game name in several project files.
     /// </summary>
-    void RenameProjectFiles(string path, string name)
+    private static void RenameProjectFiles(string path, string name)
     {
         // .csproj
         {
@@ -208,7 +241,7 @@ public partial class Setup : Node
     /// Renames the default "Template" namespace to the new specified game
     /// name in all scripts.
     /// </summary>
-    void RenameAllNamespaces(string path, string name)
+    private static void RenameAllNamespaces(string path, string name)
     {
         TraverseDirectory(path, 
             fullPathFile =>
@@ -236,7 +269,7 @@ public partial class Setup : Node
     /// Returning true will recursively traverse this directory. Returning false 
     /// will not traverse the directory.</para>
     /// </summary>
-    void TraverseDirectory(string path, Action<string> actionFile, Func<string, bool> actionDirectory)
+    private static void TraverseDirectory(string path, Action<string> actionFile, Func<string, bool> actionDirectory)
     {
         using DirAccess dir = DirAccess.Open(path);
 
@@ -272,16 +305,9 @@ public partial class Setup : Node
         dir.ListDirEnd();
     }
 
-    bool IsAlphaNumericAndAllowSpaces(string str)
+    private static bool IsAlphaNumericAndAllowSpaces(string str)
     {
         Regex rg = new(@"^[a-zA-Z0-9\s,]*$");
         return rg.IsMatch(str);
-    }
-
-    enum Genre
-    {
-        Platformer2D,
-        TopDown2D,
-        FPS3D
     }
 }

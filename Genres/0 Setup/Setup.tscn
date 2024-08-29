@@ -1,7 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnmu3cujgayk2"]
+[gd_scene load_steps=7 format=3 uid="uid://dnmu3cujgayk2"]
 
 [ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_g3v0h"]
 [ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_73b4h"]
+
+[sub_resource type="SystemFont" id="SystemFont_cg4td"]
+font_names = PackedStringArray("Segoe UI")
+generate_mipmaps = true
+multichannel_signed_distance_field = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_m24mf"]
+font = SubResource("SystemFont_cg4td")
+font_color = Color(0.800781, 0.800781, 0.800781, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv57m"]
 bg_color = Color(0.6, 0, 0.0470588, 1)
@@ -9,59 +18,94 @@ bg_color = Color(0.6, 0, 0.0470588, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
 bg_color = Color(0, 0.6, 0.0784314, 1)
 
-[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "gameNamePreview", "popupPanel", "genreOptionBtn")]
+[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "gameNamePreview", "popupPanel", "genreOptionBtn", "genreSelectedInfo")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_g3v0h")
-lineEditGameName = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
-gameNamePreview = NodePath("MarginContainer/VBoxContainer/HBoxContainer/GameNamePreview")
+lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
+gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/GameNamePreview")
 popupPanel = NodePath("PopupPanel")
-genreOptionBtn = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Genre")
+genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
+genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenreSelectedInfo")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 100
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Tooltip" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/Tooltip"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GameNamePreview" type="Label" parent="CenterContainer/VBoxContainer/Tooltip/MarginContainer"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+text = "The name you select for your game will be used for all C# script namespaces. A name that follows PascalCase formatting is recommended, for example BananaBlasters3."
+label_settings = SubResource("LabelSettings_m24mf")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label2" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 text = "What is the name of this game?"
+horizontal_alignment = 1
 
-[node name="GameName" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="GameName" type="LineEdit" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 max_length = 40
 
-[node name="GameNamePreview" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
+[node name="Tooltip2" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/Tooltip2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GenreSelectedInfo" type="Label" parent="CenterContainer/VBoxContainer/Tooltip2/MarginContainer"]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+text = "This text talks about the genre being selected and should be modified from script."
+label_settings = SubResource("LabelSettings_m24mf")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "What is the genre?"
+horizontal_alignment = 1
 
-[node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="Genre" type="OptionButton" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+alignment = 1
 selected = 2
 item_count = 3
 popup/item_0/text = "2D Platformer"
@@ -70,17 +114,12 @@ popup/item_1/id = 1
 popup/item_2/text = "3D FPS"
 popup/item_2/id = 2
 
-[node name="ApplyChanges" type="Button" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(150, 0)
+[node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 75)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 28
 text = "Apply Changes"
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "NOTICE: Please read the setup guide in the GitHub readme first. Pressing \"Apply Changes\" will move around several files, change several project settings and delete resources including this scene you are viewing right now. The only way to reverse the action is to discard the changes via GitHub Desktop App or download the entire repository again."
-autowrap_mode = 2
 
 [node name="PopupPanel" type="PopupPanel" parent="."]
 size = Vector2i(366, 130)
@@ -127,8 +166,8 @@ text = "Yes"
 [node name="Tool Script" type="Node" parent="."]
 script = ExtResource("2_73b4h")
 
-[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ApplyChanges" to="." method="_on_apply_changes_pressed"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
+[connection signal="item_selected" from="CenterContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ApplyChanges" to="." method="_on_apply_changes_pressed"]
 [connection signal="pressed" from="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/No" to="." method="_on_no_pressed"]
 [connection signal="pressed" from="PopupPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Yes" to="." method="_on_yes_pressed"]

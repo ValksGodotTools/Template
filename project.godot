@@ -23,10 +23,6 @@ Global="*res://Template/Autoloads/global.tscn"
 AudioManager="*res://Template/Autoloads/audio_manager.tscn"
 SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 
-[display]
-
-window/stretch/mode="canvas_items"
-
 [dotnet]
 
 project/assembly_name="Template"
