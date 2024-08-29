@@ -457,10 +457,6 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > [!NOTE]
 > Here are some [good first issues](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to tackle.
 
-## Roadmap
-> [!NOTE]
-> The roadmap has been moved to [my Discord](https://discord.gg/5e7FkWCMRb). I find it easier to edit it here.
-
 ## Credits
 > [!NOTE]
 > For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
