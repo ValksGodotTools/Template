@@ -62,10 +62,9 @@ text = "What is the genre?"
 
 [node name="Genre" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-item_count = 3
 selected = 2
+item_count = 3
 popup/item_0/text = "2D Platformer"
-popup/item_0/id = 0
 popup/item_1/text = "2D Top Down"
 popup/item_1/id = 1
 popup/item_2/text = "3D FPS"
