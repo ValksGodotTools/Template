@@ -17,19 +17,15 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
     - [State Manager](#state-manager)
     - [Experimental Event Manager](#experimental-eventmanager)
 3. [Tips](#tips)
-4. [Contributing](#contributing)
-5. [Credits](#credits)
+4. [FAQ](#faq)
+5. [Contributing](#contributing)
+6. [Credits](#credits)
 
 ## Setup Guide
 
 ### 🌐 Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
-
-*If the GodotUtils folder is still empty, run `git submodule update --init --recursive`*
-
-> [!IMPORTANT]
-> A internet connection is required when running the game with `F5` for the first time. This is because the `.csproj` needs to retrieve the NuGet packages from the NuGet website.
 
 ### 🔧 Run the game with `F5`
 
@@ -42,6 +38,9 @@ Fill in the fields and click `Apply`. This will close the game.
 1. Disregard any changes made and close the entire Godot editor
 2. Open the project and press `F5`
 3. If you selected the 3D FPS genre then the 3D FPS scene will load!
+
+> [!IMPORTANT]
+> If you run into any problems please read the [FAQ](#faq) before creating a new issue
 
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
@@ -452,6 +451,24 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > [!CAUTION]
 > Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
 
+## FAQ
+### Q: Why am I getting errors when I load the project for the first time?
+A: This could be caused by 2 different reasons:
+  - You forgot to clone this repository with the `--recursive` flag. Simply run the command `git submodule update --init --recursive` to fix this. I highly recommend installing [GitHub Desktop App](https://github.com/apps/desktop) as it takes cares of things like this for you.  
+  - You are trying to run the project without an internet connection. The first time you run the project a internet connection is required, after that no internet connection is required.
+
+### Q: How do I fix the left hand in all the FPS animations sticking to where the right hand is?
+A: Closing and opening the Godot editor should fix it.
+
+### Q: Why am I getting errors in the console after switching to `X` genre?
+A: This could have happened due to 3 different reasons I know of:  
+  - You forgot to close the Godot editor and re-open it.  
+  - You clicked on "Save Changes" when a popup came up. You will need to re-download this repository and start over if this is the case.  
+  - You saved a scene that was deleted by the setup script. Simply delete the scene and the errors in the console will go away.  
+
+### Q: My issue is not listed here.
+A: Try searching for your issue in [issues](https://github.com/ValksGodotTools/Template/issues), if no one else has reported this please open up a [new issue](https://github.com/ValksGodotTools/Template/issues/new).
+    
 ## Contributing
 > [!IMPORTANT]
 > Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
