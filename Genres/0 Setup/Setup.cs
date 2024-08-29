@@ -7,8 +7,8 @@ public partial class Setup : Node
     [Export] LineEdit lineEditGameName;
     [Export] OptionButton genreOptionBtn;
     [Export] PopupPanel popupPanel;
-    [Export] Label gameNamePreview;
-    [Export] Label genreSelectedInfo;
+    [Export] RichTextLabel gameNamePreview;
+    [Export] RichTextLabel genreSelectedInfo;
     [Export] CheckButton checkButtonDeleteSetupScene;
     [Export] CheckButton checkButtonDeleteOtherGenres;
     [Export] CheckButton checkButtonMoveProjectFiles;
@@ -41,8 +41,8 @@ public partial class Setup : Node
 
     private void SetGenreSelectedInfo(Genre genre)
     {
-        string text = $"The {folderNames[genre]} genre has been selected. The main scene will be set to " +
-            $"res://Scenes/{GetMainSceneName(genre)}. All other assets not specific to {folderNames[genre]} " +
+        string text = $"The {Highlight(folderNames[genre])} genre has been selected. The main scene will be set to " +
+            $"{Highlight($"res://Scenes/{GetMainSceneName(genre)}")}. All other assets not specific to {Highlight(folderNames[genre])} " +
             $"will be deleted.";
 
         genreSelectedInfo.Text = text;
@@ -52,8 +52,8 @@ public partial class Setup : Node
     {
         string name = FormatGameName(inputName);
         
-        string text = $"The name of the project will be {name}. The root namespace for all scripts will " +
-            $"be {name}. Please ensure the name is in PascalFormat.";
+        string text = $"The name of the project will be {Highlight(name)}. The root namespace for all scripts will " +
+            $"be {Highlight(name)}. Please ensure the name is in PascalFormat.";
         
         gameNamePreview.Text = text;
     }
@@ -163,7 +163,10 @@ public partial class Setup : Node
         }
 
         popupPanel.PopupCentered();
-    } 
+    }
+
+    private static string Highlight(string text) =>
+        $"[wave amp=20.0 freq=2.0 connected=1][color=white]{text}[/color][/wave]";
 
     private static string FormatGameName(string name) => name.Trim().FirstCharToUpper().Replace(" ", "");
 

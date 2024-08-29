@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnmu3cujgayk2"]
+[gd_scene load_steps=9 format=3 uid="uid://dnmu3cujgayk2"]
 
 [ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_mtg8u"]
 [ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_nv4n1"]
 
 [sub_resource type="SystemFont" id="SystemFont_ax7t0"]
 font_names = PackedStringArray("Segoe UI")
+subpixel_positioning = 0
 multichannel_signed_distance_field = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5lq2"]
@@ -15,14 +16,10 @@ Label/colors/font_color = Color(0.99, 1, 0.7, 1)
 Label/fonts/font = SubResource("SystemFont_ax7t0")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_v5lq2")
 
-[sub_resource type="SystemFont" id="SystemFont_cg4td"]
+[sub_resource type="SystemFont" id="SystemFont_gx0is"]
 font_names = PackedStringArray("Segoe UI")
-generate_mipmaps = true
+subpixel_positioning = 0
 multichannel_signed_distance_field = true
-
-[sub_resource type="LabelSettings" id="LabelSettings_m24mf"]
-font = SubResource("SystemFont_cg4td")
-font_color = Color(0.800781, 0.800781, 0.800781, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mv57m"]
 bg_color = Color(0.6, 0, 0.0470588, 1)
@@ -41,8 +38,8 @@ script = ExtResource("1_mtg8u")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
 popupPanel = NodePath("PopupPanel")
-gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/GameNamePreview")
-genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenreSelectedInfo")
+gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/NamePreview")
+genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenrePreview")
 checkButtonDeleteSetupScene = NodePath("CenterContainer/VBoxContainer/Options/DeleteSetupScene")
 checkButtonDeleteOtherGenres = NodePath("CenterContainer/VBoxContainer/Options/DeleteOtherGenres")
 checkButtonMoveProjectFiles = NodePath("CenterContainer/VBoxContainer/Options/MoveProjectFiles")
@@ -56,7 +53,7 @@ theme_override_constants/separation = 25
 
 [node name="Tooltip" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/Tooltip"]
 layout_mode = 2
@@ -65,13 +62,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="GameNamePreview" type="Label" parent="CenterContainer/VBoxContainer/Tooltip/MarginContainer"]
-custom_minimum_size = Vector2(800, 0)
+[node name="NamePreview" type="RichTextLabel" parent="CenterContainer/VBoxContainer/Tooltip/MarginContainer"]
+custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
+theme_override_colors/default_color = Color(0.664063, 0.664063, 0.664063, 1)
+theme_override_fonts/normal_font = SubResource("SystemFont_gx0is")
+bbcode_enabled = true
 text = "The name you select for your game will be used for all C# script namespaces. A name that follows PascalCase formatting is recommended, for example BananaBlasters3."
-label_settings = SubResource("LabelSettings_m24mf")
-horizontal_alignment = 1
-autowrap_mode = 2
+fit_content = true
+scroll_active = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -92,7 +91,7 @@ max_length = 40
 
 [node name="Tooltip2" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/Tooltip2"]
 layout_mode = 2
@@ -101,13 +100,15 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="GenreSelectedInfo" type="Label" parent="CenterContainer/VBoxContainer/Tooltip2/MarginContainer"]
-custom_minimum_size = Vector2(800, 0)
+[node name="GenrePreview" type="RichTextLabel" parent="CenterContainer/VBoxContainer/Tooltip2/MarginContainer"]
+custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
+theme_override_colors/default_color = Color(0.664063, 0.664063, 0.664063, 1)
+theme_override_fonts/normal_font = SubResource("SystemFont_gx0is")
+bbcode_enabled = true
 text = "This text talks about the genre being selected and should be modified from script."
-label_settings = SubResource("LabelSettings_m24mf")
-horizontal_alignment = 1
-autowrap_mode = 2
+fit_content = true
+scroll_active = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
