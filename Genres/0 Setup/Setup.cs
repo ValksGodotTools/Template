@@ -142,7 +142,7 @@ public partial class Setup : Node
         if (checkButtonDeleteSetupScene.ButtonPressed)
         {
             // Delete the "0 Setup" directory
-            Directory.Delete(path + @"Genres/", true);
+            Directory.Delete(path + @"Genres/0 Setup", true);
         }
 
         GetTree().Quit();

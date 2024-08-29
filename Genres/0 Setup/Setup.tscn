@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dnmu3cujgayk2"]
 
-[ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_g3v0h"]
-[ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_73b4h"]
+[ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_mtg8u"]
+[ext_resource type="Script" path="res://Genres/0 Setup/SetupToolScript.cs" id="2_nv4n1"]
 
 [sub_resource type="SystemFont" id="SystemFont_cg4td"]
 font_names = PackedStringArray("Segoe UI")
@@ -24,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_g3v0h")
+script = ExtResource("1_mtg8u")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
 popupPanel = NodePath("PopupPanel")
@@ -191,7 +191,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_1payf")
 text = "Yes"
 
 [node name="Tool Script" type="Node" parent="."]
-script = ExtResource("2_73b4h")
+script = ExtResource("2_nv4n1")
 
 [connection signal="text_changed" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
 [connection signal="item_selected" from="CenterContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]
