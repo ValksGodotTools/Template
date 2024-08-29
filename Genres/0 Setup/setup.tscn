@@ -140,18 +140,24 @@ alignment = 1
 [node name="DeleteSetupScene" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
+theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
 button_pressed = true
 text = "Delete Setup Scene"
 
 [node name="DeleteOtherGenres" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
+theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
 button_pressed = true
 text = "Delete Other Genres"
 
 [node name="MoveProjectFiles" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
+theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
 button_pressed = true
 text = "Move Project Files"
 
