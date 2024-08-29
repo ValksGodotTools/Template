@@ -5,10 +5,13 @@ using System.IO;
 public partial class Setup : Node
 {
     [Export] LineEdit lineEditGameName;
-    [Export] Label gameNamePreview;
-    [Export] PopupPanel popupPanel;
     [Export] OptionButton genreOptionBtn;
+    [Export] PopupPanel popupPanel;
+    [Export] Label gameNamePreview;
     [Export] Label genreSelectedInfo;
+    [Export] CheckButton checkButtonDeleteSetupScene;
+    [Export] CheckButton checkButtonDeleteOtherGenres;
+    [Export] CheckButton checkButtonMoveProjectFiles;
 
     string prevGameName = "";
     Genre genre;
@@ -73,11 +76,14 @@ public partial class Setup : Node
         // Move all files relevant to this genre
         MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + folderNames[genre]);
 
-        // If a directory is not associated with the current genre delete that folder
-        foreach (KeyValuePair<Genre, string> folder in folderNames)
+        if (checkButtonDeleteOtherGenres.ButtonPressed)
         {
-            if (folder.Key != genre)
-                Directory.Delete($"{pathFrom}{folder.Value}", true);
+            // If a directory is not associated with the current genre delete that folder
+            foreach (KeyValuePair<Genre, string> folder in folderNames)
+            {
+                if (folder.Key != genre)
+                    Directory.Delete($"{pathFrom}{folder.Value}", true);
+            }
         }
 
         // Sets the main scene for the project
@@ -125,12 +131,19 @@ public partial class Setup : Node
 
         RenameProjectFiles(path, gameName);
         RenameAllNamespaces(path, gameName);
-        MoveProjectFiles(path + @"Genres/", path);
 
-        GSceneFileUtils.FixBrokenDependencies();
+        if (checkButtonMoveProjectFiles.ButtonPressed)
+        {
+            MoveProjectFiles(path + @"Genres/", path);
 
-        // Delete the "0 Setup" directory
-        Directory.Delete(path + @"Genres/", true);
+            GSceneFileUtils.FixBrokenDependencies();
+        }
+
+        if (checkButtonDeleteSetupScene.ButtonPressed)
+        {
+            // Delete the "0 Setup" directory
+            Directory.Delete(path + @"Genres/", true);
+        }
 
         GetTree().Quit();
     }

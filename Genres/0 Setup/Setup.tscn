@@ -18,7 +18,7 @@ bg_color = Color(0.6, 0, 0.0470588, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
 bg_color = Color(0, 0.6, 0.0784314, 1)
 
-[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "gameNamePreview", "popupPanel", "genreOptionBtn", "genreSelectedInfo")]
+[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "genreOptionBtn", "popupPanel", "gameNamePreview", "genreSelectedInfo", "checkButtonDeleteSetupScene", "checkButtonDeleteOtherGenres", "checkButtonMoveProjectFiles")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -26,10 +26,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_g3v0h")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
-gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/GameNamePreview")
-popupPanel = NodePath("PopupPanel")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
+popupPanel = NodePath("PopupPanel")
+gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/GameNamePreview")
 genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenreSelectedInfo")
+checkButtonDeleteSetupScene = NodePath("CenterContainer/VBoxContainer/Options/DeleteSetupScene")
+checkButtonDeleteOtherGenres = NodePath("CenterContainer/VBoxContainer/Options/DeleteOtherGenres")
+checkButtonMoveProjectFiles = NodePath("CenterContainer/VBoxContainer/Options/MoveProjectFiles")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -115,6 +118,28 @@ popup/item_2/text = "2D Top Down"
 popup/item_2/id = 2
 popup/item_3/text = "3D FPS"
 popup/item_3/id = 3
+
+[node name="Options" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DeleteSetupScene" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Delete Setup Scene"
+
+[node name="DeleteOtherGenres" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Delete Other Genres"
+
+[node name="MoveProjectFiles" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
+layout_mode = 2
+size_flags_horizontal = 4
+button_pressed = true
+text = "Move Project Files"
 
 [node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 75)
