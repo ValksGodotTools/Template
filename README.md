@@ -1,7 +1,7 @@
 # Godot 4 C# Template
-Never again spend 5 minutes setting up a new project, `ValksGodotTools/Template` has got your back. ❤️
+Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template` is here to streamline your workflow. ❤️
 
-Want to get right into it? Start off by reading the [setup guide](#setup-guide).
+Ready to dive in? Check out the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
 2. [Features](#features)
@@ -25,22 +25,22 @@ Want to get right into it? Start off by reading the [setup guide](#setup-guide).
 
 ### 🌐 Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
-2. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
+2. Clone the repository using `git clone --recursive https://github.com/ValksGodotTools/Template`
 
 ### 🔧 Run the game with `F5`
 
-Fill in the fields and click `Apply`. This will close the game.
+Fill in the required fields and click `Apply`. This will close the game.
 
 ![setup-scene](https://github.com/user-attachments/assets/ee2adf8a-56dc-4a6f-9db6-ddb7f74f1e56)
 
 ### 🚀 Almost there!
 
-1. Disregard any changes made and close the entire Godot editor
-2. Open the project and press `F5`
-3. If you selected the 3D FPS genre then the 3D FPS scene will load!
+1. Do not save anything if prompted, close the Godot editor entirely
+2. Reopen the project and run the new main scene by pressing `F5`
+3. If you chose the 3D FPS genre then the 3D FPS scene will load!
 
 > [!IMPORTANT]
-> If you run into any problems please read the [FAQ](#faq) before creating a new issue
+> If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
 
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
@@ -48,17 +48,17 @@ Fill in the fields and click `Apply`. This will close the game.
 
 ## Features
 ### Multiplayer
-The 2D Top Down genre has a **client authorative** multiplayer setup for showing players positions updating on each others screens. This netcode is the result of redoing the same multiplayer project over and over again. I've lost track how many times I've done this now. I hope you will find the multiplayer as useful as I have.
+The 2D Top Down genre includes a **client-authoritative** multiplayer setup, demonstrating how player positions update on each other's screens. This netcode is the culmination of numerous iterations on multiplayer projects. I've lost count of how many times I've done this.
 
 https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
 > [!IMPORTANT]
-> A very common mistake is to write one data type and read another data type. For example lets say you have the integer `playerCount` and you do `writer.Write(playerCount)` and then `playerCount = reader.ReadByte()`. Since you did not cast playerCount to byte on writing, you will receive malformed data. Lets always cast our data values before writing them even if it may seem redundant at times.
+> A common oversight is using one data type for writing and another for reading. For example, if you have an integer `playerCount` and you write it with `writer.Write(playerCount)`, but then read it as a byte with `playerCount = reader.ReadByte()`, the data will be malformed because `playerCount` wasn't converted to a byte prior to writing. To avoid this, ensure you cast your data to the correct type before writing, even if it feels redundant.
 
 > [!CAUTION]
-> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console. If you want to avoid logs getting jumbled use `Game.Log(...)` over `GD.Print(...)`.
+> Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console.
 
-Here is what a client packet could look like. The client is using this packet to tell the server its position. The `Handle(...)` is executed on the server thread so only things on that thread should be accessed.
+Below is an example of a client packet. The client uses this packet to inform the server of its position. The `Handle(...)` method is executed on the server thread, so only elements accessible on that thread should be accessed.
 ```cs
 public class CPacketPosition : ClientPacket
 {
@@ -82,7 +82,7 @@ public class CPacketPosition : ClientPacket
 }
 ```
 
-Here is what a server packet could look like. The server is telling each client about all the others client position updates. The `Handle(...)` is executed on the client thread so only things on that thread should be accessed.
+Below is an example of a server packet. The server uses this packet to inform each client about the position updates of all other clients. The `Handle(...)` method is executed on the client thread, so only elements accessible on that thread should be accessed.
 ```cs
 public class SPacketPlayerPositions : ServerPacket
 {
@@ -160,14 +160,14 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 ![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
 
 > [!TIP]
-> Are you tired of weird rotational glitches? Quaternions are your friend! Every `Node3D` has a `.Quaternion` property. Quaternions are multiplied together and always normalized. For example `(A * B * C).Normalized()`. The order of which you multiply quaternions matters! This is what I used to get the weapon camera movements working.
+> Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
 
 ### Mod Loader
 > [!NOTE]
-> Mods can replace game assets and execute C# scripts. There is currently a big problem with C# mod scripts, see https://github.com/ValksGodotTools/Template/issues/15. You can find the example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+> Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
-The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions.
+The Godot Utils repository can be found [here](https://github.com/ValksGodotTools/GodotUtils).
 
 #### 🦄 Creating Tweens
 Tweening has never been so easy!
@@ -190,46 +190,47 @@ tween.Stop();
 ```
 
 > [!TIP]
-> Use tweens to execute delayed code. Tweens are attached to nodes so if the node gets destroyed so will the tween.
+> Below is an example of how to run delayed code. Tweens are attached to nodes so if the node gets destroyed so will the tween.
 > ```cs
 > GTween.Delay(node, seconds, () => callback);
 > ```
 
 #### 🖨️ Printing Everything
-The `.PrintFull()` extension will print all public properties and fields from any kind of object (yes this includes nodes!)
+The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
 
 ```cs
 GD.Print(node.PrintFull())
 ```
 
 #### 🔎 Finding Node\<T\>
-Do you need to loop through a array of entity nodes and each entity will have a Sprite2D node somewhere in the tree but you don't know exactly where? Well just use `entity.GetNode<Sprite2D>()`! This function will recursively search the children for the first type it comes across. This function is a bit expensive, maybe use it only when you really need it.
+If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
 #### 🦆 Thread Safe Logger
-Using `Game.Log()` can be used across any thread. No more jumbled logs when logging on the client, server and Godot threads.
+By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
 
 ### Localisation
 > [!NOTE]
-> Currently English, French and Japanese are supported for most of the UI elements. You can add in your own languages [here](https://github.com/ValksGodotTools/Template/blob/main/Localisation/text.csv).
+> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
 
 ### Services
 > [!IMPORTANT]
-> In order to understand how useful `Global.Services` is, let me tell you why using the static keyword should be avoided. Lets say you are coding a multiplayer game and you make every property in `GameServer.cs` static. Everything works fine at first and you can easily access the game servers properties from *almost* anywhere but once you restart the server or leave the scene where the game server shouldn't be alive anymore, the old values for each static property will still exist from the last time the server was online. You would have to keep track of each individual property you made static and reset them. This is why static should be avoided.
+> To grasp the significance of `Global.Services`, it's essential to understand the pitfalls of using the `static` keyword. Consider a scenario where you're developing a multiplayer game and you designate every attribute in `GameServer.cs` as static. Initially, everything operates smoothly, and you can conveniently access the game server's properties from various parts of your code. However, challenges arise when the server restarts or when the scene transitions, and the game server should no longer be active. In such cases, the static properties retain their previous values, leading to inconsistencies. You would need to meticulously monitor and reset each static property, which can be cumbersome and error-prone. This illustrates why the use of static properties should be approached with caution.
 
-In the `_Ready()` of any node add `Global.Services.Add(this)` *(if the script does not extend from node, you can use `Global.Services.Add<Type>`)*
+In the `_Ready()` method of any node, you can register the node with `Global.Services` by using `Global.Services.Add(this)` (or `Global.Services.Add<Type>` if the script does not extend from Node).
+
 ```cs
 public partial class UIVignette : ColorRect
 {
     public override void _Ready()
     {
-        // Set persistent to true if this is an autoload script
-        // (scripts that do not extend from Node are persistent by default)
+        // Set 'persistent' to true if this script is an autoload
+        // Scripts that do not extend from Node are persistent by default
 
-        // Non persistent services will get removed just before the scene is changed
-        // Example of persistent service: AudioManager; a node like this should exist
-        // for the entire duration of the game
+        // Non-persistent services are removed just before a scene change
+        // Example of a persistent service: AudioManager, which should exist
+        // throughout the game's duration
 
-        // However this UIVignette exists within the scene so it should not be persistent
+        // This UIVignette is part of the scene, so it should not be persistent
         Global.Services.Add(this, persistent: false); 
     }
 
@@ -237,7 +238,8 @@ public partial class UIVignette : ColorRect
 }
 ```
 
-Now you can get the instance of UIVignette from anywhere! No static or long GetNode\<T\> paths involved. It's magic.
+With this setup, you can now retrieve the instance of `UIVignette` from anywhere in your code without relying on static properties or lengthy `GetNode<T>` paths.
+
 ```cs
 UIVignette vignette = Global.Services.Get<UIVignette>();
 vignette.LightPulse();
@@ -269,7 +271,7 @@ void Quit()
 }
 ```
 
-Method parameters are supported
+Most method parameters are supported, allowing for more dynamic interactions
 ```cs
 [ConsoleCommand("debug")]
 void Debug(int x, string y)
@@ -309,7 +311,7 @@ Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down",
 ```
 
 ### State Manager
-This state manager uses **functions as states** as suppose to using classes for states. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is given.
+The state manager employs functions as states instead of using classes for state management. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is provided to illustrate this approach.
 
 Create a new file named `Player.cs` and add the following script to it.
 ```cs
@@ -368,7 +370,7 @@ public partial class Player
 Do a similar process when adding new states.
 
 ### Experimental EventManager
-If you like the idea of having a universal static event manager that handles everything then try out the code below in your own project.
+For those intrigued by the idea of a universal static event manager capable of managing a wide collection of events, the following implementation is provided. While I no longer use this approach personally, I've included it here for anyone who might find it useful.
 
 #### Event Enums
 ```cs
@@ -421,7 +423,7 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 
 ## Tips
 > [!TIP]
-> If you need to execute code before the game quits you can listen to OnQuit.
+> To run code just before the game exits, you can subscribe to the `OnQuit` event.
 > ```cs
 > // This is an async function because you way want to await certain processes before the game exists
 > Global.Services.Get<Global>().OnQuit += async () =>
@@ -432,33 +434,30 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > ```
 
 > [!CAUTION]
-> Avoid deleting `res://Template` and `res://GodotUtils`, doing so will cause certain features to stop working. I have tried my best to move all assets you would need to modify for your game outside of `res://Template` into `res://`. If you want to modify the contents of `res://GodotUtils`, please consider creating a pull request on the [repo](https://github.com/ValksGodotTools/GodotUtils) first.
+> Kindly keep the `res://Template` and `res://GodotUtils` directories intact, as their removal might affect certain features. I've taken the initiative to move all the assets you'll likely need to adjust for your game from `res://Template` to `res://`. If you're interested in modifying `res://GodotUtils`, I encourage you to share your improvements by submitting a pull request to the [repository](https://github.com/ValksGodotTools/GodotUtils).
 
 ## FAQ
-### Q: Why am I getting errors when I load the project for the first time?
-A: This could be caused by 2 different reasons:
-  - You forgot to clone this repository with the `--recursive` flag. Simply run the command `git submodule update --init --recursive` to fix this. I highly recommend installing [GitHub Desktop App](https://github.com/apps/desktop) as it takes cares of things like this for you.  
-  - You are trying to run the project without an internet connection. The first time you run the project a internet connection is required, after that no internet connection is required.
+### Q: I'm encountering errors when I first load the project. What should I do?
+A: There are a couple of potential reasons for this:
+  - You might have forgotten to clone the repository using the `--recursive` flag. To resolve this, simply run `git submodule update --init --recursive`. I highly recommend using the [GitHub Desktop App](https://github.com/apps/desktop), as it handles these details for you.
+  - You're trying to run the project without an internet connection. An internet connection is required the first time you run the project; after that, it's not necessary.
 
-### Q: How do I fix the left hand in all the FPS animations sticking to where the right hand is?
-A: Closing and opening the Godot editor should fix it.
+### Q: The left hand in all the FPS animations is sticking to where the right hand is. How can I fix this?
+A: Simply closing and reopening the Godot editor should resolve the issue.
 
-### Q: Why am I getting errors in the console after switching to `X` genre?
-A: This could have happened due to 3 different reasons I know of:  
-  - You forgot to close the Godot editor and re-open it.  
-  - You clicked on "Save Changes" when a popup came up. You will need to re-download this repository and start over if this is the case.  
-  - You saved a scene that was deleted by the setup script. Simply delete the scene and the errors in the console will go away.  
+### Q: I'm encountering errors in the console after switching to the `X` genre. What could be the issue?
+A: Here are a few common reasons and how to fix them:
+  - Make sure you've closed and reopened the Godot editor after changing genres.
+  - If you accidentally clicked "Save Changes" on a popup, you will most likely need to download the repository again and start fresh.
+  - If you saved a scene that the setup script removed, simply delete that scene, and the console errors should clear up.
 
-### Q: My issue is not listed here.
-A: Try searching for your issue in [issues](https://github.com/ValksGodotTools/Template/issues), if no one else has reported this please open up a [new issue](https://github.com/ValksGodotTools/Template/issues/new).
+### Q: My issue isn't listed here. What should I do?
+A: Feel free to search for your issue in the repository's [issues section](https://github.com/ValksGodotTools/Template/issues). If it hasn't been reported yet, please open a new issue, and I'll be happy to help you.
     
 ## Contributing
-> [!IMPORTANT]
-> Please have a quick look at the [Projects Coding Style](https://github.com/Valks-Games/sankari/wiki/Code-Style) and contact me over Discord before contributing. My Discord username is `valky5`.
-
-> [!NOTE]
-> Here are some [good first issues](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to tackle.
+Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/Valks-Games/sankari/wiki/Code-Style). If you have any questions you can talk to me on Discord, my username is `valky5`.
 
 ## Credits
-> [!NOTE]
-> For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
+For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
+
+Huge thank you to the people in the Godot Cafe Discord for answering all my questions.
