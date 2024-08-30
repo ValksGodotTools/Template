@@ -128,7 +128,7 @@ public partial class Setup : Node
         string path = ProjectSettings.GlobalizePath("res://");
 
         // The IO functions ran below will break if empty folders exist
-        GU.DeleteEmptyFolders(path);
+        GDirectories.DeleteEmptyDirectories(path);
 
         RenameProjectFiles(path, gameName);
         RenameAllNamespaces(path, gameName);
@@ -147,7 +147,7 @@ public partial class Setup : Node
         }
 
         // Ensure all empty folders are deleted when finished
-        GU.DeleteEmptyFolders(path);
+        GDirectories.DeleteEmptyDirectories(path);
 
         GetTree().Quit();
     }
@@ -216,8 +216,8 @@ public partial class Setup : Node
     {
         if (Directory.Exists(path))
         {
-            GU.DeleteEmptyFolders(path);
-            GU.DeleteEmptyFolder(path);
+            GDirectories.DeleteEmptyDirectories(path);
+            GDirectories.DeleteEmptyDirectory(path);
         }
     }
 

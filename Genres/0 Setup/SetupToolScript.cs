@@ -8,7 +8,7 @@ public partial class SetupToolScript : Node
         get => false;
         set
         {
-            GU.DeleteEmptyFolders(ProjectSettings.GlobalizePath("res://"));
+            GDirectories.DeleteEmptyDirectories(ProjectSettings.GlobalizePath("res://"));
             GD.Print("Removed all empty folders from the project");
         }
     }

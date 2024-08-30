@@ -52,7 +52,7 @@ public abstract class ENetServer : ENetLow
         }
         catch (Exception e)
         {
-            GU.Services.Get<Logger>().LogErr(e, "Server");
+            ServiceProvider.Services.Get<Logger>().LogErr(e, "Server");
         }
     }
 
@@ -153,7 +153,7 @@ public abstract class ENetServer : ENetLow
     /// Log a message as the server. This function is thread safe.
     /// </summary>
     public override void Log(object message, BBColor color = BBColor.Green) =>
-        GU.Services.Get<Logger>().Log($"[Server] {message}", color);
+        ServiceProvider.Services.Get<Logger>().Log($"[Server] {message}", color);
     #endregion
 
     #region ENet Thread

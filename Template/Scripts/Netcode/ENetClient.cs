@@ -58,7 +58,7 @@ public abstract class ENetClient : ENetLow
         }
         catch (Exception e)
         {
-            GU.Services.Get<Logger>().LogErr(e, "Client");
+            ServiceProvider.Services.Get<Logger>().LogErr(e, "Client");
         }
     }
 
@@ -138,7 +138,7 @@ public abstract class ENetClient : ENetLow
     /// Log messages as the client. Thread safe.
     /// </summary>
     public override void Log(object message, BBColor color = BBColor.Aqua) =>
-        GU.Services.Get<Logger>().Log($"[Client] {message}", color);
+        ServiceProvider.Services.Get<Logger>().Log($"[Client] {message}", color);
 
     #endregion
 

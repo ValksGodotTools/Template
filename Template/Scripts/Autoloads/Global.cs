@@ -22,7 +22,7 @@ public partial class Global : Node
 
 	public override void _Ready()
 	{
-        GU.Init(Services);
+        ServiceProvider.Init(Services);
         Services.Add(this);
 
         UIConsole console = Global.Services.Get<UIConsole>();

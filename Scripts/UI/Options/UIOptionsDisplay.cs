@@ -123,20 +123,10 @@ public partial class UIOptionsDisplay : Control
     }
 
     void _on_window_width_text_changed(string text) =>
-        GU.ValidateNumber(
-            text,
-            resX,
-            0,
-            DisplayServer.ScreenGetSize().X,
-            ref prevNumX);
+        text.ValidateNumber(resX, 0, ScreenGetSize().X, ref prevNumX);
 
     void _on_window_height_text_changed(string text) =>
-        GU.ValidateNumber(
-            text,
-            resY,
-            0,
-            DisplayServer.ScreenGetSize().Y,
-            ref prevNumY);
+        text.ValidateNumber(resY, 0, ScreenGetSize().Y, ref prevNumY);
 
     void _on_window_width_text_submitted(string t) => ApplyWindowSize();
     void _on_window_height_text_submitted(string t) => ApplyWindowSize();
