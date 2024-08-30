@@ -169,8 +169,8 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 ### Godot Utils
 The submodule [Godot Utils](https://github.com/ValksGodotTools/GodotUtils) contains useful classes and extensions.
 
-#### Creating Tweens
-Tweening has never been so easy :fire:
+#### 🦄 Creating Tweens
+Tweening has never been so easy!
 ```cs
 new GTween(colorRect)
     .SetParallel()
@@ -195,35 +195,18 @@ tween.Stop();
 > GTween.Delay(node, seconds, () => callback);
 > ```
 
-#### Highlighted Functions
+#### 🖨️ Printing Everything
+The `.PrintFull()` extension will print all public properties and fields from any kind of object (yes this includes nodes!)
+
 ```cs
-// Prints all public properties and fields from this node
-GD.Print(node.PrintFull());
-
-// Recursively searches the nodes children for node of type T
-T node = node.GetNode<T>();
-
-// Thread safe logger
-Game.Log()
-
-// Fetches the first animation frame and crops it to only non-transparent pixels
-animatedSprite.GetScaledSize();
-
-// Useful shortcut extensions
-animationTree.SetCondition()
-animationTree.SetParam()
-
-// Other useful functions
-node.QueueFreeChildren();
-node.AddChildDeferred();
-node.WaitOneFrame();
-IEnumerable<T>.ForEach()
-lineEdit.Filter()
-GU.GetLayerValues()
-GU.LoadPrefab<T>()
-
-// AND MANY MORE!!!
+GD.Print(node.PrintFull())
 ```
+
+#### 🔎 Finding Node\<T\>
+Do you need to loop through a array of entity nodes and each entity will have a Sprite2D node somewhere in the tree but you don't know exactly where? Well just use `entity.GetNode<Sprite2D>()`! This function will recursively search the children for the first type it comes across. This function is a bit expensive, maybe use it only when you really need it.
+
+#### 🦆 Thread Safe Logger
+Using `Game.Log()` can be used across any thread. No more jumbled logs when logging on the client, server and Godot threads.
 
 ### Localisation
 > [!NOTE]
