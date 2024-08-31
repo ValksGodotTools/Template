@@ -1,3 +1,4 @@
+global using CSharpUtils;
 global using Godot;
 global using GodotUtils;
 global using System;
