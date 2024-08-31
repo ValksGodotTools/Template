@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.3.0">
+﻿<Project Sdk="Godot.NET.Sdk/4.3.0">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
@@ -12,4 +12,12 @@
     <PackageReference Include="ENet-CSharp" Version="2.4.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj"
+                            OutputItemType="Analyzer"
+                            ReferenceOutputAssembly="false" />
+    </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="Scenes\**\*.tscn" />
+    </ItemGroup>
 </Project>
