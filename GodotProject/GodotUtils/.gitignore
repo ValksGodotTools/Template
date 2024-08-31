@@ -1,8 +1,0 @@
-# Godot Ignores
-*.import
-
-# Visual Studio Ignores
-bin/*
-obj/*
-.vs/*
-

@@ -6,16 +6,11 @@
     <RootNamespace>Template</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="GodotUtils\Snippets\VS2022\ExportNodePath.snippet" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ENet-CSharp" Version="2.4.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj"
-                            OutputItemType="Analyzer"
-                            ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
         <AdditionalFiles Include="Scenes\Prefabs\**\*.tscn" />
