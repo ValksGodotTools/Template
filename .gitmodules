@@ -1,3 +1,6 @@
 [submodule "GodotProject/Template/GodotUtils"]
 	path = GodotProject/Template/GodotUtils
 	url = https://github.com/ValksGodotTools/GodotUtils
+[submodule "GodotProject/Template/CSharpUtils"]
+	path = GodotProject/Template/CSharpUtils
+	url = https://github.com/ValksGodotTools/CSharpUtils
