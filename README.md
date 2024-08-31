@@ -15,7 +15,6 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [Audio Manager](#audiomanager)
     - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
-    - [Experimental Event Manager](#experimental-eventmanager)
 3. [Tips](#tips)
 4. [FAQ](#faq)
 5. [Contributing](#contributing)
@@ -368,58 +367,6 @@ public partial class Player
 }
 ```
 Do a similar process when adding new states.
-
-### Experimental EventManager
-For those intrigued by the idea of a universal static event manager capable of managing a wide collection of events, the following implementation is provided. While I no longer use this approach personally, I've included it here for anyone who might find it useful.
-
-#### Event Enums
-```cs
-public enum EventGeneric
-{
-    OnKeyboardInput
-}
-
-public enum EventPlayer
-{
-    OnPlayerSpawn
-}
-```
-
-#### Event Dictionaries
-```cs
-public static class Events
-{
-    public static EventManager<EventGeneric> Generic { get; } = new();
-    public static EventManager<EventPlayer> Player { get; } = new();
-}
-```
-
-#### Example #1
-```cs
-Events.Generic.AddListener(EventGeneric.OnKeyboardInput, (args) => 
-{
-    GD.Print(args[0]);
-    GD.Print(args[1]);
-    GD.Print(args[2]);
-}, "someId");
-
-Events.Generic.RemoveListeners(EventGeneric.OnKeyboardInput, "someId");
-
-// Listener is never called because it was removed
-Events.Generic.Notify(EventGeneric.OnKeyboardInput, 1, 2, 3);
-```
-
-#### Example #2
-```cs
-Events.Player.AddListener<PlayerSpawnArgs>(EventPlayer.OnPlayerSpawn, (args) => 
-{
-    GD.Print(args.Name);
-    GD.Print(args.Location);
-    GD.Print(args.Player);
-});
-
-Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, location, player));
-```
 
 ## Tips
 > [!TIP]
