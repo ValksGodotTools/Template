@@ -26,6 +26,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 ### 🌐 Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 2. Clone the repository using `git clone --recursive https://github.com/ValksGodotTools/Template`
+3. Open `project.godot` located in `Template/GodotProject/project.godot`
 
 ### 🔧 Run the game with `F5`
 
