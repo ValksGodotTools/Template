@@ -168,7 +168,6 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 > Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ### Godot Utils
-The Godot Utils repository can be found [here](https://github.com/ValksGodotTools/GodotUtils).
 
 #### 🦄 Creating Tweens
 Tweening has never been so easy!
