@@ -25,7 +25,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 
 ### 🌐 Download the repo
 1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
-2. Clone the repository using `git clone --recursive https://github.com/ValksGodotTools/Template`
+2. Clone the repository using `git clone https://github.com/ValksGodotTools/Template`
 3. Open `project.godot` located in `Template/GodotProject/project.godot`
 
 ### 🔧 Run the game with `F5`
@@ -434,14 +434,9 @@ Events.Player.Notify(EventPlayer.OnPlayerSpawn, new PlayerSpawnArgs(name, locati
 > }
 > ```
 
-> [!CAUTION]
-> Kindly keep the `res://Template` and `res://GodotUtils` directories intact, as their removal might affect certain features. I've taken the initiative to move all the assets you'll likely need to adjust for your game from `res://Template` to `res://`. If you're interested in modifying `res://GodotUtils`, I encourage you to share your improvements by submitting a pull request to the [repository](https://github.com/ValksGodotTools/GodotUtils).
-
 ## FAQ
 ### Q: I'm encountering errors when I first load the project. What should I do?
-A: There are a couple of potential reasons for this:
-  - You might have forgotten to clone the repository using the `--recursive` flag. To resolve this, simply run `git submodule update --init --recursive`. I highly recommend using the [GitHub Desktop App](https://github.com/apps/desktop), as it handles these details for you.
-  - You're trying to run the project without an internet connection. An internet connection is required the first time you run the project; after that, it's not necessary.
+A: You could be trying to run the project without an internet connection. An internet connection is required the first time you run the project; after that, it's not necessary.
 
 ### Q: The left hand in all the FPS animations is sticking to where the right hand is. How can I fix this?
 A: Simply closing and reopening the Godot editor should resolve the issue.
@@ -461,4 +456,4 @@ Before you jump into contributing, take a moment to review the [Coding Style Gui
 ## Credits
 For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
 
-Huge thank you to the people in the Godot Cafe Discord for answering all my questions.
+Huge thank you to the people in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
