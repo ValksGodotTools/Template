@@ -7,14 +7,15 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 2. [Features](#features)
     - [Multiplayer](#multiplayer)
     - [FPS Scene](#fps-scene)
-    - [Mod Loader](#mod-loader)
     - [Godot Utils](#godot-utils)
+    - [Loading Prefabs](#loading-prefabs)
     - [Localisation](#localisation)
     - [Services](#services)
     - [Console Commands](#console-commands)
     - [Audio Manager](#audiomanager)
     - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
+    - [Mod Loader](#mod-loader)
 3. [Tips](#tips)
 4. [FAQ](#faq)
 5. [Contributing](#contributing)
@@ -162,10 +163,6 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 > [!TIP]
 > Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
 
-### Mod Loader
-> [!NOTE]
-> Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
-
 ### Godot Utils
 
 #### 🦄 Creating Tweens
@@ -206,6 +203,18 @@ If you have an array of entity nodes and each entity contains a Sprite2D node so
 
 #### 🦆 Thread Safe Logger
 By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
+
+### Loading Prefabs
+All prefabs (`.tscn` files) are loaded from `res://Scenes/Prefabs` and each one generates a `Prefab` enum entry when you build the project. Upon making changes to the prefabs, you will need to restart your IDE to see the updated `Prefab` enum.
+
+If a prefab is located in for example `res://Scenes/Prefabs/Enemy/snowman.tscn` then `Prefab.EnemySnowman` will be created.
+
+Prefabs are loaded using the following syntax:
+
+```cs
+// This assumes there is a Player.cs script attached to the Player node
+Player player = Game.LoadPrefab<Player>(Prefab.Player);
+```
 
 ### Localisation
 > [!NOTE]
@@ -367,6 +376,10 @@ public partial class Player
 }
 ```
 Do a similar process when adding new states.
+
+### Mod Loader
+> [!NOTE]
+> Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
 
 ## Tips
 > [!TIP]
