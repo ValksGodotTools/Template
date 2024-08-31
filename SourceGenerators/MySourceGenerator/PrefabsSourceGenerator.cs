@@ -87,7 +87,10 @@ namespace MySourceGenerator
             sb.AppendLine("{");
 
             string basePath = "Scenes\\Prefabs\\";
+            List<string> relativePaths = new List<string>();
+            List<string> enumNames = new List<string>();
 
+            // Populate the lists with relative paths and enum names
             foreach (AdditionalText file in tscnFiles)
             {
                 string filePath = file.Path;
@@ -99,7 +102,14 @@ namespace MySourceGenerator
                     .Replace(".tscn", "")
                     .SnakeCaseToPascalCase();
 
-                sb.AppendLine($"    {enumName},");
+                relativePaths.Add(relativePath);
+                enumNames.Add(enumName);
+            }
+
+            // Generate the enum using the enumNames list
+            for (int i = 0; i < enumNames.Count; i++)
+            {
+                sb.AppendLine($"    {enumNames[i]},");
             }
 
             sb.AppendLine("}");
@@ -108,26 +118,18 @@ namespace MySourceGenerator
             sb.AppendLine("public static class MapPrefabsToPaths");
             sb.AppendLine("{");
 
-            // Generate the dictionary
+            // Generate the dictionary using the enumNames and relativePaths lists
             sb.AppendLine("    private static readonly Dictionary<Prefab, string> prefabPaths = new Dictionary<Prefab, string>");
             sb.AppendLine("    {");
 
-            foreach (AdditionalText file in tscnFiles)
+            for (int i = 0; i < enumNames.Count; i++)
             {
-                string filePath = file.Path;
-                int startIndex = filePath.IndexOf(basePath) + basePath.Length;
-                string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
-                string resourcePath = $"res://{basePath.Replace("\\", "/")}{relativePath}";
-
-                string enumName = relativePath
-                    .Replace("/", "_")
-                    .Replace(".tscn", "")
-                    .SnakeCaseToPascalCase();
-
-                sb.AppendLine($"        {{ Prefab.{enumName}, \"{resourcePath}\" }},");
+                string resourcePath = $"res://{basePath.Replace("\\", "/")}{relativePaths[i]}";
+                sb.AppendLine($"        {{ Prefab.{enumNames[i]}, \"{resourcePath}\" }},");
             }
 
             sb.AppendLine("    };");
+            sb.AppendLine();
 
             // Generate the GetPath method
             sb.AppendLine("    public static string GetPath(Prefab prefab)");
