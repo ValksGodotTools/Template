@@ -382,7 +382,11 @@ Do a similar process when adding new states.
 
 ## FAQ
 ### Q: I'm encountering errors when I first load the project. What should I do?
-A: You could be trying to run the project without an internet connection. An internet connection is required the first time you run the project; after that, it's not necessary.
+A: If you're seeing errors on your first project load, it could be because you're offline or didn't clone the submodules. An internet connection is required when running the project for the first time, after that it's not required. To get submodules, use:
+
+```sh
+git submodule update --init --recursive
+```
 
 ### Q: The left hand in all the FPS animations is sticking to where the right hand is. How can I fix this?
 A: Simply closing and reopening the Godot editor should resolve the issue.
