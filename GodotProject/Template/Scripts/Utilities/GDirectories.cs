@@ -1,4 +1,4 @@
-﻿namespace GodotUtils;
+﻿namespace Template;
 
 using Godot;
 using System.IO;

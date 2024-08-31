@@ -1,6 +1,6 @@
 namespace Template.TopDown2D;
 
-using GodotUtils.World2D.TopDown;
+using Template.World2D.TopDown;
 
 public partial class Player : CharacterBody2D, INetPlayer
 {

@@ -1,5 +1,4 @@
 global using Godot;
-global using GodotUtils;
 global using System;
 global using System.Collections.Generic;
 global using System.Diagnostics;

@@ -79,7 +79,7 @@ namespace MySourceGenerator
         private static string GeneratePrefabsClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"namespace GodotUtils;");
+            sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
             sb.AppendLine();
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine();

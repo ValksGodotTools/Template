@@ -1,4 +1,4 @@
-﻿namespace GodotUtils;
+﻿namespace Template;
 
 public static class ExtensionsDictionary
 {

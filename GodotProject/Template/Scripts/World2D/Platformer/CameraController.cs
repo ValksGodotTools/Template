@@ -1,4 +1,4 @@
-namespace GodotUtils.World2D.Platformer;
+namespace Template.World2D.Platformer;
 
 using Godot;
 

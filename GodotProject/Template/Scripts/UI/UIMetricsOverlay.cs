@@ -1,4 +1,4 @@
-namespace SpaceGame;
+namespace Template;
 
 using Monitor = Performance.Monitor;
 

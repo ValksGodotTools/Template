@@ -1,4 +1,4 @@
-namespace GodotUtils.World2D.TopDown;
+namespace Template.World2D.TopDown;
 
 using Godot;
 
