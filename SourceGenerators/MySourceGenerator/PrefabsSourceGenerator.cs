@@ -86,10 +86,17 @@ namespace MySourceGenerator
             sb.AppendLine("public enum Prefab");
             sb.AppendLine("{");
 
+            string basePath = "Scenes\\Prefabs\\";
+
             foreach (AdditionalText file in tscnFiles)
             {
-                string fileName = Path.GetFileNameWithoutExtension(file.Path);
-                sb.AppendLine($"    {fileName.SnakeCaseToPascalCase()},");
+                string filePath = file.Path;
+                int startIndex = filePath.IndexOf(basePath) + basePath.Length;
+                string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
+                string resourcePath = $"res://{relativePath}";
+
+                string enumName = Path.GetFileNameWithoutExtension(relativePath).Replace("/", "_").SnakeCaseToPascalCase();
+                sb.AppendLine($"    {enumName},");
             }
 
             sb.AppendLine("}");
@@ -104,9 +111,13 @@ namespace MySourceGenerator
 
             foreach (AdditionalText file in tscnFiles)
             {
-                string fileName = Path.GetFileNameWithoutExtension(file.Path);
-                string resourcePath = $"res://Scenes/Prefabs/{fileName}.tscn";
-                sb.AppendLine($"        {{ Prefab.{fileName.SnakeCaseToPascalCase()}, \"{resourcePath}\" }},");
+                string filePath = file.Path;
+                int startIndex = filePath.IndexOf(basePath) + basePath.Length;
+                string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
+                string resourcePath = $"res://{basePath.Replace("\\", "/")}{relativePath}";
+
+                string enumName = Path.GetFileNameWithoutExtension(relativePath).Replace("/", "_").SnakeCaseToPascalCase();
+                sb.AppendLine($"        {{ Prefab.{enumName}, \"{resourcePath}\" }},");
             }
 
             sb.AppendLine("    };");
