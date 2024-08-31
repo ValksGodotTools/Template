@@ -1,0 +1,3 @@
+[submodule "GodotProject/Template/GodotUtils"]
+	path = GodotProject/Template/GodotUtils
+	url = https://github.com/ValksGodotTools/GodotUtils
