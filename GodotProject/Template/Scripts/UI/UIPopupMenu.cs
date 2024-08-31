@@ -20,7 +20,7 @@ public partial class UIPopupMenu : Control
         menu = GetNode<PanelContainer>("%Menu");
         vbox = GetNode<VBoxContainer>("%Navigation");
 
-        Options = GSceneFileUtils.LoadPrefab<UIOptions>("UI/options");
+        Options = GSceneFileUtils.LoadPrefab<UIOptions>(Prefab.Options);
         AddChild(Options);
         Options.Hide();
         Hide();

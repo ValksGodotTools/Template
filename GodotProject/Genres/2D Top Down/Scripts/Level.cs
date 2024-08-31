@@ -35,14 +35,14 @@ public partial class Level : Node, INetLevel
 
     public void AddLocalPlayer()
     {
-        Player = GSceneFileUtils.LoadPrefab<Player>("player");
+        Player = GSceneFileUtils.LoadPrefab<Player>(Prefab.Player);
         AddChild(Player);
         Player.Position = Net.PlayerSpawnPosition;
     }
 
     public void AddOtherPlayer(uint id, PlayerData playerData)
     {
-        OtherPlayer otherPlayer = GSceneFileUtils.LoadPrefab<OtherPlayer>("other_player");
+        OtherPlayer otherPlayer = GSceneFileUtils.LoadPrefab<OtherPlayer>(Prefab.OtherPlayer);
 
         otherPlayer.LastServerPosition = playerData.Position;
         AddChild(otherPlayer);

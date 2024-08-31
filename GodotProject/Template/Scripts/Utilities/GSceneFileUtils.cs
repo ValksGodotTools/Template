@@ -7,8 +7,8 @@ public static class GSceneFileUtils
     /// <summary>
     /// Loads a scene from res://Scenes/Prefabs and instantiates it
     /// </summary>
-    public static T LoadPrefab<T>(string prefab) where T : Node =>
-        (T)GD.Load<PackedScene>($"res://Scenes/Prefabs/{prefab}.tscn").Instantiate();
+    public static T LoadPrefab<T>(Prefab prefab) where T : Node =>
+        (T)GD.Load<PackedScene>(MapPrefabsToPaths.GetPath(prefab)).Instantiate();
 
     public static void FixBrokenDependencies()
     {
