@@ -93,9 +93,12 @@ namespace MySourceGenerator
                 string filePath = file.Path;
                 int startIndex = filePath.IndexOf(basePath) + basePath.Length;
                 string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
-                string resourcePath = $"res://{relativePath}";
 
-                string enumName = Path.GetFileNameWithoutExtension(relativePath).Replace("/", "_").SnakeCaseToPascalCase();
+                string enumName = relativePath
+                    .Replace("/", "_")
+                    .Replace(".tscn", "")
+                    .SnakeCaseToPascalCase();
+
                 sb.AppendLine($"    {enumName},");
             }
 
@@ -116,7 +119,11 @@ namespace MySourceGenerator
                 string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
                 string resourcePath = $"res://{basePath.Replace("\\", "/")}{relativePath}";
 
-                string enumName = Path.GetFileNameWithoutExtension(relativePath).Replace("/", "_").SnakeCaseToPascalCase();
+                string enumName = relativePath
+                    .Replace("/", "_")
+                    .Replace(".tscn", "")
+                    .SnakeCaseToPascalCase();
+
                 sb.AppendLine($"        {{ Prefab.{enumName}, \"{resourcePath}\" }},");
             }
 
