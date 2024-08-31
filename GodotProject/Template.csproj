@@ -18,6 +18,6 @@
                             ReferenceOutputAssembly="false" />
     </ItemGroup>
     <ItemGroup>
-        <AdditionalFiles Include="Scenes\**\*.tscn" />
+        <AdditionalFiles Include="Scenes\Prefabs\**\*.tscn" />
     </ItemGroup>
 </Project>
