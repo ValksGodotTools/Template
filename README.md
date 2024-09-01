@@ -53,70 +53,105 @@ The 2D Top Down genre includes a **client-authoritative** multiplayer setup, dem
 
 https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
-> [!IMPORTANT]
-> A common oversight is using one data type for writing and another for reading. For example, if you have an integer `playerCount` and you write it with `writer.Write(playerCount)`, but then read it as a byte with `playerCount = reader.ReadByte()`, the data will be malformed because `playerCount` wasn't converted to a byte prior to writing. To avoid this, ensure you cast your data to the correct type before writing, even if it feels redundant.
+#### First Look at a Client Packet
+Below is an example of a client packet. The client uses this packet to inform the server of its position. The `Handle(...)` method is executed on the server thread, so only elements accessible on that thread should be accessed.
 
-> [!CAUTION]
+> [!IMPORTANT]
 > Do not directly access properties or methods across threads unless they are explicity marked as thread safe. Not following thread safety will result in random crashes with no errors logged to the console.
 
-Below is an example of a client packet. The client uses this packet to inform the server of its position. The `Handle(...)` method is executed on the server thread, so only elements accessible on that thread should be accessed.
 ```cs
 public class CPacketPosition : ClientPacket
 {
+    [NetSend(1)]
     public Vector2 Position { get; set; }
-
-    public override void Write(PacketWriter writer)
-    {
-        writer.Write((Vector2)Position);
-    }
-
-    public override void Read(PacketReader reader)
-    {
-        Position = reader.ReadVector2();
-    }
 
     public override void Handle(ENetServer s, Peer client)
     {
-        GameServer server = (GameServer)s;
-        server.Players[client.ID].Position = Position;
+        // The packet handled server-side (ENet Server thread)
     }
 }
 ```
 
+#### First Look at a Server Packet
 Below is an example of a server packet. The server uses this packet to inform each client about the position updates of all other clients. The `Handle(...)` method is executed on the client thread, so only elements accessible on that thread should be accessed.
 ```cs
 public class SPacketPlayerPositions : ServerPacket
 {
+    [NetSend(1)]
     public Dictionary<uint, Vector2> Positions { get; set; }
-
-    public override void Write(PacketWriter writer)
-    {
-        writer.Write(Positions);
-    }
-
-    public override void Read(PacketReader reader)
-    {
-        Positions = reader.Read<Dictionary<uint, Vector2>>();
-    }
 
     public override void Handle(ENetClient client)
     {
-        INetLevel level = Global.Services.Get<Level>();
-
-        foreach (KeyValuePair <uint, Vector2> pair in Positions)
-        {
-            if (level.OtherPlayers.ContainsKey(pair.Key))
-                level.OtherPlayers[pair.Key].LastServerPosition = pair.Value;
-        }
-
-        // Send a client position packet to the server immediately right after
-        // a server positions packet is received
-        level.Player.NetSendPosition();
+        // The packet handled client-side (Godot thread)
     }
 }
 ```
 
-Sending a packet from the client
+#### Net Send Attribute
+This client packet sends the username then the position in this order.
+```cs
+public class CPacketJoin : ClientPacket
+{
+    [NetSend(1)]
+    public string Username { get; set; }
+
+    [NetSend(2)]
+    public Vector2 Position { get; set; }
+
+    public override void Handle(ENetClient client)
+    {
+        // The packet handled client-side (Godot thread)
+    }
+}
+```
+
+#### Handling Conditional Logic
+Do not use the NetSend attribute if you need to use conditional logic.
+
+> [!IMPORTANT]
+> A common oversight is using one data type for writing and another for reading. For example, if you have an integer `playerCount` and you write it with `writer.Write(playerCount)`, but then read it as a byte with `playerCount = reader.ReadByte()`, the data will be malformed because `playerCount` wasn't converted to a byte prior to writing. To avoid this, ensure you cast your data to the correct type before writing, even if it feels redundant.
+
+```cs
+public class SPacketPlayerJoinLeave : ServerPacket
+{
+    public uint Id { get; set; }
+    public string Username { get; set; }
+    public Vector2 Position { get; set; }
+    public bool Joined { get; set; }
+
+    public override void Write(PacketWriter writer)
+    {
+        writer.Write((uint)Id);
+        writer.Write((bool)Joined);
+
+        if (Joined)
+        {
+            writer.Write((string)Username);
+            writer.Write((Vector2)Position);
+        }
+    }
+
+    public override void Read(PacketReader reader)
+    {
+        Id = reader.ReadUInt();
+
+        Joined = reader.ReadBool();
+
+        if (Joined)
+        {
+            Username = reader.ReadString();
+            Position = reader.ReadVector2();
+        }
+    }
+
+    public override void Handle(ENetClient client)
+    {
+        // The packet handled client-side (Godot thread)
+    }
+}
+```
+
+#### Sending a Packet from the Client
 ```cs
 // Player.cs
 Net net = Global.Services.Get<Net>();
@@ -127,7 +162,7 @@ net.Client.Send(new CPacketPosition
 });
 ```
 
-Sending a packet from the server
+#### Sending a Packet from the Server
 ```cs
 Send(new SPacketPlayerPositions
 {
@@ -135,6 +170,7 @@ Send(new SPacketPlayerPositions
 }, Peers[pair.Key]);
 ```
 
+#### Net Exclude Attribute
 Using the `[NetExclude]` attribute will exclude properties from being written or read in the network.
 ```cs
 public class PlayerData
