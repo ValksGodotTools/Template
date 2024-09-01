@@ -6,6 +6,7 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Collections;
 
 public class PacketReader : IDisposable
 {
@@ -40,88 +41,138 @@ public class PacketReader : IDisposable
     public Vector2 ReadVector2() => new(ReadFloat(), ReadFloat());
     public Vector3 ReadVector3() => new(ReadFloat(), ReadFloat(), ReadFloat());
 
-    public dynamic Read(Type t)
+    public T Read<T>()
     {
-        if (t == typeof(byte)) return ReadByte();
-        if (t == typeof(sbyte)) return ReadSByte();
-        if (t == typeof(char)) return ReadChar();
-        if (t == typeof(string)) return ReadString();
-        if (t == typeof(bool)) return ReadBool();
-        if (t == typeof(short)) return ReadShort();
-        if (t == typeof(ushort)) return ReadUShort();
-        if (t == typeof(int)) return ReadInt();
-        if (t == typeof(uint)) return ReadUInt();
-        if (t == typeof(float)) return ReadFloat();
-        if (t == typeof(double)) return ReadDouble();
-        if (t == typeof(long)) return ReadLong();
-        if (t == typeof(ulong)) return ReadULong();
-        if (t == typeof(byte[])) return ReadBytes();
-        if (t == typeof(Vector2)) return ReadVector2();
+        Type t = typeof(T);
+
+        if (t.IsPrimitive || t == typeof(string))
+        {
+            return ReadPrimitive<T>(t);
+        }
+
+        if (t == typeof(Vector2))
+        {
+            return (T)(object)ReadVector2();
+        }
+
+        if (t == typeof(Vector3))
+        {
+            return (T)(object)ReadVector3();
+        }
 
         if (t.IsGenericType)
         {
-            Type g = t.GetGenericTypeDefinition();
-
-            if (g == typeof(IList<>) || g == typeof(List<>))
-            {
-                Type vt = t.GetGenericArguments()[0];
-
-                int count = ReadInt();
-
-                dynamic list = Activator
-                    .CreateInstance(typeof(List<>)
-                    .MakeGenericType(vt));
-
-                for (int i = 0; i < count; i++)
-                    list.Add(Read(vt));
-
-                return list;
-            }
-
-            if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
-            {
-                Type kt = t.GetGenericArguments()[0];
-                Type vt = t.GetGenericArguments()[1];
-
-                int count = ReadInt();
-
-                dynamic dict = Activator
-                    .CreateInstance(typeof(Dictionary<,>)
-                    .MakeGenericType(kt, vt));
-
-                for (int i = 0; i < count; i++)
-                    dict.Add(Read(kt), Read(vt));
-
-                return dict;
-            }
+            return ReadGeneric<T>(t);
         }
 
         if (t.IsEnum)
         {
-            byte v = ReadByte();
-            return Enum.ToObject(t, v);
+            return ReadEnum<T>();
         }
 
-        if (t.IsValueType)
+        if (t.IsValueType || t.IsClass)
         {
-            object v = Activator.CreateInstance(t);
-
-            IOrderedEnumerable<FieldInfo> fields = t
-                .GetFields(BindingFlags.Public | BindingFlags.Instance)
-                .OrderBy(field => field.MetadataToken);
-
-            foreach (FieldInfo f in fields)
-                f.SetValue(v, Read(f.FieldType));
-
-            return v;
+            return ReadStructOrClass<T>(t);
         }
 
         throw new NotImplementedException(
             "PacketReader: " + t + " is not a supported type.");
     }
 
-    public T Read<T>() =>
-        Read(typeof(T));
+    private T ReadPrimitive<T>(Type t)
+    {
+        if (t == typeof(byte)) return (T)(object)ReadByte();
+        if (t == typeof(sbyte)) return (T)(object)ReadSByte();
+        if (t == typeof(char)) return (T)(object)ReadChar();
+        if (t == typeof(string)) return (T)(object)ReadString();
+        if (t == typeof(bool)) return (T)(object)ReadBool();
+        if (t == typeof(short)) return (T)(object)ReadShort();
+        if (t == typeof(ushort)) return (T)(object)ReadUShort();
+        if (t == typeof(int)) return (T)(object)ReadInt();
+        if (t == typeof(uint)) return (T)(object)ReadUInt();
+        if (t == typeof(float)) return (T)(object)ReadFloat();
+        if (t == typeof(double)) return (T)(object)ReadDouble();
+        if (t == typeof(long)) return (T)(object)ReadLong();
+        if (t == typeof(ulong)) return (T)(object)ReadULong();
+
+        throw new NotImplementedException("PacketReader: " + t + " is not a supported primitive type.");
+    }
+
+    private T ReadEnum<T>()
+    {
+        byte v = ReadByte();
+        return (T)Enum.ToObject(typeof(T), v);
+    }
+
+    private T ReadGeneric<T>(Type t)
+    {
+        Type g = t.GetGenericTypeDefinition();
+
+        if (g == typeof(IList<>) || g == typeof(List<>))
+        {
+            Type vt = t.GetGenericArguments()[0];
+
+            int count = ReadInt();
+
+            IList list = (IList)Activator
+                .CreateInstance(typeof(List<>)
+                .MakeGenericType(vt));
+
+            for (int i = 0; i < count; i++)
+                list.Add(Read(vt));
+
+            return (T)(object)list;
+        }
+
+        if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
+        {
+            Type kt = t.GetGenericArguments()[0];
+            Type vt = t.GetGenericArguments()[1];
+
+            int count = ReadInt();
+
+            IDictionary dict = (IDictionary)Activator
+                .CreateInstance(typeof(Dictionary<,>)
+                .MakeGenericType(kt, vt));
+
+            for (int i = 0; i < count; i++)
+                dict.Add(Read(kt), Read(vt));
+
+            return (T)(object)dict;
+        }
+
+        throw new NotImplementedException("PacketReader: " + t + " is not a supported generic type.");
+    }
+
+    private T ReadStructOrClass<T>(Type t)
+    {
+        T v = Activator.CreateInstance<T>();
+
+        IOrderedEnumerable<FieldInfo> fields = t
+            .GetFields(BindingFlags.Public | BindingFlags.Instance)
+            .OrderBy(field => field.MetadataToken);
+
+        foreach (FieldInfo f in fields)
+            f.SetValue(v, Read(f.FieldType));
+
+        IOrderedEnumerable<PropertyInfo> properties = t
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanWrite)
+            .OrderBy(property => property.MetadataToken);
+
+        foreach (PropertyInfo p in properties)
+            p.SetValue(v, Read(p.PropertyType));
+
+        return v;
+    }
+
+    private object Read(Type t)
+    {
+        return typeof(PacketReader)
+            .GetMethod(nameof(Read), BindingFlags.Instance | BindingFlags.Public)
+            .MakeGenericMethod(t)
+            .Invoke(this, null);
+    }
 
     public void Dispose()
     {

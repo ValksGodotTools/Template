@@ -2,6 +2,7 @@ namespace Template.Netcode;
 
 using Godot;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,64 +16,52 @@ public class PacketWriter : IDisposable
 
     public PacketWriter() => writer = new BinaryWriter(Stream);
 
-    public void Write(byte v) => writer.Write(v);
-    public void Write(sbyte v) => writer.Write(v);
-    public void Write(char v) => writer.Write(v);
-    public void Write(string v) => writer.Write(v);
-    public void Write(bool v) => writer.Write(v);
-    public void Write(short v) => writer.Write(v);
-    public void Write(ushort v) => writer.Write(v);
-    public void Write(int v) => writer.Write(v);
-    public void Write(uint v) => writer.Write(v);
-    public void Write(float v) => writer.Write(v);
-    public void Write(double v) => writer.Write(v);
-    public void Write(long v) => writer.Write(v);
-    public void Write(ulong v) => writer.Write(v);
-
-    public void Write(byte[] v, bool header = true)
-    {
-        if (header)
-            Write(v.Length);
-
-        writer.Write(v);
-    }
-
-    public void Write(Vector2 v)
-    {
-        writer.Write(v.X);
-        writer.Write(v.Y);
-    }
-
-    public void Write(Vector3 v)
-    {
-        writer.Write(v.X);
-        writer.Write(v.Y);
-        writer.Write(v.Z);
-    }
-
     public void Write<T>(T v)
     {
-        switch (v)
-        {
-            case byte k: Write(k); return;
-            case sbyte k: Write(k); return;
-            case char k: Write(k); return;
-            case string k: Write(k); return;
-            case bool k: Write(k); return;
-            case short k: Write(k); return;
-            case ushort k: Write(k); return;
-            case int k: Write(k); return;
-            case uint k: Write(k); return;
-            case float k: Write(k); return;
-            case double k: Write(k); return;
-            case long k: Write(k); return;
-            case ulong k: Write(k); return;
-            case byte[] k: Write(k, true); return;
-            case Vector2 k: Write(k); return;
-        }
+        if (v == null)
+            throw new ArgumentNullException(nameof(v));
 
         Type t = v.GetType();
-        dynamic d = v;
+
+        if (t.IsPrimitive || t == typeof(string))
+        {
+            WritePrimitive(v);
+            return;
+        }
+
+        if (t == typeof(Vector2))
+        {
+            Vector2 vector = (Vector2)(object)v;
+            Write(vector.X);
+            Write(vector.Y);
+            return;
+        }
+
+        if (t == typeof(Vector3))
+        {
+            Vector3 vector = (Vector3)(object)v;
+            Write(vector.X);
+            Write(vector.Y);
+            Write(vector.Z);
+            return;
+        }
+
+        if (t.IsEnum)
+        {
+            Write((byte)Convert.ChangeType(v, typeof(byte)));
+            return;
+        }
+
+        if (t.IsArray)
+        {
+            Array array = (Array)(object)v;
+            Write(array.Length);
+
+            foreach (object item in array)
+                Write(item);
+
+            return;
+        }
 
         if (t.IsGenericType)
         {
@@ -80,42 +69,54 @@ public class PacketWriter : IDisposable
 
             if (g == typeof(IList<>) || g == typeof(List<>))
             {
-                Write(d.Count);
+                IList list = (IList)v;
+                Write(list.Count);
 
-                foreach (dynamic item in d)
-                    Write<dynamic>(item);
+                foreach (object item in list)
+                    Write(item);
 
                 return;
             }
 
             if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
             {
-                Write(d.Count);
+                IDictionary dict = (IDictionary)v;
+                Write(dict.Count);
 
-                foreach (dynamic item in d)
+                foreach (DictionaryEntry item in dict)
                 {
-                    Write<dynamic>(item.Key);
-                    Write<dynamic>(item.Value);
+                    Write(item.Key);
+                    Write(item.Value);
                 }
 
                 return;
             }
         }
 
-        if (t.IsEnum)
+        if (t.IsClass || t.IsValueType)
         {
-            Write((byte)d);
-            return;
-        }
-
-        if (t.IsValueType)
-        {
-            IOrderedEnumerable<FieldInfo> fields = t
+            // Handle fields
+            FieldInfo[] fields = t
                 .GetFields(BindingFlags.Public | BindingFlags.Instance)
-                .OrderBy(field => field.MetadataToken);
+                .OrderBy(field => field.MetadataToken)
+                .ToArray();
 
             foreach (FieldInfo field in fields)
-                Write<dynamic>(field.GetValue(d));
+            {
+                Write(field.GetValue(v));
+            }
+
+            // Handle properties
+            PropertyInfo[] properties = t
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead)
+                .OrderBy(property => property.MetadataToken)
+                .ToArray();
+
+            foreach (PropertyInfo property in properties)
+            {
+                Write(property.GetValue(v));
+            }
 
             return;
         }
@@ -123,10 +124,26 @@ public class PacketWriter : IDisposable
         throw new NotImplementedException("PacketWriter: " + t + " is not a supported type.");
     }
 
-    public void WriteAll(params dynamic[] values)
+    private void WritePrimitive<T>(T v)
     {
-        foreach (dynamic value in values)
-            Write<dynamic>(value);
+        switch (v)
+        {
+            case byte k: writer.Write(k); break;
+            case sbyte k: writer.Write(k); break;
+            case char k: writer.Write(k); break;
+            case string k: writer.Write(k); break;
+            case bool k: writer.Write(k); break;
+            case short k: writer.Write(k); break;
+            case ushort k: writer.Write(k); break;
+            case int k: writer.Write(k); break;
+            case uint k: writer.Write(k); break;
+            case float k: writer.Write(k); break;
+            case double k: writer.Write(k); break;
+            case long k: writer.Write(k); break;
+            case ulong k: writer.Write(k); break;
+            default:
+                throw new NotImplementedException("PacketWriter: " + v.GetType() + " is not a supported primitive type.");
+        }
     }
 
     public void Dispose()
