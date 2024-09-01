@@ -5,17 +5,8 @@ using Template.Netcode.Client;
 
 public class SPacketPlayerPositions : ServerPacket
 {
+    [NetSend(1)]
     public Dictionary<uint, Vector2> Positions { get; set; }
-
-    public override void Write(PacketWriter writer)
-    {
-        writer.Write(Positions);
-    }
-
-    public override void Read(PacketReader reader)
-    {
-        Positions = reader.Read<Dictionary<uint, Vector2>>();
-    }
 
     public override void Handle(ENetClient client)
     {

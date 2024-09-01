@@ -9,17 +9,8 @@ using Template.Netcode.Client;
 /// </summary>
 public class SPacketPlayerConnectionAcknowledged : ServerPacket
 {
+    [NetSend(1)]
     public Dictionary<uint, PlayerData> OtherPlayers { get; set; }
-
-    public override void Write(PacketWriter writer)
-    {
-        writer.Write(OtherPlayers);
-    }
-
-    public override void Read(PacketReader reader)
-    {
-        OtherPlayers = reader.Read<Dictionary<uint, PlayerData>>();
-    }
 
     public override void Handle(ENetClient client)
     {

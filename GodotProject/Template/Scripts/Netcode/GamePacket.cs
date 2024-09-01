@@ -1,9 +1,12 @@
 namespace Template.Netcode;
 
 using ENet;
+using System.Reflection;
 
 public abstract class GamePacket
 {
+    private PropertyInfo[] _cachedProperties;
+
     public static int MaxSize { get; } = 8192;
 
     protected Peer[] Peers { get; set; }
@@ -28,8 +31,40 @@ public abstract class GamePacket
     public void SetPeers(Peer[] peers) => Peers = peers;
     public long GetSize() => size;
     public abstract byte GetOpcode();
-    public abstract void Write(PacketWriter writer);
-    public abstract void Read(PacketReader reader);
+
+    public virtual void Write(PacketWriter writer)
+    {
+        PropertyInfo[] properties = GetProperties();
+
+        foreach (PropertyInfo property in properties)
+        {
+            writer.Write(property.GetValue(this));
+        }
+    }
+
+    public virtual void Read(PacketReader reader)
+    {
+        PropertyInfo[] properties = GetProperties();
+
+        foreach (PropertyInfo property in properties)
+        {
+            property.SetValue(this, reader.Read(property.PropertyType));
+        }
+    }
+
+    private PropertyInfo[] GetProperties()
+    {
+        if (_cachedProperties == null)
+        {
+            _cachedProperties = GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead && p.GetCustomAttributes(typeof(NetSendAttribute), true).Any())
+                .OrderBy(p => ((NetSendAttribute)p.GetCustomAttributes(typeof(NetSendAttribute), true).First()).Order)
+                .ToArray();
+        }
+
+        return _cachedProperties;
+    }
 
     protected ENet.Packet CreateENetPacket()
     {

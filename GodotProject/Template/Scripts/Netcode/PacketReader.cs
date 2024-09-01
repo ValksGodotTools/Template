@@ -180,11 +180,12 @@ public class PacketReader : IDisposable
         return v;
     }
 
-    private object Read(Type t)
+    public object Read(Type t)
     {
         // Get the Read method for compile-time type T and make it generic for runtime type t
         MethodInfo readMethod = typeof(PacketReader)
-            .GetMethod(nameof(Read), BindingFlags.Instance | BindingFlags.Public)
+            .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+            .FirstOrDefault(m => m.IsGenericMethod && m.Name == nameof(Read))
             .MakeGenericMethod(t);
 
         // Invoke the generic Read method on this instance at runtime

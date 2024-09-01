@@ -6,20 +6,11 @@ using Template.Netcode.Server;
 
 public class CPacketJoin : ClientPacket
 {
+    [NetSend(1)]
     public string Username { get; set; }
+
+    [NetSend(2)]
     public Vector2 Position { get; set; }
-
-    public override void Write(PacketWriter writer)
-    {
-        writer.Write((string)Username);
-        writer.Write((Vector2)Position);
-    }
-
-    public override void Read(PacketReader reader)
-    {
-        Username = reader.ReadString();
-        Position = reader.ReadVector2();
-    }
 
     public override void Handle(ENetServer s, Peer client)
     {
