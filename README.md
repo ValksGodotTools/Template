@@ -51,6 +51,9 @@ Fill in the required fields and click `Apply`. This will close the game.
 ### Multiplayer
 The 2D Top Down genre includes a **client-authoritative** multiplayer setup, demonstrating how player positions update on each other's screens. This netcode is the culmination of numerous iterations on multiplayer projects. I've lost count of how many times I've done this.
 
+> [!NOTE]
+> `ValksGodotTools/Template` ensures that only the bare minimum data is transmitted, without any unnecessary details like function names. Each packet comes with a small overhead—either 1 or 2 bytes, depending on reliability configured—and a compact one-byte opcode to identify its purpose. Everything else in the packet is strictly the data we need to send.
+
 https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
 #### First Look at a Client Packet
