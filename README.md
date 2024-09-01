@@ -56,7 +56,7 @@ The 2D Top Down genre includes a **client-authoritative** multiplayer setup, dem
 
 https://github.com/user-attachments/assets/964ced37-4a20-4de8-87ee-550fe5ecb561
 
-#### First Look at a Client Packet
+#### 🌱 First Look at a Client Packet
 Below is an example of a client packet. The client uses this packet to inform the server of its position. The `Handle(...)` method is executed on the server thread, so only elements accessible on that thread should be accessed.
 
 > [!IMPORTANT]
@@ -75,7 +75,7 @@ public class CPacketPosition : ClientPacket
 }
 ```
 
-#### First Look at a Server Packet
+#### 🌿 First Look at a Server Packet
 Below is an example of a server packet. The server uses this packet to inform each client about the position updates of all other clients. The `Handle(...)` method is executed on the client thread, so only elements accessible on that thread should be accessed.
 ```cs
 public class SPacketPlayerPositions : ServerPacket
@@ -90,7 +90,7 @@ public class SPacketPlayerPositions : ServerPacket
 }
 ```
 
-#### Net Send Attribute
+#### 🌷 Net Send Attribute
 This client packet sends the username then the position in this order.
 ```cs
 public class CPacketJoin : ClientPacket
@@ -108,7 +108,7 @@ public class CPacketJoin : ClientPacket
 }
 ```
 
-#### Handling Conditional Logic
+#### 🔍 Handling Conditional Logic
 Do not use the NetSend attribute if you need to use conditional logic.
 
 > [!IMPORTANT]
@@ -154,7 +154,7 @@ public class SPacketPlayerJoinLeave : ServerPacket
 }
 ```
 
-#### Sending a Packet from the Client
+#### 📦 Sending a Packet from the Client
 ```cs
 // Player.cs
 Net net = Global.Services.Get<Net>();
@@ -165,7 +165,7 @@ net.Client.Send(new CPacketPosition
 });
 ```
 
-#### Sending a Packet from the Server
+#### 🎁 Sending a Packet from the Server
 ```cs
 Send(new SPacketPlayerPositions
 {
@@ -173,7 +173,7 @@ Send(new SPacketPlayerPositions
 }, Peers[pair.Key]);
 ```
 
-#### Net Exclude Attribute
+#### ⛔ Net Exclude Attribute
 Using the `[NetExclude]` attribute will exclude properties from being written or read in the network.
 ```cs
 public class PlayerData
