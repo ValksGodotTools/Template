@@ -1,18 +1,31 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.3.0">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>10</LangVersion>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <RootNamespace>Template</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="ENet-CSharp" Version="2.4.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
+    <!--Project Settings-->
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <EnableDynamicLoading>true</EnableDynamicLoading>
+        <RootNamespace>Template</RootNamespace>
+    </PropertyGroup>
+
+    <!--NuGet Packages-->
+    <ItemGroup>
+        <PackageReference Include="ENet-CSharp" Version="2.4.8" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <!--Include Prefabs source generator-->
     <ItemGroup>
         <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
+
+    <!--These files will be available to the Prefabs source generator-->
     <ItemGroup>
         <AdditionalFiles Include="Scenes\Prefabs\**\*.tscn" />
+    </ItemGroup>
+
+    <!-- Exclude obj and bin directories from subfolders -->
+    <ItemGroup>
+        <Compile Remove="**\obj\**" />
+        <Compile Remove="**\bin\**" />
     </ItemGroup>
 </Project>
