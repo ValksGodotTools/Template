@@ -13,34 +13,12 @@ public class SPacketPlayerConnectionAcknowledged : ServerPacket
 
     public override void Write(PacketWriter writer)
     {
-        writer.Write((int)OtherPlayers.Count);
-
-        foreach (KeyValuePair<uint, PlayerData> pair in OtherPlayers)
-        {
-            writer.Write((uint)pair.Key);
-            writer.Write((string)pair.Value.Username);
-            writer.Write((Vector2)pair.Value.Position);
-        }
+        writer.Write(OtherPlayers);
     }
 
     public override void Read(PacketReader reader)
     {
-        int playerCount = reader.ReadInt();
-
-        OtherPlayers = new();
-
-        for (int i = 0; i < playerCount; i++)
-        {
-            uint id = reader.ReadUInt();
-            string username = reader.ReadString();
-            Vector2 position = reader.ReadVector2();
-
-            OtherPlayers.Add(id, new()
-            {
-                Username = username,
-                Position = position
-            });
-        }
+        OtherPlayers = reader.Read<Dictionary<uint, PlayerData>>();
     }
 
     public override void Handle(ENetClient client)
