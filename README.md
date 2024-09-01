@@ -135,6 +135,18 @@ Send(new SPacketPlayerPositions
 }, Peers[pair.Key]);
 ```
 
+Using the `[NetExclude]` attribute will exclude properties from being written or read in the network.
+```cs
+public class PlayerData
+{
+    public string Username { get; set; }
+    public Vector2 Position { get; set; }
+
+    [NetExclude] 
+    public Vector2 PrevPosition { get; set; }
+}
+```
+
 ### FPS Scene
 
 https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
