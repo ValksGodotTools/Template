@@ -31,93 +31,37 @@ public class PacketWriter : IDisposable
 
         if (t == typeof(Vector2))
         {
-            Vector2 vector = (Vector2)(object)v;
-            Write(vector.X);
-            Write(vector.Y);
+            WriteVector2((Vector2)(object)v);
             return;
         }
 
         if (t == typeof(Vector3))
         {
-            Vector3 vector = (Vector3)(object)v;
-            Write(vector.X);
-            Write(vector.Y);
-            Write(vector.Z);
+            WriteVector3((Vector3)(object)v);
             return;
         }
 
         if (t.IsEnum)
         {
-            Write((byte)Convert.ChangeType(v, typeof(byte)));
+            WriteEnum(v);
             return;
         }
 
         if (t.IsArray)
         {
-            Array array = (Array)(object)v;
-            Write(array.Length);
-
-            foreach (object item in array)
-                Write(item);
-
+            WriteArray((Array)(object)v);
             return;
         }
 
         if (t.IsGenericType)
         {
-            Type g = t.GetGenericTypeDefinition();
-
-            if (g == typeof(IList<>) || g == typeof(List<>))
-            {
-                IList list = (IList)v;
-                Write(list.Count);
-
-                foreach (object item in list)
-                    Write(item);
-
-                return;
-            }
-
-            if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
-            {
-                IDictionary dict = (IDictionary)v;
-                Write(dict.Count);
-
-                foreach (DictionaryEntry item in dict)
-                {
-                    Write(item.Key);
-                    Write(item.Value);
-                }
-
-                return;
-            }
+            WriteGeneric(v, t);
+            return;
         }
 
         if (t.IsClass || t.IsValueType)
         {
-            // Handle fields
-            FieldInfo[] fields = t
-                .GetFields(BindingFlags.Public | BindingFlags.Instance)
-                .OrderBy(field => field.MetadataToken)
-                .ToArray();
-
-            foreach (FieldInfo field in fields)
-            {
-                Write(field.GetValue(v));
-            }
-
-            // Handle properties
-            PropertyInfo[] properties = t
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead)
-                .OrderBy(property => property.MetadataToken)
-                .ToArray();
-
-            foreach (PropertyInfo property in properties)
-            {
-                Write(property.GetValue(v));
-            }
-
+            WriteStructOrClass(v, t);
             return;
         }
 
@@ -143,6 +87,83 @@ public class PacketWriter : IDisposable
             case ulong k: writer.Write(k); break;
             default:
                 throw new NotImplementedException("PacketWriter: " + v.GetType() + " is not a supported primitive type.");
+        }
+    }
+
+    private void WriteVector2(Vector2 v)
+    {
+        Write(v.X);
+        Write(v.Y);
+    }
+
+    private void WriteVector3(Vector3 v)
+    {
+        Write(v.X);
+        Write(v.Y);
+        Write(v.Z);
+    }
+
+    private void WriteEnum<T>(T v)
+    {
+        Write((byte)Convert.ChangeType(v, typeof(byte)));
+    }
+
+    private void WriteArray(Array array)
+    {
+        Write(array.Length);
+
+        foreach (object item in array)
+            Write(item);
+    }
+
+    private void WriteGeneric(object v, Type t)
+    {
+        Type g = t.GetGenericTypeDefinition();
+
+        if (g == typeof(IList<>) || g == typeof(List<>))
+        {
+            IList list = (IList)v;
+            Write(list.Count);
+
+            foreach (object item in list)
+                Write(item);
+        }
+        else if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
+        {
+            IDictionary dict = (IDictionary)v;
+            Write(dict.Count);
+
+            foreach (DictionaryEntry item in dict)
+            {
+                Write(item.Key);
+                Write(item.Value);
+            }
+        }
+    }
+
+    private void WriteStructOrClass<T>(T v, Type t)
+    {
+        // Handle fields
+        FieldInfo[] fields = t
+            .GetFields(BindingFlags.Public | BindingFlags.Instance)
+            .OrderBy(field => field.MetadataToken)
+            .ToArray();
+
+        foreach (FieldInfo field in fields)
+        {
+            Write(field.GetValue(v));
+        }
+
+        // Handle properties
+        PropertyInfo[] properties = t
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanRead)
+            .OrderBy(property => property.MetadataToken)
+            .ToArray();
+
+        foreach (PropertyInfo property in properties)
+        {
+            Write(property.GetValue(v));
         }
     }
 
