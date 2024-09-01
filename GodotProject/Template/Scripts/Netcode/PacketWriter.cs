@@ -105,34 +105,44 @@ public class PacketWriter : IDisposable
 
     private void WriteEnum<T>(T v)
     {
+        // Convert enum to byte and write
         Write((byte)Convert.ChangeType(v, typeof(byte)));
     }
 
     private void WriteArray(Array array)
     {
+        // Write array length
         Write(array.Length);
 
+        // Write each item in the array
         foreach (object item in array)
             Write(item);
     }
 
     private void WriteGeneric(object v, Type t)
     {
+        // Get generic type definition
         Type g = t.GetGenericTypeDefinition();
 
+        // Check if type is list
         if (g == typeof(IList<>) || g == typeof(List<>))
         {
             IList list = (IList)v;
+            // Write list count
             Write(list.Count);
 
+            // Write each item in the list
             foreach (object item in list)
                 Write(item);
         }
+        // Check if type is dictionary
         else if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))
         {
             IDictionary dict = (IDictionary)v;
+            // Write dictionary count
             Write(dict.Count);
 
+            // Write each key-value pair in the dictionary
             foreach (DictionaryEntry item in dict)
             {
                 Write(item.Key);
@@ -143,24 +153,26 @@ public class PacketWriter : IDisposable
 
     private void WriteStructOrClass<T>(T v, Type t)
     {
-        // Handle fields
+        // Serialize public instance fields in metadata order
         FieldInfo[] fields = t
             .GetFields(BindingFlags.Public | BindingFlags.Instance)
             .OrderBy(field => field.MetadataToken)
             .ToArray();
 
+        // Write each field value
         foreach (FieldInfo field in fields)
         {
             Write(field.GetValue(v));
         }
 
-        // Handle properties
+        // Serialize public instance properties with getters in metadata order
         PropertyInfo[] properties = t
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.CanRead)
             .OrderBy(property => property.MetadataToken)
             .ToArray();
 
+        // Write each property value
         foreach (PropertyInfo property in properties)
         {
             Write(property.GetValue(v));
