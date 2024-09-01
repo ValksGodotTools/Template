@@ -91,33 +91,17 @@ public class SPacketPlayerPositions : ServerPacket
 
     public override void Write(PacketWriter writer)
     {
-        writer.Write((byte)Positions.Count);
-
-        foreach (KeyValuePair<uint, Vector2> pair in Positions)
-        {
-            writer.Write((uint)pair.Key);
-            writer.Write((Vector2)pair.Value);
-        }
+        writer.Write(Positions);
     }
 
     public override void Read(PacketReader reader)
     {
-        Positions = new();
-
-        byte count = reader.ReadByte();
-
-        for (int i = 0; i < count; i++)
-        {
-            uint id = reader.ReadUInt();
-            Vector2 position = reader.ReadVector2();
-
-            Positions.Add(id, position);
-        }
+        Positions = reader.Read<Dictionary<uint, Vector2>>();
     }
 
     public override void Handle(ENetClient client)
     {
-        Level level = Global.Services.Get<Level>();
+        INetLevel level = Global.Services.Get<Level>();
 
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {
