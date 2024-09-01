@@ -76,5 +76,7 @@ public class PlayerData
 {
     public string Username { get; set; }
     public Vector2 Position { get; set; }
+
+    [NetExclude] 
     public Vector2 PrevPosition { get; set; }
 }

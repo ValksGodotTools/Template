@@ -168,7 +168,7 @@ public class PacketWriter : IDisposable
         // Serialize public instance properties with getters in metadata order
         PropertyInfo[] properties = t
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.CanRead)
+            .Where(p => p.CanRead && !p.GetCustomAttributes(typeof(NetExcludeAttribute), true).Any())
             .OrderBy(property => property.MetadataToken)
             .ToArray();
 
