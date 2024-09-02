@@ -1,4 +1,9 @@
-# Godot 4 C# Template
+![banner](https://github.com/user-attachments/assets/8879cbc8-04fd-4d41-bb4d-d29d5438ac01)
+
+[![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/network)
+[![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/watchers)
+
 Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template` is here to streamline your workflow. ❤️
 
 Ready to dive in? Check out the [setup guide](#setup-guide).
