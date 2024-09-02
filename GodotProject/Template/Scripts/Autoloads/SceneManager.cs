@@ -57,25 +57,6 @@ public partial class SceneManager : Node
     }
 
     /// <summary>
-    /// Scenes are loaded from the 'res://Scenes/' directory. For example a name with 
-    /// "level_1" would be 'res://Scenes/level_1.tscn'
-    /// </summary>
-    public void SwitchScene(string scene, TransType transType = TransType.None)
-    {
-        PreSceneChanged?.Invoke(scene);
-
-        switch (transType)
-        {
-            case TransType.None:
-                ChangeScene(scene, transType);
-                break;
-            case TransType.Fade:
-                FadeTo(TransColor.Black, 2, () => ChangeScene(scene, transType));
-                break;
-        }
-    }
-
-    /// <summary>
     /// Resets the currently active scene.
     /// </summary>
     public void ResetCurrentScene()
@@ -102,13 +83,6 @@ public partial class SceneManager : Node
     {
         // Wait for engine to be ready before switching scenes
         CallDeferred(nameof(DeferredSwitchScene), MapPrefabsToPaths.GetPath(prefab),
-            Variant.From(transType));
-    }
-
-    private void ChangeScene(string scene, TransType transType)
-    {
-        // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), $"res://Scenes/{scene}.tscn",
             Variant.From(transType));
     }
 
