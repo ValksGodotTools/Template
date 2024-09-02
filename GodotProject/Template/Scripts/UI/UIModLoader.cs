@@ -51,7 +51,7 @@ public partial class UIModLoader : Node
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
+            Game.SwitchScene(Scene.UIMainMenu);
         }
     }
 

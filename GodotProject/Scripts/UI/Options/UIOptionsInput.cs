@@ -68,7 +68,7 @@ public partial class UIOptionsInput : Control
                 {
                     if (btnNewInput == null)
                     {
-                        Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
+                        Game.SwitchScene(Scene.UIMainMenu);
                     }
                 }
             }

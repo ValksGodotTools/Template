@@ -30,11 +30,9 @@ public partial class UIPopupMenu : Control
     {
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            UIConsole console = Global.Services.Get<UIConsole>();
-
-            if (console.Visible)
+            if (Game.Console.Visible)
             {
-                console.ToggleVisibility();
+                Game.Console.ToggleVisibility();
                 return;
             }
 
@@ -82,7 +80,7 @@ public partial class UIPopupMenu : Control
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
-        Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
+        Game.SwitchScene(Scene.UIMainMenu);
     }
 
     async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();

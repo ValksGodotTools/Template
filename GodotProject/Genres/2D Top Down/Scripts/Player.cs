@@ -15,8 +15,8 @@ public partial class Player : Character, INetPlayer
     CameraShake cameraShake;
     Vector2 prevPosition;
     Vector2 direction;
+    GameClient client;
     Sprite2D sprite;
-    Net net;
 
     bool canDash;
 
@@ -25,7 +25,7 @@ public partial class Player : Character, INetPlayer
     public override void Init()
     {
         canDash = true;
-        net = Global.Services.Get<Net>();
+        client = Game.Net.Client;
         sprite = GetNode<Sprite2D>("Sprite2D");
         cameraShake = GetTree().Root.GetNode<CameraShake>("Level/Camera2D/CameraShake");
     }
@@ -73,7 +73,7 @@ public partial class Player : Character, INetPlayer
     {
         if (Position != prevPosition)
         {
-            net.Client.Send(new CPacketPosition
+            client.Send(new CPacketPosition
             {
                 Position = Position
             });

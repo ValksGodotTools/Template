@@ -14,10 +14,8 @@ public partial class Level : Node, INetLevel
     public override void _Ready()
     {
         Global.Services.Add(this);
-        
-        Net net = Global.Services.Get<Net>();
 
-        net.OnClientCreated += client =>
+        Game.Net.OnClientCreated += client =>
         {
             client.OnDisconnected += opcode =>
             {

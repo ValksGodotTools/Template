@@ -26,8 +26,7 @@ public partial class Global : Node
         ServiceProvider.Init(Services);
         Services.Add(this);
 
-        UIConsole console = Global.Services.Get<UIConsole>();
-        Global.Services.Get<Logger>().MessageLogged += console.AddMessage;
+        Global.Services.Get<Logger>().MessageLogged += Game.Console.AddMessage;
 
         new ModLoader().LoadMods(this);
     }

@@ -5,8 +5,7 @@ public partial class UIConsole
     [ConsoleCommand("help")]
     void Help()
     {
-        IEnumerable<string> cmds =
-            Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
+        IEnumerable<string> cmds = Game.Console.Commands.Select(x => x.Name);
 
         Game.Log(cmds.Print());
     }
