@@ -56,7 +56,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace MySourceGenerator
 {
     [Generator]
-    public class PrefabSourceGenerator : ISourceGenerator
+    public class GameAssetsSrcGen : ISourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {
