@@ -15,8 +15,10 @@ public partial class UIMainMenuNav : Node
 
     void _on_play_pressed()
     {
+        GD.Print("The play button does not currently go to any scene.");
+
         //audioManager.PlayMusic(Music.Level1, false);
-        sceneManager.SwitchScene("level_3D", SceneManager.TransType.Fade);
+        //sceneManager.SwitchScene(Scene.SCENEHERE, SceneManager.TransType.Fade);
     }
 
     void _on_mods_pressed()
