@@ -18,9 +18,10 @@
         <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
-    <!--These files will be available to the Prefabs source generator-->
+    <!--These files will be available to the source generators-->
     <ItemGroup>
         <AdditionalFiles Include="**\Prefabs\**\*.tscn" />
+        <AdditionalFiles Include="Scenes\*.tscn" />
     </ItemGroup>
 
     <!-- Exclude obj and bin directories from subfolders -->
