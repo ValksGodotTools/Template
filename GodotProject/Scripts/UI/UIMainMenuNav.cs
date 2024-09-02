@@ -22,19 +22,19 @@ public partial class UIMainMenuNav : Node
     void _on_mods_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene("UI/mod_loader");
+        sceneManager.SwitchScene(Scene.UIModLoader);
     }
 
     void _on_options_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene("Prefabs/UI/options");
+        sceneManager.SwitchScene(Prefab.UIOptions);
     }
 
     void _on_credits_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene("UI/credits");
+        sceneManager.SwitchScene(Scene.UICredits);
     }
 
     async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();

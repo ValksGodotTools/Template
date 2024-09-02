@@ -85,12 +85,12 @@ public partial class UICredits : Node
         // Go back to the main menu when the credits are finished
         if (pos.Y <= -vbox.Size.Y)
         {
-            Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
+            Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
         }
 
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
+            Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
         }
     }
 

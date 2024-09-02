@@ -82,7 +82,7 @@ public partial class UIPopupMenu : Control
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
-        Global.Services.Get<SceneManager>().SwitchScene("UI/main_menu");
+        Global.Services.Get<SceneManager>().SwitchScene(Scene.UIMainMenu);
     }
 
     async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
