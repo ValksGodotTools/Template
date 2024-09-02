@@ -80,6 +80,18 @@ namespace MySourceGenerator
         private static string GeneratePrefabsClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
         {
             StringBuilder sb = new StringBuilder();
+            string rootFolderName = GetRootFolderName(context);
+            List<string> relativePaths = new List<string>();
+            List<string> enumNames = new List<string>();
+
+            foreach (AdditionalText file in tscnFiles)
+            {
+                string relativePath = GetRelativePath(file.Path, rootFolderName);
+                string enumName = GetEnumName(relativePath);
+
+                relativePaths.Add(relativePath);
+                enumNames.Add(enumName);
+            }
 
             sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
             sb.AppendLine();
@@ -88,49 +100,6 @@ namespace MySourceGenerator
             sb.AppendLine("public enum Prefab");
             sb.AppendLine("{");
 
-            List<string> relativePaths = new List<string>();
-            List<string> enumNames = new List<string>();
-
-            string rootFolderName = "";
-
-            // Try to get the project directory
-            if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out string projectDir))
-            {
-                // Extract the root folder name from the project directory
-                rootFolderName = Path.GetFileName(projectDir.TrimEnd('\\', '/'));
-            }
-
-            Debug.Assert(rootFolderName != "", "Godot root project folder not found");
-
-            // Populate the lists with relative paths and enum names
-            foreach (AdditionalText file in tscnFiles)
-            {
-                string filePath = file.Path;
-
-                string relativePath = filePath.Replace("\\", "/");
-
-                string identifier = $"{rootFolderName.ToLower()}/";
-
-                int index = relativePath.ToLower().IndexOf(identifier);
-
-                Debug.Assert(index != -1, $"Identifier not found in relative path: {relativePath}");
-
-                if (index != -1)
-                {
-                    relativePath = relativePath.Substring(index + identifier.Length);
-                }
-
-                string enumName = relativePath
-                    .Substring(relativePath.IndexOf("Prefabs/") + "Prefabs/".Length)
-                    .Replace("/", "_")
-                    .Replace(".tscn", "")
-                    .SnakeCaseToPascalCase();
-
-                relativePaths.Add(relativePath);
-                enumNames.Add(enumName);
-            }
-
-            // Generate the enum using the enumNames list
             for (int i = 0; i < enumNames.Count; i++)
             {
                 sb.AppendLine($"    {enumNames[i]},");
@@ -141,8 +110,6 @@ namespace MySourceGenerator
 
             sb.AppendLine("public static class MapPrefabsToPaths");
             sb.AppendLine("{");
-
-            // Generate the dictionary using the enumNames and relativePaths lists
             sb.AppendLine("    private static readonly Dictionary<Prefab, string> prefabPaths = new Dictionary<Prefab, string>");
             sb.AppendLine("    {");
 
@@ -154,8 +121,6 @@ namespace MySourceGenerator
 
             sb.AppendLine("    };");
             sb.AppendLine();
-
-            // Generate the GetPath method with debug prints
             sb.AppendLine("    public static string GetPath(Prefab prefab)");
             sb.AppendLine("    {");
             sb.AppendLine("        if (prefabPaths.TryGetValue(prefab, out string path))");
@@ -169,6 +134,37 @@ namespace MySourceGenerator
             sb.AppendLine("}");
 
             return sb.ToString();
+        }
+
+        private static string GetRootFolderName(GeneratorExecutionContext context)
+        {
+            if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out string projectDir))
+            {
+                return Path.GetFileName(projectDir.TrimEnd('\\', '/'));
+            }
+
+            Debug.Assert(false, "Godot root project folder not found");
+            return "";
+        }
+
+        private static string GetRelativePath(string filePath, string rootFolderName)
+        {
+            string normalizedFilePath = filePath.Replace("\\", "/");
+            string rootFolderIdentifier = $"{rootFolderName.ToLower()}/";
+            int rootFolderIndex = normalizedFilePath.ToLower().IndexOf(rootFolderIdentifier);
+
+            Debug.Assert(rootFolderIndex != -1, $"Root folder identifier not found in file path: {normalizedFilePath}");
+
+            return normalizedFilePath.Substring(rootFolderIndex + rootFolderIdentifier.Length);
+        }
+
+        private static string GetEnumName(string relativePath)
+        {
+            return relativePath
+                .Substring(relativePath.IndexOf("Prefabs/") + "Prefabs/".Length)
+                .Replace("/", "_")
+                .Replace(".tscn", "")
+                .SnakeCaseToPascalCase();
         }
     }
 }
