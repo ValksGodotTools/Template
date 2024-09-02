@@ -33,7 +33,17 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 2. Clone the repository using `git clone --recursive https://github.com/ValksGodotTools/Template`
 3. Open `project.godot` located in `Template/GodotProject/project.godot`
 
-### 🔧 Run the game with `F5`
+### 🔧 Configuring your project
+
+Make sure all scene tabs are closed. This is very important.
+
+#### Before
+![Untitled](https://github.com/user-attachments/assets/61197098-df47-4e0b-a7be-36b97b98f724)
+
+#### After
+![Untitled](https://github.com/user-attachments/assets/7be20a1d-2429-43fc-ab76-335b0af5fccf)
+
+#### Press `F5` to run the game
 
 Fill in the required fields and click `Apply`. This will close the game.
 
@@ -423,14 +433,18 @@ A: If you're seeing errors on your first project load, it could be because you'r
 git submodule update --init --recursive
 ```
 
-### Q: The left hand in all the FPS animations is sticking to where the right hand is. How can I fix this?
-A: Simply closing and reopening the Godot editor should resolve the issue.
-
-### Q: I'm encountering errors in the console after switching to the `X` genre. What could be the issue?
+### Q: I'm encountering errors after switching to the `X` genre. What could be the issue?
 A: Here are a few common reasons and how to fix them:
   - Make sure you've closed and reopened the Godot editor after changing genres.
+  - You may have forgot to close all scene tabs when running the setup script, as a result there may be broken nodepaths. You will have to either manually assign the nodepaths again or download the repository again and start fresh.
   - If you accidentally clicked "Save Changes" on a popup, you will most likely need to download the repository again and start fresh.
   - If you saved a scene that the setup script removed, simply delete that scene, and the console errors should clear up.
+
+> [!TIP]
+> If you use [GitHub Desktop App](https://github.com/apps/desktop), you can simply discard all changes made by the setup script instead of completely starting over and downloading the repository again if you run into issues
+
+### Q: The left hand in all the FPS animations is sticking to where the right hand is. How can I fix this?
+A: Simply closing and reopening the Godot editor should resolve the issue.
 
 ### Q: My issue isn't listed here. What should I do?
 A: Feel free to search for your issue in the repository's [issues section](https://github.com/ValksGodotTools/Template/issues). If it hasn't been reported yet, please open a new issue, and I'll be happy to help you.
