@@ -2,12 +2,10 @@ namespace Template;
 
 public partial class UIMainMenuNav : Node
 {
-    SceneManager sceneManager;
     AudioManager audioManager;
 
     public override void _Ready()
     {
-        sceneManager = Global.Services.Get<SceneManager>();
         audioManager = Global.Services.Get<AudioManager>();
 
         GetNode<Button>("Play").GrabFocus();
@@ -18,25 +16,25 @@ public partial class UIMainMenuNav : Node
         GD.Print("The play button does not currently go to any scene.");
 
         //audioManager.PlayMusic(Music.Level1, false);
-        //sceneManager.SwitchScene(Scene.SCENEHERE, SceneManager.TransType.Fade);
+        //Game.SwitchScene(Scene.SCENEHERE, SceneManager.TransType.Fade);
     }
 
     void _on_mods_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene(Scene.UIModLoader);
+        Game.SwitchScene(Scene.UIModLoader);
     }
 
     void _on_options_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene(Prefab.UIOptions);
+        Game.SwitchScene(Prefab.UIOptions);
     }
 
     void _on_credits_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        sceneManager.SwitchScene(Scene.UICredits);
+        Game.SwitchScene(Scene.UICredits);
     }
 
     async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
