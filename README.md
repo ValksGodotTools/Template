@@ -5,26 +5,25 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
 2. [Scenes](#scenes)
-    - [FPS Scene](#fps-scene)
-    - [Top Down Scene](#top-down-scene)
+    - [3D FPS](#3d-fps)
+    - [2D Top Down](#2d-top-down)
 3. [Features](#features)
     - [Multiplayer](#multiplayer)
     - [Simplified Tweens](#simplified-tweens)
-    - [Finding Node\<T\>](finding-nodet)
-    - [Printing Everything](#printing-everything)
     - [Thread Safe Logger](#thread-safe-logger)
     - [Loading Prefabs](#loading-prefabs)
-    - [Localisation](#localisation)
     - [Services](#services)
     - [Console Commands](#console-commands)
-    - [Audio Manager](#audiomanager)
-    - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
     - [Mod Loader](#mod-loader)
-4. [Tips](#tips)
-5. [FAQ](#faq)
-6. [Contributing](#contributing)
-7. [Credits](#credits)
+    - [Localisation](#localisation)
+4. [Extensions](#extensions)
+    - [Finding Node\<T\>](finding-nodet)
+    - [Printing Everything](#printing-everything)
+5. [Tips](#tips)
+6. [FAQ](#faq)
+7. [Contributing](#contributing)
+8. [Credits](#credits)
 
 ## Setup Guide
 
@@ -54,7 +53,7 @@ Fill in the required fields and click `Apply`. This will close the game.
 
 ## Scenes
 
-### FPS Scene
+### 3D FPS
 
 https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 
@@ -66,7 +65,7 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 > [!TIP]
 > Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
 
-### Top Down Scene
+### 2D Top Down
 
 https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
 
@@ -235,16 +234,6 @@ tween.Stop();
 > GTween.Delay(node, seconds, () => callback);
 > ```
 
-### Printing Everything
-The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
-
-```cs
-GD.Print(node.PrintFull())
-```
-
-### Finding Node\<T\>
-If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
-
 ### Thread Safe Logger
 By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
 
@@ -259,10 +248,6 @@ Prefabs are loaded using the following syntax:
 // This assumes there is a Player.cs script attached to the Player node
 Player player = Game.LoadPrefab<Player>(Prefab.Player);
 ```
-
-### Localisation
-> [!NOTE]
-> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
 
 ### Services
 > [!IMPORTANT]
@@ -332,36 +317,6 @@ void Debug(int x, string y)
 }
 ```
 
-### AudioManager
-```cs
-AudioManager audioManager = Global.Services.Get<AudioManager>();
-
-// Play a soundtrack
-audioManager.PlayMusic(Music.Menu);
-
-// Play a sound
-audioManager.PlaySFX(Sounds.GameOver);
-
-// Set the music volume
-audioManager.SetMusicVolume(75);
-
-// Set the sound volume
-audioManager.SetSFXVolume(100);
-
-// Gradually fade out all sounds
-audioManager.FadeOutSFX();
-```
-
-### SceneManager
-```cs
-// Switch to a scene instantly
-Global.Services.Get<SceneManager>().SwitchScene("main_menu");
-
-// Switch to a scene with a fade transition
-Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down", 
-    SceneManager.TransType.Fade);
-```
-
 ### State Manager
 The state manager employs functions as states instead of using classes for state management. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is provided to illustrate this approach.
 
@@ -422,8 +377,27 @@ public partial class Player
 Do a similar process when adding new states.
 
 ### Mod Loader
+
+Mods have the ability to swap out game assets and run C# scripts. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+
+> [!IMPORTANT]
+> The mod loader currently cannot handle loading more than one mod with scripts. See https://github.com/ValksGodotTools/Template/issues/15 for more info on this.
+
+### Localisation
 > [!NOTE]
-> Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
+
+## Extensions
+
+### Printing Everything
+The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
+
+```cs
+GD.Print(node.PrintFull())
+```
+
+### Finding Node\<T\>
+If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
 ## Tips
 > [!TIP]
