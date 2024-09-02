@@ -4,11 +4,15 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
 Ready to dive in? Check out the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
-2. [Features](#features)
-    - [Multiplayer](#multiplayer)
+2. [Scenes](#scenes)
     - [FPS Scene](#fps-scene)
     - [Top Down Scene](#top-down-scene)
-    - [Godot Utils](#godot-utils)
+3. [Features](#features)
+    - [Multiplayer](#multiplayer)
+    - [Simplified Tweens](#simplified-tweens)
+    - [Finding Node\<T\>](finding-nodet)
+    - [Printing Everything](#printing-everything)
+    - [Thread Safe Logger](#thread-safe-logger)
     - [Loading Prefabs](#loading-prefabs)
     - [Localisation](#localisation)
     - [Services](#services)
@@ -17,10 +21,10 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
     - [Mod Loader](#mod-loader)
-3. [Tips](#tips)
-4. [FAQ](#faq)
-5. [Contributing](#contributing)
-6. [Credits](#credits)
+4. [Tips](#tips)
+5. [FAQ](#faq)
+6. [Contributing](#contributing)
+7. [Credits](#credits)
 
 ## Setup Guide
 
@@ -47,6 +51,24 @@ Fill in the required fields and click `Apply`. This will close the game.
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
+
+## Scenes
+
+### FPS Scene
+
+https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
+
+> [!NOTE]
+> All animations were made by myself from Blender. You are free to use them in your game.
+
+![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
+
+> [!TIP]
+> Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
+
+### Top Down Scene
+
+https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
 
 ## Features
 ### Multiplayer
@@ -187,26 +209,8 @@ public class PlayerData
 }
 ```
 
-### FPS Scene
-
-https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
-
-> [!NOTE]
-> All animations were made by myself from Blender. You are free to use them in your game.
-
-![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
-
-> [!TIP]
-> Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
-
-### Top Down Scene
-
-https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
-
-### Godot Utils
-
-#### 🦄 Creating Tweens
-Tweening has never been so easy!
+### Simplified Tweens
+Tweening has never been so easy! 🦄
 ```cs
 new GTween(colorRect)
     .SetParallel()
@@ -231,17 +235,17 @@ tween.Stop();
 > GTween.Delay(node, seconds, () => callback);
 > ```
 
-#### 🖨️ Printing Everything
+### Printing Everything
 The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
 
 ```cs
 GD.Print(node.PrintFull())
 ```
 
-#### 🔎 Finding Node\<T\>
+### Finding Node\<T\>
 If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
-#### 🦆 Thread Safe Logger
+### Thread Safe Logger
 By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
 
 ### Loading Prefabs
