@@ -12,7 +12,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [Menu UI](#menu-ui)
     - [Simplified Tweens](#simplified-tweens)
     - [Thread Safe Logger](#thread-safe-logger)
-    - [Loading Prefabs](#loading-prefabs)
+    - [Fetching Resources](#fetching-resources)
     - [Services](#services)
     - [Console Commands](#console-commands)
     - [State Manager](#state-manager)
@@ -250,17 +250,39 @@ tween.Stop();
 ### Thread Safe Logger
 By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
 
-### Loading Prefabs
-All prefabs (`.tscn` files) are loaded from `res://Scenes/Prefabs` and each one generates a `Prefab` enum entry when you build the project. Upon making changes to the prefabs, you will need to restart your IDE to see the updated `Prefab` enum.
+### Fetching Resources
+The source generator dynamically generates enums for various resource file paths. These enums are updated upon each project build. This enables efficient and type-safe access to resources within your codebase. Below is a structured overview of the file paths and their corresponding enums:
 
-If a prefab is located in for example `res://Scenes/Prefabs/Enemy/snowman.tscn` then `Prefab.EnemySnowman` will be created.
+- **Prefab Resources**:
+  - **Search Path**: `**\Prefabs\**\*.tscn`
+  - **Associated Enum**: `Prefab`
 
-Prefabs are loaded using the following syntax:
+- **Scene Resources**:
+  - **Search Path**: `Scenes\**\*.tscn`
+  - **Associated Enum**: `Scene`
+
+- **Audio Resources**:
+  - **Search Paths**:
+    - `**\Audio\**\*.mp3`
+    - `**\Audio\**\*.wav`
+    - `**\Audio\**\*.ogg`
+    - `**\Audio\**\*.flac`
+  - **Associated Enum**: `Audio`
+
+**Example Usage**
 
 ```cs
-// This assumes there is a Player.cs script attached to the Player node
-Player player = Game.LoadPrefab<Player>(Prefab.Player);
+// Switching to a specific scene
+Global.Services.Get<SceneManager>().SwitchScene(Scene.UICredits);
+
+// Loading a prefab
+Game.LoadPrefab<Player>(Prefab.Player);
+
+// Printing an audio resource path
+GD.Print(Audio.PlayerJump); // Output: res://Audio/Player/jump.wav
 ```
+
+This approach not only enhances readability but also ensures that resource paths are managed consistently and efficiently throughout the project.
 
 ### Services
 Using the static keyword in `GameServer.cs` for all attributes may initially seem convenient for accessing game server properties across different parts of the code. However, this approach poses significant challenges. When the server restarts or transitions between scenes, static properties retain their values, causing inconsistencies.
