@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -83,7 +84,6 @@ namespace MySourceGenerator
             sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
             sb.AppendLine();
             sb.AppendLine("using System.Collections.Generic;");
-            sb.AppendLine("using Godot;"); // Add using directive for Godot namespace
             sb.AppendLine();
             sb.AppendLine("public enum Prefab");
             sb.AppendLine("{");
@@ -91,20 +91,16 @@ namespace MySourceGenerator
             List<string> relativePaths = new List<string>();
             List<string> enumNames = new List<string>();
 
-            string rootFolderName = "RootFolderNotFound";
+            string rootFolderName = "";
 
             // Try to get the project directory
             if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out string projectDir))
             {
                 // Extract the root folder name from the project directory
                 rootFolderName = Path.GetFileName(projectDir.TrimEnd('\\', '/'));
-                sb.AppendLine($"// Project directory: {projectDir}"); // Debug print
-                sb.AppendLine($"// Root folder name: {rootFolderName}"); // Debug print
             }
-            else
-            {
-                sb.AppendLine("// DEBUG: FAILED TO GET ROOT FOLDER NAME");
-            }
+
+            Debug.Assert(rootFolderName != "", "Godot root project folder not found");
 
             // Populate the lists with relative paths and enum names
             foreach (AdditionalText file in tscnFiles)
@@ -117,16 +113,12 @@ namespace MySourceGenerator
 
                 int index = relativePath.ToLower().IndexOf(identifier);
 
+                Debug.Assert(index != -1, $"Identifier not found in relative path: {relativePath}");
+
                 if (index != -1)
                 {
                     relativePath = relativePath.Substring(index + identifier.Length);
                 }
-                else
-                {
-                    sb.AppendLine($"// Identifier not found in relative path: {relativePath}"); // Debug print
-                }
-
-                sb.AppendLine($"// Relative path after processing: {relativePath}"); // Debug print
 
                 string enumName = relativePath
                     .Substring(relativePath.IndexOf("Prefabs/") + "Prefabs/".Length)
@@ -168,14 +160,10 @@ namespace MySourceGenerator
             sb.AppendLine("    {");
             sb.AppendLine("        if (prefabPaths.TryGetValue(prefab, out string path))");
             sb.AppendLine("        {");
-            sb.AppendLine("            GD.Print($\"Retrieved path for {prefab}: {path}\"); // Debug print");
             sb.AppendLine("            return path;");
             sb.AppendLine("        }");
-            sb.AppendLine("        else");
-            sb.AppendLine("        {");
-            sb.AppendLine("            GD.Print($\"Path not found for {prefab}\"); // Debug print");
-            sb.AppendLine("            return null;");
-            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        return null;");
             sb.AppendLine("    }");
 
             sb.AppendLine("}");
