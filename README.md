@@ -4,23 +4,27 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
 Ready to dive in? Check out the [setup guide](#setup-guide).
 
 1. [Setup Guide](#setup-guide)
-2. [Features](#features)
+2. [Scenes](#scenes)
+    - [3D FPS](#3d-fps)
+    - [2D Top Down](#2d-top-down)
+3. [Features](#features)
     - [Multiplayer](#multiplayer)
-    - [FPS Scene](#fps-scene)
-    - [Top Down Scene](#top-down-scene)
-    - [Godot Utils](#godot-utils)
+    - [Menu UI](#menu-ui)
+    - [Simplified Tweens](#simplified-tweens)
+    - [Thread Safe Logger](#thread-safe-logger)
     - [Loading Prefabs](#loading-prefabs)
-    - [Localisation](#localisation)
     - [Services](#services)
     - [Console Commands](#console-commands)
-    - [Audio Manager](#audiomanager)
-    - [Scene Manager](#scenemanager)
     - [State Manager](#state-manager)
     - [Mod Loader](#mod-loader)
-3. [Tips](#tips)
-4. [FAQ](#faq)
-5. [Contributing](#contributing)
-6. [Credits](#credits)
+    - [Localisation](#localisation)
+4. [Extensions](#extensions)
+    - [Finding Node\<T\>](#finding-nodet)
+    - [Printing Everything](#printing-everything)
+5. [Tips](#tips)
+6. [FAQ](#faq)
+7. [Contributing](#contributing)
+8. [Credits](#credits)
 
 ## Setup Guide
 
@@ -44,9 +48,23 @@ Fill in the required fields and click `Apply`. This will close the game.
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
 
-![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
-![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
-![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
+## Scenes
+
+### 3D FPS
+
+https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
+
+> [!NOTE]
+> All animations were made by myself from Blender. You are free to use them in your game.
+
+![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
+
+> [!TIP]
+> Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
+
+### 2D Top Down
+
+https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
 
 ## Features
 ### Multiplayer
@@ -187,26 +205,14 @@ public class PlayerData
 }
 ```
 
-### FPS Scene
+### Menu UI
 
-https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
 
-> [!NOTE]
-> All animations were made by myself from Blender. You are free to use them in your game.
-
-![Untitled](https://github.com/user-attachments/assets/7f5395cd-2ac6-46a6-a386-2c665aff98aa)
-
-> [!TIP]
-> Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
-
-### Top Down Scene
-
-https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
-
-### Godot Utils
-
-#### 🦄 Creating Tweens
-Tweening has never been so easy!
+### Simplified Tweens
+Tweening has never been so easy! 🦄
 ```cs
 new GTween(colorRect)
     .SetParallel()
@@ -231,17 +237,7 @@ tween.Stop();
 > GTween.Delay(node, seconds, () => callback);
 > ```
 
-#### 🖨️ Printing Everything
-The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
-
-```cs
-GD.Print(node.PrintFull())
-```
-
-#### 🔎 Finding Node\<T\>
-If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
-
-#### 🦆 Thread Safe Logger
+### Thread Safe Logger
 By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, or Godot threads.
 
 ### Loading Prefabs
@@ -256,13 +252,10 @@ Prefabs are loaded using the following syntax:
 Player player = Game.LoadPrefab<Player>(Prefab.Player);
 ```
 
-### Localisation
-> [!NOTE]
-> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
-
 ### Services
-> [!IMPORTANT]
-> To grasp the significance of `Global.Services`, it's essential to understand the pitfalls of using the `static` keyword. Consider a scenario where you're developing a multiplayer game and you designate every attribute in `GameServer.cs` as static. Initially, everything operates smoothly, and you can conveniently access the game server's properties from various parts of your code. However, challenges arise when the server restarts or when the scene transitions, and the game server should no longer be active. In such cases, the static properties retain their previous values, leading to inconsistencies. You would need to meticulously monitor and reset each static property, which can be cumbersome and error-prone. This illustrates why the use of static properties should be approached with caution.
+Using the static keyword in `GameServer.cs` for all attributes may initially seem convenient for accessing game server properties across different parts of the code. However, this approach poses significant challenges. When the server restarts or transitions between scenes, static properties retain their values, causing inconsistencies.
+
+Manually resetting each static property to address these issues is cumbersome and error-prone. This demonstrates the need for careful consideration when using static properties, as they can simplify initial development but complicate maintenance and scalability.
 
 In the `_Ready()` method of any node, you can register the node with `Global.Services` by using `Global.Services.Add(this)` (or `Global.Services.Add<Type>` if the script does not extend from Node).
 
@@ -328,36 +321,6 @@ void Debug(int x, string y)
 }
 ```
 
-### AudioManager
-```cs
-AudioManager audioManager = Global.Services.Get<AudioManager>();
-
-// Play a soundtrack
-audioManager.PlayMusic(Music.Menu);
-
-// Play a sound
-audioManager.PlaySFX(Sounds.GameOver);
-
-// Set the music volume
-audioManager.SetMusicVolume(75);
-
-// Set the sound volume
-audioManager.SetSFXVolume(100);
-
-// Gradually fade out all sounds
-audioManager.FadeOutSFX();
-```
-
-### SceneManager
-```cs
-// Switch to a scene instantly
-Global.Services.Get<SceneManager>().SwitchScene("main_menu");
-
-// Switch to a scene with a fade transition
-Global.Services.Get<SceneManager>().SwitchScene("level_2D_top_down", 
-    SceneManager.TransType.Fade);
-```
-
 ### State Manager
 The state manager employs functions as states instead of using classes for state management. The [`State`](https://github.com/ValksGodotTools/GodotUtils/blob/ccd37342ab8d758a664d2abd3375a21b608d2198/State.cs) class is provided in the GodotUtils submodule. Below an example is provided to illustrate this approach.
 
@@ -418,8 +381,27 @@ public partial class Player
 Do a similar process when adding new states.
 
 ### Mod Loader
+
+Mods have the ability to swap out game assets and run C# scripts. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+
+> [!IMPORTANT]
+> The mod loader currently cannot handle loading more than one mod with scripts. See https://github.com/ValksGodotTools/Template/issues/15 for more info on this.
+
+### Localisation
 > [!NOTE]
-> Mods have the ability to swap out game assets and run C# scripts. However, there's a significant issue with C# mod scripts, which is detailed at https://github.com/ValksGodotTools/Template/issues/15. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
+> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
+
+## Extensions
+
+### Printing Everything
+The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
+
+```cs
+GD.Print(node.PrintFull())
+```
+
+### Finding Node\<T\>
+If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
 ## Tips
 > [!TIP]
