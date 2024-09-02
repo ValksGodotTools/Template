@@ -261,14 +261,6 @@ The source generator dynamically generates enums for various resource file paths
   - **Search Path**: `Scenes\**\*.tscn`
   - **Associated Enum**: `Scene`
 
-- **Audio Resources**:
-  - **Search Paths**:
-    - `**\Audio\**\*.mp3`
-    - `**\Audio\**\*.wav`
-    - `**\Audio\**\*.ogg`
-    - `**\Audio\**\*.flac`
-  - **Associated Enum**: `Audio`
-
 **Example Usage**
 
 ```cs
@@ -277,9 +269,6 @@ Global.Services.Get<SceneManager>().SwitchScene(Scene.UICredits);
 
 // Loading a prefab
 Game.LoadPrefab<Player>(Prefab.Player);
-
-// Printing an audio resource path
-GD.Print(Audio.PlayerJump); // Output: res://Audio/Player/jump.wav
 ```
 
 This approach not only enhances readability but also ensures that resource paths are managed consistently and efficiently throughout the project.
