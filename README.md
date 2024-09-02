@@ -186,9 +186,7 @@ public class SPacketPlayerJoinLeave : ServerPacket
 #### 📦 Sending a Packet from the Client
 ```cs
 // Player.cs
-Net net = Global.Services.Get<Net>();
-
-net.Client.Send(new CPacketPosition
+Game.Net.Client.Send(new CPacketPosition
 {
     Position = Position
 });
@@ -265,7 +263,8 @@ The source generator dynamically generates enums for various resource file paths
 
 ```cs
 // Switching to a specific scene
-Global.Services.Get<SceneManager>().SwitchScene(Scene.UICredits);
+Game.SwitchScene(Scene.UICredits);
+Game.SwitchScene(Prefab.UIOptions);
 
 // Loading a prefab
 Game.LoadPrefab<Player>(Prefab.Player);
@@ -317,8 +316,7 @@ Adding the `ConsoleCommand` attribute to any function will register it as a new 
 [ConsoleCommand("help")]
 void Help()
 {
-    IEnumerable<string> cmds =
-        Global.Services.Get<UIConsole>().Commands.Select(x => x.Name);
+    IEnumerable<string> cmds = Game.Console.Commands.Select(x => x.Name);
 
     Game.Log(cmds.Print());
 }
