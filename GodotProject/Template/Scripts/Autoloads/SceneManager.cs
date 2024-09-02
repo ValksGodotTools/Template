@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+
 namespace Template;
 
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
@@ -6,12 +8,11 @@ public partial class SceneManager : Node
     /// <summary>
     /// The event is invoked right before the scene is changed
     /// </summary>
-    public event Action<Scene> PreSceneChanged;
+    public event Action<string> PreSceneChanged;
 
     public Node CurrentScene { get; private set; }
 
     SceneTree tree;
-    Scene curScene;
 
     public override void _Ready()
     {
@@ -25,13 +26,42 @@ public partial class SceneManager : Node
             Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 
+    public void SwitchScene(Prefab prefab, TransType transType = TransType.None)
+    {
+        PreSceneChanged?.Invoke(prefab.ToString());
+
+        switch (transType)
+        {
+            case TransType.None:
+                ChangeScene(prefab, transType);
+                break;
+            case TransType.Fade:
+                FadeTo(TransColor.Black, 2, () => ChangeScene(prefab, transType));
+                break;
+        }
+    }
+
+    public void SwitchScene(Scene scene, TransType transType = TransType.None)
+    {
+        PreSceneChanged?.Invoke(scene.ToString());
+
+        switch (transType)
+        {
+            case TransType.None:
+                ChangeScene(scene, transType);
+                break;
+            case TransType.Fade:
+                FadeTo(TransColor.Black, 2, () => ChangeScene(scene, transType));
+                break;
+        }
+    }
+
     /// <summary>
     /// Scenes are loaded from the 'res://Scenes/' directory. For example a name with 
     /// "level_1" would be 'res://Scenes/level_1.tscn'
     /// </summary>
-    public void SwitchScene(Scene scene, TransType transType = TransType.None)
+    public void SwitchScene(string scene, TransType transType = TransType.None)
     {
-        curScene = scene;
         PreSceneChanged?.Invoke(scene);
 
         switch (transType)
@@ -50,22 +80,39 @@ public partial class SceneManager : Node
     /// </summary>
     public void ResetCurrentScene()
     {
-        PreSceneChanged?.Invoke(curScene);
+        string sceneFilePath = tree.CurrentScene.SceneFilePath;
+
+        string[] words = sceneFilePath.Split("/");
+        string sceneName = words[words.Length - 1].Replace(".tscn", "");
+
+        PreSceneChanged?.Invoke(sceneName);
 
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), 
-            tree.CurrentScene.SceneFilePath, 
-            Variant.From(TransType.None));
+        CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
     }
 
-    void ChangeScene(Scene scene, TransType transType)
+    private void ChangeScene(Scene scene, TransType transType)
     {
         // Wait for engine to be ready before switching scenes
         CallDeferred(nameof(DeferredSwitchScene), MapScenesToPaths.GetPath(scene),
             Variant.From(transType));
     }
 
-    void DeferredSwitchScene(string rawName, Variant transTypeVariant)
+    private void ChangeScene(Prefab prefab, TransType transType)
+    {
+        // Wait for engine to be ready before switching scenes
+        CallDeferred(nameof(DeferredSwitchScene), MapPrefabsToPaths.GetPath(prefab),
+            Variant.From(transType));
+    }
+
+    private void ChangeScene(string scene, TransType transType)
+    {
+        // Wait for engine to be ready before switching scenes
+        CallDeferred(nameof(DeferredSwitchScene), $"res://Scenes/{scene}.tscn",
+            Variant.From(transType));
+    }
+
+    private void DeferredSwitchScene(string rawName, Variant transTypeVariant)
     {
         // Safe to remove scene now
         CurrentScene.Free();
@@ -94,7 +141,7 @@ public partial class SceneManager : Node
         }
     }
 
-    void FadeTo(TransColor transColor, double duration, Action finished = null)
+    private void FadeTo(TransColor transColor, double duration, Action finished = null)
     {
         // Add canvas layer to scene
         CanvasLayer canvasLayer = new()
