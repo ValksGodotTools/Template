@@ -7,6 +7,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
 2. [Features](#features)
     - [Multiplayer](#multiplayer)
     - [FPS Scene](#fps-scene)
+    - [Top Down Scene](#top-down-scene)
     - [Godot Utils](#godot-utils)
     - [Loading Prefabs](#loading-prefabs)
     - [Localisation](#localisation)
@@ -197,6 +198,10 @@ https://github.com/user-attachments/assets/db2dea51-25be-4714-9476-a061135c44ac
 
 > [!TIP]
 > Tired of strange rotational issues? Quaternions can be your ally! Every `Node3D` has a `.Quaternion` property. Quaternions are combined by multiplication and are always normalized, like `(A * B * C).Normalized()`. Remember, the order in which you multiply quaternions is significant! This technique helped me achieve smooth weapon camera movements.
+
+### Top Down Scene
+
+https://github.com/user-attachments/assets/62b576fd-eb5d-4f64-9fab-d586312f4e27
 
 ### Godot Utils
 
