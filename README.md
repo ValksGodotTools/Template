@@ -3,6 +3,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/network)
 [![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/watchers)
+[![License](https://img.shields.io/github/license/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/blob/main/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/commits/main)
+[![Contributors](https://img.shields.io/github/contributors/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/graphs/contributors)
 
 Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template` is here to streamline your workflow. ❤️
 
@@ -464,7 +467,13 @@ A: Simply closing and reopening the Godot editor should resolve the issue.
 A: Feel free to search for your issue in the repository's [issues section](https://github.com/ValksGodotTools/Template/issues). If it hasn't been reported yet, please open a new issue, and I'll be happy to help you.
     
 ## Contributing
+
 Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/Valks-Games/sankari/wiki/Code-Style). If you have any questions you can talk to me on Discord, my username is `valky5`.
+
+[![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues)
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/help%20wanted?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp%20wanted)
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/good%20first%20issue?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3Agood%20first%20issue)
+[![GitHub open pull requests count](https://img.shields.io/github/issues-pr/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/pulls)
 
 ## Credits
 For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
