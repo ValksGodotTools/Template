@@ -35,6 +35,7 @@ public partial class Level : Node, INetLevel
                 OtherPlayers.Clear();
 
                 playerCamera.StopFollowingPlayer();
+                roomTransitions.Reset();
             };
         };
     }

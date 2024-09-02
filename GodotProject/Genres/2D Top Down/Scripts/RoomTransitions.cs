@@ -34,6 +34,13 @@ public partial class RoomTransitions : Node
         CreateRoomDoorTriggers();
     }
 
+    public void Reset()
+    {
+        currentRoom = Vector2I.Zero;
+        roomBoundNodes.ForEach(node => node.QueueFree());
+        roomBoundNodes.Clear();
+    }
+
     void UnlimitedCameraBounds()
     {
         playerCamera.LimitTop = int.MinValue;
@@ -86,7 +93,7 @@ public partial class RoomTransitions : Node
     {
         currentRoom += normal * -1;
 
-        roomBoundNodes.ForEach(x => x.QueueFree());
+        roomBoundNodes.ForEach(node => node.QueueFree());
         roomBoundNodes.Clear();
 
         playerCamera.SetPhysicsProcess(false);
