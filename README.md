@@ -253,8 +253,9 @@ Player player = Game.LoadPrefab<Player>(Prefab.Player);
 ```
 
 ### Services
-> [!IMPORTANT]
-> To grasp the significance of `Global.Services`, it's essential to understand the pitfalls of using the `static` keyword. Consider a scenario where you're developing a multiplayer game and you designate every attribute in `GameServer.cs` as static. Initially, everything operates smoothly, and you can conveniently access the game server's properties from various parts of your code. However, challenges arise when the server restarts or when the scene transitions, and the game server should no longer be active. In such cases, the static properties retain their previous values, leading to inconsistencies. You would need to meticulously monitor and reset each static property, which can be cumbersome and error-prone. This illustrates why the use of static properties should be approached with caution.
+Using the static keyword in `GameServer.cs` for all attributes may initially seem convenient for accessing game server properties across different parts of the code. However, this approach poses significant challenges. When the server restarts or transitions between scenes, static properties retain their values, causing inconsistencies.
+
+Manually resetting each static property to address these issues is cumbersome and error-prone. This demonstrates the need for careful consideration when using static properties, as they can simplify initial development but complicate maintenance and scalability.
 
 In the `_Ready()` method of any node, you can register the node with `Global.Services` by using `Global.Services.Add(this)` (or `Global.Services.Add<Type>` if the script does not extend from Node).
 
