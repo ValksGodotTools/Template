@@ -18,7 +18,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [Mod Loader](#mod-loader)
     - [Localisation](#localisation)
 4. [Extensions](#extensions)
-    - [Finding Node\<T\>](finding-nodet)
+    - [Finding Nodes](finding-nodes)
     - [Printing Everything](#printing-everything)
 5. [Tips](#tips)
 6. [FAQ](#faq)
@@ -396,7 +396,7 @@ The `.PrintFull()` extension method will output all public properties and fields
 GD.Print(node.PrintFull())
 ```
 
-### Finding Node\<T\>
+### Finding Nodes
 If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
 ## Tips
