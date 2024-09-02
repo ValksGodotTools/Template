@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.3.0">
-    <!--Project Settings-->
+    <!-- Project Settings -->
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>10</LangVersion>
@@ -7,20 +7,29 @@
         <RootNamespace>Template</RootNamespace>
     </PropertyGroup>
 
-    <!--NuGet Packages-->
+    <!-- NuGet Packages -->
     <ItemGroup>
         <PackageReference Include="ENet-CSharp" Version="2.4.8" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
-    <!--Include Prefabs source generator-->
+    <!-- Include Prefabs source generator -->
     <ItemGroup>
         <ProjectReference Include="..\SourceGenerators\MySourceGenerator\MySourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
-    <!--These files will be available to the source generators-->
+    <!-- These files will be available to the source generators -->
     <ItemGroup>
+        <!-- Include audio files with common extensions -->
+        <AdditionalFiles Include="**\Audio\**\*.mp3" />
+        <AdditionalFiles Include="**\Audio\**\*.wav" />
+        <AdditionalFiles Include="**\Audio\**\*.ogg" />
+        <AdditionalFiles Include="**\Audio\**\*.flac" />
+
+        <!-- Include prefab files -->
         <AdditionalFiles Include="**\Prefabs\**\*.tscn" />
+
+        <!-- Include scene files -->
         <AdditionalFiles Include="Scenes\**\*.tscn" />
     </ItemGroup>
 
