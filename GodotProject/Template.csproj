@@ -21,7 +21,7 @@
     <!--These files will be available to the source generators-->
     <ItemGroup>
         <AdditionalFiles Include="**\Prefabs\**\*.tscn" />
-        <AdditionalFiles Include="Scenes\*.tscn" />
+        <AdditionalFiles Include="Scenes\**\*.tscn" />
     </ItemGroup>
 
     <!-- Exclude obj and bin directories from subfolders -->
