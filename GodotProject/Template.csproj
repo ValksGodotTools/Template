@@ -20,12 +20,6 @@
 
     <!-- These files will be available to the source generators -->
     <ItemGroup>
-        <!-- Include audio files with common extensions -->
-        <AdditionalFiles Include="**\Audio\**\*.mp3" />
-        <AdditionalFiles Include="**\Audio\**\*.wav" />
-        <AdditionalFiles Include="**\Audio\**\*.ogg" />
-        <AdditionalFiles Include="**\Audio\**\*.flac" />
-
         <!-- Include prefab files -->
         <AdditionalFiles Include="**\Prefabs\**\*.tscn" />
 
