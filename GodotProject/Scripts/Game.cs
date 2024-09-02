@@ -7,8 +7,10 @@ public partial class Game
     /// <summary>
     /// Loads a scene from res://Scenes/Prefabs and instantiates it
     /// </summary>
-    public static T LoadPrefab<T>(Prefab prefab) where T : Node =>
-        (T)GD.Load<PackedScene>(MapPrefabsToPaths.GetPath(prefab)).Instantiate();
+    public static T LoadPrefab<T>(Prefab prefab) where T : Node
+    {
+        return (T)GD.Load<PackedScene>(MapPrefabsToPaths.GetPath(prefab)).Instantiate();
+    }
 
     public static void Log(object message, BBColor color = BBColor.Gray) =>
         Global.Services.Get<Logger>().Log(message, color);

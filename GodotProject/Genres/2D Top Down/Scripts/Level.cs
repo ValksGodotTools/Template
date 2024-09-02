@@ -4,6 +4,10 @@ using Template.TopDown2D;
 
 public partial class Level : Node, INetLevel
 {
+    [Export] Node entities;
+    [Export] PlayerCamera playerCamera;
+    [Export] RoomTransitions roomTransitions;
+
     public Player Player { get; set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = new();
 
@@ -29,23 +33,28 @@ public partial class Level : Node, INetLevel
 
                 OtherPlayers.Values.ForEach(x => x.QueueFree());
                 OtherPlayers.Clear();
+
+                playerCamera.StopFollowingPlayer();
             };
         };
     }
 
     public void AddLocalPlayer()
     {
-        Player = Game.LoadPrefab<Player>(Prefab.Player);
-        AddChild(Player);
+        Player = Game.LoadPrefab<Player>(Prefab.PlayerMain);
         Player.Position = Net.PlayerSpawnPosition;
+        entities.AddChild(Player);
+
+        playerCamera.StartFollowingPlayer(Player);
+        roomTransitions.Init(Player);
     }
 
     public void AddOtherPlayer(uint id, PlayerData playerData)
     {
-        OtherPlayer otherPlayer = Game.LoadPrefab<OtherPlayer>(Prefab.OtherPlayer);
+        OtherPlayer otherPlayer = Game.LoadPrefab<OtherPlayer>(Prefab.PlayerOther);
 
         otherPlayer.LastServerPosition = playerData.Position;
-        AddChild(otherPlayer);
+        entities.AddChild(otherPlayer);
         otherPlayer.Position = playerData.Position;
         otherPlayer.SetLabelText($"{playerData.Username} ({id})");
 

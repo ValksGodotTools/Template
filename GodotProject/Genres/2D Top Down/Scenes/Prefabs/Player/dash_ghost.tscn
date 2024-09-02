@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://rxy1v5r7r07d"]
+
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/PlayerDashGhost.cs" id="1_pndqi"]
+[ext_resource type="Texture2D" uid="uid://e5nc1kcq5ns" path="res://Genres/2D Top Down/Sprites/light.png" id="2_5cw32"]
+
+[node name="Dash Ghost" type="Node2D"]
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+script = ExtResource("1_pndqi")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.701961, 0.729412, 1, 1)
+energy = 0.5
+texture = ExtResource("2_5cw32")
