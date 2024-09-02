@@ -70,11 +70,19 @@ namespace MySourceGenerator
                 .Where(file => Path.GetExtension(file.Path)
                 .Equals(".tscn", StringComparison.OrdinalIgnoreCase));
 
+            // Separate tscn files into Prefabs and Scenes
+            IEnumerable<AdditionalText> prefabFiles = tscnFiles.Where(file => file.Path.Contains("\\Prefabs\\"));
+            IEnumerable<AdditionalText> sceneFiles = tscnFiles.Where(file => file.Path.Contains("\\Scenes\\") && !file.Path.Contains("\\Prefabs\\"));
+
             // Generate the Prefabs class
-            string sourceCode = GeneratePrefabsClass(context, tscnFiles);
+            string prefabSourceCode = GeneratePrefabsClass(context, prefabFiles);
+
+            // Generate the Scenes class
+            string sceneSourceCode = GenerateScenesClass(context, sceneFiles);
 
             // Add the generated source code to the compilation
-            context.AddSource("Prefabs.g.cs", SourceText.From(sourceCode, Encoding.UTF8));
+            context.AddSource("Prefabs.g.cs", SourceText.From(prefabSourceCode, Encoding.UTF8));
+            context.AddSource("Scenes.g.cs", SourceText.From(sceneSourceCode, Encoding.UTF8));
         }
 
         private static string GeneratePrefabsClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
@@ -87,7 +95,7 @@ namespace MySourceGenerator
             foreach (AdditionalText file in tscnFiles)
             {
                 string relativePath = GetRelativePath(file.Path, rootFolderName);
-                string enumName = GetEnumName(relativePath);
+                string enumName = GetEnumName(relativePath, "Prefabs");
 
                 relativePaths.Add(relativePath);
                 enumNames.Add(enumName);
@@ -136,6 +144,65 @@ namespace MySourceGenerator
             return sb.ToString();
         }
 
+        private static string GenerateScenesClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
+        {
+            StringBuilder sb = new StringBuilder();
+            string rootFolderName = GetRootFolderName(context);
+            List<string> relativePaths = new List<string>();
+            List<string> enumNames = new List<string>();
+
+            foreach (AdditionalText file in tscnFiles)
+            {
+                string relativePath = GetRelativePath(file.Path, rootFolderName);
+                string enumName = GetEnumName(relativePath, "Scenes");
+
+                relativePaths.Add(relativePath);
+                enumNames.Add(enumName);
+            }
+
+            sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
+            sb.AppendLine();
+            sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine();
+            sb.AppendLine("public enum Scene");
+            sb.AppendLine("{");
+
+            for (int i = 0; i < enumNames.Count; i++)
+            {
+                sb.AppendLine($"    {enumNames[i]},");
+            }
+
+            sb.AppendLine("}");
+            sb.AppendLine();
+
+            sb.AppendLine("public static class MapScenesToPaths");
+            sb.AppendLine("{");
+            sb.AppendLine("    private static readonly Dictionary<Scene, string> scenePaths = new Dictionary<Scene, string>");
+            sb.AppendLine("    {");
+
+            for (int i = 0; i < enumNames.Count; i++)
+            {
+                string resourcePath = $"res://{relativePaths[i]}";
+                sb.AppendLine($"        {{ Scene.{enumNames[i]}, \"{resourcePath}\" }},");
+            }
+
+            sb.AppendLine("    };");
+            sb.AppendLine();
+            sb.AppendLine("    public static string GetPath(Scene scene)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        if (scenePaths.TryGetValue(scene, out string path))");
+            sb.AppendLine("        {");
+            sb.AppendLine("            return path;");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        return null;");
+            sb.AppendLine("    }");
+
+            sb.AppendLine("}");
+
+            return sb.ToString();
+        }
+
         private static string GetRootFolderName(GeneratorExecutionContext context)
         {
             if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out string projectDir))
@@ -158,13 +225,16 @@ namespace MySourceGenerator
             return normalizedFilePath.Substring(rootFolderIndex + rootFolderIdentifier.Length);
         }
 
-        private static string GetEnumName(string relativePath)
+        private static string GetEnumName(string relativePath, string folderName)
         {
-            return relativePath
-                .Substring(relativePath.IndexOf("Prefabs/") + "Prefabs/".Length)
+            string folderIdentifier = folderName + "/";
+            string enumName = relativePath
+                .Substring(relativePath.IndexOf(folderIdentifier) + folderIdentifier.Length)
                 .Replace("/", "_")
                 .Replace(".tscn", "")
                 .SnakeCaseToPascalCase();
+
+            return enumName;
         }
     }
 }
