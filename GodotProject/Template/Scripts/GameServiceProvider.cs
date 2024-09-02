@@ -24,7 +24,7 @@ public class GameServiceProvider : ServiceProvider
         SceneManager sceneManager = (SceneManager)services[typeof(SceneManager)].Instance;
         sceneManager.PreSceneChanged += Cleanup;
 
-        void Cleanup(string sceneName)
+        void Cleanup(Scene scene)
         {
             // Stop listening to PreSceneChanged
             sceneManager.PreSceneChanged -= Cleanup;
