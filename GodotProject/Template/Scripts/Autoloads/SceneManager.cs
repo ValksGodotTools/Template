@@ -6,11 +6,12 @@ public partial class SceneManager : Node
     /// <summary>
     /// The event is invoked right before the scene is changed
     /// </summary>
-    public event Action<string> PreSceneChanged;
+    public event Action<Scene> PreSceneChanged;
 
     public Node CurrentScene { get; private set; }
 
     SceneTree tree;
+    Scene curScene;
 
     public override void _Ready()
     {
@@ -20,7 +21,7 @@ public partial class SceneManager : Node
         Global.Services.Add(this, persistent: true);
 
         // Gradually fade out all SFX whenever the scene is changed
-        PreSceneChanged += name =>
+        PreSceneChanged += scene =>
             Global.Services.Get<AudioManager>().FadeOutSFX();
     }
 
@@ -28,17 +29,18 @@ public partial class SceneManager : Node
     /// Scenes are loaded from the 'res://Scenes/' directory. For example a name with 
     /// "level_1" would be 'res://Scenes/level_1.tscn'
     /// </summary>
-    public void SwitchScene(string name, TransType transType = TransType.None)
+    public void SwitchScene(Scene scene, TransType transType = TransType.None)
     {
-        PreSceneChanged?.Invoke(name);
+        curScene = scene;
+        PreSceneChanged?.Invoke(scene);
 
         switch (transType)
         {
             case TransType.None:
-                ChangeScene(name, transType);
+                ChangeScene(scene, transType);
                 break;
             case TransType.Fade:
-                FadeTo(TransColor.Black, 2, () => ChangeScene(name, transType));
+                FadeTo(TransColor.Black, 2, () => ChangeScene(scene, transType));
                 break;
         }
     }
@@ -48,21 +50,18 @@ public partial class SceneManager : Node
     /// </summary>
     public void ResetCurrentScene()
     {
-        string sceneFilePath = tree.CurrentScene.SceneFilePath;
-
-        string[] words = sceneFilePath.Split("/");
-        string sceneName = words[words.Length - 1].Replace(".tscn", "");
-
-        PreSceneChanged?.Invoke(sceneName);
+        PreSceneChanged?.Invoke(curScene);
 
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
+        CallDeferred(nameof(DeferredSwitchScene), 
+            tree.CurrentScene.SceneFilePath, 
+            Variant.From(TransType.None));
     }
 
-    void ChangeScene(string name, TransType transType)
+    void ChangeScene(Scene scene, TransType transType)
     {
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), $"res://Scenes/{name}.tscn",
+        CallDeferred(nameof(DeferredSwitchScene), MapScenesToPaths.GetPath(scene),
             Variant.From(transType));
     }
 
