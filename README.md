@@ -9,6 +9,7 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [2D Top Down](#2d-top-down)
 3. [Features](#features)
     - [Multiplayer](#multiplayer)
+    - [Menu UI](#menu-ui)
     - [Simplified Tweens](#simplified-tweens)
     - [Thread Safe Logger](#thread-safe-logger)
     - [Loading Prefabs](#loading-prefabs)
@@ -46,10 +47,6 @@ Fill in the required fields and click `Apply`. This will close the game.
 
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
-
-![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
-![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
-![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
 
 ## Scenes
 
@@ -207,6 +204,12 @@ public class PlayerData
     public Vector2 PrevPosition { get; set; }
 }
 ```
+
+### Menu UI
+
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
 
 ### Simplified Tweens
 Tweening has never been so easy! 🦄
