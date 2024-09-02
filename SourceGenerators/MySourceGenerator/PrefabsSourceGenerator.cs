@@ -74,15 +74,24 @@ namespace MySourceGenerator
             IEnumerable<AdditionalText> prefabFiles = tscnFiles.Where(file => file.Path.Contains("\\Prefabs\\"));
             IEnumerable<AdditionalText> sceneFiles = tscnFiles.Where(file => file.Path.Contains("\\Scenes\\") && !file.Path.Contains("\\Prefabs\\"));
 
+            // Get all audio files
+            IEnumerable<AdditionalText> audioFiles = context.AdditionalFiles
+                .Where(file => new[] { ".mp3", ".wav", ".ogg", ".flac" }
+                .Contains(Path.GetExtension(file.Path), StringComparer.OrdinalIgnoreCase));
+
             // Generate the Prefabs class
             string prefabSourceCode = GeneratePrefabsClass(context, prefabFiles);
 
             // Generate the Scenes class
             string sceneSourceCode = GenerateScenesClass(context, sceneFiles);
 
+            // Generate the Audio class
+            string audioSourceCode = GenerateAudioClass(context, audioFiles);
+
             // Add the generated source code to the compilation
             context.AddSource("Prefabs.g.cs", SourceText.From(prefabSourceCode, Encoding.UTF8));
             context.AddSource("Scenes.g.cs", SourceText.From(sceneSourceCode, Encoding.UTF8));
+            context.AddSource("Audio.g.cs", SourceText.From(audioSourceCode, Encoding.UTF8));
         }
 
         private static string GeneratePrefabsClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
@@ -191,6 +200,65 @@ namespace MySourceGenerator
             sb.AppendLine("    public static string GetPath(Scene scene)");
             sb.AppendLine("    {");
             sb.AppendLine("        if (scenePaths.TryGetValue(scene, out string path))");
+            sb.AppendLine("        {");
+            sb.AppendLine("            return path;");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        return null;");
+            sb.AppendLine("    }");
+
+            sb.AppendLine("}");
+
+            return sb.ToString();
+        }
+
+        private static string GenerateAudioClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> audioFiles)
+        {
+            StringBuilder sb = new StringBuilder();
+            string rootFolderName = GetRootFolderName(context);
+            List<string> relativePaths = new List<string>();
+            List<string> enumNames = new List<string>();
+
+            foreach (AdditionalText file in audioFiles)
+            {
+                string relativePath = GetRelativePath(file.Path, rootFolderName);
+                string enumName = GetEnumName(relativePath, "Audio");
+
+                relativePaths.Add(relativePath);
+                enumNames.Add(enumName);
+            }
+
+            sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
+            sb.AppendLine();
+            sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine();
+            sb.AppendLine("public enum Audio");
+            sb.AppendLine("{");
+
+            for (int i = 0; i < enumNames.Count; i++)
+            {
+                sb.AppendLine($"    {enumNames[i]},");
+            }
+
+            sb.AppendLine("}");
+            sb.AppendLine();
+
+            sb.AppendLine("public static class MapAudioToPaths");
+            sb.AppendLine("{");
+            sb.AppendLine("    private static readonly Dictionary<Audio, string> audioPaths = new Dictionary<Audio, string>");
+            sb.AppendLine("    {");
+
+            for (int i = 0; i < enumNames.Count; i++)
+            {
+                string resourcePath = $"res://{relativePaths[i]}";
+                sb.AppendLine($"        {{ Audio.{enumNames[i]}, \"{resourcePath}\" }},");
+            }
+
+            sb.AppendLine("    };");
+            sb.AppendLine();
+            sb.AppendLine("    public static string GetPath(Audio audio)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        if (audioPaths.TryGetValue(audio, out string path))");
             sb.AppendLine("        {");
             sb.AppendLine("            return path;");
             sb.AppendLine("        }");
