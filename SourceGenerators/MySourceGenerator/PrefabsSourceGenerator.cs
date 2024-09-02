@@ -79,25 +79,57 @@ namespace MySourceGenerator
         private static string GeneratePrefabsClass(GeneratorExecutionContext context, IEnumerable<AdditionalText> tscnFiles)
         {
             StringBuilder sb = new StringBuilder();
+
             sb.AppendLine($"namespace {context.Compilation.AssemblyName};");
             sb.AppendLine();
             sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("using Godot;"); // Add using directive for Godot namespace
             sb.AppendLine();
             sb.AppendLine("public enum Prefab");
             sb.AppendLine("{");
 
-            string basePath = "Scenes\\Prefabs\\";
             List<string> relativePaths = new List<string>();
             List<string> enumNames = new List<string>();
+
+            string rootFolderName = "RootFolderNotFound";
+
+            // Try to get the project directory
+            if (context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out string projectDir))
+            {
+                // Extract the root folder name from the project directory
+                rootFolderName = Path.GetFileName(projectDir.TrimEnd('\\', '/'));
+                sb.AppendLine($"// Project directory: {projectDir}"); // Debug print
+                sb.AppendLine($"// Root folder name: {rootFolderName}"); // Debug print
+            }
+            else
+            {
+                sb.AppendLine("// DEBUG: FAILED TO GET ROOT FOLDER NAME");
+            }
 
             // Populate the lists with relative paths and enum names
             foreach (AdditionalText file in tscnFiles)
             {
                 string filePath = file.Path;
-                int startIndex = filePath.IndexOf(basePath) + basePath.Length;
-                string relativePath = filePath.Substring(startIndex).Replace("\\", "/");
+
+                string relativePath = filePath.Replace("\\", "/");
+
+                string identifier = $"{rootFolderName.ToLower()}/";
+
+                int index = relativePath.ToLower().IndexOf(identifier);
+
+                if (index != -1)
+                {
+                    relativePath = relativePath.Substring(index + identifier.Length);
+                }
+                else
+                {
+                    sb.AppendLine($"// Identifier not found in relative path: {relativePath}"); // Debug print
+                }
+
+                sb.AppendLine($"// Relative path after processing: {relativePath}"); // Debug print
 
                 string enumName = relativePath
+                    .Substring(relativePath.IndexOf("Prefabs/") + "Prefabs/".Length)
                     .Replace("/", "_")
                     .Replace(".tscn", "")
                     .SnakeCaseToPascalCase();
@@ -124,17 +156,26 @@ namespace MySourceGenerator
 
             for (int i = 0; i < enumNames.Count; i++)
             {
-                string resourcePath = $"res://{basePath.Replace("\\", "/")}{relativePaths[i]}";
+                string resourcePath = $"res://{relativePaths[i]}";
                 sb.AppendLine($"        {{ Prefab.{enumNames[i]}, \"{resourcePath}\" }},");
             }
 
             sb.AppendLine("    };");
             sb.AppendLine();
 
-            // Generate the GetPath method
+            // Generate the GetPath method with debug prints
             sb.AppendLine("    public static string GetPath(Prefab prefab)");
             sb.AppendLine("    {");
-            sb.AppendLine("        return prefabPaths[prefab];");
+            sb.AppendLine("        if (prefabPaths.TryGetValue(prefab, out string path))");
+            sb.AppendLine("        {");
+            sb.AppendLine("            GD.Print($\"Retrieved path for {prefab}: {path}\"); // Debug print");
+            sb.AppendLine("            return path;");
+            sb.AppendLine("        }");
+            sb.AppendLine("        else");
+            sb.AppendLine("        {");
+            sb.AppendLine("            GD.Print($\"Path not found for {prefab}\"); // Debug print");
+            sb.AppendLine("            return null;");
+            sb.AppendLine("        }");
             sb.AppendLine("    }");
 
             sb.AppendLine("}");
