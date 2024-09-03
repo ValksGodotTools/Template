@@ -1,6 +1,6 @@
 ﻿namespace Template;
 
-public abstract partial class Character : CharacterBody2D, IBaseEntity
+public abstract partial class RigidBody : RigidBody2D, IBaseEntity
 {
     public EntityComponent EntityComponent { get; set; }
 
@@ -8,11 +8,6 @@ public abstract partial class Character : CharacterBody2D, IBaseEntity
     {
         EntityComponent = this.GetNode<EntityComponent>();
         EntityComponent.SwitchState(Idle());
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        MoveAndSlide();
     }
 
     public virtual void IdleState(State state) { }

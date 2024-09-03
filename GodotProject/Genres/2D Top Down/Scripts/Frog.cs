@@ -2,7 +2,7 @@ using Template.TopDown2D;
 
 namespace Template;
 
-public partial class Frog : RigidBody2D
+public partial class Frog : RigidBody
 {
     [Export] float jumpForceInfluence = 2;
     [Export] AnimatedSprite2D animatedSprite;
@@ -11,12 +11,9 @@ public partial class Frog : RigidBody2D
     Player player;
     Vector2 landTarget;
 
-    public EntityComponent EntityComponent { get; private set; }
-
     public override void _Ready()
     {
-        EntityComponent = this.GetNode<EntityComponent>();
-        EntityComponent.SwitchState(Idle());
+        base._Ready();
 
         area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         area.BodyEntered += body =>
@@ -32,10 +29,8 @@ public partial class Frog : RigidBody2D
         };
     }
 
-    public State Idle()
+    public override void IdleState(State state)
     {
-        State state = new(nameof(Idle));
-
         state.Enter = () =>
         {
             animatedSprite.Play("idle");
@@ -50,8 +45,6 @@ public partial class Frog : RigidBody2D
         {
             area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         };
-
-        return state;
     }
 
     State PreJump()

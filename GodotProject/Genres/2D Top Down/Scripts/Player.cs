@@ -22,16 +22,18 @@ public partial class Player : Character, INetPlayer
 
     #endregion
 
-    public override void Init()
+    public override void _Ready()
     {
+        base._Ready();
         canDash = true;
         client = Game.Net.Client;
         sprite = GetNode<Sprite2D>("Sprite2D");
         cameraShake = GetTree().Root.GetNode<CameraShake>("Level/Camera2D/CameraShake");
     }
 
-    public override void Update(double delta)
+    public override void _PhysicsProcess(double delta)
     {
+        base._PhysicsProcess(delta);
         direction = GodotUtils.World2D.TopDown.Utils.GetMovementInput();
 
         // Velocity is mutiplied by delta for us already
