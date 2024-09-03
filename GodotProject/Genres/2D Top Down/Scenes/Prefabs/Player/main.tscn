@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp0sflr3sgvif"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player.cs" id="1_hhq86"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/Player.cs" id="1_hhq86"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_dn5ot"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_s0wn2"]
 [ext_resource type="Texture2D" uid="uid://e5nc1kcq5ns" path="res://Genres/2D Top Down/Sprites/light.png" id="4_y4jhi"]
