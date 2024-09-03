@@ -4,8 +4,19 @@ public partial class RoomGeneration : Node
 {
     [Export] TileMapLayer tileMap;
 
-	public override void _Ready()
-	{
+    public override void _Ready()
+    {
+        GenerateRoom();
+    }
+
+    private void GenerateRoom()
+    {
+        List<Vector2I> floorTiles = GetFloorTiles();
+        AddFrogs(floorTiles);
+    }
+
+    private List<Vector2I> GetFloorTiles()
+    {
         List<Vector2I> floorTiles = new();
 
         for (int x = 0; x < 10; x++)
@@ -21,11 +32,17 @@ public partial class RoomGeneration : Node
             }
         }
 
+        return floorTiles;
+    }
+
+    private void AddFrogs(List<Vector2I> floorTiles)
+    {
         Random random = new();
 
         for (int i = 0; i < 2; i++)
         {
-            Vector2 randomFloorPosition = tileMap.MapToLocal(floorTiles[random.Next(floorTiles.Count)]) * tileMap.Scale;
+            Vector2I randomFloorTile = floorTiles[random.Next(floorTiles.Count)];
+            Vector2 randomFloorPosition = tileMap.MapToLocal(randomFloorTile) * tileMap.Scale;
 
             Frog frog = Game.LoadPrefab<Frog>(Prefab.Frog);
             frog.Position = randomFloorPosition;
