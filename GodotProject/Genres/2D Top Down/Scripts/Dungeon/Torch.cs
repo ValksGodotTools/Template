@@ -1,8 +1,10 @@
 namespace Template;
 
 [Tool]
+[DebugExports]
 public partial class Torch : Node
 {
+    [Export] int someInteger = 1;
     [Export] double energy = 1;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;

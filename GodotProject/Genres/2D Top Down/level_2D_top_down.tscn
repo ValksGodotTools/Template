@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://btkfgi3rc5wm1"]
+[gd_scene load_steps=36 format=4 uid="uid://btkfgi3rc5wm1"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Dungeon/Level.cs" id="1_jdty6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ca2xb7tvce5xj" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
 [ext_resource type="Texture2D" uid="uid://cmi46negp3jqi" path="res://Genres/2D Top Down/Sprites/dungeon.png" id="4_ai2f7"]
 [ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/puddle.gdshader" id="5_l6cl7"]
+[ext_resource type="Script" path="res://Template/Scripts/UI/UIDebugExports.cs" id="6_41hkm"]
 [ext_resource type="Texture2D" uid="uid://vo2m8kod8vn1" path="res://Genres/2D Top Down/Sprites/puddle_mask.png" id="6_r6pwu"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerCamera.cs" id="7_iqnw1"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/CameraShakeComponent.cs" id="7_tebhc"]
@@ -355,6 +356,43 @@ visible = false
 
 [node name="VBox" parent="CanvasLayer" instance=ExtResource("3_uykib")]
 
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" node_paths=PackedStringArray("vbox")]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("6_41hkm")
+vbox = NodePath("MarginContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " Step Precision"
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = -10
 scale = Vector2(4, 4)
@@ -387,4 +425,5 @@ script = ExtResource("7_iqnw1")
 script = ExtResource("7_tebhc")
 
 [node name="Torch" parent="." instance=ExtResource("9_oa68x")]
+unique_name_in_owner = true
 position = Vector2(545, 70)
