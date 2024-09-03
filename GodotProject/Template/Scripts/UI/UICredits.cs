@@ -22,8 +22,7 @@ public partial class UICredits : Node
         };
 
         // Read the contents from credits.txt and construct the credits
-        FileAccess file = 
-            FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
+        FileAccess file = FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
 
         while (!file.EofReached())
         {
@@ -46,33 +45,49 @@ public partial class UICredits : Node
             string translatedLine = "";
 
             foreach (string word in line.Split(' '))
+            {
                 translatedLine += Tr(word) + " ";
+            }
 
             if (translatedLine.Contains("http"))
+            {
                 AddTextWithLink(translatedLine);
+            }
             else
+            {
                 if (string.IsNullOrWhiteSpace(translatedLine))
-                    vbox.AddChild(new GPadding(0, 10));
+                {
+                    Control control = new GPadding(0, 10);
+                    control.MouseFilter = Control.MouseFilterEnum.Ignore;
+                    vbox.AddChild(control);
+                }
                 else
-                    vbox.AddChild(new GLabel(translatedLine, size));
+                {
+                    Control control = new GLabel(translatedLine, size);
+                    control.MouseFilter = Control.MouseFilterEnum.Ignore;
+                    vbox.AddChild(control);
+                }
+            }   
         } 
 
         file.Close();
 
         AddChild(vbox);
 
+        vbox.MouseFilter = Control.MouseFilterEnum.Ignore;
+
         // Set starting position of the credits
         vbox.Position = new Vector2(
-            DisplayServer.WindowGetSize().X / 2 - vbox.Size.X / 2,
-            DisplayServer.WindowGetSize().Y);
+            GetViewport().GetVisibleRect().Size.X / 2 - vbox.Size.X / 2,
+            GetViewport().GetVisibleRect().Size.Y);
 
         // Re-center credits when window size is changed
-        GetViewport().SizeChanged += () =>
+        /*GetViewport().SizeChanged += () =>
         {
             vbox.Position = new Vector2(
                 DisplayServer.WindowGetSize().X / 2 - vbox.Size.X / 2,
                 vbox.Size.Y);
-        };
+        };*/
     }
 
     public override void _PhysicsProcess(double delta)
