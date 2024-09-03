@@ -55,6 +55,8 @@ public partial class UINetControlPanel : Node
                     btnStartServer.Disabled = true;
                     btnStopServer.Disabled = true;
                 }
+
+                UnfocusCurrentControl(GetTree());
             };
 
             net.Client.OnDisconnected += opcode =>
@@ -68,5 +70,17 @@ public partial class UINetControlPanel : Node
     public override void _PhysicsProcess(double delta)
     {
         net.Client?.HandlePackets();
+    }
+
+    private static void UnfocusCurrentControl(SceneTree tree)
+    {
+        // Get the currently focused control
+        Control focusedControl = tree.Root.GuiGetFocusOwner();
+
+        if (focusedControl != null)
+        {
+            // Set the focus mode to None to unfocus it
+            focusedControl.FocusMode = Control.FocusModeEnum.None;
+        }
     }
 }
