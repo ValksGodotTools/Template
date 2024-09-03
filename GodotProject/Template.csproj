@@ -2,7 +2,7 @@
     <!-- Project Settings -->
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>10</LangVersion>
+        <LangVersion>latest</LangVersion>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <RootNamespace>Template</RootNamespace>
     </PropertyGroup>
