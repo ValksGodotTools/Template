@@ -1,7 +1,7 @@
 namespace Template;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
-public partial class CameraShake : Node
+public partial class CameraShakeComponent : Node
 {
     CameraShakeConfig config;
     Camera2D camera;

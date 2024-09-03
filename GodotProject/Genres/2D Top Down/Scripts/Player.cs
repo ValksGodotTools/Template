@@ -12,7 +12,7 @@ public partial class Player : Character, INetPlayer
 
     #region Variables
 
-    CameraShake cameraShake;
+    CameraShakeComponent cameraShake;
     Vector2 prevPosition;
     Vector2 direction;
     GameClient client;
@@ -28,7 +28,7 @@ public partial class Player : Character, INetPlayer
         canDash = true;
         client = Game.Net.Client;
         sprite = GetNode<Sprite2D>("Sprite2D");
-        cameraShake = GetTree().Root.GetNode<CameraShake>("Level/Camera2D/CameraShake");
+        cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
     }
 
     public override void _PhysicsProcess(double delta)

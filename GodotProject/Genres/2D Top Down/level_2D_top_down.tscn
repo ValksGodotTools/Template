@@ -9,7 +9,7 @@
 [ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/puddle.gdshader" id="5_l6cl7"]
 [ext_resource type="Texture2D" uid="uid://vo2m8kod8vn1" path="res://Genres/2D Top Down/Sprites/puddle_mask.png" id="6_r6pwu"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/PlayerCamera.cs" id="7_iqnw1"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/CameraShake.cs" id="7_tebhc"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/CameraShakeComponent.cs" id="7_tebhc"]
 [ext_resource type="PackedScene" uid="uid://n48bmp15w2qt" path="res://Genres/2D Top Down/Scenes/Prefabs/torch.tscn" id="9_oa68x"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_i4k2f"]
