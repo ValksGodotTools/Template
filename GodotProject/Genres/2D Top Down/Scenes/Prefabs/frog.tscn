@@ -68,18 +68,21 @@ size = Vector2(72, 54)
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v5ul"]
 radius = 400.125
 
-[node name="Frog" type="CharacterBody2D" node_paths=PackedStringArray("animatedSprite", "area")]
+[node name="Frog" type="RigidBody2D" node_paths=PackedStringArray("animatedSprite", "area")]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 2
+gravity_scale = 0.0
+lock_rotation = true
+linear_damp = 1.5
 script = ExtResource("1_l0c38")
+jumpForce = 600
 animatedSprite = NodePath("AnimatedSprite2D")
 area = NodePath("Area2D")
 
 [node name="Components" type="Node2D" parent="."]
 
-[node name="Entity" type="Node2D" parent="Components" node_paths=PackedStringArray("Hitbox")]
+[node name="Entity" type="Node2D" parent="Components"]
 script = ExtResource("2_78og4")
-Hitbox = NodePath("../../Area2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1

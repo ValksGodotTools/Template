@@ -2,16 +2,22 @@ using Template.TopDown2D;
 
 namespace Template;
 
-public partial class Frog : Character
+public partial class Frog : RigidBody2D
 {
+    [Export] float jumpForceInfluence = 2;
     [Export] AnimatedSprite2D animatedSprite;
     [Export] Area2D area;
 
     Player player;
     Vector2 landTarget;
 
-    public override void Init()
+    public EntityComponent EntityComponent { get; private set; }
+
+    public override void _Ready()
     {
+        EntityComponent = this.GetNode<EntityComponent>();
+        EntityComponent.SwitchState(Idle());
+
         area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         area.BodyEntered += body =>
         {
@@ -26,8 +32,10 @@ public partial class Frog : Character
         };
     }
 
-    public override void IdleState(State state)
+    public State Idle()
     {
+        State state = new(nameof(Idle));
+
         state.Enter = () =>
         {
             animatedSprite.Play("idle");
@@ -42,6 +50,8 @@ public partial class Frog : Character
         {
             area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         };
+
+        return state;
     }
 
     State PreJump()
@@ -89,27 +99,27 @@ public partial class Frog : Character
             {
                 animatedSprite.Play("jump");
 
-                CollisionLayer = (uint)GMath.GetLayerValues(3);
+                this.SetCollisionLayerAndMask(3);
+
+                Vector2 force = (player.Position - Position) * jumpForceInfluence;
+
+                ApplyCentralImpulse(force);
 
                 double jump_time = 1.0;
-
-                new GTween(this)
-                    .Animate(Node2D.PropertyName.Position, player.Position, jump_time)
-                    .EaseIn();
 
                 new GTween(animatedSprite)
                     .SetAnimatingProp(Node2D.PropertyName.Scale)
                     .AnimateProp(animatedSprite.Scale * new Vector2(4, 2), 0.2).EaseOut()
                     .AnimateProp(animatedSprite.Scale * new Vector2(2, 4), jump_time * 0.5).EaseOut()
                     .AnimateProp(animatedSprite.Scale * new Vector2(1.5f, 0.5f), jump_time * 0.5).EaseIn()
-                    .Callback(() => animatedSprite.Play("idle"))
+                    .Callback(() =>
+                    {
+                        LinearVelocity = Vector2.Zero;
+                        animatedSprite.Play("idle");
+                        this.SetCollisionLayerAndMask(2);
+                    })
                     .AnimateProp(animatedSprite.Scale * Vector2.One, jump_time * 0.5)
                     .Callback(() => EntityComponent.SwitchState(Idle()));
-            },
-
-            Exit = () =>
-            {
-                CollisionLayer = (uint)GMath.GetLayerValues(2);
             }
         };
 
