@@ -7,6 +7,8 @@ public partial class UIDebugExports : Control
     // Reference to a VBoxContainer node in the scene
     [Export] VBoxContainer sidePanelNodeInfoVBox;
 
+    private List<VisualizedNode> visualizedNodes = [];
+
     public override void _Ready()
     {
         List<DebugExportNode> debugExportNodes = GetDebugExportNodes(GetTree().Root);
@@ -21,6 +23,60 @@ public partial class UIDebugExports : Control
         CreateMemberInfoUI(debugExportNodes.FirstOrDefault(), debugExportSpinBoxes, sidePanelNodeInfoVBox);
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
+
+        visualizedNodes = CreateVisualizationUI(debugExportNodes);
+    }
+
+    public override void _Process(double delta)
+    {
+        foreach (VisualizedNode node in visualizedNodes)
+        {
+            node.Process();
+        }
+    }
+
+    private static List<VisualizedNode> CreateVisualizationUI(List<DebugExportNode> debugExportNodes)
+    {
+        List<VisualizedNode> visualizedNodes = [];
+
+        foreach (DebugExportNode exportNode in debugExportNodes)
+        {
+            IEnumerable<MemberInfo> memberQuery = from member in exportNode.ExportedMembers
+                where member.GetCustomAttributes(typeof(VisualizeAttribute)).Any()
+                select member;
+
+            List<MemberInfo> members = memberQuery.ToList();
+
+            foreach (Node node in exportNode.Nodes)
+            {
+                List<(MemberInfo, Label)> memberLabels = [];
+
+                VBoxContainer infoContainer = new();
+
+                foreach (MemberInfo member in members)
+                {
+                    HBoxContainer memberContainer = new();
+
+                    Label name = new() { Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital() };
+                    Label value = new();
+
+                    memberContainer.AddChild(name);
+                    memberContainer.AddChild(value);
+
+                    memberLabels.Add((member, name));
+                    infoContainer.AddChild(memberContainer);
+                }
+
+                node.AddChild(infoContainer);
+
+                VisualizedNode visualizedNode = new(node, memberLabels);
+                visualizedNode.Process();
+
+                visualizedNodes.Add(visualizedNode);
+            }
+        }
+
+        return visualizedNodes;
     }
 
     // Method to create UI elements for member info
@@ -249,4 +305,33 @@ public class DebugExportSpinBox
 {
     public SpinBox SpinBox { get; set; }
     public Type Type { get; set; }
+}
+
+public class VisualizedNode(Node node, List<(MemberInfo, Label)> members)
+{
+    public Node Node { get; } = node;
+    public List<(MemberInfo, Label)> Members { get; } = members;
+
+    public void Process()
+    {
+        foreach ((MemberInfo info, Label label) in Members)
+        {
+            label.Text = GetValue(info) ?? "<null>";
+        }
+    }
+
+    private string GetValue(MemberInfo info)
+    {
+        if (info is FieldInfo fieldInfo)
+        {
+            return fieldInfo.GetValue(Node)?.ToString();
+        }
+
+        if (info is PropertyInfo propertyInfo)
+        {
+            return propertyInfo.GetValue(Node)?.ToString();
+        }
+
+        return null;
+    }
 }
