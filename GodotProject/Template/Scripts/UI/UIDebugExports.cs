@@ -75,7 +75,7 @@ public partial class UIDebugExports : Control
             // Create a SpinBox for numeric input
             SpinBox spinBox = new()
             {
-                UpdateOnTextChanged = false,
+                UpdateOnTextChanged = true,
                 AllowLesser = true,
                 AllowGreater = true,
                 Alignment = HorizontalAlignment.Center
