@@ -14,10 +14,10 @@ public partial class UIDebugExports : Control
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
 
-        CreateMemberInfoUI(debugExportNodes, debugExportSpinBoxes);
+        CreateMemberInfoUI(debugExportNodes, debugExportSpinBoxes, vbox);
     }
 
-    private void CreateMemberInfoUI(List<DebugExportNode> debugExportNodes, List<DebugExportSpinBox> debugExportSpinBoxes)
+    private static void CreateMemberInfoUI(List<DebugExportNode> debugExportNodes, List<DebugExportSpinBox> debugExportSpinBoxes, Node parent)
     {
         foreach (DebugExportNode debugExportNode in debugExportNodes)
         {
@@ -69,7 +69,7 @@ public partial class UIDebugExports : Control
 
                         hbox.AddChild(spinBox);
 
-                        vbox.AddChild(hbox);
+                        parent.AddChild(hbox);
                     }
                 }
             }
@@ -118,7 +118,7 @@ public partial class UIDebugExports : Control
         stepPrecision.Value = 0.1;
     }
 
-    private static List<DebugExportNode> GetDebugExportNodes(Node node)
+    private static List<DebugExportNode> GetDebugExportNodes(Node parent)
     {
         // Get all types in the current assembly
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
@@ -130,7 +130,7 @@ public partial class UIDebugExports : Control
             {
                 DebugExportNode debugExportNode = new()
                 {
-                    Nodes = node.GetNodes(type),
+                    Nodes = parent.GetNodes(type),
                     ExportedMembers = []
                 };
 
@@ -154,17 +154,17 @@ public partial class UIDebugExports : Control
         return debugExportNodes;
     }
 
-    private static void SetSpinBoxStep(SpinBox spinBox, MemberInfo member, object yourObject)
+    private static void SetSpinBoxStep(SpinBox spinBox, MemberInfo member, object instance)
     {
         object value = null;
 
         if (member is FieldInfo fieldInfo)
         {
-            value = fieldInfo.GetValue(yourObject);
+            value = fieldInfo.GetValue(instance);
         }
         else if (member is PropertyInfo propertyInfo)
         {
-            value = propertyInfo.GetValue(yourObject);
+            value = propertyInfo.GetValue(instance);
         }
 
         if (value != null)
@@ -174,10 +174,7 @@ public partial class UIDebugExports : Control
             double step = 0.1;
             double spinValue = Convert.ToDouble(value);
 
-            if (valueType == typeof(int) || valueType == typeof(long) ||
-                valueType == typeof(uint) || valueType == typeof(byte) ||
-                valueType == typeof(sbyte) || valueType == typeof(short) ||
-                valueType == typeof(ushort))
+            if (valueType.IsWholeNumber())
             {
                 step = 1;
             }
