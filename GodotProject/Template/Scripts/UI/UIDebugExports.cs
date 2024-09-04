@@ -4,141 +4,101 @@ namespace Template;
 
 public partial class UIDebugExports : Control
 {
-    // Reference to a VBoxContainer node in the scene
-    [Export] VBoxContainer sidePanelNodeInfoVBox;
-
-    private List<DebugVisualNode> visualizedNodes = [];
+    [Export] VBoxContainer controlPanel;
 
     public override void _Ready()
     {
-        List<DebugVisualNodes> debugExportNodes = GetVisualizedNodes(GetTree().Root);
+        List<DebugVisualNode> debugExportNodes = GetVisualizedNodes(GetTree().Root);
 
         if (debugExportNodes.Count == 0)
             return;
-
+        
         List<DebugVisualSpinBox> debugExportSpinBoxes = [];
 
-        List<MemberInfo> exportedMembers = [];
-
-        CreateMemberInfoUI(debugExportNodes.FirstOrDefault(), debugExportSpinBoxes, sidePanelNodeInfoVBox);
+        CreateVisualUIs(debugExportNodes, debugExportSpinBoxes);
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
-
-        visualizedNodes = CreateVisualizationUI(debugExportNodes);
     }
 
-    public override void _PhysicsProcess(double delta)
+    private static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
-        foreach (DebugVisualNode node in visualizedNodes)
+        foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
         {
-            node.UpdateLabels();
+            Node node = debugVisualNode.Node;
+
+            VBoxContainer vbox = new()
+            {
+                // Ensure this info is rendered above all game elements
+                ZIndex = (int)RenderingServer.CanvasItemZMax
+            };
+
+            GLabel label = new(node.Name);
+            label.SetUnshaded();
+
+            vbox.AddChild(label);
+
+            foreach (PropertyInfo property in debugVisualNode.Properties)
+            {
+                object value = property.GetValue(node);
+
+                CreateMemberInfoElement(property, value, node, vbox, debugExportSpinBoxes);
+            }
+
+            foreach (FieldInfo field in debugVisualNode.Fields)
+            {
+                object value = field.GetValue(node);
+
+                CreateMemberInfoElement(field, value, node, vbox, debugExportSpinBoxes);
+            }
+
+            node.AddChild(vbox);
         }
     }
 
-    private static List<DebugVisualNode> CreateVisualizationUI(List<DebugVisualNodes> debugExportNodes)
+    private static void CreateMemberInfoElement(MemberInfo member, object value, Node node, Node parent, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
-        List<DebugVisualNode> visualizedNodes = [];
-
-        foreach (DebugVisualNodes exportNode in debugExportNodes)
+        // Create the UI for the member info
+        if (value.IsNumericType())
         {
-            IEnumerable<MemberInfo> memberQuery = from member in exportNode.ExportedMembers
-                where member.GetCustomAttributes(typeof(VisualizeAttribute)).Any()
-                select member;
+            HBoxContainer hbox = new();
 
-            List<MemberInfo> members = memberQuery.ToList();
-
-            foreach (Node node in exportNode.Nodes)
+            GLabel spinLabel = new()
             {
-                List<(MemberInfo, Label)> memberLabels = [];
+                Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
+                SizeFlagsHorizontal = SizeFlags.ExpandFill
+            };
 
-                VBoxContainer vbox = new();
+            spinLabel.SetUnshaded();
 
-                foreach (MemberInfo member in members)
-                {
-                    HBoxContainer hbox = new();
+            hbox.AddChild(spinLabel);
 
-                    Label name = new() { Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital() };
-                    Label value = new();
-
-                    hbox.AddChild(name);
-                    hbox.AddChild(value);
-
-                    memberLabels.Add((member, value));
-                    vbox.AddChild(hbox);
-                }
-
-                node.AddChild(vbox);
-
-                DebugVisualNode visualizedNode = new(node, memberLabels);
-                visualizedNode.UpdateLabels();
-
-                visualizedNodes.Add(visualizedNode);
-            }
-        }
-
-        return visualizedNodes;
-    }
-
-    // Method to create UI elements for member info
-    private static void CreateMemberInfoUI(DebugVisualNodes debugExportNode, List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer parent)
-    {
-        Node node = debugExportNode.Nodes.FirstOrDefault();
-
-        parent.AddChild(new GLabel(node.Name));
-
-        foreach (MemberInfo member in debugExportNode.ExportedMembers)
-        {
-            object value = null;
-
-            // Get the value of the field or property
-            if (member is FieldInfo fieldInfo)
+            // Create a SpinBox for numeric input
+            SpinBox spinBox = new()
             {
-                value = fieldInfo.GetValue(node);
-            }
-            else if (member is PropertyInfo propertyInfo)
+                UpdateOnTextChanged = false,
+                AllowLesser = true,
+                AllowGreater = true,
+                Alignment = HorizontalAlignment.Center
+            };
+
+            spinBox.SetUnshaded();
+
+            SetSpinBoxStepAndValue(spinBox, member, node);
+
+            debugExportSpinBoxes.Add(new DebugVisualSpinBox
             {
-                value = propertyInfo.GetValue(node);
-            }
+                SpinBox = spinBox,
+                Type = value.GetType()
+            });
 
-            // Create the UI for the member info
-            if (value.IsNumericType())
+            spinBox.ValueChanged += value =>
             {
-                HBoxContainer hbox = new();
+                SetMemberValue(member, node, value);
+            };
 
-                Label spinLabel = new()
-                {
-                    Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
-                    SizeFlagsHorizontal = SizeFlags.ExpandFill
-                };
+            hbox.AddChild(spinBox);
 
-                hbox.AddChild(spinLabel);
-
-                // Create a SpinBox for numeric input
-                SpinBox spinBox = new()
-                {
-                    UpdateOnTextChanged = false,
-                    AllowLesser = true,
-                    AllowGreater = true,
-                    Alignment = HorizontalAlignment.Center
-                };
-
-                SetSpinBoxStepAndValue(spinBox, member, node);
-
-                debugExportSpinBoxes.Add(new DebugVisualSpinBox
-                {
-                    SpinBox = spinBox,
-                    Type = value.GetType()
-                });
-
-                spinBox.ValueChanged += value =>
-                {
-                    SetMemberValue(member, node, value);
-                };
-
-                hbox.AddChild(spinBox);
-
-                parent.AddChild(hbox);
-            }
+            parent.AddChild(hbox);
         }
     }
 
@@ -155,7 +115,7 @@ public partial class UIDebugExports : Control
         hbox.AddChild(label);
         hbox.AddChild(CreateStepPrecisionOptionButton(debugExportSpinBoxes));
 
-        sidePanelNodeInfoVBox.AddChild(hbox);
+        controlPanel.AddChild(hbox);
     }
 
     private static OptionButton CreateStepPrecisionOptionButton(List<DebugVisualSpinBox> debugExportSpinBoxes)
@@ -202,40 +162,60 @@ public partial class UIDebugExports : Control
         return optionButton;
     }
 
-    private static List<DebugVisualNodes> GetVisualizedNodes(Node parent)
+    private static List<DebugVisualNode> GetVisualizedNodes(Node parent)
     {
+        List<DebugVisualNode> debugVisualNodes = [];
+
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
-        // Select types with the DebugExportsAttribute and create DebugExportNode instances
-        List<DebugVisualNodes> debugExportNodes = types
-            .Where(t => t.GetCustomAttributes(typeof(VisualizeAttribute), false)
-            .Any())
-            .Select(type =>
+        IEnumerable<Type> visualTypes = GetAllVisualTypes(types);
+
+        foreach (Type type in visualTypes)
+        {
+            List<Node> nodes = parent.GetNodes(type);
+
+            foreach (Node node in nodes)
             {
-                DebugVisualNodes debugExportNode = new()
-                {
-                    Nodes = parent.GetNodes(type),
-                    ExportedMembers = []
-                };
+                IEnumerable<PropertyInfo> properties = GetAllVisualProperties(type);
+                IEnumerable<FieldInfo> fields = GetAllVisualFields(type);
+                IEnumerable<MethodInfo> methods = GetAllVisualMethods(type);
 
-                // Get all properties and fields with the [Export] attribute
-                IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(p => p.GetCustomAttributes(typeof(ExportAttribute), false)
-                    .Any());
+                debugVisualNodes.Add(new DebugVisualNode(node, properties, fields, methods));
+            }
+        }
 
-                IEnumerable<FieldInfo> fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(f => f.GetCustomAttributes(typeof(ExportAttribute), false)
-                    .Any());
+        return debugVisualNodes;
+    }
 
-                // Add them to the list
-                debugExportNode.ExportedMembers.AddRange(properties);
-                debugExportNode.ExportedMembers.AddRange(fields);
+    private static IEnumerable<Type> GetAllVisualTypes(Type[] types)
+    {
+        return types
+            .Where(type => type.GetCustomAttributes(typeof(VisualizeAttribute), false)
+            .Any());
+    }
 
-                return debugExportNode;
-            })
-            .ToList();
+    private static IEnumerable<PropertyInfo> GetAllVisualProperties(Type type)
+    {
+        return type
+            .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(prop => prop.GetCustomAttributes(typeof(VisualizeAttribute), false)
+            .Any());
+    }
 
-        return debugExportNodes;
+    private static IEnumerable<FieldInfo> GetAllVisualFields(Type type)
+    {
+        return type
+            .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(field => field.GetCustomAttributes(typeof(VisualizeAttribute), false)
+            .Any());
+    }
+
+    private static IEnumerable<MethodInfo> GetAllVisualMethods(Type type)
+    {
+        return type
+            .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .Where(field => field.GetCustomAttributes(typeof(VisualizeAttribute), false)
+            .Any());
     }
 
     private static void SetSpinBoxStepAndValue(SpinBox spinBox, MemberInfo member, object instance)
@@ -297,43 +277,16 @@ public partial class UIDebugExports : Control
     }
 }
 
-public class DebugVisualNodes
+public class DebugVisualNode(Node node, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
 {
-    public List<Node> Nodes { get; set; }
-    public List<MemberInfo> ExportedMembers { get; set; }
+    public Node Node { get; } = node;
+    public IEnumerable<PropertyInfo> Properties { get; } = properties;
+    public IEnumerable<FieldInfo> Fields { get; } = fields;
+    public IEnumerable<MethodInfo> Methods { get; } = methods;
 }
 
 public class DebugVisualSpinBox
 {
     public SpinBox SpinBox { get; set; }
     public Type Type { get; set; }
-}
-
-public class DebugVisualNode(Node node, List<(MemberInfo, Label)> members)
-{
-    public Node Node { get; } = node;
-    public List<(MemberInfo, Label)> Members { get; } = members;
-
-    public void UpdateLabels()
-    {
-        foreach ((MemberInfo info, Label label) in Members)
-        {
-            label.Text = GetValue(info) ?? "<null>";
-        }
-    }
-
-    private string GetValue(MemberInfo info)
-    {
-        if (info is FieldInfo fieldInfo)
-        {
-            return fieldInfo.GetValue(Node)?.ToString();
-        }
-
-        if (info is PropertyInfo propertyInfo)
-        {
-            return propertyInfo.GetValue(Node)?.ToString();
-        }
-
-        return null;
-    }
 }
