@@ -168,7 +168,13 @@ public partial class UIDebugExports : Control
 
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
-        IEnumerable<Type> visualTypes = GetAllVisualTypes(types);
+        IEnumerable<Type> visualTypes = HasVisualizeAttribute(types);
+
+        BindingFlags flags = 
+            BindingFlags.Public | // Public
+            BindingFlags.NonPublic | // Private
+            BindingFlags.Instance | // Instanced
+            BindingFlags.DeclaredOnly; // Exclude inherited members
 
         foreach (Type type in visualTypes)
         {
@@ -176,9 +182,9 @@ public partial class UIDebugExports : Control
 
             foreach (Node node in nodes)
             {
-                IEnumerable<PropertyInfo> properties = GetAllVisualProperties(type);
-                IEnumerable<FieldInfo> fields = GetAllVisualFields(type);
-                IEnumerable<MethodInfo> methods = GetAllVisualMethods(type);
+                IEnumerable<PropertyInfo> properties = type.GetProperties(flags);
+                IEnumerable<FieldInfo> fields = type.GetFields(flags);
+                IEnumerable<MethodInfo> methods = type.GetMethods(flags);
 
                 debugVisualNodes.Add(new DebugVisualNode(node, properties, fields, methods));
             }
@@ -187,34 +193,10 @@ public partial class UIDebugExports : Control
         return debugVisualNodes;
     }
 
-    private static IEnumerable<Type> GetAllVisualTypes(Type[] types)
+    private static IEnumerable<T> HasVisualizeAttribute<T>(IEnumerable<T> collection) where T : MemberInfo
     {
-        return types
-            .Where(type => type.GetCustomAttributes(typeof(VisualizeAttribute), false)
-            .Any());
-    }
-
-    private static IEnumerable<PropertyInfo> GetAllVisualProperties(Type type)
-    {
-        return type
-            .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(prop => prop.GetCustomAttributes(typeof(VisualizeAttribute), false)
-            .Any());
-    }
-
-    private static IEnumerable<FieldInfo> GetAllVisualFields(Type type)
-    {
-        return type
-            .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(field => field.GetCustomAttributes(typeof(VisualizeAttribute), false)
-            .Any());
-    }
-
-    private static IEnumerable<MethodInfo> GetAllVisualMethods(Type type)
-    {
-        return type
-            .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-            .Where(field => field.GetCustomAttributes(typeof(VisualizeAttribute), false)
+        return collection
+            .Where(x => x.GetCustomAttributes(typeof(VisualizeAttribute), false)
             .Any());
     }
 
