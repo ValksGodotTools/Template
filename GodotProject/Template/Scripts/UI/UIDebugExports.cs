@@ -5,7 +5,7 @@ namespace Template;
 public partial class UIDebugExports : Control
 {
     // Reference to a VBoxContainer node in the scene
-    [Export] VBoxContainer vbox;
+    [Export] VBoxContainer sidePanelNodeInfoVBox;
 
     public override void _Ready()
     {
@@ -18,7 +18,7 @@ public partial class UIDebugExports : Control
 
         List<MemberInfo> exportedMembers = [];
 
-        CreateMemberInfoUI(debugExportNodes.FirstOrDefault(), debugExportSpinBoxes, vbox);
+        CreateMemberInfoUI(debugExportNodes.FirstOrDefault(), debugExportSpinBoxes, sidePanelNodeInfoVBox);
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
     }
@@ -138,7 +138,7 @@ public partial class UIDebugExports : Control
         hbox.AddChild(label);
         hbox.AddChild(optionButton);
 
-        vbox.AddChild(hbox);
+        sidePanelNodeInfoVBox.AddChild(hbox);
     }
 
     // Method to get DebugExportNodes from the scene tree
