@@ -7,16 +7,16 @@ public partial class UIDebugExports : Control
     // Reference to a VBoxContainer node in the scene
     [Export] VBoxContainer sidePanelNodeInfoVBox;
 
-    private List<VisualizedNode> visualizedNodes = [];
+    private List<DebugVisualNode> visualizedNodes = [];
 
     public override void _Ready()
     {
-        List<DebugExportNode> debugExportNodes = GetDebugExportNodes(GetTree().Root);
+        List<DebugVisualNodes> debugExportNodes = GetVisualizedNodes(GetTree().Root);
 
         if (debugExportNodes.Count == 0)
             return;
 
-        List<DebugExportSpinBox> debugExportSpinBoxes = [];
+        List<DebugVisualSpinBox> debugExportSpinBoxes = [];
 
         List<MemberInfo> exportedMembers = [];
 
@@ -29,17 +29,17 @@ public partial class UIDebugExports : Control
 
     public override void _PhysicsProcess(double delta)
     {
-        foreach (VisualizedNode node in visualizedNodes)
+        foreach (DebugVisualNode node in visualizedNodes)
         {
             node.UpdateLabels();
         }
     }
 
-    private static List<VisualizedNode> CreateVisualizationUI(List<DebugExportNode> debugExportNodes)
+    private static List<DebugVisualNode> CreateVisualizationUI(List<DebugVisualNodes> debugExportNodes)
     {
-        List<VisualizedNode> visualizedNodes = [];
+        List<DebugVisualNode> visualizedNodes = [];
 
-        foreach (DebugExportNode exportNode in debugExportNodes)
+        foreach (DebugVisualNodes exportNode in debugExportNodes)
         {
             IEnumerable<MemberInfo> memberQuery = from member in exportNode.ExportedMembers
                 where member.GetCustomAttributes(typeof(VisualizeAttribute)).Any()
@@ -69,7 +69,7 @@ public partial class UIDebugExports : Control
 
                 node.AddChild(vbox);
 
-                VisualizedNode visualizedNode = new(node, memberLabels);
+                DebugVisualNode visualizedNode = new(node, memberLabels);
                 visualizedNode.UpdateLabels();
 
                 visualizedNodes.Add(visualizedNode);
@@ -80,7 +80,7 @@ public partial class UIDebugExports : Control
     }
 
     // Method to create UI elements for member info
-    private static void CreateMemberInfoUI(DebugExportNode debugExportNode, List<DebugExportSpinBox> debugExportSpinBoxes, VBoxContainer parent)
+    private static void CreateMemberInfoUI(DebugVisualNodes debugExportNode, List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer parent)
     {
         Node node = debugExportNode.Nodes.FirstOrDefault();
 
@@ -124,7 +124,7 @@ public partial class UIDebugExports : Control
 
                 SetSpinBoxStepAndValue(spinBox, member, node);
 
-                debugExportSpinBoxes.Add(new DebugExportSpinBox
+                debugExportSpinBoxes.Add(new DebugVisualSpinBox
                 {
                     SpinBox = spinBox,
                     Type = value.GetType()
@@ -142,7 +142,7 @@ public partial class UIDebugExports : Control
         }
     }
 
-    private void CreateStepPrecisionUI(List<DebugExportSpinBox> debugExportSpinBoxes)
+    private void CreateStepPrecisionUI(List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         HBoxContainer hbox = new();
 
@@ -158,7 +158,7 @@ public partial class UIDebugExports : Control
         sidePanelNodeInfoVBox.AddChild(hbox);
     }
 
-    private static OptionButton CreateStepPrecisionOptionButton(List<DebugExportSpinBox> debugExportSpinBoxes)
+    private static OptionButton CreateStepPrecisionOptionButton(List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         OptionButton optionButton = new()
         {
@@ -176,7 +176,7 @@ public partial class UIDebugExports : Control
 
         optionButton.ItemSelected += itemId =>
         {
-            foreach (DebugExportSpinBox debugExportSpinBox in debugExportSpinBoxes)
+            foreach (DebugVisualSpinBox debugExportSpinBox in debugExportSpinBoxes)
             {
                 double precision = Convert.ToDouble(optionButton.GetItemText((int)itemId));
 
@@ -202,18 +202,17 @@ public partial class UIDebugExports : Control
         return optionButton;
     }
 
-    // Method to get DebugExportNodes from the scene tree
-    private static List<DebugExportNode> GetDebugExportNodes(Node parent)
+    private static List<DebugVisualNodes> GetVisualizedNodes(Node parent)
     {
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
         // Select types with the DebugExportsAttribute and create DebugExportNode instances
-        List<DebugExportNode> debugExportNodes = types
-            .Where(t => t.GetCustomAttributes(typeof(DebugExportsAttribute), false)
+        List<DebugVisualNodes> debugExportNodes = types
+            .Where(t => t.GetCustomAttributes(typeof(VisualizeAttribute), false)
             .Any())
             .Select(type =>
             {
-                DebugExportNode debugExportNode = new()
+                DebugVisualNodes debugExportNode = new()
                 {
                     Nodes = parent.GetNodes(type),
                     ExportedMembers = []
@@ -298,21 +297,19 @@ public partial class UIDebugExports : Control
     }
 }
 
-// Class to store information about nodes and their exported members
-public class DebugExportNode
+public class DebugVisualNodes
 {
     public List<Node> Nodes { get; set; }
     public List<MemberInfo> ExportedMembers { get; set; }
 }
 
-// Class to store information about SpinBoxes and their types
-public class DebugExportSpinBox
+public class DebugVisualSpinBox
 {
     public SpinBox SpinBox { get; set; }
     public Type Type { get; set; }
 }
 
-public class VisualizedNode(Node node, List<(MemberInfo, Label)> members)
+public class DebugVisualNode(Node node, List<(MemberInfo, Label)> members)
 {
     public Node Node { get; } = node;
     public List<(MemberInfo, Label)> Members { get; } = members;

@@ -1,7 +1,7 @@
 namespace Template;
 
 [Tool]
-[DebugExports]
+[Visualize]
 public partial class Torch : Node
 {
     [Export] int someInteger = 1;
@@ -34,4 +34,7 @@ public partial class Torch : Node
         light.Energy = (float)(energy + GD.RandRange(0, flickerRange) - 
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
+
+    [Visualize]
+    public new void QueueFree() => QueueFree();
 }
