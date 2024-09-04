@@ -85,7 +85,7 @@ public partial class UIDebugExports : Control
 
     private void CreateStepPrecisionUI(List<DebugExportSpinBox> debugExportSpinBoxes)
     {
-        HBoxContainer hBoxContainer = new();
+        HBoxContainer hbox = new();
 
         Label label = new()
         {
@@ -120,11 +120,9 @@ public partial class UIDebugExports : Control
             }
         };
 
-        hBoxContainer.AddChild(label);
-
-        hBoxContainer.AddChild(stepPrecision);
-
-        vbox.AddChild(hBoxContainer);
+        hbox.AddChild(label);
+        hbox.AddChild(stepPrecision);
+        vbox.AddChild(hbox);
 
         // Set the initial value of the step precision SpinBox
         stepPrecision.Value = 0.1;
