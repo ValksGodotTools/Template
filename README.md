@@ -66,6 +66,13 @@ Fill in the required fields and click `Apply`. This will close the game.
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
 
+### Custom ENet Builds
+
+If you are running on a platform without a build for your platform (such as Apple ARM), you
+may need to provide your own build of `ENet-CSharp`. To do so, follow the build instructions
+[here](https://github.com/nxrighthere/ENet-CSharp), and place the resulting `ENet-CSharp.dll`
+and the `.so` or `.dylib` in the `GodotProject` directory.
+
 ## Scenes
 
 ### 3D FPS
@@ -216,16 +223,16 @@ public class PlayerData
     public string Username { get; set; }
     public Vector2 Position { get; set; }
 
-    [NetExclude] 
+    [NetExclude]
     public Vector2 PrevPosition { get; set; }
 }
 ```
 
 ### Menu UI
 
-![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)  
-![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)  
-![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)  
+![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)
+![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)
+![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
 ### Simplified Tweens
 Tweening has never been so easy! 🦄
@@ -300,7 +307,7 @@ public partial class UIVignette : ColorRect
         // throughout the game's duration
 
         // This UIVignette is part of the scene, so it should not be persistent
-        Global.Services.Add(this, persistent: false); 
+        Global.Services.Add(this, persistent: false);
     }
 
     public void LightPulse() { ... }
@@ -465,7 +472,7 @@ A: Simply closing and reopening the Godot editor should resolve the issue.
 
 ### Q: My issue isn't listed here. What should I do?
 A: Feel free to search for your issue in the repository's [issues section](https://github.com/ValksGodotTools/Template/issues). If it hasn't been reported yet, please open a new issue, and I'll be happy to help you.
-    
+
 ## Contributing
 
 Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/Valks-Games/sankari/wiki/Code-Style). If you have any questions you can talk to me on Discord, my username is `valky5`.
@@ -476,6 +483,6 @@ Before you jump into contributing, take a moment to review the [Coding Style Gui
 [![GitHub open pull requests count](https://img.shields.io/github/issues-pr/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/pulls)
 
 ## Credits
-For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).  
+For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).
 
 Huge thank you to the people in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
