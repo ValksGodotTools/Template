@@ -66,7 +66,7 @@ Fill in the required fields and click `Apply`. This will close the game.
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
 
-### Custom ENet Builds
+### 🛠️ Custom ENet Builds
 
 If you are running on a platform without a build for your platform (such as Apple ARM), you
 may need to provide your own build of `ENet-CSharp`. To do so, follow the build instructions
