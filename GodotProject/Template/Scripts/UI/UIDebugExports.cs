@@ -4,12 +4,15 @@ namespace Template;
 
 public partial class UIDebugExports : Control
 {
+    // Reference to a VBoxContainer node in the scene
     [Export] VBoxContainer vbox;
 
     public override void _Ready()
     {
         List<DebugExportSpinBox> debugExportSpinBoxes = [];
+
         List<DebugExportNode> debugExportNodes = GetDebugExportNodes(GetTree().Root);
+
         List<MemberInfo> exportedMembers = [];
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
@@ -17,6 +20,7 @@ public partial class UIDebugExports : Control
         CreateMemberInfoUI(debugExportNodes, debugExportSpinBoxes, vbox);
     }
 
+    // Method to create UI elements for member info
     private static void CreateMemberInfoUI(List<DebugExportNode> debugExportNodes, List<DebugExportSpinBox> debugExportSpinBoxes, Node parent)
     {
         foreach (DebugExportNode debugExportNode in debugExportNodes)
@@ -27,6 +31,7 @@ public partial class UIDebugExports : Control
                 {
                     object value = null;
 
+                    // Get the value of the field or property
                     if (member is FieldInfo fieldInfo)
                     {
                         value = fieldInfo.GetValue(node);
@@ -36,6 +41,7 @@ public partial class UIDebugExports : Control
                         value = propertyInfo.GetValue(node);
                     }
 
+                    // Create the UI for the member info
                     if (value.IsNumericType())
                     {
                         HBoxContainer hbox = new();
@@ -47,6 +53,7 @@ public partial class UIDebugExports : Control
 
                         hbox.AddChild(spinLabel);
 
+                        // Create a SpinBox for numeric input
                         SpinBox spinBox = new()
                         {
                             UpdateOnTextChanged = false,
@@ -54,7 +61,7 @@ public partial class UIDebugExports : Control
                             AllowGreater = true
                         };
 
-                        SetSpinBoxStep(spinBox, member, node);
+                        SetSpinBoxStepAndValue(spinBox, member, node);
 
                         debugExportSpinBoxes.Add(new DebugExportSpinBox
                         {
@@ -98,6 +105,7 @@ public partial class UIDebugExports : Control
                 {
                     double rounded = Mathf.RoundToInt(value);
 
+                    // Ensure the rounded value is not zero
                     if (rounded == 0)
                     {
                         rounded = 1;
@@ -113,16 +121,21 @@ public partial class UIDebugExports : Control
         };
 
         hBoxContainer.AddChild(label);
+
         hBoxContainer.AddChild(stepPrecision);
+
         vbox.AddChild(hBoxContainer);
+
+        // Set the initial value of the step precision SpinBox
         stepPrecision.Value = 0.1;
     }
 
+    // Method to get DebugExportNodes from the scene tree
     private static List<DebugExportNode> GetDebugExportNodes(Node parent)
     {
-        // Get all types in the current assembly
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
+        // Select types with the DebugExportsAttribute and create DebugExportNode instances
         List<DebugExportNode> debugExportNodes = types
             .Where(t => t.GetCustomAttributes(typeof(DebugExportsAttribute), false)
             .Any())
@@ -154,10 +167,11 @@ public partial class UIDebugExports : Control
         return debugExportNodes;
     }
 
-    private static void SetSpinBoxStep(SpinBox spinBox, MemberInfo member, object instance)
+    private static void SetSpinBoxStepAndValue(SpinBox spinBox, MemberInfo member, object instance)
     {
         object value = null;
 
+        // Get the value of the field or property
         if (member is FieldInfo fieldInfo)
         {
             value = fieldInfo.GetValue(instance);
@@ -188,9 +202,9 @@ public partial class UIDebugExports : Control
     {
         try
         {
+            // Set the value of the property or field
             if (member is PropertyInfo property)
             {
-                // Ensure the property is writeable
                 if (property.CanWrite)
                 {
                     property.SetValue(target, Convert.ChangeType(value, property.PropertyType));
@@ -212,12 +226,14 @@ public partial class UIDebugExports : Control
     }
 }
 
+// Class to store information about nodes and their exported members
 public class DebugExportNode
 {
     public List<Node> Nodes { get; set; }
     public List<MemberInfo> ExportedMembers { get; set; }
 }
 
+// Class to store information about SpinBoxes and their types
 public class DebugExportSpinBox
 {
     public SpinBox SpinBox { get; set; }
