@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Reflection;
 
 namespace Template;
@@ -92,40 +93,44 @@ public partial class UIDebugExports : Control
             Text = "Step Precision"
         };
 
-        SpinBox stepPrecision = new()
-        {
-            Step = 0.01
-        };
+        OptionButton optionButton = new();
+        optionButton.AddItem("10");
+        optionButton.AddItem("1");
+        optionButton.AddItem("0.1");
+        optionButton.AddItem("0.01");
+        optionButton.AddItem("0.001");
 
-        stepPrecision.ValueChanged += value =>
+        // Default precision will be 0.1
+        optionButton.Select(2);
+
+        optionButton.ItemSelected += itemId =>
         {
             foreach (DebugExportSpinBox debugExportSpinBox in debugExportSpinBoxes)
             {
+                double precision = Convert.ToDouble(optionButton.GetItemText((int)itemId));
+
+                // Whole Numbers (non-decimals)
                 if (debugExportSpinBox.Type.IsWholeNumber())
                 {
-                    double rounded = Mathf.RoundToInt(value);
+                    // Round the precision to the nearest integer
+                    double rounded = Mathf.RoundToInt(precision);
 
-                    // Ensure the rounded value is not zero
-                    if (rounded == 0)
-                    {
-                        rounded = 1;
-                    }
+                    // Ensure rounded is never zero, if it is, change rounded to 1
+                    rounded = rounded == 0 ? 1 : rounded;
 
                     debugExportSpinBox.SpinBox.Step = rounded;
                 }
                 else
+                // Decimal numbers
                 {
-                    debugExportSpinBox.SpinBox.Step = value;
+                    debugExportSpinBox.SpinBox.Step = precision;
                 }
             }
         };
 
         hbox.AddChild(label);
-        hbox.AddChild(stepPrecision);
+        hbox.AddChild(optionButton);
         vbox.AddChild(hbox);
-
-        // Set the initial value of the step precision SpinBox
-        stepPrecision.Value = 0.1;
     }
 
     // Method to get DebugExportNodes from the scene tree
