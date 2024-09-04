@@ -5,9 +5,9 @@ namespace Template;
 public partial class Torch : Node
 {
     [Export] int someInteger = 1;
-    [Export] double energy = 1;
-    [Export] double flickerRange = 0.05;
-    [Export] double pulseAmplitude = 0.1;
+    [Export] [Visualize] double energy = 1;
+    [Export] [Visualize] double flickerRange = 0.05;
+    [Export] [Visualize] double pulseAmplitude = 0.1;
     [Export] float textureScale
     {
         get => _textureScale;
