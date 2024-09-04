@@ -4,6 +4,10 @@ root = true
 # C# files
 [*.cs]
 
+# Godot Documentation says to use LF line endings
+[*]
+end_of_line = lf
+
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
