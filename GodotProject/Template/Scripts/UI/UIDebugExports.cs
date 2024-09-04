@@ -2,98 +2,23 @@ using System.Reflection;
 
 namespace Template;
 
-public class DebugExportNode
-{
-    public List<Node> Nodes { get; set; }
-    public List<MemberInfo> ExportedMembers { get; set; }
-}
-
-public class DebugExportSpinBox
-{
-    public SpinBox SpinBox { get; set; }
-    public Type Type { get; set; }
-}
-
 public partial class UIDebugExports : Control
 {
     [Export] VBoxContainer vbox;
 
     public override void _Ready()
     {
+        List<DebugExportSpinBox> debugExportSpinBoxes = [];
+        List<DebugExportNode> debugExportNodes = GetDebugExportNodes(GetTree().Root);
         List<MemberInfo> exportedMembers = [];
 
-        // Get all types in the current assembly
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        CreateStepPrecisionUI(debugExportSpinBoxes);
 
-        List<DebugExportNode> debugExportNodes = types
-            .Where(t => t.GetCustomAttributes(typeof(DebugExportsAttribute), false)
-            .Any())
-            .Select(type =>
-            {
-                DebugExportNode debugExportNode = new()
-                {
-                    Nodes = GetNodes(type),
-                    ExportedMembers = []
-                };
+        CreateMemberInfoUI(debugExportNodes, debugExportSpinBoxes);
+    }
 
-                // Get all properties and fields with the [Export] attribute
-                IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(p => p.GetCustomAttributes(typeof(ExportAttribute), false)
-                    .Any());
-
-                IEnumerable<FieldInfo> fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(f => f.GetCustomAttributes(typeof(ExportAttribute), false)
-                    .Any());
-
-                // Add them to the list
-                debugExportNode.ExportedMembers.AddRange(properties);
-                debugExportNode.ExportedMembers.AddRange(fields);
-
-                return debugExportNode;
-            })
-            .ToList();
-
-        List<DebugExportSpinBox> debugExportSpinBoxes = [];
-
-        HBoxContainer hBoxContainer = new();
-
-        Label label = new()
-        {
-            Text = "Step Precision"
-        };
-
-        SpinBox stepPrecision = new()
-        {
-            Step = 0.01
-        };
-
-        stepPrecision.ValueChanged += value =>
-        {
-            foreach (DebugExportSpinBox debugExportSpinBox in debugExportSpinBoxes)
-            {
-                if (IsWholeNumber(debugExportSpinBox.Type))
-                {
-                    double rounded = Mathf.RoundToInt(value);
-
-                    if (rounded == 0)
-                    {
-                        rounded = 1;
-                    }
-
-                    debugExportSpinBox.SpinBox.Step = rounded;
-                }
-                else
-                {
-                    debugExportSpinBox.SpinBox.Step = value;
-                }
-            }
-        };
-
-        hBoxContainer.AddChild(label);
-        hBoxContainer.AddChild(stepPrecision);
-        vbox.AddChild(hBoxContainer);
-        stepPrecision.Value = 0.1;
-
+    private void CreateMemberInfoUI(List<DebugExportNode> debugExportNodes, List<DebugExportSpinBox> debugExportSpinBoxes)
+    {
         foreach (DebugExportNode debugExportNode in debugExportNodes)
         {
             foreach (Node node in debugExportNode.Nodes)
@@ -111,7 +36,7 @@ public partial class UIDebugExports : Control
                         value = propertyInfo.GetValue(node);
                     }
 
-                    if (IsNumericType(value))
+                    if (value.IsNumericType())
                     {
                         HBoxContainer hbox = new();
 
@@ -151,7 +76,85 @@ public partial class UIDebugExports : Control
         }
     }
 
-    void SetSpinBoxStep(SpinBox spinBox, MemberInfo member, object yourObject)
+    private void CreateStepPrecisionUI(List<DebugExportSpinBox> debugExportSpinBoxes)
+    {
+        HBoxContainer hBoxContainer = new();
+
+        Label label = new()
+        {
+            Text = "Step Precision"
+        };
+
+        SpinBox stepPrecision = new()
+        {
+            Step = 0.01
+        };
+
+        stepPrecision.ValueChanged += value =>
+        {
+            foreach (DebugExportSpinBox debugExportSpinBox in debugExportSpinBoxes)
+            {
+                if (debugExportSpinBox.Type.IsWholeNumber())
+                {
+                    double rounded = Mathf.RoundToInt(value);
+
+                    if (rounded == 0)
+                    {
+                        rounded = 1;
+                    }
+
+                    debugExportSpinBox.SpinBox.Step = rounded;
+                }
+                else
+                {
+                    debugExportSpinBox.SpinBox.Step = value;
+                }
+            }
+        };
+
+        hBoxContainer.AddChild(label);
+        hBoxContainer.AddChild(stepPrecision);
+        vbox.AddChild(hBoxContainer);
+        stepPrecision.Value = 0.1;
+    }
+
+    private static List<DebugExportNode> GetDebugExportNodes(Node node)
+    {
+        // Get all types in the current assembly
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+
+        List<DebugExportNode> debugExportNodes = types
+            .Where(t => t.GetCustomAttributes(typeof(DebugExportsAttribute), false)
+            .Any())
+            .Select(type =>
+            {
+                DebugExportNode debugExportNode = new()
+                {
+                    Nodes = node.GetNodes(type),
+                    ExportedMembers = []
+                };
+
+                // Get all properties and fields with the [Export] attribute
+                IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Where(p => p.GetCustomAttributes(typeof(ExportAttribute), false)
+                    .Any());
+
+                IEnumerable<FieldInfo> fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Where(f => f.GetCustomAttributes(typeof(ExportAttribute), false)
+                    .Any());
+
+                // Add them to the list
+                debugExportNode.ExportedMembers.AddRange(properties);
+                debugExportNode.ExportedMembers.AddRange(fields);
+
+                return debugExportNode;
+            })
+            .ToList();
+
+        return debugExportNodes;
+    }
+
+    private static void SetSpinBoxStep(SpinBox spinBox, MemberInfo member, object yourObject)
     {
         object value = null;
 
@@ -184,66 +187,7 @@ public partial class UIDebugExports : Control
         }
     }
 
-    public List<Node> GetNodes(Type type)
-    {
-        List<Node> nodes = [];
-        RecursiveSearch(GetTree().Root, type, nodes);
-        return nodes;
-    }
-
-    private void RecursiveSearch(Node node, Type type, List<Node> nodes)
-    {
-        if (node.GetType() == type)
-        {
-            nodes.Add(node);
-        }
-
-        foreach (Node child in node.GetChildren())
-        {
-            RecursiveSearch(child, type, nodes);
-        }
-    }
-
-    static bool IsNumericType(object o)
-    {
-        if (o == null)
-        {
-            return false;
-        }
-
-        Type type = o.GetType();
-        HashSet<Type> numericTypes =
-        [
-            typeof(int),
-            typeof(float),
-            typeof(double),
-            typeof(long),
-            typeof(short),
-            typeof(ushort),
-            typeof(uint),
-            typeof(ulong),
-            typeof(decimal),
-            typeof(byte),
-            typeof(sbyte)
-        ];
-
-        return numericTypes.Contains(type);
-    }
-
-    static bool IsWholeNumber(Type type)
-    {
-        return 
-            type == typeof(int) ||
-            type == typeof(long) ||
-            type == typeof(short) ||
-            type == typeof(byte) ||
-            type == typeof(sbyte) ||
-            type == typeof(uint) ||
-            type == typeof(ulong) ||
-            type == typeof(ushort);
-    }
-
-    private void SetMemberValue(MemberInfo member, object target, double value)
+    private static void SetMemberValue(MemberInfo member, object target, double value)
     {
         try
         {
@@ -269,4 +213,16 @@ public partial class UIDebugExports : Control
             GD.Print($"Failed to set value for {member.Name}: {ex.Message}");
         }
     }
+}
+
+public class DebugExportNode
+{
+    public List<Node> Nodes { get; set; }
+    public List<MemberInfo> ExportedMembers { get; set; }
+}
+
+public class DebugExportSpinBox
+{
+    public SpinBox SpinBox { get; set; }
+    public Type Type { get; set; }
 }
