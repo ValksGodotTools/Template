@@ -15,70 +15,70 @@ public partial class UIDebugExports : Control
 
         List<MemberInfo> exportedMembers = [];
 
-        CreateStepPrecisionUI(debugExportSpinBoxes);
+        CreateMemberInfoUI(debugExportNodes.FirstOrDefault(), debugExportSpinBoxes, vbox);
 
-        CreateMemberInfoUI(debugExportNodes, debugExportSpinBoxes, vbox);
+        CreateStepPrecisionUI(debugExportSpinBoxes);
     }
 
     // Method to create UI elements for member info
-    private static void CreateMemberInfoUI(List<DebugExportNode> debugExportNodes, List<DebugExportSpinBox> debugExportSpinBoxes, Node parent)
+    private static void CreateMemberInfoUI(DebugExportNode debugExportNode, List<DebugExportSpinBox> debugExportSpinBoxes, VBoxContainer parent)
     {
-        foreach (DebugExportNode debugExportNode in debugExportNodes)
+        Node node = debugExportNode.Nodes.FirstOrDefault();
+
+        parent.AddChild(new GLabel(node.Name));
+
+        foreach (MemberInfo member in debugExportNode.ExportedMembers)
         {
-            foreach (Node node in debugExportNode.Nodes)
+            object value = null;
+
+            // Get the value of the field or property
+            if (member is FieldInfo fieldInfo)
             {
-                foreach (MemberInfo member in debugExportNode.ExportedMembers)
+                value = fieldInfo.GetValue(node);
+            }
+            else if (member is PropertyInfo propertyInfo)
+            {
+                value = propertyInfo.GetValue(node);
+            }
+
+            // Create the UI for the member info
+            if (value.IsNumericType())
+            {
+                HBoxContainer hbox = new();
+
+                Label spinLabel = new()
                 {
-                    object value = null;
+                    Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
+                    SizeFlagsHorizontal = SizeFlags.ExpandFill
+                };
 
-                    // Get the value of the field or property
-                    if (member is FieldInfo fieldInfo)
-                    {
-                        value = fieldInfo.GetValue(node);
-                    }
-                    else if (member is PropertyInfo propertyInfo)
-                    {
-                        value = propertyInfo.GetValue(node);
-                    }
+                hbox.AddChild(spinLabel);
 
-                    // Create the UI for the member info
-                    if (value.IsNumericType())
-                    {
-                        HBoxContainer hbox = new();
+                // Create a SpinBox for numeric input
+                SpinBox spinBox = new()
+                {
+                    UpdateOnTextChanged = false,
+                    AllowLesser = true,
+                    AllowGreater = true,
+                    Alignment = HorizontalAlignment.Center
+                };
 
-                        Label spinLabel = new()
-                        {
-                            Text = member.Name
-                        };
+                SetSpinBoxStepAndValue(spinBox, member, node);
 
-                        hbox.AddChild(spinLabel);
+                debugExportSpinBoxes.Add(new DebugExportSpinBox
+                {
+                    SpinBox = spinBox,
+                    Type = value.GetType()
+                });
 
-                        // Create a SpinBox for numeric input
-                        SpinBox spinBox = new()
-                        {
-                            UpdateOnTextChanged = false,
-                            AllowLesser = true,
-                            AllowGreater = true
-                        };
+                spinBox.ValueChanged += value =>
+                {
+                    SetMemberValue(member, node, value);
+                };
 
-                        SetSpinBoxStepAndValue(spinBox, member, node);
+                hbox.AddChild(spinBox);
 
-                        debugExportSpinBoxes.Add(new DebugExportSpinBox
-                        {
-                            SpinBox = spinBox,
-                            Type = value.GetType()
-                        });
-
-                        spinBox.ValueChanged += value =>
-                        {
-                            SetMemberValue(member, node, value);
-                        };
-
-                        hbox.AddChild(spinBox);
-
-                        parent.AddChild(hbox);
-                    }
-                }
+                parent.AddChild(hbox);
             }
         }
     }
@@ -89,10 +89,15 @@ public partial class UIDebugExports : Control
 
         Label label = new()
         {
-            Text = "Step Precision"
+            Text = "Step Precision",
+            SizeFlagsHorizontal = SizeFlags.ExpandFill
         };
 
-        OptionButton optionButton = new();
+        OptionButton optionButton = new()
+        {
+            Alignment = HorizontalAlignment.Center
+        };
+
         optionButton.AddItem("10");
         optionButton.AddItem("1");
         optionButton.AddItem("0.1");
@@ -129,6 +134,7 @@ public partial class UIDebugExports : Control
 
         hbox.AddChild(label);
         hbox.AddChild(optionButton);
+
         vbox.AddChild(hbox);
     }
 
