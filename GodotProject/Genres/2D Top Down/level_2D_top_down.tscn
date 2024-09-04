@@ -427,3 +427,7 @@ script = ExtResource("7_tebhc")
 [node name="Torch" parent="." instance=ExtResource("9_oa68x")]
 unique_name_in_owner = true
 position = Vector2(545, 70)
+
+[node name="Torch2" parent="." instance=ExtResource("9_oa68x")]
+unique_name_in_owner = true
+position = Vector2(59, 357)
