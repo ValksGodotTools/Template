@@ -27,11 +27,11 @@ public partial class UIDebugExports : Control
         visualizedNodes = CreateVisualizationUI(debugExportNodes);
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         foreach (VisualizedNode node in visualizedNodes)
         {
-            node.Process();
+            node.UpdateLabels();
         }
     }
 
@@ -51,26 +51,26 @@ public partial class UIDebugExports : Control
             {
                 List<(MemberInfo, Label)> memberLabels = [];
 
-                VBoxContainer infoContainer = new();
+                VBoxContainer vbox = new();
 
                 foreach (MemberInfo member in members)
                 {
-                    HBoxContainer memberContainer = new();
+                    HBoxContainer hbox = new();
 
                     Label name = new() { Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital() };
                     Label value = new();
 
-                    memberContainer.AddChild(name);
-                    memberContainer.AddChild(value);
+                    hbox.AddChild(name);
+                    hbox.AddChild(value);
 
                     memberLabels.Add((member, name));
-                    infoContainer.AddChild(memberContainer);
+                    vbox.AddChild(hbox);
                 }
 
-                node.AddChild(infoContainer);
+                node.AddChild(vbox);
 
                 VisualizedNode visualizedNode = new(node, memberLabels);
-                visualizedNode.Process();
+                visualizedNode.UpdateLabels();
 
                 visualizedNodes.Add(visualizedNode);
             }
@@ -312,7 +312,7 @@ public class VisualizedNode(Node node, List<(MemberInfo, Label)> members)
     public Node Node { get; } = node;
     public List<(MemberInfo, Label)> Members { get; } = members;
 
-    public void Process()
+    public void UpdateLabels()
     {
         foreach ((MemberInfo info, Label label) in Members)
         {
