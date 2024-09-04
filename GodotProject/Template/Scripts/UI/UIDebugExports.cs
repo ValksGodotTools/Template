@@ -9,9 +9,12 @@ public partial class UIDebugExports : Control
 
     public override void _Ready()
     {
-        List<DebugExportSpinBox> debugExportSpinBoxes = [];
-
         List<DebugExportNode> debugExportNodes = GetDebugExportNodes(GetTree().Root);
+
+        if (debugExportNodes.Count == 0)
+            return;
+
+        List<DebugExportSpinBox> debugExportSpinBoxes = [];
 
         List<MemberInfo> exportedMembers = [];
 
