@@ -43,6 +43,7 @@ folder_colors={
 "res://Genres/3D FPS/Scripts/": "teal",
 "res://Scenes/": "purple",
 "res://Scripts/": "teal",
+"res://Template/Scenes/": "purple",
 "res://Template/Scripts/": "teal",
 "res://Template/Shaders/": "red",
 "res://Template/Sprites/": "blue"
