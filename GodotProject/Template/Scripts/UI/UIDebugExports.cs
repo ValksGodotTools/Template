@@ -63,7 +63,7 @@ public partial class UIDebugExports : Control
                     hbox.AddChild(name);
                     hbox.AddChild(value);
 
-                    memberLabels.Add((member, name));
+                    memberLabels.Add((member, value));
                     vbox.AddChild(hbox);
                 }
 
