@@ -9,13 +9,12 @@
 
 Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template` is here to streamline your workflow. ❤️
 
-Ready to dive in? Check out the [setup guide](#setup-guide).
-
-1. [Setup Guide](#setup-guide)
-2. [Scenes](#scenes)
+1. [Prerequisites](#prerequisites)
+2. [Setup Guide](#setup-guide)
+3. [Scenes](#scenes)
     - [3D FPS](#3d-fps)
     - [2D Top Down](#2d-top-down)
-3. [Features](#features)
+4. [Features](#features)
     - [Multiplayer](#multiplayer)
     - [Menu UI](#menu-ui)
     - [Simplified Tweens](#simplified-tweens)
@@ -26,24 +25,43 @@ Ready to dive in? Check out the [setup guide](#setup-guide).
     - [State Manager](#state-manager)
     - [Mod Loader](#mod-loader)
     - [Localisation](#localisation)
-4. [Extensions](#extensions)
+5. [Extensions](#extensions)
     - [Finding Node\<T\>](#finding-nodet)
     - [Printing Everything](#printing-everything)
-5. [Tips](#tips)
-6. [FAQ](#faq)
-7. [Contributing](#contributing)
-8. [Credits](#credits)
+6. [Tips](#tips)
+7. [FAQ](#faq)
+8. [Contributing](#contributing)
+9. [Credits](#credits)
+
+## Prerequisites
+
+### 📚 Dotnet SDK
+Ensure your .NET SDK is at least `8.0.400`. Check your version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
+
+### 🎮 Godot
+Download and install the [latest Godot 4 C# release](https://godotengine.org/)
+
+### 📦 Repository
+To clone the repository along with its submodules, use the following command:
+
+```sh
+git clone --recursive https://github.com/ValksGodotTools/Template
+```
+
+Make sure to include the `--recursive` flag to ensure all submodules are also cloned.
+
+### 🛠️ Custom ENet Builds
+
+If you are running on a platform without a build for your platform (such as Apple ARM), you
+may need to provide your own build of `ENet-CSharp`. To do so, follow the build instructions
+[here](https://github.com/nxrighthere/ENet-CSharp), and place the resulting `ENet-CSharp.dll`
+and the `.so` or `.dylib` in the `GodotProject` directory.
 
 ## Setup Guide
 
-### 🌐 Download the repo
-1. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
-2. Clone the repository using `git clone --recursive https://github.com/ValksGodotTools/Template`
-3. Open `project.godot` located in `Template/GodotProject/project.godot`
-
 ### 🔧 Configuring your project
 
-Make sure all scene tabs are closed. This is very important.
+Once you have opened `project.godot` located in `Template/GodotProject/project.godot`, make sure all scene tabs are closed. This is very important.
 
 #### Before
 ![Untitled](https://github.com/user-attachments/assets/61197098-df47-4e0b-a7be-36b97b98f724)
@@ -65,13 +83,6 @@ Fill in the required fields and click `Apply`. This will close the game.
 
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
-
-### 🛠️ Custom ENet Builds
-
-If you are running on a platform without a build for your platform (such as Apple ARM), you
-may need to provide your own build of `ENet-CSharp`. To do so, follow the build instructions
-[here](https://github.com/nxrighthere/ENet-CSharp), and place the resulting `ENet-CSharp.dll`
-and the `.so` or `.dylib` in the `GodotProject` directory.
 
 ## Scenes
 
@@ -456,6 +467,8 @@ A: If you're seeing errors on your first project load, it could be because you'r
 ```sh
 git submodule update --init --recursive
 ```
+
+If your .NET SDK version is lower than `8.0.400`, the source generator may not create the necessary `Prefab` and `Scene` scripts. Verify your current version by running `dotnet --version` in your terminal. If an update is required, you can download the latest .NET SDK from the following link: [Update .NET SDK](https://dotnet.microsoft.com/download)
 
 ### Q: I'm encountering errors after switching to the `X` genre. What could be the issue?
 A: Here are a few common reasons and how to fix them:
