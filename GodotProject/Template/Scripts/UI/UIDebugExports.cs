@@ -152,6 +152,14 @@ public partial class UIDebugExports : Control
             SizeFlagsHorizontal = SizeFlags.ExpandFill
         };
 
+        hbox.AddChild(label);
+        hbox.AddChild(CreateStepPrecisionOptionButton(debugExportSpinBoxes));
+
+        sidePanelNodeInfoVBox.AddChild(hbox);
+    }
+
+    private static OptionButton CreateStepPrecisionOptionButton(List<DebugExportSpinBox> debugExportSpinBoxes)
+    {
         OptionButton optionButton = new()
         {
             Alignment = HorizontalAlignment.Center
@@ -191,10 +199,7 @@ public partial class UIDebugExports : Control
             }
         };
 
-        hbox.AddChild(label);
-        hbox.AddChild(optionButton);
-
-        sidePanelNodeInfoVBox.AddChild(hbox);
+        return optionButton;
     }
 
     // Method to get DebugExportNodes from the scene tree
