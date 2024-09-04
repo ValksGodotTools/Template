@@ -70,9 +70,11 @@ namespace MySourceGenerator
                 .Where(file => Path.GetExtension(file.Path)
                 .Equals(".tscn", StringComparison.OrdinalIgnoreCase));
 
+            char sep = Path.DirectorySeparatorChar;
+
             // Separate tscn files into Prefabs and Scenes
-            IEnumerable<AdditionalText> prefabFiles = tscnFiles.Where(file => file.Path.Contains("\\Prefabs\\"));
-            IEnumerable<AdditionalText> sceneFiles = tscnFiles.Where(file => file.Path.Contains("\\Scenes\\") && !file.Path.Contains("\\Prefabs\\"));
+            IEnumerable<AdditionalText> prefabFiles = tscnFiles.Where(file => file.Path.Contains($"{sep}Prefabs{sep}"));
+            IEnumerable<AdditionalText> sceneFiles = tscnFiles.Where(file => file.Path.Contains($"{sep}Scenes{sep}") && !file.Path.Contains($"{sep}Prefabs{sep}"));
 
             // Generate the Prefabs class
             string prefabSourceCode = GeneratePrefabsClass(context, prefabFiles);

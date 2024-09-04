@@ -9,8 +9,15 @@
 
     <!-- NuGet Packages -->
     <ItemGroup>
-        <PackageReference Include="ENet-CSharp" Version="2.4.8" />
+        <PackageReference Include="ENet-CSharp" Version="2.4.8" Condition="!Exists('ENet-CSharp.dll')" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <!-- Local Packages -->
+    <ItemGroup>
+        <Reference Include="ENet-CSharp" Condition="Exists('ENet-CSharp.dll')" >
+            <HintPath>ENet-CSharp.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <!-- Include Prefabs source generator -->
