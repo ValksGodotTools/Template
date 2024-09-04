@@ -116,6 +116,10 @@ public partial class UIDebugExports : Control
         hbox.AddChild(CreateStepPrecisionOptionButton(debugExportSpinBoxes));
 
         controlPanel.AddChild(hbox);
+
+        GButton unfocus = new("Unfocus Active Element");
+        unfocus.Pressed += () => GetTree().UnfocusCurrentControl();
+        controlPanel.AddChild(unfocus);
     }
 
     private static OptionButton CreateStepPrecisionOptionButton(List<DebugVisualSpinBox> debugExportSpinBoxes)
