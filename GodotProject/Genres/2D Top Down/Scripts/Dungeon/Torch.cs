@@ -3,7 +3,8 @@ namespace Template;
 [Tool]
 public partial class Torch : Node
 {
-    [Export] [Visualize] double energy = 1;
+    [Visualize] bool someBool;
+    [Visualize] [Export] double energy = 1;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
     [Export] float textureScale
