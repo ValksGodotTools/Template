@@ -6,6 +6,8 @@ public partial class UIDebugExports : Control
 {
     [Export] VBoxContainer controlPanel;
 
+    private static List<VBoxContainer> infoPanels = [];
+
     public override void _Ready()
     {
         List<DebugVisualNode> debugExportNodes = GetVisualizedNodes(GetTree().Root);
@@ -18,6 +20,25 @@ public partial class UIDebugExports : Control
         CreateVisualUIs(debugExportNodes, debugExportSpinBoxes);
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
+
+        Vector2 initialWindowSize = DisplayServer.WindowGetSize();
+        float scaleOffset = -0.2f;
+
+        SetInfoPanelScales(initialWindowSize, scaleOffset);
+
+        GetTree().Root.GetViewport().SizeChanged += () =>
+        {
+            SetInfoPanelScales(initialWindowSize, scaleOffset);
+        };
+    }
+
+    private static void SetInfoPanelScales(Vector2 initialWindowSize, float scaleOffset)
+    {
+        foreach (Control infoPanel in infoPanels)
+        {
+            float scaleFactor = initialWindowSize.X / DisplayServer.WindowGetSize().X;
+            infoPanel.Scale = Vector2.One * (scaleFactor + scaleOffset);
+        }
     }
 
     private static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
@@ -228,6 +249,8 @@ public partial class UIDebugExports : Control
 
             // All debug UI elements should not be influenced by the game world environments lighting
             vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
+
+            infoPanels.Add(vbox);
 
             node.AddChild(vbox);
         }
