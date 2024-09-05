@@ -27,6 +27,11 @@ public partial class Game
         Global.Services.Get<Logger>().Log(message, color);
     }
 
+    public static void Log(params object[] objects)
+    {
+        Global.Services.Get<Logger>().Log(objects);
+    }
+
     public static void LogWarning(object message, BBColor color = BBColor.Orange)
     {
         Global.Services.Get<Logger>().LogWarning(message, color);

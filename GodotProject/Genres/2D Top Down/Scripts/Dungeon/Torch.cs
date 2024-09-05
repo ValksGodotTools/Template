@@ -33,9 +33,16 @@ public partial class Torch : Node2D
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
 
-    [Visualize]
-    public void Debug(Color x, ushort y, uint z)
+    public enum Test
     {
-        GD.Print($"({x}, {y}, {z})");
+        One,
+        Two,
+        Three
+    }
+
+    [Visualize]
+    public void TestMethod(Color color, int someInt, bool someBool, Test test)
+    {
+        Game.Log(color, someInt, someBool, test);
     }
 }

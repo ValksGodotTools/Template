@@ -83,7 +83,7 @@ public partial class UIDebugExports : Control
                         ParameterInfo paramInfo = paramInfos[i];
                         Type paramType = paramInfo.ParameterType;
 
-                        hboxParams.AddChild(new GLabel(paramInfo.Name));
+                        hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
 
                         int index = i; // Capture the current value of i
 
@@ -156,6 +156,7 @@ public partial class UIDebugExports : Control
                             {
                                 object selectedValue = Enum.GetValues(paramType).GetValue(item);
                                 providedValues[index] = selectedValue;
+                                optionButton.ReleaseFocus();
                             };
 
                             hboxParams.AddChild(optionButton);
@@ -167,6 +168,7 @@ public partial class UIDebugExports : Control
                             checkBox.Toggled += value =>
                             {
                                 providedValues[index] = value;
+                                checkBox.ReleaseFocus();
                             };
 
                             hboxParams.AddChild(checkBox);
