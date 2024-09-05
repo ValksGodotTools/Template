@@ -1,6 +1,6 @@
 namespace Template;
 
-public partial class UINetControlPanel : Node
+public partial class UINetControlPanel : Control
 {
     Net net;
     string ip = "127.0.0.1";
