@@ -22,6 +22,22 @@ public partial class UIDebugExports : Control
 
     private static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
+        // Define a dictionary to map types to their respective minimum and maximum values
+        Dictionary<Type, (object Min, object Max)> typeConstraints = new()
+        {
+            { typeof(sbyte), (sbyte.MinValue, sbyte.MaxValue) },
+            { typeof(short), (short.MinValue, short.MaxValue) },
+            { typeof(int), (int.MinValue, int.MaxValue) },
+            { typeof(long), (long.MinValue, long.MaxValue) },
+            { typeof(float), (float.MinValue, float.MaxValue) },
+            { typeof(double), (double.MinValue, double.MaxValue) },
+            { typeof(decimal), (decimal.MinValue, decimal.MaxValue) },
+            { typeof(byte), (byte.MinValue, byte.MaxValue) },
+            { typeof(ushort), (ushort.MinValue, ushort.MaxValue) },
+            { typeof(uint), (uint.MinValue, uint.MaxValue) },
+            { typeof(ulong), (ulong.MinValue, ulong.MaxValue) }
+        };
+
         foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
         {
             Node node = debugVisualNode.Node;
@@ -56,14 +72,77 @@ public partial class UIDebugExports : Control
             {
                 if (method.DeclaringType.IsSubclassOf(typeof(GodotObject)))
                 {
+                    ParameterInfo[] paramInfos = method.GetParameters();
+
+                    HBoxContainer hboxParams = new();
+
+                    object[] providedValues = new object[paramInfos.Length];
+
+                    for (int i = 0; i < paramInfos.Length; i++)
+                    {
+                        ParameterInfo paramInfo = paramInfos[i];
+
+                        hboxParams.AddChild(new GLabel(paramInfo.Name));
+
+                        if (paramInfo.ParameterType.IsNumericType())
+                        {
+                            SpinBox spinBox = CreateSpinBoxUI(method, paramInfo.ParameterType, node, debugExportSpinBoxes);
+
+                            int index = i; // Capture the current value of i
+
+                            spinBox.ValueChanged += value =>
+                            {
+                                object convertedValue = value;
+
+                                try
+                                {
+                                    convertedValue = Convert.ChangeType(value, paramInfo.ParameterType);
+                                }
+                                catch
+                                {
+                                    if (typeConstraints.TryGetValue(paramInfo.ParameterType, out (object Min, object Max) constraints))
+                                    {
+                                        if (Convert.ToDouble(value) < Convert.ToDouble(constraints.Min))
+                                        {
+                                            spinBox.Value = Convert.ToDouble(constraints.Min);
+                                            convertedValue = constraints.Min;
+                                        }
+                                        else if (Convert.ToDouble(value) > Convert.ToDouble(constraints.Max))
+                                        {
+                                            spinBox.Value = Convert.ToDouble(constraints.Max);
+                                            convertedValue = constraints.Max;
+                                        }
+                                        else
+                                        {
+                                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramInfo.ParameterType}'.";
+                                            throw new InvalidOperationException(errorMessage);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramInfo.ParameterType}'.";
+                                        throw new InvalidOperationException(errorMessage);
+                                    }
+                                }
+
+                                providedValues[index] = convertedValue; // Use the captured index
+                            };
+
+                            hboxParams.AddChild(spinBox);
+                        }
+                    }
+
+                    vbox.AddChild(hboxParams);
+
                     Button button = new();
                     button.Text = method.Name;
 
                     button.Pressed += () =>
                     {
-                        object[] @params = [];
+                        object[] parameters = ParameterConverter
+                            .ConvertParameterInfoToObjectArray(paramInfos, providedValues);
 
-                        method.Invoke(node, @params);
+                        method.Invoke(node, parameters);
                     };
 
                     vbox.AddChild(button);
@@ -211,7 +290,7 @@ public partial class UIDebugExports : Control
         return checkBox;
     }
 
-    private static Control CreateSpinBoxUI(MemberInfo member, Type type, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static SpinBox CreateSpinBoxUI(MemberInfo member, Type type, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         // Create a SpinBox for numeric input
         SpinBox spinBox = new()
@@ -222,18 +301,21 @@ public partial class UIDebugExports : Control
             Alignment = HorizontalAlignment.Center
         };
 
-        SetSpinBoxStepAndValue(spinBox, member, node);
+        if (member is not MethodInfo)
+        {
+            SetSpinBoxStepAndValue(spinBox, member, node);
+
+            spinBox.ValueChanged += value =>
+            {
+                SetMemberValue(member, node, value);
+            };
+        }
 
         debugExportSpinBoxes.Add(new DebugVisualSpinBox
         {
             SpinBox = spinBox,
             Type = type
         });
-
-        spinBox.ValueChanged += value =>
-        {
-            SetMemberValue(member, node, value);
-        };
 
         return spinBox;
     }
@@ -412,15 +494,12 @@ public partial class UIDebugExports : Control
 
     private static T GetMemberValue<T>(MemberInfo member, object node)
     {
-        if (member is FieldInfo fieldInfo)
+        return member switch
         {
-            return (T)fieldInfo.GetValue(node);
-        }
-        else if (member is PropertyInfo propertyInfo)
-        {
-            return (T)propertyInfo.GetValue(node);
-        }
-        throw new ArgumentException("Member is not a FieldInfo or PropertyInfo");
+            FieldInfo fieldInfo => (T)fieldInfo.GetValue(node),
+            PropertyInfo propertyInfo => (T)propertyInfo.GetValue(node),
+            _ => throw new ArgumentException("Member is not a FieldInfo or PropertyInfo")
+        };
     }
 
     private static object GetMemberValue(MemberInfo member, Node node)
@@ -456,4 +535,54 @@ public class DebugVisualSpinBox
 {
     public SpinBox SpinBox { get; set; }
     public Type Type { get; set; }
+}
+
+public class ParameterConverter
+{
+    public static object[] ConvertParameterInfoToObjectArray(ParameterInfo[] paramInfos, object[] providedValues)
+    {
+        if (paramInfos == null)
+        {
+            throw new ArgumentNullException(nameof(paramInfos));
+        }
+
+        if (providedValues == null)
+        {
+            throw new ArgumentNullException(nameof(providedValues));
+        }
+
+        if (paramInfos.Length != providedValues.Length)
+        {
+            throw new ArgumentException("The number of provided values does not match the number of method parameters.");
+        }
+
+        object[] parameters = new object[paramInfos.Length];
+
+        for (int i = 0; i < paramInfos.Length; i++)
+        {
+            ParameterInfo paramInfo = paramInfos[i];
+            object providedValue = providedValues[i];
+
+            if (providedValue == null)
+            {
+                if (paramInfo.ParameterType.IsValueType)
+                {
+                    throw new InvalidOperationException($"A null value cannot be assigned to the value type parameter '{paramInfo.Name}'.");
+                }
+
+                parameters[i] = null;
+            }
+            else
+            {
+                if (!paramInfo.ParameterType.IsAssignableFrom(providedValue.GetType()))
+                {
+                    throw new InvalidOperationException($"The provided value for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramInfo.ParameterType}'.");
+                }
+
+                parameters[i] = providedValue;
+            }
+        }
+
+        return parameters;
+    }
 }

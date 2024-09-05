@@ -34,8 +34,8 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Debug()
+    public void Debug(float x, double y, byte z)
     {
-        GD.Print($"Hello from {Name}!");
+        GD.Print($"({x}, {y}, {z})");
     }
 }
