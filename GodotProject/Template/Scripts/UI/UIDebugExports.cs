@@ -114,18 +114,7 @@ public partial class UIDebugExports : Control
         {
             ColorPicker picker = colorPickerButton.GetPicker();
 
-            Color value = Colors.Black;
-
-            if (member is FieldInfo fieldInfo)
-            {
-                value = (Color)fieldInfo.GetValue(node);
-            }
-            else if (member is PropertyInfo propertyInfo)
-            {
-                value = (Color)propertyInfo.GetValue(node);
-            }
-
-            picker.Color = value;
+            picker.Color = GetMemberValue<Color>(member, node);
 
             PopupPanel popupPanel = picker.GetParent<PopupPanel>();
 
@@ -149,19 +138,8 @@ public partial class UIDebugExports : Control
     private static CheckBox CreateCheckBoxUI(MemberInfo member, Node node)
     {
         CheckBox checkBox = new();
-
-        bool value = false;
-
-        if (member is FieldInfo fieldInfo)
-        {
-            value = (bool)fieldInfo.GetValue(node);
-        }
-        else if (member is PropertyInfo propertyInfo)
-        {
-            value = (bool)propertyInfo.GetValue(node);
-        }
-
-        checkBox.ButtonPressed = value;
+        
+        checkBox.ButtonPressed = GetMemberValue<bool>(member, node);
 
         checkBox.Toggled += value =>
         {
@@ -328,33 +306,19 @@ public partial class UIDebugExports : Control
 
     private static void SetSpinBoxStepAndValue(SpinBox spinBox, MemberInfo member, object instance)
     {
-        object value = null;
+        double value = GetMemberValue<double>(member, instance);
 
-        // Get the value of the field or property
-        if (member is FieldInfo fieldInfo)
+        Type valueType = value.GetType();
+
+        double step = 0.1;
+
+        if (valueType.IsWholeNumber())
         {
-            value = fieldInfo.GetValue(instance);
-        }
-        else if (member is PropertyInfo propertyInfo)
-        {
-            value = propertyInfo.GetValue(instance);
+            step = 1;
         }
 
-        if (value != null)
-        {
-            Type valueType = value.GetType();
-
-            double step = 0.1;
-            double spinValue = Convert.ToDouble(value);
-
-            if (valueType.IsWholeNumber())
-            {
-                step = 1;
-            }
-
-            spinBox.Step = step;
-            spinBox.Value = spinValue;
-        }
+        spinBox.Step = step;
+        spinBox.Value = value;
     }
 
     private static void SetMemberValue(MemberInfo member, object target, object value)
@@ -382,6 +346,19 @@ public partial class UIDebugExports : Control
         {
             GD.Print($"Failed to set value for {member.Name}: {ex.Message}");
         }
+    }
+
+    private static T GetMemberValue<T>(MemberInfo member, object node)
+    {
+        if (member is FieldInfo fieldInfo)
+        {
+            return (T)fieldInfo.GetValue(node);
+        }
+        else if (member is PropertyInfo propertyInfo)
+        {
+            return (T)propertyInfo.GetValue(node);
+        }
+        throw new ArgumentException("Member is not a FieldInfo or PropertyInfo");
     }
 }
 

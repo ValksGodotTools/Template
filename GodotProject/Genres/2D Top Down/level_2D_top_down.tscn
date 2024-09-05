@@ -554,9 +554,9 @@ script = ExtResource("7_iqnw1")
 script = ExtResource("7_tebhc")
 
 [node name="Torch" parent="." instance=ExtResource("9_oa68x")]
-modulate = Color(0, 0, 0, 1)
+modulate = Color(0, 1, 0, 1)
 position = Vector2(545, 70)
 
 [node name="Torch2" parent="." instance=ExtResource("9_oa68x")]
-modulate = Color(0, 0, 0, 1)
+modulate = Color(0, 1, 0, 1)
 position = Vector2(59, 357)
