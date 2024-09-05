@@ -81,14 +81,15 @@ public partial class UIDebugExports : Control
                     for (int i = 0; i < paramInfos.Length; i++)
                     {
                         ParameterInfo paramInfo = paramInfos[i];
+                        Type paramType = paramInfo.ParameterType;
 
                         hboxParams.AddChild(new GLabel(paramInfo.Name));
 
                         int index = i; // Capture the current value of i
 
-                        if (paramInfo.ParameterType.IsNumericType())
+                        if (paramType.IsNumericType())
                         {
-                            SpinBox spinBox = CreateSpinBoxUI(method, paramInfo.ParameterType, node, debugExportSpinBoxes);
+                            SpinBox spinBox = CreateSpinBoxUI(method, paramType, node, debugExportSpinBoxes);
 
                             spinBox.ValueChanged += value =>
                             {
@@ -96,11 +97,11 @@ public partial class UIDebugExports : Control
 
                                 try
                                 {
-                                    convertedValue = Convert.ChangeType(value, paramInfo.ParameterType);
+                                    convertedValue = Convert.ChangeType(value, paramType);
                                 }
                                 catch
                                 {
-                                    if (typeConstraints.TryGetValue(paramInfo.ParameterType, out (object Min, object Max) constraints))
+                                    if (typeConstraints.TryGetValue(paramType, out (object Min, object Max) constraints))
                                     {
                                         if (Convert.ToDouble(value) < Convert.ToDouble(constraints.Min))
                                         {
@@ -114,13 +115,13 @@ public partial class UIDebugExports : Control
                                         }
                                         else
                                         {
-                                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramInfo.ParameterType}'.";
+                                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
                                             throw new InvalidOperationException(errorMessage);
                                         }
                                     }
                                     else
                                     {
-                                        string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramInfo.ParameterType}'.";
+                                        string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
                                         throw new InvalidOperationException(errorMessage);
                                     }
                                 }
@@ -130,7 +131,7 @@ public partial class UIDebugExports : Control
 
                             hboxParams.AddChild(spinBox);
                         }
-                        else if (paramInfo.ParameterType == typeof(string))
+                        else if (paramType == typeof(string))
                         {
                             LineEdit lineEdit = new();
 
@@ -140,6 +141,24 @@ public partial class UIDebugExports : Control
                             };
 
                             hboxParams.AddChild(lineEdit);
+                        }
+                        else if (paramType.IsEnum)
+                        {
+                            OptionButton optionButton = new();
+
+                            // Add enum values to the OptionButton
+                            foreach (object enumValue in Enum.GetValues(paramType))
+                            {
+                                optionButton.AddItem(enumValue.ToString());
+                            }
+
+                            optionButton.ItemSelected += item =>
+                            {
+                                object selectedValue = Enum.GetValues(paramType).GetValue(item);
+                                providedValues[index] = selectedValue;
+                            };
+
+                            hboxParams.AddChild(optionButton);
                         }
                     }
 
