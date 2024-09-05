@@ -256,7 +256,7 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Methods**       | Functions that can take any of the supported types as parameters.           |
 | **Static Members**| Class-level variables that are shared across all instances of the class.    |
 
-#### Example Usage
+#### Visualizing Player
 ```cs
 public partial class Player : CharacterBody2D
 {
@@ -292,6 +292,18 @@ public partial class Player : CharacterBody2D
         TotalPlayers++;
         GD.Print($"Total players: {TotalPlayers}.");
     }
+}
+```
+
+#### Visualizing Nodes at a Specific Position
+
+You might prefer not to have the visual panel initially created at (0, 0) when visualizing members within a UI node that is always positioned at (0, 0). This can be easily adjusted by adding the `[Visualize(x, y)]` attribute at the top of the class. This attribute will set the initial position of the visual panel to the specified coordinates.
+
+```csharp
+[Visualize(200, 200)] // The visual panel will initially be positioned at (200, 200)
+public partial class SomeUINode
+{
+    // ...
 }
 ```
 
