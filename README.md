@@ -245,25 +245,53 @@ https://github.com/user-attachments/assets/2e4e31e7-92d4-4c00-a7dd-1a2e7d6a6ad8
 Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
 
 #### Supported Members
-- Numericals
-- Enums
-- Booleans
-- Strings
-- Godot.Color
-- Methods (all types mentioned are also supported in method parameters)
+
+| Member Type       | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| **Numericals**    | Integers, floats, and other numerical types.                                |
+| **Enums**         | Enumerated types for categorizing data.                                     |
+| **Booleans**      | True/False values for binary states.                                        |
+| **Strings**       | Textual data for labels, messages, etc.                                     |
+| **Godot.Color**   | Color values for visual elements.                                           |
+| **Methods**       | Functions that can take any of the supported types as parameters.           |
+| **Static Members**| Class-level variables that are shared across all instances of the class.    |
 
 #### Example Usage
 ```cs
-[Visualize] public int Health { get; set; }
-
-[Visualize] protected Color color;
-[Visualize] private AttackType attackType;
-[Visualize] private bool isAttacking;
-
-[Visualize]
-public void TakeDamage(int damage)
+public partial class Player : CharacterBody2D
 {
-    GD.Print($"We took {damage}!");
+    [Visualize]
+    public int Health { get; set; }
+
+    [Visualize]
+    protected WeaponType CurrentWeapon;
+
+    [Visualize]
+    private static int TotalPlayers;
+
+    [Visualize]
+    public void ApplyDamage(int damageAmount, string source)
+    {
+        Health -= damageAmount;
+        GD.Print($"Player took {damageAmount} damage from {source}! Health is now {Health}.");
+    }
+
+    [Visualize]
+    public void ChangeWeapon(WeaponType newWeapon, bool isSilent)
+    {
+        CurrentWeapon = newWeapon;
+        if (!isSilent)
+        {
+            GD.Print($"Weapon changed to {newWeapon}.");
+        }
+    }
+
+    [Visualize]
+    public static void IncrementPlayerCount()
+    {
+        TotalPlayers++;
+        GD.Print($"Total players: {TotalPlayers}.");
+    }
 }
 ```
 
