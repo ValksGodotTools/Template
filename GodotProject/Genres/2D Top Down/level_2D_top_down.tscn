@@ -352,9 +352,6 @@ tileMap = NodePath("../TileMapLayer")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
-visible = false
-
 [node name="MultiplayerControlPanel" parent="CanvasLayer" instance=ExtResource("3_uykib")]
 
 [node name="DebugExports" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("controlPanel")]
@@ -521,6 +518,9 @@ text = "Torch2"
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Torch2"
+
+[node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
+visible = false
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 z_index = -10
