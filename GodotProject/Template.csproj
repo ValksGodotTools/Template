@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <EnableDynamicLoading>true</EnableDynamicLoading>
+        <ImplicitUsings>false</ImplicitUsings> <!--Prevent use of the global usings feature-->
         <RootNamespace>Template</RootNamespace>
     </PropertyGroup>
 
