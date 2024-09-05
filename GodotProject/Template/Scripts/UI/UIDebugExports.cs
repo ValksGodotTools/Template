@@ -84,11 +84,11 @@ public partial class UIDebugExports : Control
 
                         hboxParams.AddChild(new GLabel(paramInfo.Name));
 
+                        int index = i; // Capture the current value of i
+
                         if (paramInfo.ParameterType.IsNumericType())
                         {
                             SpinBox spinBox = CreateSpinBoxUI(method, paramInfo.ParameterType, node, debugExportSpinBoxes);
-
-                            int index = i; // Capture the current value of i
 
                             spinBox.ValueChanged += value =>
                             {
@@ -129,6 +129,17 @@ public partial class UIDebugExports : Control
                             };
 
                             hboxParams.AddChild(spinBox);
+                        }
+                        else if (paramInfo.ParameterType == typeof(string))
+                        {
+                            LineEdit lineEdit = new();
+
+                            lineEdit.TextChanged += text =>
+                            {
+                                providedValues[index] = text;
+                            };
+
+                            hboxParams.AddChild(lineEdit);
                         }
                     }
 
@@ -565,12 +576,19 @@ public class ParameterConverter
 
             if (providedValue == null)
             {
-                if (paramInfo.ParameterType.IsValueType)
+                if (paramInfo.ParameterType == typeof(string))
                 {
-                    throw new InvalidOperationException($"A null value cannot be assigned to the value type parameter '{paramInfo.Name}'.");
+                    parameters[i] = null;
                 }
-
-                parameters[i] = null;
+                else if (paramInfo.ParameterType.IsValueType)
+                {
+                    // Assign default value for value types
+                    parameters[i] = Activator.CreateInstance(paramInfo.ParameterType);
+                }
+                else
+                {
+                    parameters[i] = null;
+                }
             }
             else
             {
