@@ -96,6 +96,10 @@ public partial class UIDebugExports : Control
         {
             element = CreateLineEdit(member, node);
         }
+        else if (type.IsEnum)
+        {
+            element = CreateOptionButton(member, node);
+        }
         else
         {
             throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
@@ -106,14 +110,30 @@ public partial class UIDebugExports : Control
         return hbox;
     }
 
-    private static Type GetMemberType(MemberInfo member)
+    private static OptionButton CreateOptionButton(MemberInfo member, Node node)
     {
-        return member switch
+        OptionButton optionButton = new();
+
+        Type enumType = GetMemberType(member);
+
+        // Add enum values to the OptionButton
+        foreach (object enumValue in Enum.GetValues(enumType))
         {
-            FieldInfo fieldInfo => fieldInfo.FieldType,
-            PropertyInfo propertyInfo => propertyInfo.PropertyType,
-            _ => throw new ArgumentException("Member must be a field or property.")
+            optionButton.AddItem(enumValue.ToString());
+        }
+
+        // Select the current value of the member
+        object currentValue = GetMemberValue(member, node);
+        int selectedIndex = Array.IndexOf(Enum.GetValues(enumType), currentValue);
+        optionButton.Select(selectedIndex);
+
+        optionButton.ItemSelected += item =>
+        {
+            object selectedValue = Enum.GetValues(enumType).GetValue(item);
+            SetMemberValue(member, node, selectedValue);
         };
+
+        return optionButton;
     }
 
     private static LineEdit CreateLineEdit(MemberInfo member, Node node)
@@ -388,6 +408,26 @@ public partial class UIDebugExports : Control
             return (T)propertyInfo.GetValue(node);
         }
         throw new ArgumentException("Member is not a FieldInfo or PropertyInfo");
+    }
+
+    private static object GetMemberValue(MemberInfo member, Node node)
+    {
+        return member switch
+        {
+            FieldInfo fieldInfo => fieldInfo.GetValue(node),
+            PropertyInfo propertyInfo => propertyInfo.GetValue(node),
+            _ => throw new ArgumentException("Member must be a field or property.")
+        };
+    }
+
+    private static Type GetMemberType(MemberInfo member)
+    {
+        return member switch
+        {
+            FieldInfo fieldInfo => fieldInfo.FieldType,
+            PropertyInfo propertyInfo => propertyInfo.PropertyType,
+            _ => throw new ArgumentException("Member must be a field or property.")
+        };
     }
 }
 
