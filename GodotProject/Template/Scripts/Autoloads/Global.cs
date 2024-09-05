@@ -1,12 +1,12 @@
-global using CSharpUtils;
-global using Godot;
-global using GodotUtils;
-global using System;
-global using System.Collections.Generic;
-global using System.Diagnostics;
-global using System.Linq;
-global using System.Text.RegularExpressions;
-global using System.Threading.Tasks;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Template;
 
@@ -62,3 +62,4 @@ public partial class Global : Node
         GetTree().Quit();
 	}
 }
+

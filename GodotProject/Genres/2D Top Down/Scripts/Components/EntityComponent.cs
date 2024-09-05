@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
@@ -27,3 +37,4 @@ public partial class EntityComponent : Node
 
     public bool IsState(string state) => curState.ToString() == state.ToLower();
 }
+

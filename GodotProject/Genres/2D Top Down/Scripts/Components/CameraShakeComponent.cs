@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
@@ -60,3 +70,4 @@ public class CameraShakeConfig
     public double Duration { get; set; } = 1.0;
     public double Frequency { get; set; }
 }
+

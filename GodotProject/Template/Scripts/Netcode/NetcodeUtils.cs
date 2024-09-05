@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template;
 
 using System;
@@ -33,3 +43,4 @@ public class PacketInfo<T>
     public byte Opcode { get; set; }
     public T Instance { get; set; }
 }
+

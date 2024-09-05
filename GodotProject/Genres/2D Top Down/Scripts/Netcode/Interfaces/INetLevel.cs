@@ -1,4 +1,14 @@
-﻿namespace Template;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template;
 
 using Template.TopDown2D;
 
@@ -11,3 +21,4 @@ internal interface INetLevel
     public void AddOtherPlayer(uint id, PlayerData playerData);
     public void RemoveOtherPlayer(uint id);
 }
+

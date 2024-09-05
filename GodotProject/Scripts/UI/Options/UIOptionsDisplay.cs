@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 using static Godot.DisplayServer;
 
 namespace Template;
@@ -169,3 +179,4 @@ public enum WindowMode
     Borderless,
     Fullscreen
 }
+

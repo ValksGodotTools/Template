@@ -1,4 +1,14 @@
-﻿namespace Template.Netcode.Client;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template.Netcode.Client;
 
 using ENet;
 using System;
@@ -310,3 +320,4 @@ public class PacketData
     public PacketReader PacketReader { get; set; }
     public ServerPacket HandlePacket { get; set; }
 }
+

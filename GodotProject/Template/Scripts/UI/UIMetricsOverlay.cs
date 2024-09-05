@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template;
 
 using Monitor = Performance.Monitor;
@@ -66,3 +76,4 @@ public partial class UIMetricsOverlay : Control
         labelOrphanNodes.Text = Performance.GetMonitor(Monitor.ObjectOrphanNodeCount).ToString();
     }
 }
+

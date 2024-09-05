@@ -1,4 +1,14 @@
-﻿namespace Template.Platformer2D;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template.Platformer2D;
 
 public abstract partial class Entity : CharacterBody2D
 {
@@ -52,3 +62,4 @@ public abstract partial class Entity : CharacterBody2D
         stateLabel.Position -= new Vector2(0, stateLabel.Size.Y / 2);
     }
 }
+

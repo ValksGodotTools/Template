@@ -1,4 +1,14 @@
-﻿namespace Template;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template;
 
 public static class Sounds
 {
@@ -8,3 +18,4 @@ public static class Sounds
     static AudioStream Load(string path) =>
         GD.Load<AudioStream>($"res://Audio/SFX/{path}");
 }
+

@@ -1,4 +1,14 @@
-﻿namespace Template.FPS3D;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template.FPS3D;
 
 public class Item // An item the player can hold
 {
@@ -16,3 +26,4 @@ public class Item // An item the player can hold
 
     public void SetVisible(bool v) => parent.Visible = v;
 }
+

@@ -1,4 +1,14 @@
-﻿namespace Template;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template;
 
 public static class Music
 {
@@ -10,3 +20,4 @@ public static class Music
     static AudioStream Load(string path) =>
         GD.Load<AudioStream>($"res://Audio/Songs/{path}");
 }
+

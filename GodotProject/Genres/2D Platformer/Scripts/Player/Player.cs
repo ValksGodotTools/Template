@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template.Platformer2D;
 
 public partial class Player : Entity
@@ -24,3 +34,4 @@ public partial class Player : Entity
 
     protected override State InitialState() => Idle();
 }
+

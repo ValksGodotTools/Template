@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 namespace Template;
 
 public partial class UIMainMenuNav : Node
@@ -42,3 +52,4 @@ public partial class UIMainMenuNav : Node
     void _on_discord_pressed() => OS.ShellOpen("https://discord.gg/j8HQZZ76r8");
     void _on_github_pressed() => OS.ShellOpen("https://github.com/ValksGodotTools/Template");
 }
+

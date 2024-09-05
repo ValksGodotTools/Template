@@ -1,3 +1,13 @@
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -116,3 +126,4 @@ public class ModInfo
     public Dictionary<string, string> Dependencies { get; set; }
     public Dictionary<string, string> Incompatibilities { get; set; }
 }
+

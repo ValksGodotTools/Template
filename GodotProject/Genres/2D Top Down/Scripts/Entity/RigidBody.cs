@@ -1,4 +1,14 @@
-﻿namespace Template;
+using CSharpUtils;
+using Godot;
+using GodotUtils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Template;
 
 public abstract partial class RigidBody : RigidBody2D, IBaseEntity
 {
@@ -21,3 +31,4 @@ public abstract partial class RigidBody : RigidBody2D, IBaseEntity
         return state;
     }
 }
+
