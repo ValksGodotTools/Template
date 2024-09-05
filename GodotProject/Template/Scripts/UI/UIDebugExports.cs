@@ -54,7 +54,20 @@ public partial class UIDebugExports : Control
 
             foreach (MethodInfo method in debugVisualNode.Methods)
             {
-                //GD.Print(method.Name);
+                if (method.DeclaringType.IsSubclassOf(typeof(GodotObject)))
+                {
+                    Button button = new();
+                    button.Text = method.Name;
+
+                    button.Pressed += () =>
+                    {
+                        object[] @params = [];
+
+                        method.Invoke(node, @params);
+                    };
+
+                    vbox.AddChild(button);
+                }
             }
 
             // All debug UI elements should not be influenced by the game world environments lighting

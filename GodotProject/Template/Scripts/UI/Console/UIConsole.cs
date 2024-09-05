@@ -153,12 +153,12 @@ public partial class UIConsole : PanelContainer
 
         MethodInfo method = cmd.Method;
 
-        // Not sure why this has to be the "DeclaringType" as suppose to
-        // any of the other Type properties or methods
         object instance = GetMethodInstance(cmd.Method.DeclaringType);
 
-        // Valk: Not really sure what this regex is doing. May rewrite
+        // Valk (Year 2023): Not really sure what this regex is doing. May rewrite
         // code in a more readable fassion.
+
+        // Valk (Year 2024): What in the world
 
         // Split by spaces, unless in quotes
         string[] rawCommandSplit = Regex.Matches(text,

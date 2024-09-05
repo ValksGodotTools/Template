@@ -34,5 +34,8 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public new void QueueFree() => QueueFree();
+    public void Debug()
+    {
+        GD.Print($"Hello from {Name}!");
+    }
 }
