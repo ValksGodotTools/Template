@@ -256,7 +256,7 @@ public partial class UIDebugExports : Control
 
             if (debugVisualNode.InitialPosition != Vector2.Zero)
             {
-                vbox.Position = debugVisualNode.InitialPosition;
+                vbox.GlobalPosition = debugVisualNode.InitialPosition;
             }
         }
     }
