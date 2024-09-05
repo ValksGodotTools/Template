@@ -26,6 +26,7 @@ SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 [display]
 
 window/stretch/mode="canvas_items"
+window/stretch/aspect="ignore"
 
 [dotnet]
 

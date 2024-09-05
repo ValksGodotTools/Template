@@ -20,25 +20,6 @@ public partial class UIDebugExports : Control
         CreateVisualUIs(debugExportNodes, debugExportSpinBoxes);
 
         CreateStepPrecisionUI(debugExportSpinBoxes);
-
-        Vector2 initialWindowSize = DisplayServer.WindowGetSize();
-        float scaleOffset = -0.2f;
-
-        SetInfoPanelScales(initialWindowSize, scaleOffset);
-
-        GetTree().Root.GetViewport().SizeChanged += () =>
-        {
-            SetInfoPanelScales(initialWindowSize, scaleOffset);
-        };
-    }
-
-    private static void SetInfoPanelScales(Vector2 initialWindowSize, float scaleOffset)
-    {
-        foreach (Control infoPanel in infoPanels)
-        {
-            float scaleFactor = initialWindowSize.X / DisplayServer.WindowGetSize().X;
-            infoPanel.Scale = Vector2.One * (scaleFactor + scaleOffset);
-        }
     }
 
     private static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)

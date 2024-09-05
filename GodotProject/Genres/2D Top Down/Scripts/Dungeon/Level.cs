@@ -36,6 +36,58 @@ public partial class Level : Node, INetLevel
                 roomTransitions.Reset();
             };
         };
+
+        GetRootControlNodes(this);
+
+        // This should not initially be set to DisplayServer.WindowGetSize() because then UI sizes
+        // will be inconsistent if the player starts the game in fullscreen vs in windowed mode
+        Vector2 referenceWindowSize = new(1280, 720);
+        float scaleOffset = 0;
+
+        SetRootControlPositions(referenceWindowSize, scaleOffset);
+
+        GetTree().Root.GetViewport().SizeChanged += () =>
+        {
+            SetRootControlPositions(referenceWindowSize, scaleOffset);
+        };
+    }
+
+    private static void SetRootControlPositions(Vector2 initialWindowSize, float scaleOffset)
+    {
+        foreach (Control infoPanel in rootControls)
+        {
+            float scaleFactor = initialWindowSize.X / DisplayServer.WindowGetSize().X;
+            Vector2 newScale = Vector2.One * (scaleFactor + scaleOffset);
+
+            // Calculate the new position and size based on the original position and size
+            Vector2 originalPosition = infoPanel.GetRect().Position;
+            Vector2 originalSize = infoPanel.GetRect().Size;
+
+            Vector2 newPosition = originalPosition * newScale;
+            Vector2 newSize = originalSize * newScale;
+
+            Rect2 rect = infoPanel.GetRect();
+
+            // Apply the new position and size
+            rect.Position = newPosition;
+            rect.Size = newSize;
+        }
+    }
+
+    private static List<Control> rootControls = [];
+
+    private void GetRootControlNodes(Node node)
+    {
+        if (node is Control controlNode)
+        {
+            rootControls.Add(controlNode);
+            return;
+        }
+
+        foreach (Node child in node.GetChildren())
+        {
+            GetRootControlNodes(child);
+        }
     }
 
     public void AddLocalPlayer()

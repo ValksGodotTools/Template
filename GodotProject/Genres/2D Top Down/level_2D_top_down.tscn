@@ -359,11 +359,13 @@ visible = false
 
 [node name="DebugExports" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("controlPanel")]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
+grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("6_41hkm")
 controlPanel = NodePath("ControlPanel/MarginContainer/VBoxContainer")
@@ -394,7 +396,6 @@ layout_mode = 2
 [node name="PopupPanel" type="PopupPanel" parent="CanvasLayer/DebugExports"]
 initial_position = 1
 size = Vector2i(508, 308)
-visible = true
 script = ExtResource("7_otjl7")
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/DebugExports/PopupPanel"]
