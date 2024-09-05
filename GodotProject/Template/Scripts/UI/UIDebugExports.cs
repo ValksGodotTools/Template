@@ -6,7 +6,7 @@ public partial class UIDebugExports : Control
 {
     [Export] VBoxContainer controlPanel;
 
-    private static List<VBoxContainer> infoPanels = [];
+    private const float INFO_PANEL_SCALE_FACTOR = 0.6f;
 
     public override void _Ready()
     {
@@ -213,8 +213,11 @@ public partial class UIDebugExports : Control
 
                     vbox.AddChild(hboxParams);
 
-                    Button button = new();
-                    button.Text = method.Name;
+                    Button button = new()
+                    {
+                        Text = method.Name,
+                        SizeFlagsHorizontal = SizeFlags.ShrinkCenter
+                    };
 
                     button.Pressed += () =>
                     {
@@ -231,9 +234,9 @@ public partial class UIDebugExports : Control
             // All debug UI elements should not be influenced by the game world environments lighting
             vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
 
-            infoPanels.Add(vbox);
-
             node.AddChild(vbox);
+
+            vbox.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
 
             if (debugVisualNode.InitialPosition != Vector2.Zero)
             {
