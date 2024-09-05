@@ -493,9 +493,10 @@ public partial class UIDebugExports : Control
         IEnumerable<Type> visualTypes = HasVisualizeAttribute(types);
 
         BindingFlags flags = 
-            BindingFlags.Public | // Public
-            BindingFlags.NonPublic | // Private
-            BindingFlags.Instance; // Instanced
+            BindingFlags.Public |
+            BindingFlags.NonPublic |
+            BindingFlags.Instance |
+            BindingFlags.Static;
 
         foreach (Type type in types)
         {
@@ -594,12 +595,21 @@ public partial class UIDebugExports : Control
 
     private static T GetMemberValue<T>(MemberInfo member, object node)
     {
-        return member switch
+        object value = member switch
         {
-            FieldInfo fieldInfo => (T)fieldInfo.GetValue(node),
-            PropertyInfo propertyInfo => (T)propertyInfo.GetValue(node),
+            FieldInfo fieldInfo when fieldInfo.IsStatic => fieldInfo.GetValue(null),
+            FieldInfo fieldInfo => fieldInfo.GetValue(node),
+            PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
+            PropertyInfo propertyInfo => propertyInfo.GetValue(node),
             _ => throw new ArgumentException("Member is not a FieldInfo or PropertyInfo")
         };
+
+        if (value is float floatValue && typeof(T) == typeof(double))
+        {
+            return (T)(object)Convert.ToDouble(floatValue);
+        }
+
+        return (T)value;
     }
 
     private static object GetMemberValue(MemberInfo member, Node node)
