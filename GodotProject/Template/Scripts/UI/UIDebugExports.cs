@@ -33,7 +33,6 @@ public partial class UIDebugExports : Control
             };
 
             GLabel label = new(node.Name);
-            label.SetUnshaded();
 
             vbox.AddChild(label);
 
@@ -41,61 +40,139 @@ public partial class UIDebugExports : Control
             {
                 object value = property.GetValue(node);
 
-                CreateMemberInfoElement(property, value, node, vbox, debugExportSpinBoxes);
+                Control element = CreateMemberInfoElement(property, value, node, debugExportSpinBoxes);
+                vbox.AddChild(element);
             }
 
             foreach (FieldInfo field in debugVisualNode.Fields)
             {
                 object value = field.GetValue(node);
 
-                CreateMemberInfoElement(field, value, node, vbox, debugExportSpinBoxes);
+                Control element = CreateMemberInfoElement(field, value, node, debugExportSpinBoxes);
+                vbox.AddChild(element);
             }
+
+            foreach (MethodInfo method in debugVisualNode.Methods)
+            {
+                //GD.Print(method.Name);
+            }
+
+            // All debug UI elements should not be influenced by the game world environments lighting
+            vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
 
             node.AddChild(vbox);
         }
     }
 
-    private static void CreateMemberInfoElement(MemberInfo member, object value, Node node, Node parent, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        Control element = null;
-
-        // Create the UI for the member info
-        if (value.GetType().IsNumericType())
-        {
-            element = CreateSpinBoxUI(member, value, node, debugExportSpinBoxes);
-        }
-        else if (value.GetType() == typeof(bool))
-        {
-            element = CreateCheckBoxUI();
-        }
-
-        if (element != null)
-        {
-            parent.AddChild(element);
-        }
-    }
-
-    private static Control CreateCheckBoxUI()
+    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, object value, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         HBoxContainer hbox = new();
 
-        return hbox;
-    }
-
-    private static Control CreateSpinBoxUI(MemberInfo member, object value, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        HBoxContainer hbox = new();
-
-        GLabel spinLabel = new()
+        GLabel label = new()
         {
             Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
             SizeFlagsHorizontal = SizeFlags.ExpandFill
         };
 
-        spinLabel.SetUnshaded();
+        hbox.AddChild(label);
 
-        hbox.AddChild(spinLabel);
+        Control element;
+        Type type = value.GetType();
 
+        if (type.IsNumericType())
+        {
+            element = CreateSpinBoxUI(member, type, node, debugExportSpinBoxes);
+        }
+        else if (type == typeof(bool))
+        {
+            element = CreateCheckBoxUI(member, node);
+        }
+        else if (type == typeof(Godot.Color))
+        {
+            element = CreateColorPicker(member, node);
+        }
+        else
+        {
+            throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
+        }
+
+        hbox.AddChild(element);
+
+        return hbox;
+    }
+
+    private static ColorPickerButton CreateColorPicker(MemberInfo member, Node node)
+    {
+        ColorPickerButton colorPickerButton = new();
+
+        colorPickerButton.ColorChanged += color =>
+        {
+            SetMemberValue(member, node, color);
+        };
+
+        colorPickerButton.PickerCreated += () =>
+        {
+            ColorPicker picker = colorPickerButton.GetPicker();
+
+            Color value = Colors.Black;
+
+            if (member is FieldInfo fieldInfo)
+            {
+                value = (Color)fieldInfo.GetValue(node);
+            }
+            else if (member is PropertyInfo propertyInfo)
+            {
+                value = (Color)propertyInfo.GetValue(node);
+            }
+
+            picker.Color = value;
+
+            PopupPanel popupPanel = picker.GetParent<PopupPanel>();
+
+            popupPanel.InitialPosition = Window.WindowInitialPosition.Absolute;
+
+            popupPanel.AboutToPopup += () =>
+            {
+                Vector2 viewportSize = node.GetTree().Root.GetViewport().GetVisibleRect().Size;
+
+                popupPanel.Position = new Vector2I(
+                    (int)(viewportSize.X - popupPanel.Size.X),
+                    0);
+            };
+        };
+
+        colorPickerButton.PopupClosed += colorPickerButton.ReleaseFocus;
+
+        return colorPickerButton;
+    }
+
+    private static CheckBox CreateCheckBoxUI(MemberInfo member, Node node)
+    {
+        CheckBox checkBox = new();
+
+        bool value = false;
+
+        if (member is FieldInfo fieldInfo)
+        {
+            value = (bool)fieldInfo.GetValue(node);
+        }
+        else if (member is PropertyInfo propertyInfo)
+        {
+            value = (bool)propertyInfo.GetValue(node);
+        }
+
+        checkBox.ButtonPressed = value;
+
+        checkBox.Toggled += value =>
+        {
+            SetMemberValue(member, node, value);
+        };
+
+        return checkBox;
+    }
+
+    private static Control CreateSpinBoxUI(MemberInfo member, Type type, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
         // Create a SpinBox for numeric input
         SpinBox spinBox = new()
         {
@@ -104,14 +181,13 @@ public partial class UIDebugExports : Control
             AllowGreater = true,
             Alignment = HorizontalAlignment.Center
         };
-        spinBox.SetUnshaded();
 
         SetSpinBoxStepAndValue(spinBox, member, node);
 
         debugExportSpinBoxes.Add(new DebugVisualSpinBox
         {
             SpinBox = spinBox,
-            Type = value.GetType()
+            Type = type
         });
 
         spinBox.ValueChanged += value =>
@@ -119,9 +195,7 @@ public partial class UIDebugExports : Control
             SetMemberValue(member, node, value);
         };
 
-        hbox.AddChild(spinBox);
-
-        return hbox;
+        return spinBox;
     }
 
     private void CreateStepPrecisionUI(List<DebugVisualSpinBox> debugExportSpinBoxes)
@@ -283,7 +357,7 @@ public partial class UIDebugExports : Control
         }
     }
 
-    private static void SetMemberValue(MemberInfo member, object target, double value)
+    private static void SetMemberValue(MemberInfo member, object target, object value)
     {
         try
         {

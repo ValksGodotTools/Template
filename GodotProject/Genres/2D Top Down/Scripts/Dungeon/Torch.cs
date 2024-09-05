@@ -1,9 +1,9 @@
 namespace Template;
 
 [Tool]
-public partial class Torch : Node
+public partial class Torch : Node2D
 {
-    [Visualize] bool someBool;
+    [Visualize] bool x = true;
     [Visualize] [Export] double energy = 1;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
@@ -32,6 +32,8 @@ public partial class Torch : Node
     {
         light.Energy = (float)(energy + GD.RandRange(0, flickerRange) - 
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
+
+        Modulate = x ? Colors.Green : Colors.Red;
     }
 
     [Visualize]
