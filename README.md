@@ -16,6 +16,7 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
     - [2D Top Down](#2d-top-down)
 4. [Features](#features)
     - [Multiplayer](#multiplayer)
+    - [In-Game Debugging](#in-game-debugging)
     - [Menu UI](#menu-ui)
     - [Simplified Tweens](#simplified-tweens)
     - [Thread Safe Logger](#thread-safe-logger)
@@ -23,15 +24,13 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
     - [Services](#services)
     - [Console Commands](#console-commands)
     - [State Manager](#state-manager)
+    - [Extensions](#extensions)
     - [Mod Loader](#mod-loader)
     - [Localisation](#localisation)
-5. [Extensions](#extensions)
-    - [Finding Node\<T\>](#finding-nodet)
-    - [Printing Everything](#printing-everything)
-6. [Tips](#tips)
-7. [FAQ](#faq)
-8. [Contributing](#contributing)
-9. [Credits](#credits)
+5. [Tips](#tips)
+6. [FAQ](#faq)
+7. [Contributing](#contributing)
+8. [Credits](#credits)
 
 ## Prerequisites
 
@@ -239,6 +238,37 @@ public class PlayerData
 }
 ```
 
+### In-Game Debugging
+
+https://github.com/user-attachments/assets/2e4e31e7-92d4-4c00-a7dd-1a2e7d6a6ad8
+
+Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
+
+#### Supported Members
+- Numericals
+- Enums
+- Booleans
+- Strings
+- Godot.Color
+- Methods (all types mentioned are also supported in method parameters)
+
+#### Example Usage
+```cs
+[Visualize] public int Health { get; set; }
+
+[Visualize] protected Color color;
+[Visualize] private AttackType attackType;
+[Visualize] private bool isAttacking;
+
+[Visualize]
+public void TakeDamage(int damage)
+{
+    GD.Print($"We took {damage}!");
+}
+```
+
+By annotating your members with `[Visualize]`, you can streamline the debugging process and gain real-time insights into your game's state and behavior.
+
 ### Menu UI
 
 ![main-menu](https://github.com/ValksGodotTools/Template/assets/6277739/e8abf19d-0ac7-4ae3-9942-e1b406edf7cf)
@@ -425,6 +455,36 @@ public partial class Player
 ```
 Do a similar process when adding new states.
 
+### Extensions
+
+#### Comprehensive Printing
+The `.PrintFull()` extension method outputs all public properties and fields of any object, including nodes, providing a detailed snapshot of the object's state.
+
+```cs
+GD.Print(node.PrintFull());
+```
+
+#### Node Type Search
+Recursively searches through the children of a node to find the first instance of a specified type.
+
+```cs
+entity.GetNode<Sprite2D>();
+```
+
+#### Retrieve Children by Type
+Recursively gathers all nodes of a specified type from a given node.
+
+```cs
+List<Control> nothingButUINodes = mostlyUINodes.GetChildren<Control>();
+```
+
+#### QueueFree Children
+Frees all child nodes of a given parent node.
+
+```cs
+node.QueueFreeChildren();
+```
+
 ### Mod Loader
 
 Mods have the ability to swap out game assets and run C# scripts. You can find an example mod repository [here](https://github.com/ValksGodotTools/ExampleMod).
@@ -435,18 +495,6 @@ Mods have the ability to swap out game assets and run C# scripts. You can find a
 ### Localisation
 > [!NOTE]
 > By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
-
-## Extensions
-
-### Printing Everything
-The `.PrintFull()` extension method will output all public properties and fields of any object, including nodes!
-
-```cs
-GD.Print(node.PrintFull())
-```
-
-### Finding Node\<T\>
-If you have an array of entity nodes and each entity contains a Sprite2D node somewhere in its hierarchy, but you're not sure where exactly, you can use `entity.GetNode<Sprite2D>()` to find it. This function searches through the children recursively until it finds the first matching type. Keep in mind, this function can be somewhat resource-intensive, so consider using it only when necessary.
 
 ## Tips
 > [!TIP]
