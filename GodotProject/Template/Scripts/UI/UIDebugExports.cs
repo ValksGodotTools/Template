@@ -198,7 +198,7 @@ public partial class UIDebugExports : Control
                         {
                             ColorPickerButton colorPickerButton = new()
                             {
-                                CustomMinimumSize = new Vector2(50, 0)
+                                CustomMinimumSize = Vector2.One * 30
                             };
 
                             colorPickerButton.ColorChanged += color =>
@@ -344,7 +344,10 @@ public partial class UIDebugExports : Control
 
     private static ColorPickerButton CreateColorPicker(MemberInfo member, Node node)
     {
-        ColorPickerButton colorPickerButton = new();
+        ColorPickerButton colorPickerButton = new()
+        {
+            CustomMinimumSize = Vector2.One * 30
+        };
 
         colorPickerButton.ColorChanged += color =>
         {
@@ -575,7 +578,14 @@ public partial class UIDebugExports : Control
             {
                 if (property.CanWrite)
                 {
-                    property.SetValue(target, Convert.ChangeType(value, property.PropertyType));
+                    if (property.GetMethod.IsStatic)
+                    {
+                        property.SetValue(null, Convert.ChangeType(value, property.PropertyType));
+                    }
+                    else
+                    {
+                        property.SetValue(target, Convert.ChangeType(value, property.PropertyType));
+                    }
                 }
                 else
                 {
@@ -584,7 +594,14 @@ public partial class UIDebugExports : Control
             }
             else if (member is FieldInfo field)
             {
-                field.SetValue(target, Convert.ChangeType(value, field.FieldType));
+                if (field.IsStatic)
+                {
+                    field.SetValue(null, Convert.ChangeType(value, field.FieldType));
+                }
+                else
+                {
+                    field.SetValue(target, Convert.ChangeType(value, field.FieldType));
+                }
             }
         }
         catch (Exception ex)
@@ -599,8 +616,10 @@ public partial class UIDebugExports : Control
         {
             FieldInfo fieldInfo when fieldInfo.IsStatic => fieldInfo.GetValue(null),
             FieldInfo fieldInfo => fieldInfo.GetValue(node),
+
             PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
             PropertyInfo propertyInfo => propertyInfo.GetValue(node),
+
             _ => throw new ArgumentException("Member is not a FieldInfo or PropertyInfo")
         };
 
@@ -616,8 +635,12 @@ public partial class UIDebugExports : Control
     {
         return member switch
         {
+            FieldInfo fieldInfo when fieldInfo.IsStatic => fieldInfo.GetValue(null),
             FieldInfo fieldInfo => fieldInfo.GetValue(node),
+
+            PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
             PropertyInfo propertyInfo => propertyInfo.GetValue(node),
+
             _ => throw new ArgumentException("Member must be a field or property.")
         };
     }

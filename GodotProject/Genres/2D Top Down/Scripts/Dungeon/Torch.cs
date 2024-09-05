@@ -3,6 +3,7 @@ namespace Template;
 [Tool]
 public partial class Torch : Node2D
 {
+    [Visualize] protected static Color color = Colors.Blue;
     [Visualize] [Export] double energy = 1;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
