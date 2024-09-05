@@ -177,20 +177,46 @@ public partial class UIDebugExports : Control
         BindingFlags flags = 
             BindingFlags.Public | // Public
             BindingFlags.NonPublic | // Private
-            BindingFlags.Instance | // Instanced
-            BindingFlags.DeclaredOnly; // Exclude inherited members
+            BindingFlags.Instance; // Instanced
 
-        foreach (Type type in visualTypes)
+        foreach (Type type in types)
         {
             List<Node> nodes = parent.GetNodes(type);
 
             foreach (Node node in nodes)
             {
-                IEnumerable<PropertyInfo> properties = type.GetProperties(flags);
-                IEnumerable<FieldInfo> fields = type.GetFields(flags);
-                IEnumerable<MethodInfo> methods = type.GetMethods(flags);
+                List<PropertyInfo> properties = [];
+                List<FieldInfo> fields = [];
+                List<MethodInfo> methods = [];
 
-                debugVisualNodes.Add(new DebugVisualNode(node, properties, fields, methods));
+                foreach (PropertyInfo property in type.GetProperties(flags))
+                {
+                    if (property.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
+                    {
+                        properties.Add(property);
+                    }
+                }
+
+                foreach (FieldInfo field in type.GetFields(flags))
+                {
+                    if (field.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
+                    {
+                        fields.Add(field);
+                    }
+                }
+
+                foreach (MethodInfo method in type.GetMethods(flags))
+                {
+                    if (method.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
+                    {
+                        methods.Add(method);
+                    }
+                }
+
+                if (properties.Any() || fields.Any() || methods.Any())
+                {
+                    debugVisualNodes.Add(new DebugVisualNode(node, properties, fields, methods));
+                }
             }
         }
 

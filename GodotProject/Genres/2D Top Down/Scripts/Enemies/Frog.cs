@@ -2,7 +2,6 @@ using Template.TopDown2D;
 
 namespace Template;
 
-[Visualize]
 public partial class Frog : RigidBody
 {
     [Export] float jumpForceInfluence = 2;
