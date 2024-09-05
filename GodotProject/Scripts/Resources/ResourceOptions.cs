@@ -2,8 +2,8 @@ using Godot;
 
 namespace Template;
 
-using VSyncMode = DisplayServer.VSyncMode;
 using QualityP = QualityPreset;
+using VSyncMode = DisplayServer.VSyncMode;
 
 /* 
  * If the ResourceOptions.cs script is moved then the file path will not updated
