@@ -34,7 +34,7 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Debug(ulong x, ushort y, uint z)
+    public void Debug(Color x, ushort y, uint z)
     {
         GD.Print($"({x}, {y}, {z})");
     }

@@ -160,6 +160,51 @@ public partial class UIDebugExports : Control
 
                             hboxParams.AddChild(optionButton);
                         }
+                        else if (paramType == typeof(bool))
+                        {
+                            CheckBox checkBox = new();
+
+                            checkBox.Toggled += value =>
+                            {
+                                providedValues[index] = value;
+                            };
+
+                            hboxParams.AddChild(checkBox);
+                        }
+                        else if (paramType == typeof(Godot.Color))
+                        {
+                            ColorPickerButton colorPickerButton = new()
+                            {
+                                CustomMinimumSize = new Vector2(50, 0)
+                            };
+
+                            colorPickerButton.ColorChanged += color =>
+                            {
+                                providedValues[index] = color;
+                            };
+
+                            colorPickerButton.PickerCreated += () =>
+                            {
+                                ColorPicker picker = colorPickerButton.GetPicker();
+
+                                PopupPanel popupPanel = picker.GetParent<PopupPanel>();
+
+                                popupPanel.InitialPosition = Window.WindowInitialPosition.Absolute;
+
+                                popupPanel.AboutToPopup += () =>
+                                {
+                                    Vector2 viewportSize = node.GetTree().Root.GetViewport().GetVisibleRect().Size;
+
+                                    popupPanel.Position = new Vector2I(
+                                        (int)(viewportSize.X - popupPanel.Size.X),
+                                        0);
+                                };
+                            };
+
+                            colorPickerButton.PopupClosed += colorPickerButton.ReleaseFocus;
+
+                            hboxParams.AddChild(colorPickerButton);
+                        }
                     }
 
                     vbox.AddChild(hboxParams);
