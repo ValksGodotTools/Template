@@ -16,7 +16,7 @@ public partial class UINetControlPanel : Control
         Button btnStopServer = GetNode<Button>("%Stop Server");
 
         btnStartServer.Pressed += net.StartServer;
-        btnStopServer.Pressed += () => net.Server.Stop();
+        btnStopServer.Pressed += net.Server.Stop;
 
         GetNode<Button>("%Start Client").Pressed += () => net.StartClient(ip, port, username);
         GetNode<Button>("%Stop Client").Pressed += net.StopClient;
