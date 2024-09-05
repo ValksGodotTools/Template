@@ -253,6 +253,11 @@ public partial class UIDebugExports : Control
             infoPanels.Add(vbox);
 
             node.AddChild(vbox);
+
+            if (debugVisualNode.InitialPosition != Vector2.Zero)
+            {
+                vbox.Position = debugVisualNode.InitialPosition;
+            }
         }
     }
 
@@ -503,6 +508,14 @@ public partial class UIDebugExports : Control
 
         foreach (Type type in types)
         {
+            Vector2 initialPosition = Vector2.Zero;
+            VisualizeAttribute attribute = (VisualizeAttribute)type.GetCustomAttribute(typeof(VisualizeAttribute), false);
+
+            if (attribute != null)
+            {
+                initialPosition = attribute.InitialPosition;
+            }
+
             List<Node> nodes = parent.GetNodes(type);
 
             foreach (Node node in nodes)
@@ -537,7 +550,7 @@ public partial class UIDebugExports : Control
 
                 if (properties.Any() || fields.Any() || methods.Any())
                 {
-                    debugVisualNodes.Add(new DebugVisualNode(node, properties, fields, methods));
+                    debugVisualNodes.Add(new DebugVisualNode(node, initialPosition, properties, fields, methods));
                 }
             }
         }
@@ -656,9 +669,10 @@ public partial class UIDebugExports : Control
     }
 }
 
-public class DebugVisualNode(Node node, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
+public class DebugVisualNode(Node node, Vector2 initialPosition, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
 {
     public Node Node { get; } = node;
+    public Vector2 InitialPosition { get; } = initialPosition;
     public IEnumerable<PropertyInfo> Properties { get; } = properties;
     public IEnumerable<FieldInfo> Fields { get; } = fields;
     public IEnumerable<MethodInfo> Methods { get; } = methods;
