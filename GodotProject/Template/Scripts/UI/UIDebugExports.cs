@@ -40,7 +40,7 @@ public partial class UIDebugExports : Control
             {
                 object value = property.GetValue(node);
 
-                Control element = CreateMemberInfoElement(property, value, node, debugExportSpinBoxes);
+                Control element = CreateMemberInfoElement(property, node, debugExportSpinBoxes);
                 vbox.AddChild(element);
             }
 
@@ -48,7 +48,7 @@ public partial class UIDebugExports : Control
             {
                 object value = field.GetValue(node);
 
-                Control element = CreateMemberInfoElement(field, value, node, debugExportSpinBoxes);
+                Control element = CreateMemberInfoElement(field, node, debugExportSpinBoxes);
                 vbox.AddChild(element);
             }
 
@@ -64,7 +64,7 @@ public partial class UIDebugExports : Control
         }
     }
 
-    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, object value, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         HBoxContainer hbox = new();
 
@@ -77,7 +77,8 @@ public partial class UIDebugExports : Control
         hbox.AddChild(label);
 
         Control element;
-        Type type = value.GetType();
+
+        Type type = GetMemberType(member);
 
         if (type.IsNumericType())
         {
@@ -91,6 +92,10 @@ public partial class UIDebugExports : Control
         {
             element = CreateColorPicker(member, node);
         }
+        else if (type == typeof(string))
+        {
+            element = CreateLineEdit(member, node);
+        }
         else
         {
             throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
@@ -99,6 +104,30 @@ public partial class UIDebugExports : Control
         hbox.AddChild(element);
 
         return hbox;
+    }
+
+    private static Type GetMemberType(MemberInfo member)
+    {
+        return member switch
+        {
+            FieldInfo fieldInfo => fieldInfo.FieldType,
+            PropertyInfo propertyInfo => propertyInfo.PropertyType,
+            _ => throw new ArgumentException("Member must be a field or property.")
+        };
+    }
+
+    private static LineEdit CreateLineEdit(MemberInfo member, Node node)
+    {
+        LineEdit lineEdit = new();
+
+        lineEdit.Text = GetMemberValue<string>(member, node);
+
+        lineEdit.TextChanged += text =>
+        {
+            SetMemberValue(member, node, text);
+        };
+
+        return lineEdit;
     }
 
     private static ColorPickerButton CreateColorPicker(MemberInfo member, Node node)
