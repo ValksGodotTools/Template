@@ -17,7 +17,7 @@
     <!-- Local Packages -->
     <!-- This is required for other platforms where the ENet NuGet package is not enough -->
     <ItemGroup>
-        <Reference Include="ENet-CSharp" Condition="Exists('ENet-CSharp.dll')" >
+        <Reference Include="ENet-CSharp" Condition="Exists('ENet-CSharp.dll')">
             <HintPath>ENet-CSharp.dll</HintPath>
         </Reference>
     </ItemGroup>
