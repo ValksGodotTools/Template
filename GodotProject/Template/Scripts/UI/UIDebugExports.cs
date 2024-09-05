@@ -57,49 +57,71 @@ public partial class UIDebugExports : Control
 
     private static void CreateMemberInfoElement(MemberInfo member, object value, Node node, Node parent, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
+        Control element = null;
+
         // Create the UI for the member info
-        if (value.IsNumericType())
+        if (value.GetType().IsNumericType())
         {
-            HBoxContainer hbox = new();
-
-            GLabel spinLabel = new()
-            {
-                Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
-                SizeFlagsHorizontal = SizeFlags.ExpandFill
-            };
-
-            spinLabel.SetUnshaded();
-
-            hbox.AddChild(spinLabel);
-
-            // Create a SpinBox for numeric input
-            SpinBox spinBox = new()
-            {
-                UpdateOnTextChanged = true,
-                AllowLesser = true,
-                AllowGreater = true,
-                Alignment = HorizontalAlignment.Center
-            };
-
-            spinBox.SetUnshaded();
-
-            SetSpinBoxStepAndValue(spinBox, member, node);
-
-            debugExportSpinBoxes.Add(new DebugVisualSpinBox
-            {
-                SpinBox = spinBox,
-                Type = value.GetType()
-            });
-
-            spinBox.ValueChanged += value =>
-            {
-                SetMemberValue(member, node, value);
-            };
-
-            hbox.AddChild(spinBox);
-
-            parent.AddChild(hbox);
+            element = CreateSpinBoxUI(member, value, node, debugExportSpinBoxes);
         }
+        else if (value.GetType() == typeof(bool))
+        {
+            element = CreateCheckBoxUI();
+        }
+
+        if (element != null)
+        {
+            parent.AddChild(element);
+        }
+    }
+
+    private static Control CreateCheckBoxUI()
+    {
+        HBoxContainer hbox = new();
+
+        return hbox;
+    }
+
+    private static Control CreateSpinBoxUI(MemberInfo member, object value, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        HBoxContainer hbox = new();
+
+        GLabel spinLabel = new()
+        {
+            Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
+            SizeFlagsHorizontal = SizeFlags.ExpandFill
+        };
+
+        spinLabel.SetUnshaded();
+
+        hbox.AddChild(spinLabel);
+
+        // Create a SpinBox for numeric input
+        SpinBox spinBox = new()
+        {
+            UpdateOnTextChanged = true,
+            AllowLesser = true,
+            AllowGreater = true,
+            Alignment = HorizontalAlignment.Center
+        };
+        spinBox.SetUnshaded();
+
+        SetSpinBoxStepAndValue(spinBox, member, node);
+
+        debugExportSpinBoxes.Add(new DebugVisualSpinBox
+        {
+            SpinBox = spinBox,
+            Type = value.GetType()
+        });
+
+        spinBox.ValueChanged += value =>
+        {
+            SetMemberValue(member, node, value);
+        };
+
+        hbox.AddChild(spinBox);
+
+        return hbox;
     }
 
     private void CreateStepPrecisionUI(List<DebugVisualSpinBox> debugExportSpinBoxes)
