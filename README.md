@@ -16,6 +16,7 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
     - [2D Top Down](#2d-top-down)
 4. [Features](#features)
     - [Multiplayer](#multiplayer)
+    - [In-Game Debugging](#in-game-debugging)
     - [Menu UI](#menu-ui)
     - [Simplified Tweens](#simplified-tweens)
     - [Thread Safe Logger](#thread-safe-logger)
@@ -238,6 +239,37 @@ public class PlayerData
     public Vector2 PrevPosition { get; set; }
 }
 ```
+
+### In-Game Debugging
+
+https://github.com/user-attachments/assets/2e4e31e7-92d4-4c00-a7dd-1a2e7d6a6ad8
+
+Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
+
+#### Supported Members
+- Numericals
+- Enums
+- Booleans
+- Strings
+- Godot.Color
+- Methods (all types mentioned are also supported in method parameters)
+
+#### Example Usage
+```cs
+[Visualize] public int Health { get; set; }
+
+[Visualize] protected Color color;
+[Visualize] private AttackType attackType;
+[Visualize] private bool isAttacking;
+
+[Visualize]
+public void TakeDamage(int damage)
+{
+    GD.Print($"We took {damage}!");
+}
+```
+
+By annotating your members with `[Visualize]`, you can streamline the debugging process and gain real-time insights into your game's state and behavior.
 
 ### Menu UI
 
