@@ -418,6 +418,17 @@ public static class VisualUIBuilder
 
                 hboxParams.AddChild(lineEdit);
             }
+            else if (paramType == typeof(StringName))
+            {
+                LineEdit lineEdit = new();
+
+                lineEdit.TextChanged += text =>
+                {
+                    providedValues[index] = new StringName(text);
+                };
+
+                hboxParams.AddChild(lineEdit);
+            }
         }
 
         return hboxParams;
@@ -448,10 +459,29 @@ public static class VisualUIBuilder
             _ when type == typeof(Godot.Vector4I) => CreateVector4IControl(member, node),
             _ when type == typeof(Godot.Quaternion) => CreateQuaternionControl(member, node),
             _ when type == typeof(Godot.NodePath) => CreateNodePathControl(member, node),
+            _ when type == typeof(Godot.StringName) => CreateStringNameControl(member, node),
 
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateStringNameControl(MemberInfo member, Node node)
+    {
+        StringName stringName = VisualNodeHandler.GetMemberValue<StringName>(member, node);
+        string initialText = stringName != null ? stringName.ToString() : string.Empty;
+
+        LineEdit lineEdit = new()
+        {
+            Text = initialText
+        };
+
+        lineEdit.TextChanged += text =>
+        {
+            VisualNodeHandler.SetMemberValue(member, node, new StringName(text));
+        };
+
+        return lineEdit;
     }
 
     private static Control CreateNodePathControl(MemberInfo member, Node node)
