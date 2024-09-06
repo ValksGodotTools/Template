@@ -81,7 +81,7 @@ public partial class UIDebugExports : Control
 
                         if (paramType.IsNumericType())
                         {
-                            SpinBox spinBox = CreateSpinBoxUI(method, paramType, node, debugExportSpinBoxes);
+                            SpinBox spinBox = SpinBox(debugExportSpinBoxes, paramType);
 
                             spinBox.ValueChanged += value =>
                             {
@@ -248,7 +248,16 @@ public partial class UIDebugExports : Control
 
         if (type.IsNumericType())
         {
-            element = CreateSpinBoxUI(member, type, node, debugExportSpinBoxes);
+            SpinBox spinBox = SpinBox(debugExportSpinBoxes, type);
+
+            SetSpinBoxStepAndValue(spinBox, member, node);
+
+            spinBox.ValueChanged += value =>
+            {
+                SetMemberValue(member, node, value);
+            };
+
+            element = spinBox;
         }
         else if (type == typeof(bool))
         {
@@ -367,9 +376,8 @@ public partial class UIDebugExports : Control
         return checkBox;
     }
 
-    private static SpinBox CreateSpinBoxUI(MemberInfo member, Type type, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static SpinBox SpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
     {
-        // Create a SpinBox for numeric input
         SpinBox spinBox = new()
         {
             UpdateOnTextChanged = true,
@@ -377,16 +385,6 @@ public partial class UIDebugExports : Control
             AllowGreater = true,
             Alignment = HorizontalAlignment.Center
         };
-
-        if (member is not MethodInfo)
-        {
-            SetSpinBoxStepAndValue(spinBox, member, node);
-
-            spinBox.ValueChanged += value =>
-            {
-                SetMemberValue(member, node, value);
-            };
-        }
 
         debugExportSpinBoxes.Add(new DebugVisualSpinBox
         {
