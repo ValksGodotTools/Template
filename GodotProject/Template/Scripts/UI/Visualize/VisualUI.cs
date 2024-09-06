@@ -254,30 +254,22 @@ public static class VisualUI
 
     private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
-        if (type.IsNumericType())
+        return type switch
         {
-            return CreateNumericControl(member, node, type, debugExportSpinBoxes);
-        }
-        else if (type == typeof(bool))
-        {
-            return CreateBoolControl(member, node);
-        }
-        else if (type == typeof(Godot.Color))
-        {
-            return CreateColorControl(member, node);
-        }
-        else if (type == typeof(string))
-        {
-            return CreateStringControl(member, node);
-        }
-        else if (type.IsEnum)
-        {
-            return CreateEnumControl(member, node, type);
-        }
-        else
-        {
-            throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
-        }
+            // Handle numeric and enum types
+            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes),
+            _ when type.IsEnum => CreateEnumControl(member, node, type),
+
+            // Handle C# specific types
+            _ when type == typeof(bool) => CreateBoolControl(member, node),
+            _ when type == typeof(string) => CreateStringControl(member, node),
+
+            // Handle Godot specific types
+            _ when type == typeof(Godot.Color) => CreateColorControl(member, node),
+
+            // Handle unsupported types
+            _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
+        };
     }
 
     private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
