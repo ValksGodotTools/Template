@@ -5,6 +5,7 @@ namespace Template;
 [Tool]
 public partial class Torch : Node2D
 {
+    [Visualize] Vector4I vec4;
     [Visualize] protected static Color color = Colors.Blue;
     [Visualize] [Export] double energy = 1;
     [Export] double flickerRange = 0.05;
@@ -44,9 +45,9 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void TestMethod(Color color, int someInt, bool someBool, Test test)
+    public void TestMethod(Vector4 vec4, Color color, int someInt, bool someBool, Test test)
     {
-        Game.Log(color, someInt, someBool, test);
+        Game.Log(vec4, color, someInt, someBool, test);
     }
 }
 

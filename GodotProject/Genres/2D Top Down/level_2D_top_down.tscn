@@ -353,7 +353,7 @@ tileMap = NodePath("../TileMapLayer")
 
 [node name="MultiplayerControlPanel" parent="CanvasLayer" instance=ExtResource("3_uykib")]
 
-[node name="UIVisualizeAttribute" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("controlPanel")]
+[node name="UIVisualizeAttribute" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -364,7 +364,6 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("6_41hkm")
-controlPanel = NodePath("ControlPanel/MarginContainer/VBoxContainer")
 metadata/_edit_lock_ = true
 
 [node name="ControlPanel" type="PanelContainer" parent="CanvasLayer/UIVisualizeAttribute"]
