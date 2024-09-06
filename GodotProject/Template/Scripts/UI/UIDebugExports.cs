@@ -367,7 +367,7 @@ public partial class UIDebugExports : Control
 
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
-        IEnumerable<Type> visualTypes = HasVisualizeAttribute(types);
+        IEnumerable<Type> visualTypes = types.Where(x => x.GetCustomAttributes(typeof(VisualizeAttribute), false).Any());
 
         BindingFlags flags = 
             BindingFlags.Public |
@@ -425,13 +425,6 @@ public partial class UIDebugExports : Control
         }
 
         return debugVisualNodes;
-    }
-
-    private static IEnumerable<T> HasVisualizeAttribute<T>(IEnumerable<T> collection) where T : MemberInfo
-    {
-        return collection
-            .Where(x => x.GetCustomAttributes(typeof(VisualizeAttribute), false)
-            .Any());
     }
 
     private static void SetSpinBoxStepAndValue(SpinBox spinBox, MemberInfo member, object instance)
