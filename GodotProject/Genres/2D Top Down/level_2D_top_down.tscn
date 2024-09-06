@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://btkfgi3rc5wm1"]
+[gd_scene load_steps=36 format=4 uid="uid://btkfgi3rc5wm1"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Dungeon/Level.cs" id="1_jdty6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://Template/Scripts/UI/UIDebugExports.cs" id="6_41hkm"]
 [ext_resource type="Texture2D" uid="uid://vo2m8kod8vn1" path="res://Genres/2D Top Down/Sprites/puddle_mask.png" id="6_r6pwu"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerCamera.cs" id="7_iqnw1"]
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIDebugExportsPopup.cs" id="7_otjl7"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/CameraShakeComponent.cs" id="7_tebhc"]
 [ext_resource type="PackedScene" uid="uid://n48bmp15w2qt" path="res://Genres/2D Top Down/Scenes/Prefabs/torch.tscn" id="9_oa68x"]
 
@@ -389,135 +388,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugExports/ControlPanel/MarginContainer"]
 layout_mode = 2
-
-[node name="PopupPanel" type="PopupPanel" parent="CanvasLayer/DebugExports"]
-initial_position = 1
-size = Vector2i(508, 308)
-script = ExtResource("7_otjl7")
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/DebugExports/PopupPanel"]
-custom_minimum_size = Vector2(500, 300)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -150.0
-offset_right = 250.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-columns = 3
-
-[node name="Item1" type="PanelContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Template.Torch"
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer/VBox"]
-layout_mode = 2
-columns = 3
-
-[node name="Button" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch1"
-
-[node name="Button2" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
-
-[node name="Button3" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
-
-[node name="Button4" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item1/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
-
-[node name="Item2" type="PanelContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Template.Torch"
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer/VBox"]
-layout_mode = 2
-columns = 3
-
-[node name="Button" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch1"
-
-[node name="Button2" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
-
-[node name="Button3" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
-
-[node name="Button4" type="Button" parent="CanvasLayer/DebugExports/PopupPanel/PanelContainer/MarginContainer/ScrollContainer/GridContainer/Item2/MarginContainer/VBoxContainer/VBox/GridContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Torch2"
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
 visible = false
