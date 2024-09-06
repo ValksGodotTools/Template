@@ -18,15 +18,7 @@ public static class VisualUI
         {
             Node node = debugVisualNode.Node;
 
-            VBoxContainer vbox = new()
-            {
-                // Ensure this info is rendered above all game elements
-                ZIndex = (int)RenderingServer.CanvasItemZMax
-            };
-
-            GLabel label = new(node.Name);
-
-            vbox.AddChild(label);
+            VBoxContainer vbox = CreateVisualContainer(node.Name);
 
             AddMemberInfoElements(vbox, debugVisualNode.Properties, node, debugExportSpinBoxes);
 
@@ -66,6 +58,21 @@ public static class VisualUI
         GButton unfocus = new("Unfocus Active Element");
         unfocus.Pressed += tree.UnfocusCurrentControl;
         controlPanel.AddChild(unfocus);
+    }
+
+    private static VBoxContainer CreateVisualContainer(string nodeName)
+    {
+        VBoxContainer vbox = new()
+        {
+            // Ensure this info is rendered above all game elements
+            ZIndex = (int)RenderingServer.CanvasItemZMax
+        };
+
+        GLabel label = new(nodeName);
+
+        vbox.AddChild(label);
+
+        return vbox;
     }
 
     private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
