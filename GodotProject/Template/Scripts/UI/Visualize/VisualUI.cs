@@ -28,146 +28,11 @@ public static class VisualUI
 
             vbox.AddChild(label);
 
-            foreach (PropertyInfo property in debugVisualNode.Properties)
-            {
-                object value = property.GetValue(node);
+            AddMemberInfoElements(vbox, debugVisualNode.Properties, node, debugExportSpinBoxes);
 
-                Control element = CreateMemberInfoElement(property, node, debugExportSpinBoxes);
-                vbox.AddChild(element);
-            }
+            AddMemberInfoElements(vbox, debugVisualNode.Fields, node, debugExportSpinBoxes);
 
-            foreach (FieldInfo field in debugVisualNode.Fields)
-            {
-                object value = field.GetValue(node);
-
-                Control element = CreateMemberInfoElement(field, node, debugExportSpinBoxes);
-                vbox.AddChild(element);
-            }
-
-            foreach (MethodInfo method in debugVisualNode.Methods)
-            {
-                if (method.DeclaringType.IsSubclassOf(typeof(GodotObject)))
-                {
-                    ParameterInfo[] paramInfos = method.GetParameters();
-
-                    HBoxContainer hboxParams = new();
-
-                    object[] providedValues = new object[paramInfos.Length];
-
-                    for (int i = 0; i < paramInfos.Length; i++)
-                    {
-                        ParameterInfo paramInfo = paramInfos[i];
-                        Type paramType = paramInfo.ParameterType;
-
-                        hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
-
-                        int index = i; // Capture the current value of i
-
-                        if (paramType.IsNumericType())
-                        {
-                            SpinBox spinBox = SpinBox(debugExportSpinBoxes, paramType);
-
-                            spinBox.ValueChanged += value =>
-                            {
-                                object convertedValue = value;
-
-                                try
-                                {
-                                    convertedValue = Convert.ChangeType(value, paramType);
-                                }
-                                catch
-                                {
-                                    (object Min, object Max) = TypeRangeConstraints.GetRange(paramType);
-
-                                    if (Convert.ToDouble(value) < Convert.ToDouble(Min))
-                                    {
-                                        spinBox.Value = Convert.ToDouble(Min);
-                                        convertedValue = Min;
-                                    }
-                                    else if (Convert.ToDouble(value) > Convert.ToDouble(Max))
-                                    {
-                                        spinBox.Value = Convert.ToDouble(Max);
-                                        convertedValue = Max;
-                                    }
-                                    else
-                                    {
-                                        string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
-
-                                        throw new InvalidOperationException(errorMessage);
-                                    }
-                                }
-
-                                providedValues[index] = convertedValue; // Use the captured index
-                            };
-
-                            hboxParams.AddChild(spinBox);
-                        }
-                        else if (paramType == typeof(string))
-                        {
-                            LineEdit lineEdit = new();
-
-                            lineEdit.TextChanged += text =>
-                            {
-                                providedValues[index] = text;
-                            };
-
-                            hboxParams.AddChild(lineEdit);
-                        }
-                        else if (paramType.IsEnum)
-                        {
-                            GOptionButtonEnum optionButton = new(paramType);
-
-                            optionButton.OnItemSelected += item =>
-                            {
-                                providedValues[index] = item;
-                            };
-
-                            hboxParams.AddChild(optionButton.Control);
-                        }
-                        else if (paramType == typeof(bool))
-                        {
-                            CheckBox checkBox = new();
-
-                            checkBox.Toggled += value =>
-                            {
-                                providedValues[index] = value;
-                                checkBox.ReleaseFocus();
-                            };
-
-                            hboxParams.AddChild(checkBox);
-                        }
-                        else if (paramType == typeof(Godot.Color))
-                        {
-                            GColorPickerButton colorPickerButton = new();
-
-                            colorPickerButton.OnColorChanged += color =>
-                            {
-                                providedValues[index] = color;
-                            };
-
-                            hboxParams.AddChild(colorPickerButton.Control);
-                        }
-                    }
-
-                    vbox.AddChild(hboxParams);
-
-                    Button button = new()
-                    {
-                        Text = method.Name,
-                        SizeFlagsHorizontal = SizeFlags.ShrinkCenter
-                    };
-
-                    button.Pressed += () =>
-                    {
-                        object[] parameters = ParameterConverter
-                            .ConvertParameterInfoToObjectArray(paramInfos, providedValues);
-
-                        method.Invoke(node, parameters);
-                    };
-
-                    vbox.AddChild(button);
-                }
-            }
+            AddMethodInfoElements(vbox, debugVisualNode.Methods, node, debugExportSpinBoxes);
 
             // All debug UI elements should not be influenced by the game world environments lighting
             vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
@@ -203,6 +68,149 @@ public static class VisualUI
         controlPanel.AddChild(unfocus);
     }
 
+    private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, ParameterInfo[] paramInfos, object[] providedValues)
+    {
+        HBoxContainer hboxParams = new();
+
+        for (int i = 0; i < paramInfos.Length; i++)
+        {
+            ParameterInfo paramInfo = paramInfos[i];
+            Type paramType = paramInfo.ParameterType;
+
+            hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
+
+            int index = i; // Capture the current value of i
+
+            if (paramType.IsNumericType())
+            {
+                SpinBox spinBox = CreateSpinBox(debugExportSpinBoxes, paramType);
+
+                spinBox.ValueChanged += value =>
+                {
+                    object convertedValue = value;
+
+                    try
+                    {
+                        convertedValue = Convert.ChangeType(value, paramType);
+                    }
+                    catch
+                    {
+                        (object Min, object Max) = TypeRangeConstraints.GetRange(paramType);
+
+                        if (Convert.ToDouble(value) < Convert.ToDouble(Min))
+                        {
+                            spinBox.Value = Convert.ToDouble(Min);
+                            convertedValue = Min;
+                        }
+                        else if (Convert.ToDouble(value) > Convert.ToDouble(Max))
+                        {
+                            spinBox.Value = Convert.ToDouble(Max);
+                            convertedValue = Max;
+                        }
+                        else
+                        {
+                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
+
+                            throw new InvalidOperationException(errorMessage);
+                        }
+                    }
+
+                    providedValues[index] = convertedValue; // Use the captured index
+                };
+
+                hboxParams.AddChild(spinBox);
+            }
+            else if (paramType == typeof(string))
+            {
+                LineEdit lineEdit = new();
+
+                lineEdit.TextChanged += text =>
+                {
+                    providedValues[index] = text;
+                };
+
+                hboxParams.AddChild(lineEdit);
+            }
+            else if (paramType.IsEnum)
+            {
+                GOptionButtonEnum optionButton = new(paramType);
+
+                optionButton.OnItemSelected += item =>
+                {
+                    providedValues[index] = item;
+                };
+
+                hboxParams.AddChild(optionButton.Control);
+            }
+            else if (paramType == typeof(bool))
+            {
+                CheckBox checkBox = new();
+
+                checkBox.Toggled += value =>
+                {
+                    providedValues[index] = value;
+                    checkBox.ReleaseFocus();
+                };
+
+                hboxParams.AddChild(checkBox);
+            }
+            else if (paramType == typeof(Godot.Color))
+            {
+                GColorPickerButton colorPickerButton = new();
+
+                colorPickerButton.OnColorChanged += color =>
+                {
+                    providedValues[index] = color;
+                };
+
+                hboxParams.AddChild(colorPickerButton.Control);
+            }
+        }
+
+        return hboxParams;
+    }
+
+    private static void AddMethodInfoElements(VBoxContainer vbox, IEnumerable<MethodInfo> methods, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        foreach (MethodInfo method in methods)
+        {
+            if (method.DeclaringType.IsSubclassOf(typeof(GodotObject)))
+            {
+                ParameterInfo[] paramInfos = method.GetParameters();
+                object[] providedValues = new object[paramInfos.Length];
+
+                HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, paramInfos, providedValues);
+
+                vbox.AddChild(hboxParams);
+
+                Button button = new()
+                {
+                    Text = method.Name,
+                    SizeFlagsHorizontal = SizeFlags.ShrinkCenter
+                };
+
+                button.Pressed += () =>
+                {
+                    object[] parameters = ParameterConverter
+                            .ConvertParameterInfoToObjectArray(paramInfos, providedValues);
+
+                    method.Invoke(node, parameters);
+                };
+
+                vbox.AddChild(button);
+            }
+        }
+    }
+
+    private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        foreach (MemberInfo member in members)
+        {
+            Control element = CreateMemberInfoElement(member, node, debugExportSpinBoxes);
+            vbox.AddChild(element);
+        }
+    }
+
     private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         HBoxContainer hbox = new();
@@ -215,95 +223,96 @@ public static class VisualUI
 
         hbox.AddChild(label);
 
-        Control element;
-
         Type type = VisualNodeHandler.GetMemberType(member);
 
-        if (type.IsNumericType())
-        {
-            SpinBox spinBox = SpinBox(debugExportSpinBoxes, type);
-
-            double value = VisualNodeHandler.GetMemberValue<double>(member, node);
-
-            Type valueType = value.GetType();
-
-            double step = 0.1;
-
-            if (valueType.IsWholeNumber())
-            {
-                step = 1;
-            }
-
-            spinBox.Step = step;
-            spinBox.Value = value;
-
-            spinBox.ValueChanged += value =>
-            {
-                VisualNodeHandler.SetMemberValue(member, node, value);
-            };
-
-            element = spinBox;
-        }
-        else if (type == typeof(bool))
-        {
-            CheckBox checkBox = new();
-
-            checkBox.ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node);
-
-            checkBox.Toggled += value =>
-            {
-                VisualNodeHandler.SetMemberValue(member, node, value);
-            };
-
-            element = checkBox;
-        }
-        else if (type == typeof(Godot.Color))
-        {
-            GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
-
-            colorPickerButton.OnColorChanged += color =>
-            {
-                VisualNodeHandler.SetMemberValue(member, node, color);
-            };
-
-            element = colorPickerButton.Control;
-        }
-        else if (type == typeof(string))
-        {
-            LineEdit lineEdit = new();
-
-            lineEdit.Text = VisualNodeHandler.GetMemberValue<string>(member, node);
-
-            lineEdit.TextChanged += text =>
-            {
-                VisualNodeHandler.SetMemberValue(member, node, text);
-            };
-
-            element = lineEdit;
-        }
-        else if (type.IsEnum)
-        {
-            GOptionButtonEnum optionButton = new(VisualNodeHandler.GetMemberType(member));
-            optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
-
-            optionButton.OnItemSelected += item =>
-            {
-                VisualNodeHandler.SetMemberValue(member, node, item);
-            };
-
-            element = optionButton.Control;
-        }
-        else
-        {
-            throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
-        }
+        Control element = CreateControlForType(member, node, type, debugExportSpinBoxes);
 
         hbox.AddChild(element);
 
         return hbox;
     }
 
-    private static SpinBox SpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
+    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        if (type.IsNumericType())
+        {
+            return CreateNumericControl(member, node, type, debugExportSpinBoxes);
+        }
+        else if (type == typeof(bool))
+        {
+            return CreateBoolControl(member, node);
+        }
+        else if (type == typeof(Godot.Color))
+        {
+            return CreateColorControl(member, node);
+        }
+        else if (type == typeof(string))
+        {
+            return CreateStringControl(member, node);
+        }
+        else if (type.IsEnum)
+        {
+            return CreateEnumControl(member, node, type);
+        }
+        else
+        {
+            throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}");
+        }
+    }
+
+    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        SpinBox spinBox = CreateSpinBox(debugExportSpinBoxes, type);
+        double value = VisualNodeHandler.GetMemberValue<double>(member, node);
+        double step = type.IsWholeNumber() ? 1 : 0.1;
+
+        spinBox.Step = step;
+        spinBox.Value = value;
+        spinBox.ValueChanged += value => VisualNodeHandler.SetMemberValue(member, node, value);
+
+        return spinBox;
+    }
+
+    private static Control CreateBoolControl(MemberInfo member, Node node)
+    {
+        CheckBox checkBox = new()
+        {
+            ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node)
+        };
+        checkBox.Toggled += value => VisualNodeHandler.SetMemberValue(member, node, value);
+
+        return checkBox;
+    }
+
+    private static Control CreateColorControl(MemberInfo member, Node node)
+    {
+        GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
+        colorPickerButton.OnColorChanged += color => VisualNodeHandler.SetMemberValue(member, node, color);
+
+        return colorPickerButton.Control;
+    }
+
+    private static Control CreateStringControl(MemberInfo member, Node node)
+    {
+        LineEdit lineEdit = new()
+        {
+            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
+        };
+        lineEdit.TextChanged += text => VisualNodeHandler.SetMemberValue(member, node, text);
+
+        return lineEdit;
+    }
+
+    private static Control CreateEnumControl(MemberInfo member, Node node, Type type)
+    {
+        GOptionButtonEnum optionButton = new(type);
+        optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
+        optionButton.OnItemSelected += item => VisualNodeHandler.SetMemberValue(member, node, item);
+
+        return optionButton.Control;
+    }
+
+    private static SpinBox CreateSpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
     {
         SpinBox spinBox = new()
         {
