@@ -429,6 +429,38 @@ public static class VisualUIBuilder
 
                 hboxParams.AddChild(lineEdit);
             }
+            else if (paramType.IsArray)
+            {
+                VBoxContainer arrayVBox = new()
+                {
+                    SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
+                };
+
+                // Create initial LineEdit for each element in the array
+                Array initialArray = (Array)providedValues[index];
+
+                if (initialArray != null)
+                {
+                    foreach (object item in initialArray)
+                    {
+                        AddArrayEntry(arrayVBox, item, providedValues, index, paramType.GetElementType());
+                    }
+                }
+
+                // Add a button to add more entries
+                Button addButton = new() { Text = "+" };
+
+                addButton.Pressed += () =>
+                {
+                    AddArrayEntry(arrayVBox, null, providedValues, index, paramType.GetElementType());
+
+                    // Reorder the add button to always be at the bottom
+                    arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+                };
+
+                arrayVBox.AddChild(addButton);
+                hboxParams.AddChild(arrayVBox);
+            }
         }
 
         return hboxParams;
@@ -440,9 +472,10 @@ public static class VisualUIBuilder
     {
         return type switch
         {
-            // Handle numeric and enum types
+            // Handle numeric, enum and array types
             _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes),
             _ when type.IsEnum => CreateEnumControl(member, node, type),
+            _ when type.IsArray => CreateArrayControl(member, node, type),
 
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(member, node),
@@ -464,6 +497,43 @@ public static class VisualUIBuilder
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateArrayControl(MemberInfo member, Node node, Type elementType)
+    {
+        VBoxContainer arrayVBox = new()
+        {
+            SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
+        };
+
+        // Create initial LineEdit for each element in the array
+        Array initialArray = VisualNodeHandler.GetMemberValue<Array>(member, node);
+        object[] providedValues = new object[initialArray?.Length ?? 0];
+
+        if (initialArray != null)
+        {
+            for (int i = 0; i < initialArray.Length; i++)
+            {
+                providedValues[i] = initialArray.GetValue(i);
+                AddArrayEntry(arrayVBox, initialArray.GetValue(i), providedValues, i, elementType.GetElementType());
+            }
+        }
+
+        // Add a button to add more entries
+        Button addButton = new() { Text = "+" };
+
+        addButton.Pressed += () =>
+        {
+            int newIndex = providedValues.Length;
+            Array.Resize(ref providedValues, newIndex + 1);
+            AddArrayEntry(arrayVBox, null, providedValues, newIndex, elementType.GetElementType());
+
+            // Reorder the add button to always be at the bottom
+            arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+        };
+
+        arrayVBox.AddChild(addButton);
+        return arrayVBox;
     }
 
     private static Control CreateStringNameControl(MemberInfo member, Node node)
@@ -918,6 +988,65 @@ public static class VisualUIBuilder
         vbox.AddChild(label);
 
         return vbox;
+    }
+
+    private static void AddArrayEntry(VBoxContainer arrayVBox, object initialValue, object[] providedValues, int index, Type elementType)
+    {
+        HBoxContainer entryHBox = new();
+
+        LineEdit lineEdit = new();
+        lineEdit.Alignment = HorizontalAlignment.Center;
+        lineEdit.Text = initialValue?.ToString() ?? string.Empty;
+        lineEdit.TextChanged += text => UpdateArrayValue(arrayVBox, providedValues, index, elementType);
+
+        GButton removeButton = new("-");
+        removeButton.CustomMinimumSize = Vector2.One * 30;
+        removeButton.SetUnshaded();
+
+        removeButton.Pressed += () =>
+        {
+            arrayVBox.RemoveChild(entryHBox);
+            UpdateArrayValue(arrayVBox, providedValues, index, elementType);
+        };
+
+        entryHBox.AddChild(lineEdit);
+        entryHBox.AddChild(removeButton);
+        arrayVBox.AddChild(entryHBox);
+    }
+
+    private static void UpdateArrayValue(VBoxContainer arrayVBox, object[] providedValues, int index, Type elementType)
+    {
+        List<object> elements = [];
+
+        foreach (HBoxContainer entryHBox in arrayVBox.GetChildren<HBoxContainer>())
+        {
+            LineEdit lineEdit = entryHBox.GetChild<LineEdit>(0);
+
+            string text = lineEdit.Text.Trim();
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                try
+                {
+                    elements.Add(Convert.ChangeType(text, elementType));
+                }
+                catch (Exception ex)
+                {
+                    GD.Print($"Failed to convert value '{text}' to type '{elementType}': {ex.Message}");
+
+                    lineEdit.Text = "";
+                }
+            }
+        }
+
+        Array array = Array.CreateInstance(elementType, elements.Count);
+
+        for (int i = 0; i < elements.Count; i++)
+        {
+            array.SetValue(elements[i], i);
+        }
+
+        providedValues[index] = array;
     }
 
     private static object ConvertNumericValue(SpinBox spinBox, double value, Type paramType)
