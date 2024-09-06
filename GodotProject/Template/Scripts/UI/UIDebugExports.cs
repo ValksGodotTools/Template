@@ -16,7 +16,7 @@ public partial class UIDebugExports : Control
         
         List<DebugVisualSpinBox> debugExportSpinBoxes = [];
 
-        VisualUI.CreateVisualUIs(debugExportNodes, debugExportSpinBoxes);
+        VisualUI.CreateVisualPanels(debugExportNodes, debugExportSpinBoxes);
         VisualUI.CreateStepPrecisionUI(debugExportSpinBoxes, controlPanel, GetTree());
     }
 }

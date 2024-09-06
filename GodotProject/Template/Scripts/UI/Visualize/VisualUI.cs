@@ -12,7 +12,7 @@ public static class VisualUI
 {
     private const float INFO_PANEL_SCALE_FACTOR = 0.6f;
 
-    public static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    public static void CreateVisualPanels(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
         {
