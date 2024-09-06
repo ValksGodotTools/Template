@@ -68,9 +68,11 @@ public static class VisualUI
         controlPanel.AddChild(unfocus);
     }
 
-    private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, ParameterInfo[] paramInfos, object[] providedValues)
+    private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
     {
         HBoxContainer hboxParams = new();
+
+        ParameterInfo[] paramInfos = method.GetParameters();
 
         for (int i = 0; i < paramInfos.Length; i++)
         {
@@ -170,6 +172,24 @@ public static class VisualUI
         return hboxParams;
     }
 
+    private static Button CreateMethodButton(MethodInfo method, Node node, ParameterInfo[] paramInfos, object[] providedValues)
+    {
+        Button button = new()
+        {
+            Text = method.Name,
+            SizeFlagsHorizontal = SizeFlags.ShrinkCenter
+        };
+
+        button.Pressed += () =>
+        {
+            object[] parameters = ParameterConverter.ConvertParameterInfoToObjectArray(paramInfos, providedValues);
+
+            method.Invoke(node, parameters);
+        };
+
+        return button;
+    }
+
     private static void AddMethodInfoElements(VBoxContainer vbox, IEnumerable<MethodInfo> methods, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         foreach (MethodInfo method in methods)
@@ -179,23 +199,11 @@ public static class VisualUI
                 ParameterInfo[] paramInfos = method.GetParameters();
                 object[] providedValues = new object[paramInfos.Length];
 
-                HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, paramInfos, providedValues);
+                HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, providedValues);
 
                 vbox.AddChild(hboxParams);
 
-                Button button = new()
-                {
-                    Text = method.Name,
-                    SizeFlagsHorizontal = SizeFlags.ShrinkCenter
-                };
-
-                button.Pressed += () =>
-                {
-                    object[] parameters = ParameterConverter
-                            .ConvertParameterInfoToObjectArray(paramInfos, providedValues);
-
-                    method.Invoke(node, parameters);
-                };
+                Button button = CreateMethodButton(method, node, paramInfos, providedValues);
 
                 vbox.AddChild(button);
             }
