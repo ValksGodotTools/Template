@@ -30,22 +30,6 @@ public partial class UIDebugExports : Control
 
     private static void CreateVisualUIs(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
-        // Define a dictionary to map types to their respective minimum and maximum values
-        Dictionary<Type, (object Min, object Max)> typeConstraints = new()
-        {
-            { typeof(sbyte), (sbyte.MinValue, sbyte.MaxValue) },
-            { typeof(short), (short.MinValue, short.MaxValue) },
-            { typeof(int), (int.MinValue, int.MaxValue) },
-            { typeof(long), (long.MinValue, long.MaxValue) },
-            { typeof(float), (float.MinValue, float.MaxValue) },
-            { typeof(double), (double.MinValue, double.MaxValue) },
-            { typeof(decimal), (decimal.MinValue, decimal.MaxValue) },
-            { typeof(byte), (byte.MinValue, byte.MaxValue) },
-            { typeof(ushort), (ushort.MinValue, ushort.MaxValue) },
-            { typeof(uint), (uint.MinValue, uint.MaxValue) },
-            { typeof(ulong), (ulong.MinValue, ulong.MaxValue) }
-        };
-
         foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
         {
             Node node = debugVisualNode.Node;
@@ -109,27 +93,22 @@ public partial class UIDebugExports : Control
                                 }
                                 catch
                                 {
-                                    if (typeConstraints.TryGetValue(paramType, out (object Min, object Max) constraints))
+                                    (object Min, object Max) = TypeRangeConstraints.GetRange(paramType);
+
+                                    if (Convert.ToDouble(value) < Convert.ToDouble(Min))
                                     {
-                                        if (Convert.ToDouble(value) < Convert.ToDouble(constraints.Min))
-                                        {
-                                            spinBox.Value = Convert.ToDouble(constraints.Min);
-                                            convertedValue = constraints.Min;
-                                        }
-                                        else if (Convert.ToDouble(value) > Convert.ToDouble(constraints.Max))
-                                        {
-                                            spinBox.Value = Convert.ToDouble(constraints.Max);
-                                            convertedValue = constraints.Max;
-                                        }
-                                        else
-                                        {
-                                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
-                                            throw new InvalidOperationException(errorMessage);
-                                        }
+                                        spinBox.Value = Convert.ToDouble(Min);
+                                        convertedValue = Min;
+                                    }
+                                    else if (Convert.ToDouble(value) > Convert.ToDouble(Max))
+                                    {
+                                        spinBox.Value = Convert.ToDouble(Max);
+                                        convertedValue = Max;
                                     }
                                     else
                                     {
                                         string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
+                                        
                                         throw new InvalidOperationException(errorMessage);
                                     }
                                 }
