@@ -10,71 +10,7 @@ namespace Template;
 
 public static class VisualUI
 {
-    private const float INFO_PANEL_SCALE_FACTOR = 0.6f;
-
-    public static void CreateVisualPanels(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
-        {
-            Node node = debugVisualNode.Node;
-
-            VBoxContainer vbox = CreateVisualContainer(node.Name);
-
-            AddMemberInfoElements(vbox, debugVisualNode.Properties, node, debugExportSpinBoxes);
-
-            AddMemberInfoElements(vbox, debugVisualNode.Fields, node, debugExportSpinBoxes);
-
-            AddMethodInfoElements(vbox, debugVisualNode.Methods, node, debugExportSpinBoxes);
-
-            // All debug UI elements should not be influenced by the game world environments lighting
-            vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
-
-            node.AddChild(vbox);
-
-            vbox.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
-
-            if (debugVisualNode.InitialPosition != Vector2.Zero)
-            {
-                vbox.GlobalPosition = debugVisualNode.InitialPosition;
-            }
-        }
-    }
-
-    public static void CreateStepPrecisionUI(List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer controlPanel, SceneTree tree)
-    {
-        HBoxContainer hbox = new();
-
-        Label label = new()
-        {
-            Text = "Step Precision",
-            SizeFlagsHorizontal = SizeFlags.ExpandFill
-        };
-
-        hbox.AddChild(label);
-        hbox.AddChild(CreateStepPrecisionOptionButton(debugExportSpinBoxes));
-
-        controlPanel.AddChild(hbox);
-
-        GButton unfocus = new("Unfocus Active Element");
-        unfocus.Pressed += tree.UnfocusCurrentControl;
-        controlPanel.AddChild(unfocus);
-    }
-
-    private static VBoxContainer CreateVisualContainer(string nodeName)
-    {
-        VBoxContainer vbox = new()
-        {
-            // Ensure this info is rendered above all game elements
-            ZIndex = (int)RenderingServer.CanvasItemZMax
-        };
-
-        GLabel label = new(nodeName);
-
-        vbox.AddChild(label);
-
-        return vbox;
-    }
-
+    #region Method Parameters
     private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
     {
         HBoxContainer hboxParams = new();
@@ -150,6 +86,147 @@ public static class VisualUI
         }
 
         return hboxParams;
+    }
+    #endregion
+
+    #region Control Types
+    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        return type switch
+        {
+            // Handle numeric and enum types
+            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes),
+            _ when type.IsEnum => CreateEnumControl(member, node, type),
+
+            // Handle C# specific types
+            _ when type == typeof(bool) => CreateBoolControl(member, node),
+            _ when type == typeof(string) => CreateStringControl(member, node),
+
+            // Handle Godot specific types
+            _ when type == typeof(Godot.Color) => CreateColorControl(member, node),
+
+            // Handle unsupported types
+            _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
+        };
+    }
+
+    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        SpinBox spinBox = CreateSpinBox(debugExportSpinBoxes, type);
+        double value = VisualNodeHandler.GetMemberValue<double>(member, node);
+        double step = type.IsWholeNumber() ? 1 : 0.1;
+
+        spinBox.Step = step;
+        spinBox.Value = value;
+        spinBox.ValueChanged += value => VisualNodeHandler.SetMemberValue(member, node, value);
+
+        return spinBox;
+    }
+
+    private static Control CreateBoolControl(MemberInfo member, Node node)
+    {
+        CheckBox checkBox = new()
+        {
+            ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node)
+        };
+        checkBox.Toggled += value => VisualNodeHandler.SetMemberValue(member, node, value);
+
+        return checkBox;
+    }
+
+    private static Control CreateColorControl(MemberInfo member, Node node)
+    {
+        GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
+        colorPickerButton.OnColorChanged += color => VisualNodeHandler.SetMemberValue(member, node, color);
+
+        return colorPickerButton.Control;
+    }
+
+    private static Control CreateStringControl(MemberInfo member, Node node)
+    {
+        LineEdit lineEdit = new()
+        {
+            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
+        };
+        lineEdit.TextChanged += text => VisualNodeHandler.SetMemberValue(member, node, text);
+
+        return lineEdit;
+    }
+
+    private static Control CreateEnumControl(MemberInfo member, Node node, Type type)
+    {
+        GOptionButtonEnum optionButton = new(type);
+        optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
+        optionButton.OnItemSelected += item => VisualNodeHandler.SetMemberValue(member, node, item);
+
+        return optionButton.Control;
+    }
+    #endregion
+
+    #region Specific Util Functions
+    public static void CreateVisualPanels(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    {
+        foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
+        {
+            Node node = debugVisualNode.Node;
+
+            VBoxContainer vbox = CreateVisualContainer(node.Name);
+
+            AddMemberInfoElements(vbox, debugVisualNode.Properties, node, debugExportSpinBoxes);
+
+            AddMemberInfoElements(vbox, debugVisualNode.Fields, node, debugExportSpinBoxes);
+
+            AddMethodInfoElements(vbox, debugVisualNode.Methods, node, debugExportSpinBoxes);
+
+            // All debug UI elements should not be influenced by the game world environments lighting
+            vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
+
+            node.AddChild(vbox);
+
+            const float INFO_PANEL_SCALE_FACTOR = 0.6f;
+
+            vbox.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
+
+            if (debugVisualNode.InitialPosition != Vector2.Zero)
+            {
+                vbox.GlobalPosition = debugVisualNode.InitialPosition;
+            }
+        }
+    }
+
+    public static void CreateStepPrecisionUI(List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer controlPanel, SceneTree tree)
+    {
+        HBoxContainer hbox = new();
+
+        Label label = new()
+        {
+            Text = "Step Precision",
+            SizeFlagsHorizontal = SizeFlags.ExpandFill
+        };
+
+        hbox.AddChild(label);
+        hbox.AddChild(CreateStepPrecisionOptionButton(debugExportSpinBoxes));
+
+        controlPanel.AddChild(hbox);
+
+        GButton unfocus = new("Unfocus Active Element");
+        unfocus.Pressed += tree.UnfocusCurrentControl;
+        controlPanel.AddChild(unfocus);
+    }
+
+    private static VBoxContainer CreateVisualContainer(string nodeName)
+    {
+        VBoxContainer vbox = new()
+        {
+            // Ensure this info is rendered above all game elements
+            ZIndex = (int)RenderingServer.CanvasItemZMax
+        };
+
+        GLabel label = new(nodeName);
+
+        vbox.AddChild(label);
+
+        return vbox;
     }
 
     private static object ConvertNumericValue(SpinBox spinBox, double value, Type paramType)
@@ -252,78 +329,6 @@ public static class VisualUI
         return hbox;
     }
 
-    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        return type switch
-        {
-            // Handle numeric and enum types
-            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes),
-            _ when type.IsEnum => CreateEnumControl(member, node, type),
-
-            // Handle C# specific types
-            _ when type == typeof(bool) => CreateBoolControl(member, node),
-            _ when type == typeof(string) => CreateStringControl(member, node),
-
-            // Handle Godot specific types
-            _ when type == typeof(Godot.Color) => CreateColorControl(member, node),
-
-            // Handle unsupported types
-            _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
-        };
-    }
-
-    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        SpinBox spinBox = CreateSpinBox(debugExportSpinBoxes, type);
-        double value = VisualNodeHandler.GetMemberValue<double>(member, node);
-        double step = type.IsWholeNumber() ? 1 : 0.1;
-
-        spinBox.Step = step;
-        spinBox.Value = value;
-        spinBox.ValueChanged += value => VisualNodeHandler.SetMemberValue(member, node, value);
-
-        return spinBox;
-    }
-
-    private static Control CreateBoolControl(MemberInfo member, Node node)
-    {
-        CheckBox checkBox = new()
-        {
-            ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node)
-        };
-        checkBox.Toggled += value => VisualNodeHandler.SetMemberValue(member, node, value);
-
-        return checkBox;
-    }
-
-    private static Control CreateColorControl(MemberInfo member, Node node)
-    {
-        GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
-        colorPickerButton.OnColorChanged += color => VisualNodeHandler.SetMemberValue(member, node, color);
-
-        return colorPickerButton.Control;
-    }
-
-    private static Control CreateStringControl(MemberInfo member, Node node)
-    {
-        LineEdit lineEdit = new()
-        {
-            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
-        };
-        lineEdit.TextChanged += text => VisualNodeHandler.SetMemberValue(member, node, text);
-
-        return lineEdit;
-    }
-
-    private static Control CreateEnumControl(MemberInfo member, Node node, Type type)
-    {
-        GOptionButtonEnum optionButton = new(type);
-        optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
-        optionButton.OnItemSelected += item => VisualNodeHandler.SetMemberValue(member, node, item);
-
-        return optionButton.Control;
-    }
-
     private static SpinBox CreateSpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
     {
         SpinBox spinBox = new()
@@ -377,4 +382,5 @@ public static class VisualUI
 
         return optionButton.Control;
     }
+    #endregion
 }
