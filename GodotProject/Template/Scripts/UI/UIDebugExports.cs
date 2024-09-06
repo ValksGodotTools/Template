@@ -262,11 +262,41 @@ public partial class UIDebugExports : Control
         }
         else if (type == typeof(string))
         {
-            element = CreateLineEdit(member, node);
+            LineEdit lineEdit = new();
+
+            lineEdit.Text = GetMemberValue<string>(member, node);
+
+            lineEdit.TextChanged += text =>
+            {
+                SetMemberValue(member, node, text);
+            };
+
+            element = lineEdit;
         }
         else if (type.IsEnum)
         {
-            element = CreateOptionButton(member, node);
+            OptionButton optionButton = new();
+
+            Type enumType = GetMemberType(member);
+
+            // Add enum values to the OptionButton
+            foreach (object enumValue in Enum.GetValues(enumType))
+            {
+                optionButton.AddItem(enumValue.ToString());
+            }
+
+            // Select the current value of the member
+            object currentValue = GetMemberValue(member, node);
+            int selectedIndex = Array.IndexOf(Enum.GetValues(enumType), currentValue);
+            optionButton.Select(selectedIndex);
+
+            optionButton.ItemSelected += item =>
+            {
+                object selectedValue = Enum.GetValues(enumType).GetValue(item);
+                SetMemberValue(member, node, selectedValue);
+            };
+
+            element = optionButton;
         }
         else
         {
@@ -276,46 +306,6 @@ public partial class UIDebugExports : Control
         hbox.AddChild(element);
 
         return hbox;
-    }
-
-    private static OptionButton CreateOptionButton(MemberInfo member, Node node)
-    {
-        OptionButton optionButton = new();
-
-        Type enumType = GetMemberType(member);
-
-        // Add enum values to the OptionButton
-        foreach (object enumValue in Enum.GetValues(enumType))
-        {
-            optionButton.AddItem(enumValue.ToString());
-        }
-
-        // Select the current value of the member
-        object currentValue = GetMemberValue(member, node);
-        int selectedIndex = Array.IndexOf(Enum.GetValues(enumType), currentValue);
-        optionButton.Select(selectedIndex);
-
-        optionButton.ItemSelected += item =>
-        {
-            object selectedValue = Enum.GetValues(enumType).GetValue(item);
-            SetMemberValue(member, node, selectedValue);
-        };
-
-        return optionButton;
-    }
-
-    private static LineEdit CreateLineEdit(MemberInfo member, Node node)
-    {
-        LineEdit lineEdit = new();
-
-        lineEdit.Text = GetMemberValue<string>(member, node);
-
-        lineEdit.TextChanged += text =>
-        {
-            SetMemberValue(member, node, text);
-        };
-
-        return lineEdit;
     }
 
     private static SpinBox SpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
