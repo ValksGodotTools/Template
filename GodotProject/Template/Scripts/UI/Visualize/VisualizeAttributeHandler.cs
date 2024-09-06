@@ -9,61 +9,23 @@ namespace Template;
 
 public static class VisualizeAttributeHandler
 {
+    private static readonly BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
     public static List<DebugVisualNode> RetrieveData(Node parent)
     {
         List<DebugVisualNode> debugVisualNodes = [];
-
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-
-        IEnumerable<Type> visualTypes = types.Where(x => x.GetCustomAttributes(typeof(VisualizeAttribute), false).Any());
-
-        BindingFlags flags =
-            BindingFlags.Public |
-            BindingFlags.NonPublic |
-            BindingFlags.Instance |
-            BindingFlags.Static;
 
         foreach (Type type in types)
         {
-            Vector2 initialPosition = Vector2.Zero;
-            VisualizeAttribute attribute = (VisualizeAttribute)type.GetCustomAttribute(typeof(VisualizeAttribute), false);
-
-            if (attribute != null)
-            {
-                initialPosition = attribute.InitialPosition;
-            }
-
+            Vector2 initialPosition = GetInitialPosition(type);
             List<Node> nodes = parent.GetNodes(type);
 
             foreach (Node node in nodes)
             {
-                List<PropertyInfo> properties = [];
-                List<FieldInfo> fields = [];
-                List<MethodInfo> methods = [];
-
-                foreach (PropertyInfo property in type.GetProperties(flags))
-                {
-                    if (property.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
-                    {
-                        properties.Add(property);
-                    }
-                }
-
-                foreach (FieldInfo field in type.GetFields(flags))
-                {
-                    if (field.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
-                    {
-                        fields.Add(field);
-                    }
-                }
-
-                foreach (MethodInfo method in type.GetMethods(flags))
-                {
-                    if (method.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
-                    {
-                        methods.Add(method);
-                    }
-                }
+                List<PropertyInfo> properties = GetMembersWithAttribute(type, type.GetProperties);
+                List<FieldInfo> fields = GetMembersWithAttribute(type, type.GetFields);
+                List<MethodInfo> methods = GetMembersWithAttribute(type, type.GetMethods);
 
                 if (properties.Any() || fields.Any() || methods.Any())
                 {
@@ -73,5 +35,19 @@ public static class VisualizeAttributeHandler
         }
 
         return debugVisualNodes;
+    }
+
+    private static Vector2 GetInitialPosition(Type type)
+    {
+        VisualizeAttribute attribute = (VisualizeAttribute)type.GetCustomAttribute(typeof(VisualizeAttribute), false);
+        
+        return attribute?.InitialPosition ?? Vector2.Zero;
+    }
+
+    private static List<T> GetMembersWithAttribute<T>(Type type, Func<BindingFlags, T[]> getMembers) where T : MemberInfo
+    {
+        return getMembers(Flags)
+            .Where(member => member.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
+            .ToList();
     }
 }
