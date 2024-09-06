@@ -343,6 +343,59 @@ public static class VisualUIBuilder
 
                 hboxParams.AddChild(vector4IHBox);
             }
+            else if (paramType == typeof(Godot.Quaternion))
+            {
+                HBoxContainer quaternionHBox = new();
+
+                SpinBox spinBoxX = CreateSpinBox(typeof(float));
+                SpinBox spinBoxY = CreateSpinBox(typeof(float));
+                SpinBox spinBoxZ = CreateSpinBox(typeof(float));
+                SpinBox spinBoxW = CreateSpinBox(typeof(float));
+
+                if (providedValues[index] == null)
+                {
+                    providedValues[index] = new Quaternion();
+                }
+
+                spinBoxX.ValueChanged += value =>
+                {
+                    Quaternion quaternion = (Quaternion)providedValues[index];
+                    quaternion.X = (float)value;
+                    providedValues[index] = quaternion;
+                };
+
+                spinBoxY.ValueChanged += value =>
+                {
+                    Quaternion quaternion = (Quaternion)providedValues[index];
+                    quaternion.Y = (float)value;
+                    providedValues[index] = quaternion;
+                };
+
+                spinBoxZ.ValueChanged += value =>
+                {
+                    Quaternion quaternion = (Quaternion)providedValues[index];
+                    quaternion.Z = (float)value;
+                    providedValues[index] = quaternion;
+                };
+
+                spinBoxW.ValueChanged += value =>
+                {
+                    Quaternion quaternion = (Quaternion)providedValues[index];
+                    quaternion.W = (float)value;
+                    providedValues[index] = quaternion;
+                };
+
+                quaternionHBox.AddChild(new GLabel("X"));
+                quaternionHBox.AddChild(spinBoxX);
+                quaternionHBox.AddChild(new GLabel("Y"));
+                quaternionHBox.AddChild(spinBoxY);
+                quaternionHBox.AddChild(new GLabel("Z"));
+                quaternionHBox.AddChild(spinBoxZ);
+                quaternionHBox.AddChild(new GLabel("W"));
+                quaternionHBox.AddChild(spinBoxW);
+
+                hboxParams.AddChild(quaternionHBox);
+            }
         }
 
         return hboxParams;
@@ -370,10 +423,63 @@ public static class VisualUIBuilder
             _ when type == typeof(Godot.Vector3I) => CreateVector3IControl(member, node),
             _ when type == typeof(Godot.Vector4) => CreateVector4Control(member, node),
             _ when type == typeof(Godot.Vector4I) => CreateVector4IControl(member, node),
+            _ when type == typeof(Godot.Quaternion) => CreateQuaternionControl(member, node),
 
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateQuaternionControl(MemberInfo member, Node node)
+    {
+        HBoxContainer quaternionHBox = new();
+
+        Quaternion quaternion = VisualNodeHandler.GetMemberValue<Quaternion>(member, node);
+
+        SpinBox spinBoxX = CreateSpinBox(typeof(float));
+        SpinBox spinBoxY = CreateSpinBox(typeof(float));
+        SpinBox spinBoxZ = CreateSpinBox(typeof(float));
+        SpinBox spinBoxW = CreateSpinBox(typeof(float));
+
+        spinBoxX.Value = quaternion.X;
+        spinBoxY.Value = quaternion.Y;
+        spinBoxZ.Value = quaternion.Z;
+        spinBoxW.Value = quaternion.W;
+
+        spinBoxX.ValueChanged += value =>
+        {
+            quaternion.X = (float)value;
+            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+        };
+
+        spinBoxY.ValueChanged += value =>
+        {
+            quaternion.Y = (float)value;
+            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+        };
+
+        spinBoxZ.ValueChanged += value =>
+        {
+            quaternion.Z = (float)value;
+            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+        };
+
+        spinBoxW.ValueChanged += value =>
+        {
+            quaternion.W = (float)value;
+            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+        };
+
+        quaternionHBox.AddChild(new GLabel("X"));
+        quaternionHBox.AddChild(spinBoxX);
+        quaternionHBox.AddChild(new GLabel("Y"));
+        quaternionHBox.AddChild(spinBoxY);
+        quaternionHBox.AddChild(new GLabel("Z"));
+        quaternionHBox.AddChild(spinBoxZ);
+        quaternionHBox.AddChild(new GLabel("W"));
+        quaternionHBox.AddChild(spinBoxW);
+
+        return quaternionHBox;
     }
 
     private static Control CreateVector2Control(MemberInfo member, Node node)
