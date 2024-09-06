@@ -261,7 +261,16 @@ public partial class UIDebugExports : Control
         }
         else if (type == typeof(bool))
         {
-            element = CreateCheckBoxUI(member, node);
+            CheckBox checkBox = new();
+
+            checkBox.ButtonPressed = GetMemberValue<bool>(member, node);
+
+            checkBox.Toggled += value =>
+            {
+                SetMemberValue(member, node, value);
+            };
+
+            element = checkBox;
         }
         else if (type == typeof(Godot.Color))
         {
@@ -360,20 +369,6 @@ public partial class UIDebugExports : Control
         colorPickerButton.PopupClosed += colorPickerButton.ReleaseFocus;
 
         return colorPickerButton;
-    }
-
-    private static CheckBox CreateCheckBoxUI(MemberInfo member, Node node)
-    {
-        CheckBox checkBox = new();
-        
-        checkBox.ButtonPressed = GetMemberValue<bool>(member, node);
-
-        checkBox.Toggled += value =>
-        {
-            SetMemberValue(member, node, value);
-        };
-
-        return checkBox;
     }
 
     private static SpinBox SpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
