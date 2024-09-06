@@ -162,37 +162,14 @@ public partial class UIDebugExports : Control
                         }
                         else if (paramType == typeof(Godot.Color))
                         {
-                            ColorPickerButton colorPickerButton = new()
-                            {
-                                CustomMinimumSize = Vector2.One * 30
-                            };
+                            GColorPickerButton colorPickerButton = new();
 
-                            colorPickerButton.ColorChanged += color =>
+                            colorPickerButton.OnColorChanged += color =>
                             {
                                 providedValues[index] = color;
                             };
 
-                            colorPickerButton.PickerCreated += () =>
-                            {
-                                ColorPicker picker = colorPickerButton.GetPicker();
-
-                                PopupPanel popupPanel = picker.GetParent<PopupPanel>();
-
-                                popupPanel.InitialPosition = Window.WindowInitialPosition.Absolute;
-
-                                popupPanel.AboutToPopup += () =>
-                                {
-                                    Vector2 viewportSize = node.GetTree().Root.GetViewport().GetVisibleRect().Size;
-
-                                    popupPanel.Position = new Vector2I(
-                                        (int)(viewportSize.X - popupPanel.Size.X),
-                                        0);
-                                };
-                            };
-
-                            colorPickerButton.PopupClosed += colorPickerButton.ReleaseFocus;
-
-                            hboxParams.AddChild(colorPickerButton);
+                            hboxParams.AddChild(colorPickerButton.Control);
                         }
                     }
 
@@ -274,7 +251,14 @@ public partial class UIDebugExports : Control
         }
         else if (type == typeof(Godot.Color))
         {
-            element = CreateColorPicker(member, node);
+            GColorPickerButton colorPickerButton = new(GetMemberValue<Color>(member, node));
+
+            colorPickerButton.OnColorChanged += color =>
+            {
+                SetMemberValue(member, node, color);
+            };
+
+            element = colorPickerButton.Control;
         }
         else if (type == typeof(string))
         {
@@ -332,43 +316,6 @@ public partial class UIDebugExports : Control
         };
 
         return lineEdit;
-    }
-
-    private static ColorPickerButton CreateColorPicker(MemberInfo member, Node node)
-    {
-        ColorPickerButton colorPickerButton = new()
-        {
-            CustomMinimumSize = Vector2.One * 30
-        };
-
-        colorPickerButton.ColorChanged += color =>
-        {
-            SetMemberValue(member, node, color);
-        };
-
-        colorPickerButton.PickerCreated += () =>
-        {
-            ColorPicker picker = colorPickerButton.GetPicker();
-
-            picker.Color = GetMemberValue<Color>(member, node);
-
-            PopupPanel popupPanel = picker.GetParent<PopupPanel>();
-
-            popupPanel.InitialPosition = Window.WindowInitialPosition.Absolute;
-
-            popupPanel.AboutToPopup += () =>
-            {
-                Vector2 viewportSize = node.GetTree().Root.GetViewport().GetVisibleRect().Size;
-
-                popupPanel.Position = new Vector2I(
-                    (int)(viewportSize.X - popupPanel.Size.X),
-                    0);
-            };
-        };
-
-        colorPickerButton.PopupClosed += colorPickerButton.ReleaseFocus;
-
-        return colorPickerButton;
     }
 
     private static SpinBox SpinBox(List<DebugVisualSpinBox> debugExportSpinBoxes, Type type)
