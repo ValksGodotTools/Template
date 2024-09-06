@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Template;
 
-public partial class UIDebugExports : Control
+public partial class UIVisualizeAttribute : Control
 {
     [Export] VBoxContainer controlPanel;
 
@@ -16,7 +16,7 @@ public partial class UIDebugExports : Control
         
         List<DebugVisualSpinBox> debugExportSpinBoxes = [];
 
-        VisualUI.CreateVisualPanels(debugExportNodes, debugExportSpinBoxes);
-        VisualUI.CreateStepPrecisionUI(debugExportSpinBoxes, controlPanel, GetTree());
+        VisualUIBuilder.CreateVisualPanels(debugExportNodes, debugExportSpinBoxes);
+        VisualUIBuilder.CreateStepPrecisionUI(debugExportSpinBoxes, controlPanel, GetTree());
     }
 }

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ca2xb7tvce5xj" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
 [ext_resource type="Texture2D" uid="uid://cmi46negp3jqi" path="res://Genres/2D Top Down/Sprites/dungeon.png" id="4_ai2f7"]
 [ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/puddle.gdshader" id="5_l6cl7"]
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIDebugExports.cs" id="6_41hkm"]
+[ext_resource type="Script" path="res://Template/Scripts/UI/UIVisualizeAttribute.cs" id="6_41hkm"]
 [ext_resource type="Texture2D" uid="uid://vo2m8kod8vn1" path="res://Genres/2D Top Down/Sprites/puddle_mask.png" id="6_r6pwu"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerCamera.cs" id="7_iqnw1"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/CameraShakeComponent.cs" id="7_tebhc"]
@@ -353,7 +353,7 @@ tileMap = NodePath("../TileMapLayer")
 
 [node name="MultiplayerControlPanel" parent="CanvasLayer" instance=ExtResource("3_uykib")]
 
-[node name="DebugExports" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("controlPanel")]
+[node name="UIVisualizeAttribute" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("controlPanel")]
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -367,7 +367,7 @@ script = ExtResource("6_41hkm")
 controlPanel = NodePath("ControlPanel/MarginContainer/VBoxContainer")
 metadata/_edit_lock_ = true
 
-[node name="ControlPanel" type="PanelContainer" parent="CanvasLayer/DebugExports"]
+[node name="ControlPanel" type="PanelContainer" parent="CanvasLayer/UIVisualizeAttribute"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -379,14 +379,14 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/DebugExports/ControlPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UIVisualizeAttribute/ControlPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DebugExports/ControlPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UIVisualizeAttribute/ControlPanel/MarginContainer"]
 layout_mode = 2
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]

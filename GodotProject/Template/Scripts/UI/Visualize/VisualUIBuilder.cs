@@ -8,7 +8,7 @@ using static Godot.Control;
 
 namespace Template;
 
-public static class VisualUI
+public static class VisualUIBuilder
 {
     #region Method Parameters
     private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
