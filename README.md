@@ -250,11 +250,16 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 |-------------------|-----------------------------------------------------------------------------|
 | **Numericals**    | Integers, floats, and other numerical types.                                |
 | **Enums**         | Enumerated types for categorizing data.                                     |
-| **Booleans**      | True/False values for binary states.                                        |
+| **Booleans**      | True/False values.                                                          |
 | **Strings**       | Textual data for labels, messages, etc.                                     |
 | **Godot.Color**   | Color values for visual elements.                                           |
-| **Methods**       | Functions that can take any of the supported types as parameters.           |
-| **Static Members**| Class-level variables that are shared across all instances of the class.    |
+| **Vectors**       | Represents 2D, 3D, and 4D vectors with floating-point and integer components.|
+| **Quaternion**    | Represents a rotation in 3D space.                                          |
+| **NodePath**      | Path to a node in the scene tree.                                           |
+| **StringName**    | Optimized string for performance.                                           |
+| **Array**         | Collection of elements of any supported type.                               |
+| **Methods**       | Functions that can take any supported types as parameters.                  |
+| **Static Members**| Class-level variables shared across all instances.                          |
 
 #### Visualizing Player
 ```cs
@@ -268,6 +273,9 @@ public partial class Player : CharacterBody2D
 
     [Visualize]
     private static int TotalPlayers;
+
+    [Visualize]
+    private int[] highScores = [20, 35, 90, 100];
 
     [Visualize]
     public void ApplyDamage(int damageAmount, string source)
