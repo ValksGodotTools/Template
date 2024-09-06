@@ -10,40 +10,53 @@ public static class VisualNodeHandler
     {
         try
         {
-            // Set the value of the property or field
             if (member is PropertyInfo property)
             {
-                if (property.CanWrite)
-                {
-                    if (property.GetMethod.IsStatic)
-                    {
-                        property.SetValue(null, Convert.ChangeType(value, property.PropertyType));
-                    }
-                    else
-                    {
-                        property.SetValue(target, Convert.ChangeType(value, property.PropertyType));
-                    }
-                }
-                else
-                {
-                    GD.Print($"Property {member.Name} is read-only.");
-                }
+                SetPropertyValue(property, target, value);
             }
             else if (member is FieldInfo field)
             {
-                if (field.IsStatic)
-                {
-                    field.SetValue(null, Convert.ChangeType(value, field.FieldType));
-                }
-                else
-                {
-                    field.SetValue(target, Convert.ChangeType(value, field.FieldType));
-                }
+                SetFieldValue(field, target, value);
             }
         }
         catch (Exception ex)
         {
             GD.Print($"Failed to set value for {member.Name}: {ex.Message}");
+        }
+    }
+
+    private static void SetPropertyValue(PropertyInfo property, object target, object value)
+    {
+        if (property.CanWrite)
+        {
+            object convertedValue = Convert.ChangeType(value, property.PropertyType);
+
+            if (property.GetMethod.IsStatic)
+            {
+                property.SetValue(null, convertedValue);
+            }
+            else
+            {
+                property.SetValue(target, convertedValue);
+            }
+        }
+        else
+        {
+            GD.Print($"Property {property.Name} is read-only.");
+        }
+    }
+
+    private static void SetFieldValue(FieldInfo field, object target, object value)
+    {
+        object convertedValue = Convert.ChangeType(value, field.FieldType);
+
+        if (field.IsStatic)
+        {
+            field.SetValue(null, convertedValue);
+        }
+        else
+        {
+            field.SetValue(target, convertedValue);
         }
     }
 
