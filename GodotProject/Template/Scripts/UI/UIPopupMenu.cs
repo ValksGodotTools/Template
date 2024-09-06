@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-
 namespace Template;
 
 public partial class UIPopupMenu : Control

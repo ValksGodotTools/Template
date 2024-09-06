@@ -34,7 +34,6 @@ public partial class Player
             }
         };
 
-
         state.Transitions = () =>
         {
             if (IsOnFloor())

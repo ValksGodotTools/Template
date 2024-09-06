@@ -1,6 +1,5 @@
 using System;
 
-
 namespace Template;
 
 [AttributeUsage(AttributeTargets.Method)]

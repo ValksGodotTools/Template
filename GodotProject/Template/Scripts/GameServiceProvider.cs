@@ -1,6 +1,5 @@
 using GodotUtils;
 
-
 namespace Template;
 
 public class GameServiceProvider : ServiceProvider

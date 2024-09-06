@@ -3,7 +3,6 @@ using GodotUtils;
 using System.Threading.Tasks;
 using System;
 
-
 namespace Template;
 
 public partial class Global : Node

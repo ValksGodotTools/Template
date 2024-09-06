@@ -5,7 +5,6 @@ using System;
 
 namespace Template;
 
-
 public static class NetcodeUtils
 {
     public static Dictionary<Type, PacketInfo<T>> MapPackets<T>()

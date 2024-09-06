@@ -1,9 +1,7 @@
 using Godot.Collections;
 using Godot;
 
-
 namespace Template;
-
 
 public partial class ResourceHotkeys : Resource
 {

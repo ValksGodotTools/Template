@@ -1,6 +1,5 @@
 using System.Reflection;
 
-
 namespace Template;
 
 public class ConsoleCommandInfo

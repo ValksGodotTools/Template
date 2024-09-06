@@ -2,9 +2,7 @@ using ENet;
 using System.Linq;
 using System.Reflection;
 
-
 namespace Template.Netcode;
-
 
 public abstract class GamePacket
 {

@@ -8,7 +8,6 @@ using System;
 
 namespace Template.Netcode;
 
-
 public class PacketWriter : IDisposable
 {
     public MemoryStream Stream { get; } = new();

@@ -6,9 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System;
 
-
 namespace Template;
-
 
 public partial class UIConsole : PanelContainer
 {

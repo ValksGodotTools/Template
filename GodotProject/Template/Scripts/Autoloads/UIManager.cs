@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 
-
 namespace Template;
 
 public partial class UIManager : Node

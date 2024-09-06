@@ -6,8 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System;
 
-
-
 namespace Template;
 
 public partial class UIDebugExports : Control

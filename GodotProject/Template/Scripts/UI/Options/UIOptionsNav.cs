@@ -2,7 +2,6 @@ using CSharpUtils;
 using Godot;
 using System.Collections.Generic;
 
-
 namespace Template;
 
 public partial class UIOptionsNav : Control

@@ -8,7 +8,6 @@ using System;
 
 namespace Template.Netcode;
 
-
 public class PacketReader : IDisposable
 {
     readonly MemoryStream stream;

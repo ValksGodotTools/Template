@@ -3,7 +3,6 @@ using GodotUtils;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-
 namespace Template;
 
 public partial class UIModLoader : Node

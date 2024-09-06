@@ -2,7 +2,6 @@ using Godot;
 using GodotUtils;
 using System;
 
-
 namespace Template;
 
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html

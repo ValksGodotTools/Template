@@ -1,6 +1,5 @@
 using Godot;
 
-
 namespace Template;
 
 public partial class UIDebugExportsPopup : Node

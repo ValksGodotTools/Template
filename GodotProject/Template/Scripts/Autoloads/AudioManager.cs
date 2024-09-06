@@ -1,7 +1,6 @@
 using Godot;
 using GodotUtils;
 
-
 namespace Template;
 
 public partial class AudioManager : Node

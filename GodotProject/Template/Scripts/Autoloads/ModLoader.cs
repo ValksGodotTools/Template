@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
 
-
-
 namespace Template;
 
 public partial class ModLoader
