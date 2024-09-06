@@ -131,22 +131,14 @@ public partial class UIDebugExports : Control
                         }
                         else if (paramType.IsEnum)
                         {
-                            OptionButton optionButton = new();
+                            GOptionButtonEnum optionButton = new(paramType);
 
-                            // Add enum values to the OptionButton
-                            foreach (object enumValue in Enum.GetValues(paramType))
+                            optionButton.OnItemSelected += item =>
                             {
-                                optionButton.AddItem(enumValue.ToString());
-                            }
-
-                            optionButton.ItemSelected += item =>
-                            {
-                                object selectedValue = Enum.GetValues(paramType).GetValue(item);
-                                providedValues[index] = selectedValue;
-                                optionButton.ReleaseFocus();
+                                providedValues[index] = item;
                             };
 
-                            hboxParams.AddChild(optionButton);
+                            hboxParams.AddChild(optionButton.Control);
                         }
                         else if (paramType == typeof(bool))
                         {
@@ -275,28 +267,15 @@ public partial class UIDebugExports : Control
         }
         else if (type.IsEnum)
         {
-            OptionButton optionButton = new();
+            GOptionButtonEnum optionButton = new(GetMemberType(member));
+            optionButton.Select(GetMemberValue(member, node));
 
-            Type enumType = GetMemberType(member);
-
-            // Add enum values to the OptionButton
-            foreach (object enumValue in Enum.GetValues(enumType))
+            optionButton.OnItemSelected += item =>
             {
-                optionButton.AddItem(enumValue.ToString());
-            }
-
-            // Select the current value of the member
-            object currentValue = GetMemberValue(member, node);
-            int selectedIndex = Array.IndexOf(Enum.GetValues(enumType), currentValue);
-            optionButton.Select(selectedIndex);
-
-            optionButton.ItemSelected += item =>
-            {
-                object selectedValue = Enum.GetValues(enumType).GetValue(item);
-                SetMemberValue(member, node, selectedValue);
+                SetMemberValue(member, node, item);
             };
 
-            element = optionButton;
+            element = optionButton.Control;
         }
         else
         {
@@ -349,25 +328,16 @@ public partial class UIDebugExports : Control
 
     private static OptionButton CreateStepPrecisionOptionButton(List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
-        OptionButton optionButton = new()
-        {
-            Alignment = HorizontalAlignment.Center
-        };
-
-        optionButton.AddItem("10");
-        optionButton.AddItem("1");
-        optionButton.AddItem("0.1");
-        optionButton.AddItem("0.01");
-        optionButton.AddItem("0.001");
+        GOptionButton optionButton = new("10", "1", "0.1", "0.01", "0.001");
 
         // Default precision will be 0.1
         optionButton.Select(2);
 
-        optionButton.ItemSelected += itemId =>
+        optionButton.OnItemSelected += itemId =>
         {
             foreach (DebugVisualSpinBox debugExportSpinBox in debugExportSpinBoxes)
             {
-                double precision = Convert.ToDouble(optionButton.GetItemText((int)itemId));
+                double precision = Convert.ToDouble(optionButton.Control.GetItemText(itemId));
 
                 // Whole Numbers (non-decimals)
                 if (debugExportSpinBox.Type.IsWholeNumber())
@@ -388,7 +358,7 @@ public partial class UIDebugExports : Control
             }
         };
 
-        return optionButton;
+        return optionButton.Control;
     }
 
     private static List<DebugVisualNode> GetVisualizedNodes(Node parent)
