@@ -396,6 +396,17 @@ public static class VisualUIBuilder
 
                 hboxParams.AddChild(quaternionHBox);
             }
+            else if (paramType == typeof(object))
+            {
+                LineEdit lineEdit = new();
+
+                lineEdit.TextChanged += text =>
+                {
+                    providedValues[index] = text;
+                };
+
+                hboxParams.AddChild(lineEdit);
+            }
         }
 
         return hboxParams;
@@ -414,6 +425,7 @@ public static class VisualUIBuilder
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(member, node),
             _ when type == typeof(string) => CreateStringControl(member, node),
+            _ when type == typeof(object) => CreateObjectControl(member, node),
 
             // Handle Godot specific types
             _ when type == typeof(Godot.Color) => CreateColorControl(member, node),
@@ -428,6 +440,21 @@ public static class VisualUIBuilder
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateObjectControl(MemberInfo member, Node node)
+    {
+        LineEdit lineEdit = new()
+        {
+            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
+        };
+
+        lineEdit.TextChanged += text =>
+        {
+            VisualNodeHandler.SetMemberValue(member, node, text);
+        };
+
+        return lineEdit;
     }
 
     private static Control CreateQuaternionControl(MemberInfo member, Node node)
