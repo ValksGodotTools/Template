@@ -1,12 +1,13 @@
-namespace Template.Netcode;
-
 using Godot;
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System;
+
+namespace Template.Netcode;
+
 
 public class PacketWriter : IDisposable
 {

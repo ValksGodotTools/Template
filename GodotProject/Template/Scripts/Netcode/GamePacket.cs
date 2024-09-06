@@ -1,9 +1,10 @@
+using ENet;
 using System.Linq;
+using System.Reflection;
+
 
 namespace Template.Netcode;
 
-using ENet;
-using System.Reflection;
 
 public abstract class GamePacket
 {

@@ -1,9 +1,10 @@
+using ENet;
+using System.Collections.Generic;
+using System;
+using Template.Netcode.Client;
+
 namespace Template.Netcode;
 
-using ENet;
-using System;
-using System.Collections.Generic;
-using Template.Netcode.Client;
 
 public abstract class ServerPacket : GamePacket
 {

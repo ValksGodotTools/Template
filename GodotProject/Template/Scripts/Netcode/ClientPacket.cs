@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+using System;
+using Template.Netcode.Server;
+
 namespace Template.Netcode;
 
-using System;
-using System.Collections.Generic;
-using Template.Netcode.Server;
 
 public abstract class ClientPacket : GamePacket
 {

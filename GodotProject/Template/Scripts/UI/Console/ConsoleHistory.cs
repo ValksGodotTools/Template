@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+
 namespace Template;
 
 public class ConsoleHistory

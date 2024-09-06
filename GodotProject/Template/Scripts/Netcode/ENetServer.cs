@@ -1,15 +1,16 @@
 using CSharpUtils;
-using GodotUtils;
-
-namespace Template.Netcode.Server;
-
 using ENet;
-using System;
+using GodotUtils;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
+
+
+namespace Template.Netcode.Server;
+
 
 // ENet API Reference: https://github.com/SoftwareGuy/ENet-CSharp/blob/master/DOCUMENTATION.md
 public abstract class ENetServer : ENetLow

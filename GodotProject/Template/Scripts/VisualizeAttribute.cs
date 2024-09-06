@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+
 namespace Template;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method)]

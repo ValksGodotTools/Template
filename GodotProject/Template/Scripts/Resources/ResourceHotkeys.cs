@@ -1,8 +1,9 @@
+using Godot.Collections;
 using Godot;
+
 
 namespace Template;
 
-using Godot.Collections;
 
 public partial class ResourceHotkeys : Resource
 {
