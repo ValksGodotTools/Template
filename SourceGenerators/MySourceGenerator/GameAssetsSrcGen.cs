@@ -212,7 +212,7 @@ namespace MySourceGenerator
                 return Path.GetFileName(projectDir.TrimEnd('\\', '/'));
             }
 
-            Debug.Assert(false, "Godot root project folder not found");
+            Debug.Print("Could not find goodot root folder! Defaulting to current directory.");
             return "";
         }
 
