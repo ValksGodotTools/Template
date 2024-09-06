@@ -96,34 +96,7 @@ public static class VisualUI
 
                 spinBox.ValueChanged += value =>
                 {
-                    object convertedValue = value;
-
-                    try
-                    {
-                        convertedValue = Convert.ChangeType(value, paramType);
-                    }
-                    catch
-                    {
-                        (object Min, object Max) = TypeRangeConstraints.GetRange(paramType);
-
-                        if (Convert.ToDouble(value) < Convert.ToDouble(Min))
-                        {
-                            spinBox.Value = Convert.ToDouble(Min);
-                            convertedValue = Min;
-                        }
-                        else if (Convert.ToDouble(value) > Convert.ToDouble(Max))
-                        {
-                            spinBox.Value = Convert.ToDouble(Max);
-                            convertedValue = Max;
-                        }
-                        else
-                        {
-                            string errorMessage = $"The provided value '{value}' for parameter '{paramInfo.Name}' is not assignable to the parameter type '{paramType}'.";
-
-                            throw new InvalidOperationException(errorMessage);
-                        }
-                    }
-
+                    object convertedValue = ConvertNumericValue(spinBox, value, paramType);
                     providedValues[index] = convertedValue; // Use the captured index
                 };
 
@@ -177,6 +150,38 @@ public static class VisualUI
         }
 
         return hboxParams;
+    }
+
+    private static object ConvertNumericValue(SpinBox spinBox, double value, Type paramType)
+    {
+        object convertedValue = value;
+
+        try
+        {
+            convertedValue = Convert.ChangeType(value, paramType);
+        }
+        catch
+        {
+            (object Min, object Max) = TypeRangeConstraints.GetRange(paramType);
+
+            if (Convert.ToDouble(value) < Convert.ToDouble(Min))
+            {
+                spinBox.Value = Convert.ToDouble(Min);
+                convertedValue = Min;
+            }
+            else if (Convert.ToDouble(value) > Convert.ToDouble(Max))
+            {
+                spinBox.Value = Convert.ToDouble(Max);
+                convertedValue = Max;
+            }
+            else
+            {
+                string errorMessage = $"The provided value '{value}' is not assignable to the parameter type '{paramType}'.";
+                throw new InvalidOperationException(errorMessage);
+            }
+        }
+
+        return convertedValue;
     }
 
     private static Button CreateMethodButton(MethodInfo method, Node node, ParameterInfo[] paramInfos, object[] providedValues)
