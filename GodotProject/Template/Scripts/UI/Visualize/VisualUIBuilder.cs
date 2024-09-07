@@ -43,15 +43,6 @@ public static class VisualUIBuilder
                 v =>
                 {
                     providedValues[capturedIndex] = v;
-
-                    /*Game.Log("===");
-
-                    Color[] colorArr = (Color[])providedValues[0];
-
-                    for (int i = 0; i < colorArr.Length; i++)
-                    {
-                        Game.Log($"{i}: {colorArr[i]}");
-                    }*/
                 });
 
             hboxParams.AddChild(control);
@@ -180,21 +171,6 @@ public static class VisualUIBuilder
         arrayVBox.AddChild(addButton);
 
         return arrayVBox;
-    }
-
-    // Helper method to remove an element from an array
-    private static Array RemoveAt(this Array source, int index)
-    {
-        if (source == null)
-            throw new ArgumentNullException(nameof(source));
-        if (index < 0 || index >= source.Length)
-            throw new ArgumentOutOfRangeException(nameof(index));
-
-        Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
-        Array.Copy(source, 0, dest, 0, index);
-        Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
-
-        return dest;
     }
 
     private static Control CreateStringNameControl(object initialValue, Action<StringName> valueChanged)
@@ -651,6 +627,21 @@ public static class VisualUIBuilder
         vbox.AddChild(label);
 
         return vbox;
+    }
+
+    // Helper method to remove an element from an array
+    private static Array RemoveAt(this Array source, int index)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        if (index < 0 || index >= source.Length)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
+        Array.Copy(source, 0, dest, 0, index);
+        Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
+
+        return dest;
     }
 
     private static object ConvertNumericValue(SpinBox spinBox, double value, Type paramType)
