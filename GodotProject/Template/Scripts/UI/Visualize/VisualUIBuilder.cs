@@ -24,11 +24,11 @@ public static class VisualUIBuilder
 
             hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
 
-            providedValues[i] ??= default(Vector2);
+            //providedValues[i] ??= Activator.CreateInstance(paramType);
 
             int capturedIndex = i;
 
-            Control control = CreateControlForType(null, null, typeof(Vector2), debugExportSpinBoxes,
+            Control control = CreateControlForType(null, null, paramType, debugExportSpinBoxes,
                 v => providedValues[capturedIndex] = v);
 
             hboxParams.AddChild(control);
