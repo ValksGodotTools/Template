@@ -46,7 +46,7 @@ public static class VisualUIBuilder
             // Handle numeric, enum and array types
             _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsEnum => CreateEnumControl(member, node, type, v => valueChanged(v)),
-            _ when type.IsArray => CreateArrayControl(member, node, type),
+            _ when type.IsArray => CreateArrayControl(member, node, type, debugExportSpinBoxes),
 
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(member, node, v => valueChanged(v)),
@@ -70,7 +70,7 @@ public static class VisualUIBuilder
         };
     }
 
-    private static Control CreateArrayControl(MemberInfo member, Node node, Type elementType)
+    private static Control CreateArrayControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         VBoxContainer arrayVBox = new()
         {
@@ -86,7 +86,7 @@ public static class VisualUIBuilder
             for (int i = 0; i < initialArray.Length; i++)
             {
                 providedValues[i] = initialArray.GetValue(i);
-                AddArrayEntry(arrayVBox, initialArray.GetValue(i), providedValues, i, elementType.GetElementType());
+                AddArrayEntry(member, node, debugExportSpinBoxes, arrayVBox, initialArray.GetValue(i), providedValues, i, type);
             }
         }
 
@@ -97,7 +97,7 @@ public static class VisualUIBuilder
         {
             int newIndex = providedValues.Length;
             Array.Resize(ref providedValues, newIndex + 1);
-            AddArrayEntry(arrayVBox, null, providedValues, newIndex, elementType.GetElementType());
+            AddArrayEntry(member, node, debugExportSpinBoxes, arrayVBox, null, providedValues, newIndex, type);
 
             // Reorder the add button to always be at the bottom
             arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
@@ -562,14 +562,20 @@ public static class VisualUIBuilder
         return vbox;
     }
 
-    private static void AddArrayEntry(VBoxContainer arrayVBox, object initialValue, object[] providedValues, int index, Type elementType)
+    private static void AddArrayEntry(MemberInfo member, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer arrayVBox, object initialValue, object[] providedValues, int index, Type type)
     {
         HBoxContainer entryHBox = new();
 
-        LineEdit lineEdit = new();
-        lineEdit.Alignment = HorizontalAlignment.Center;
-        lineEdit.Text = initialValue?.ToString() ?? string.Empty;
-        lineEdit.TextChanged += text => UpdateArrayValue(arrayVBox, providedValues, index, elementType);
+        Control control = CreateControlForType(null, node, type.GetElementType(), debugExportSpinBoxes, v =>
+        {
+            //UpdateArrayValue(arrayVBox, providedValues, index, type);
+            VisualNodeHandler.SetMemberValue(member, node, v);
+        });
+
+        //LineEdit lineEdit = new();
+        //lineEdit.Alignment = HorizontalAlignment.Center;
+        //lineEdit.Text = initialValue?.ToString() ?? string.Empty;
+        //lineEdit.TextChanged += text => UpdateArrayValue(arrayVBox, providedValues, index, elementType);
 
         GButton removeButton = new("-");
         removeButton.CustomMinimumSize = Vector2.One * 30;
@@ -578,10 +584,11 @@ public static class VisualUIBuilder
         removeButton.Pressed += () =>
         {
             arrayVBox.RemoveChild(entryHBox);
-            UpdateArrayValue(arrayVBox, providedValues, index, elementType);
+            //UpdateArrayValue(arrayVBox, providedValues, index, type);
+            VisualNodeHandler.SetMemberValue(member, node, null);
         };
 
-        entryHBox.AddChild(lineEdit);
+        entryHBox.AddChild(control);
         entryHBox.AddChild(removeButton);
         arrayVBox.AddChild(entryHBox);
     }

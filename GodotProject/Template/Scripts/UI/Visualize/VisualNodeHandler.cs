@@ -78,6 +78,11 @@ public static class VisualNodeHandler
             _ => throw new ArgumentException("Member is not a FieldInfo or PropertyInfo")
         };
 
+        if (value == null)
+        {
+            return default;
+        }
+
         if (value is float floatValue && typeof(T) == typeof(double))
         {
             return (T)(object)Convert.ToDouble(floatValue);
