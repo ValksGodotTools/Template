@@ -63,6 +63,7 @@ public static class VisualUIBuilder
             _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
             _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => CreateDictionaryControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
@@ -84,6 +85,128 @@ public static class VisualUIBuilder
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateDictionaryControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IDictionary> valueChanged)
+    {
+        VBoxContainer dictionaryVBox = new()
+        {
+            SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
+        };
+
+        Button addButton = new() { Text = "+" };
+
+        Type[] genericArguments = type.GetGenericArguments();
+        Type keyType = genericArguments[0];
+        Type valueType = genericArguments[1];
+
+        IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
+
+        void UpdateDictionary()
+        {
+            // Create a new key and value
+            object newKey = Activator.CreateInstance(keyType);
+            object newValue = Activator.CreateInstance(valueType);
+
+            // Add the new key-value pair to the dictionary
+            dictionary[newKey] = newValue;
+            valueChanged(dictionary);
+
+            // Add a new entry to the UI
+            HBoxContainer hbox = new();
+
+            //////////////////////////// Capture the dictionary and newKey/newValue
+            IDictionary capturedDictionary = dictionary;
+            object capturedNewKey = newKey;
+            object capturedNewValue = newValue;
+
+            Control keyControl = CreateControlForType(newKey, keyType, debugExportSpinBoxes, v =>
+            {
+                capturedNewKey = v;
+                capturedDictionary[capturedNewKey] = capturedNewValue;
+                valueChanged(capturedDictionary);
+            });
+
+            Control valueControl = CreateControlForType(newValue, valueType, debugExportSpinBoxes, v =>
+            {
+                capturedNewValue = v;
+                capturedDictionary[capturedNewKey] = capturedNewValue;
+                valueChanged(capturedDictionary);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the dictionary and the UI
+                int indexToRemove = dictionaryVBox.GetChildCount() - 2; // -2 because of the add button
+                dictionaryVBox.RemoveChild(hbox);
+                capturedDictionary.Remove(capturedNewKey);
+                valueChanged(capturedDictionary);
+
+                // Reorder the add button to always be at the bottom
+                dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(keyControl);
+            hbox.AddChild(valueControl);
+            hbox.AddChild(minusButton);
+            dictionaryVBox.AddChild(hbox);
+
+            // Reorder the add button to always be at the bottom
+            dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
+        }
+
+        // Initialize the UI with the existing dictionary elements
+        foreach (DictionaryEntry entry in dictionary)
+        {
+            HBoxContainer hbox = new();
+            object key = entry.Key;
+            object value = entry.Value;
+
+            //////////////////////////// Capture the dictionary and key/value
+            IDictionary capturedDictionary = dictionary;
+            object capturedKey = key;
+            object capturedValue = value;
+
+            Control keyControl = CreateControlForType(key, keyType, debugExportSpinBoxes, v =>
+            {
+                capturedDictionary.Remove(capturedKey);
+                capturedKey = v;
+                capturedDictionary[capturedKey] = capturedValue;
+                valueChanged(capturedDictionary);
+            });
+
+            Control valueControl = CreateControlForType(value, valueType, debugExportSpinBoxes, v =>
+            {
+                capturedValue = v;
+                capturedDictionary[capturedKey] = capturedValue;
+                valueChanged(capturedDictionary);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the dictionary and the UI
+                int indexToRemove = dictionaryVBox.GetChildCount() - 2; // -2 because of the add button
+                dictionaryVBox.RemoveChild(hbox);
+                capturedDictionary.Remove(capturedKey);
+                valueChanged(capturedDictionary);
+
+                // Reorder the add button to always be at the bottom
+                dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(keyControl);
+            hbox.AddChild(valueControl);
+            hbox.AddChild(minusButton);
+            dictionaryVBox.AddChild(hbox);
+        }
+
+        // Add a button to add more entries
+        addButton.Pressed += UpdateDictionary;
+        dictionaryVBox.AddChild(addButton);
+
+        return dictionaryVBox;
     }
 
     private static Control CreateListControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)

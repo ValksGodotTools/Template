@@ -39,8 +39,8 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Test(List<Color> myList)
+    public void Test(Dictionary<Vector2, Color> myDictionary)
     {
-        Game.Log(myList.ToFormattedString());
+        Game.Log(myDictionary.ToFormattedString());
     }
 }
