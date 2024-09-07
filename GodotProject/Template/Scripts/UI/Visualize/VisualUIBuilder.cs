@@ -44,14 +44,14 @@ public static class VisualUIBuilder
                 {
                     providedValues[capturedIndex] = v;
 
-                    Game.Log("===");
+                    /*Game.Log("===");
 
                     Color[] colorArr = (Color[])providedValues[0];
 
                     for (int i = 0; i < colorArr.Length; i++)
                     {
                         Game.Log($"{i}: {colorArr[i]}");
-                    }
+                    }*/
                 });
 
             hboxParams.AddChild(control);
