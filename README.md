@@ -246,19 +246,22 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 
 #### Supported Members
 
-| Member Type       | Description                                                                 |
-|-------------------|-----------------------------------------------------------------------------|
-| **Numericals**    | Integers, floats, and other numerical types.                                |
-| **Enums**         | Enumerated types for categorizing data.                                     |
-| **Booleans**      | True/False values.                                                          |
-| **Strings**       | Textual data for labels, messages, etc.                                     |
-| **Godot.Color**   | Color values for visual elements.                                           |
-| **Vectors**       | Represents 2D, 3D, and 4D vectors with floating-point and integer components.|
-| **Quaternion**    | Represents a rotation in 3D space.                                          |
-| **NodePath**      | Path to a node in the scene tree.                                           |
-| **StringName**    | Optimized string for performance.                                           |
-| **Methods**       | Functions that can take any supported types as parameters.                  |
-| **Static Members**| Class-level variables shared across all instances.                          |
+| Member Type       | Supported | Examples                                      |
+|-------------------|-----------|-----------------------------------------------|
+| **Numericals**    | ✅         | `int`, `float`, `double`                      |
+| **Enums**         | ✅         | `Direction.North`, `Colors.Red`                |
+| **Booleans**      | ✅         | `true`, `false`                               |
+| **Strings**       | ✅         | `"Hello, World!"`, `"Godot"`                  |
+| **Godot.Color**   | ✅         | `Colors.Red`                                  |
+| **Vectors**       | ✅         | `Vector2`, `Vector2I`, `Vector3`, `Vector3I`, `Vector4`, `Vector4I` |
+| **Quaternion**    | ✅         | `Quaternion.Identity`                         |
+| **NodePath**      | ✅         | `NodePath("Path/To/Node")`                    |
+| **StringName**    | ✅         | `StringName("ObjectName")`                    |
+| **Methods**       | ✅         | `MyMethod()`, `Calculate(x, y, z)`            |
+| **Static Members**| ✅         | `static void MyStaticMethod(x, y, z)`, `static Color uniqueColor` |
+| **Arrays**        | ✅         | `int[]`, `string[]`, `Vector2[]`              |
+| **Lists**         | ❌         | `List<int>`, `List<string>`, `List<Vector2>`  |
+| **Dictionaries**  | ❌         | `Dictionary<int, string>`, `Dictionary<string, Vector2>` |
 
 #### Visualizing Player
 ```cs
