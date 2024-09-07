@@ -116,9 +116,12 @@ public static class VisualUIBuilder
             // Add a new entry to the UI
             HBoxContainer hbox = new();
             object newValue = Activator.CreateInstance(elementType);
+
+            int newIndex = array.Length - 1;
+
             Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
             {
-                array.SetValue(v, array.Length - 1);
+                array.SetValue(v, newIndex);
                 valueChanged(array);
             });
 
