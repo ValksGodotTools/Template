@@ -57,7 +57,7 @@ public static class VisualUIBuilder
             // Handle numeric, enum and array types
             _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
-            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes),
+            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
@@ -81,41 +81,105 @@ public static class VisualUIBuilder
         };
     }
 
-    private static Control CreateArrayControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static Control CreateArrayControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<Array> valueChanged)
     {
         VBoxContainer arrayVBox = new()
         {
             SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
         };
 
-        /*// Create initial LineEdit for each element in the array
-        Array initialArray = VisualNodeHandler.GetMemberValue<Array>(member, node);
-        object[] providedValues = new object[initialArray?.Length ?? 0];
-
-        if (initialArray != null)
-        {
-            for (int i = 0; i < initialArray.Length; i++)
-            {
-                providedValues[i] = initialArray.GetValue(i);
-                AddArrayEntry(member, node, debugExportSpinBoxes, arrayVBox, initialArray.GetValue(i), providedValues, i, type);
-            }
-        }
-
-        // Add a button to add more entries
         Button addButton = new() { Text = "+" };
 
-        addButton.Pressed += () =>
+        Type elementType = type.GetElementType();
+        Array array = initialValue as Array ?? Array.CreateInstance(elementType, 0);
+
+        void UpdateArray()
         {
-            int newIndex = providedValues.Length;
-            Array.Resize(ref providedValues, newIndex + 1);
-            AddArrayEntry(member, node, debugExportSpinBoxes, arrayVBox, null, providedValues, newIndex, type);
+            // Create a new array with the updated length
+            Array newArray = Array.CreateInstance(elementType, array.Length + 1);
+            Array.Copy(array, newArray, array.Length);
+            array = newArray;
+            valueChanged(array);
+
+            // Add a new entry to the UI
+            HBoxContainer hbox = new();
+            object newValue = Activator.CreateInstance(elementType);
+            Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
+            {
+                array.SetValue(v, array.Length - 1);
+                valueChanged(array);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the array and the UI
+                int indexToRemove = arrayVBox.GetChildCount() - 2; // -2 because of the add button
+                arrayVBox.RemoveChild(hbox);
+                array = array.RemoveAt(indexToRemove);
+                valueChanged(array);
+
+                // Reorder the add button to always be at the bottom
+                arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(control);
+            hbox.AddChild(minusButton);
+            arrayVBox.AddChild(hbox);
 
             // Reorder the add button to always be at the bottom
             arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
-        };
+        }
 
-        arrayVBox.AddChild(addButton);*/
+        // Initialize the UI with the existing array elements
+        for (int i = 0; i < array.Length; i++)
+        {
+            HBoxContainer hbox = new();
+            object value = array.GetValue(i);
+            Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
+            {
+                array.SetValue(v, i);
+                valueChanged(array);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the array and the UI
+                int indexToRemove = arrayVBox.GetChildCount() - 2; // -2 because of the add button
+                arrayVBox.RemoveChild(hbox);
+                array = array.RemoveAt(indexToRemove);
+                valueChanged(array);
+
+                // Reorder the add button to always be at the bottom
+                arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(control);
+            hbox.AddChild(minusButton);
+            arrayVBox.AddChild(hbox);
+        }
+
+        // Add a button to add more entries
+        addButton.Pressed += UpdateArray;
+        arrayVBox.AddChild(addButton);
+
         return arrayVBox;
+    }
+
+    // Helper method to remove an element from an array
+    private static Array RemoveAt(this Array source, int index)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        if (index < 0 || index >= source.Length)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
+        Array.Copy(source, 0, dest, 0, index);
+        Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
+
+        return dest;
     }
 
     private static Control CreateStringNameControl(object initialValue, Action<StringName> valueChanged)
@@ -497,7 +561,10 @@ public static class VisualUIBuilder
 
     private static Control CreateColorControl(object initialValue, Action<Color> valueChanged)
     {
-        GColorPickerButton colorPickerButton = new((Color)initialValue);
+        Color initialColor = (Color)initialValue;
+        initialColor.A = 1;
+
+        GColorPickerButton colorPickerButton = new(initialColor);
         colorPickerButton.OnColorChanged += color => valueChanged(color);
 
         return colorPickerButton.Control;
@@ -569,72 +636,6 @@ public static class VisualUIBuilder
         vbox.AddChild(label);
 
         return vbox;
-    }
-
-    private static void AddArrayEntry(MemberInfo member, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes, VBoxContainer arrayVBox, object initialValue, object[] providedValues, int index, Type type)
-    {
-        HBoxContainer entryHBox = new();
-
-        Control control = CreateControlForType(null, type.GetElementType(), debugExportSpinBoxes, v =>
-        {
-            //UpdateArrayValue(arrayVBox, providedValues, index, type);
-            VisualNodeHandler.SetMemberValue(member, node, v);
-        });
-
-        //LineEdit lineEdit = new();
-        //lineEdit.Alignment = HorizontalAlignment.Center;
-        //lineEdit.Text = initialValue?.ToString() ?? string.Empty;
-        //lineEdit.TextChanged += text => UpdateArrayValue(arrayVBox, providedValues, index, elementType);
-
-        GButton removeButton = new("-");
-        removeButton.CustomMinimumSize = Vector2.One * 30;
-        removeButton.SetUnshaded();
-
-        removeButton.Pressed += () =>
-        {
-            arrayVBox.RemoveChild(entryHBox);
-            //UpdateArrayValue(arrayVBox, providedValues, index, type);
-            VisualNodeHandler.SetMemberValue(member, node, null);
-        };
-
-        entryHBox.AddChild(control);
-        entryHBox.AddChild(removeButton);
-        arrayVBox.AddChild(entryHBox);
-    }
-
-    private static void UpdateArrayValue(VBoxContainer arrayVBox, object[] providedValues, int index, Type elementType)
-    {
-        List<object> elements = [];
-
-        foreach (HBoxContainer entryHBox in arrayVBox.GetChildren<HBoxContainer>())
-        {
-            LineEdit lineEdit = entryHBox.GetChild<LineEdit>(0);
-
-            string text = lineEdit.Text.Trim();
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                try
-                {
-                    elements.Add(Convert.ChangeType(text, elementType));
-                }
-                catch (Exception ex)
-                {
-                    GD.Print($"Failed to convert value '{text}' to type '{elementType}': {ex.Message}");
-
-                    lineEdit.Text = "";
-                }
-            }
-        }
-
-        Array array = Array.CreateInstance(elementType, elements.Count);
-
-        for (int i = 0; i < elements.Count; i++)
-        {
-            array.SetValue(elements[i], i);
-        }
-
-        providedValues[index] = array;
     }
 
     private static object ConvertNumericValue(SpinBox spinBox, double value, Type paramType)

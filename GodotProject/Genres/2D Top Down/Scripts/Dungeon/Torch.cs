@@ -6,7 +6,7 @@ namespace Template;
 [Tool]
 public partial class Torch : Node2D
 {
-    [Visualize] Vector4 test;
+    //[Visualize] Vector4[] vec4Array;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
     [Export] float textureScale
@@ -38,8 +38,8 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Test(Vector4 test)
+    public void Test(Color[] colorArray)
     {
-        Game.Log(test);
+        Game.Log(colorArray.Print());
     }
 }
