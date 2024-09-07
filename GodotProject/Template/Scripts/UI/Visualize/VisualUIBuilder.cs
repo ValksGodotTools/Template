@@ -40,7 +40,19 @@ public static class VisualUIBuilder
             int capturedIndex = i;
 
             Control control = CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
-                v => providedValues[capturedIndex] = v);
+                v =>
+                {
+                    providedValues[capturedIndex] = v;
+
+                    Game.Log("===");
+
+                    Color[] colorArr = (Color[])providedValues[0];
+
+                    for (int i = 0; i < colorArr.Length; i++)
+                    {
+                        Game.Log($"{i}: {colorArr[i]}");
+                    }
+                });
 
             hboxParams.AddChild(control);
         }

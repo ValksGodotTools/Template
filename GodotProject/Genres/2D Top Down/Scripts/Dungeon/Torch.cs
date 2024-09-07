@@ -40,6 +40,6 @@ public partial class Torch : Node2D
     [Visualize]
     public void Test(Color[] colorArray)
     {
-        Game.Log(colorArray.Print());
+        //Game.Log(colorArray.Print());
     }
 }
