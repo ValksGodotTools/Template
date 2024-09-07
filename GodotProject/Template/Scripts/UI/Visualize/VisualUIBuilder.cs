@@ -54,16 +54,16 @@ public static class VisualUIBuilder
             _ when type == typeof(object) => CreateObjectControl(member, node, v => valueChanged(v)),
 
             // Handle Godot specific types
-            _ when type == typeof(Godot.Color) => CreateColorControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector2) => CreateVector2Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector2I) => CreateVector2IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector3) => CreateVector3Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector3I) => CreateVector3IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector4) => CreateVector4Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Vector4I) => CreateVector4IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.Quaternion) => CreateQuaternionControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.NodePath) => CreateNodePathControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Godot.StringName) => CreateStringNameControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Color) => CreateColorControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector2) => CreateVector2Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector2I) => CreateVector2IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector3) => CreateVector3Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector3I) => CreateVector3IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector4) => CreateVector4Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Vector4I) => CreateVector4IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Quaternion) => CreateQuaternionControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(NodePath) => CreateNodePathControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(StringName) => CreateStringNameControl(member, node, v => valueChanged(v)),
 
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
