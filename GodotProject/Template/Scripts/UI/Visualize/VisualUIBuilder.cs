@@ -24,11 +24,22 @@ public static class VisualUIBuilder
 
             hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
 
-            //providedValues[i] ??= Activator.CreateInstance(paramType);
+            // providedValues will ALWAYS be null since we are passing in a empty object[] array
+
+            // Examples of Value Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types#kinds-of-value-types-and-type-constraints
+            if (paramType.IsValueType)
+            {
+                providedValues[i] = Activator.CreateInstance(paramType);
+            }
+            // Examples of Reference Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types
+            else if (paramType == typeof(string))
+            {
+                providedValues[i] = string.Empty;
+            }
 
             int capturedIndex = i;
 
-            Control control = CreateControlForType(null, null, paramType, debugExportSpinBoxes,
+            Control control = CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
                 v => providedValues[capturedIndex] = v);
 
             hboxParams.AddChild(control);
@@ -39,45 +50,45 @@ public static class VisualUIBuilder
     #endregion
 
     #region Control Types
-    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    private static Control CreateControlForType(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         return type switch
         {
             // Handle numeric, enum and array types
-            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsEnum => CreateEnumControl(member, node, type, v => valueChanged(v)),
-            _ when type.IsArray => CreateArrayControl(member, node, type, debugExportSpinBoxes),
+            _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
+            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes),
 
             // Handle C# specific types
-            _ when type == typeof(bool) => CreateBoolControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(string) => CreateStringControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(object) => CreateObjectControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(string) => CreateStringControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(object) => CreateObjectControl(initialValue, v => valueChanged(v)),
 
             // Handle Godot specific types
-            _ when type == typeof(Color) => CreateColorControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector2) => CreateVector2Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector2I) => CreateVector2IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector3) => CreateVector3Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector3I) => CreateVector3IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector4) => CreateVector4Control(member, node, v => valueChanged(v)),
-            _ when type == typeof(Vector4I) => CreateVector4IControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(Quaternion) => CreateQuaternionControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(NodePath) => CreateNodePathControl(member, node, v => valueChanged(v)),
-            _ when type == typeof(StringName) => CreateStringNameControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Color) => CreateColorControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector2) => CreateVector2Control(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector2I) => CreateVector2IControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector3) => CreateVector3Control(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector3I) => CreateVector3IControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector4) => CreateVector4Control(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector4I) => CreateVector4IControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Quaternion) => CreateQuaternionControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(NodePath) => CreateNodePathControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(StringName) => CreateStringNameControl(initialValue, v => valueChanged(v)),
 
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
     }
 
-    private static Control CreateArrayControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static Control CreateArrayControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
         VBoxContainer arrayVBox = new()
         {
             SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
         };
 
-        // Create initial LineEdit for each element in the array
+        /*// Create initial LineEdit for each element in the array
         Array initialArray = VisualNodeHandler.GetMemberValue<Array>(member, node);
         object[] providedValues = new object[initialArray?.Length ?? 0];
 
@@ -103,13 +114,13 @@ public static class VisualUIBuilder
             arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
         };
 
-        arrayVBox.AddChild(addButton);
+        arrayVBox.AddChild(addButton);*/
         return arrayVBox;
     }
 
-    private static Control CreateStringNameControl(MemberInfo member, Node node, Action<StringName> valueChanged)
+    private static Control CreateStringNameControl(object initialValue, Action<StringName> valueChanged)
     {
-        StringName stringName = VisualNodeHandler.GetMemberValue<StringName>(member, node);
+        StringName stringName = (StringName)initialValue;
         string initialText = stringName != null ? stringName.ToString() : string.Empty;
 
         LineEdit lineEdit = new()
@@ -125,9 +136,9 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateNodePathControl(MemberInfo member, Node node, Action<NodePath> valueChanged)
+    private static Control CreateNodePathControl(object initialValue, Action<NodePath> valueChanged)
     {
-        NodePath nodePath = VisualNodeHandler.GetMemberValue<NodePath>(member, node);
+        NodePath nodePath = (NodePath)initialValue;
 
         string initialText = nodePath != null ? nodePath.ToString() : string.Empty;
 
@@ -144,11 +155,11 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateObjectControl(MemberInfo member, Node node, Action<object> valueChanged)
+    private static Control CreateObjectControl(object initialValue, Action<object> valueChanged)
     {
         LineEdit lineEdit = new()
         {
-            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
+            Text = initialValue?.ToString() ?? string.Empty
         };
 
         lineEdit.TextChanged += text =>
@@ -159,11 +170,11 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateQuaternionControl(MemberInfo member, Node node, Action<Quaternion> valueChanged)
+    private static Control CreateQuaternionControl(object initialValue, Action<Quaternion> valueChanged)
     {
         HBoxContainer quaternionHBox = new();
 
-        Quaternion quaternion = VisualNodeHandler.GetMemberValue<Quaternion>(member, node);
+        Quaternion quaternion = (Quaternion)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -211,11 +222,11 @@ public static class VisualUIBuilder
         return quaternionHBox;
     }
 
-    private static Control CreateVector2Control(MemberInfo member, Node node, Action<Vector2> valueChanged)
+    private static Control CreateVector2Control(object initialValue, Action<Vector2> valueChanged)
     {
         HBoxContainer vector2HBox = new();
 
-        Vector2 vector2 = VisualNodeHandler.GetMemberValue<Vector2>(member, node);
+        Vector2 vector2 = (Vector2)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -243,11 +254,11 @@ public static class VisualUIBuilder
         return vector2HBox;
     }
 
-    private static Control CreateVector2IControl(MemberInfo member, Node node, Action<Vector2I> valueChanged)
+    private static Control CreateVector2IControl(object initialValue, Action<Vector2I> valueChanged)
     {
         HBoxContainer vector2IHBox = new();
 
-        Vector2I vector2I = VisualNodeHandler.GetMemberValue<Vector2I>(member, node);
+        Vector2I vector2I = (Vector2I)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(int));
         SpinBox spinBoxY = CreateSpinBox(typeof(int));
@@ -275,11 +286,11 @@ public static class VisualUIBuilder
         return vector2IHBox;
     }
 
-    private static Control CreateVector3Control(MemberInfo member, Node node, Action<Vector3> valueChanged)
+    private static Control CreateVector3Control(object initialValue, Action<Vector3> valueChanged)
     {
         HBoxContainer vector3HBox = new();
 
-        Vector3 vector3 = VisualNodeHandler.GetMemberValue<Vector3>(member, node);
+        Vector3 vector3 = (Vector3)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -317,11 +328,11 @@ public static class VisualUIBuilder
         return vector3HBox;
     }
 
-    private static Control CreateVector3IControl(MemberInfo member, Node node, Action<Vector3I> valueChanged)
+    private static Control CreateVector3IControl(object initialValue, Action<Vector3I> valueChanged)
     {
         HBoxContainer vector3IHBox = new();
 
-        Vector3I vector3I = VisualNodeHandler.GetMemberValue<Vector3I>(member, node);
+        Vector3I vector3I = (Vector3I)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(int));
         SpinBox spinBoxY = CreateSpinBox(typeof(int));
@@ -359,11 +370,11 @@ public static class VisualUIBuilder
         return vector3IHBox;
     }
 
-    private static Control CreateVector4Control(MemberInfo member, Node node, Action<Vector4> valueChanged)
+    private static Control CreateVector4Control(object initialValue, Action<Vector4> valueChanged)
     {
         HBoxContainer vector4HBox = new();
 
-        Vector4 vector4 = VisualNodeHandler.GetMemberValue<Vector4>(member, node);
+        Vector4 vector4 = (Vector4)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -411,11 +422,11 @@ public static class VisualUIBuilder
         return vector4HBox;
     }
 
-    private static Control CreateVector4IControl(MemberInfo member, Node node, Action<Vector4I> valueChanged)
+    private static Control CreateVector4IControl(object initialValue, Action<Vector4I> valueChanged)
     {
         HBoxContainer vector4IHBox = new();
 
-        Vector4I vector4I = VisualNodeHandler.GetMemberValue<Vector4I>(member, node);
+        Vector4I vector4I = (Vector4I)initialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(int));
         SpinBox spinBoxY = CreateSpinBox(typeof(int));
@@ -463,42 +474,40 @@ public static class VisualUIBuilder
         return vector4IHBox;
     }
 
-    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<double> valueChanged)
+    private static Control CreateNumericControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<double> valueChanged)
     {
         SpinBox spinBox = CreateSpinBox(type);
 
-        double value = VisualNodeHandler.GetMemberValue<double>(member, node);
-
-        spinBox.Value = value;
+        spinBox.Value = Convert.ToDouble(initialValue);
         spinBox.ValueChanged += value => valueChanged(value);
 
         return spinBox;
     }
 
-    private static Control CreateBoolControl(MemberInfo member, Node node, Action<bool> valueChanged)
+    private static Control CreateBoolControl(object initialValue, Action<bool> valueChanged)
     {
         CheckBox checkBox = new()
         {
-            ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node)
+            ButtonPressed = (bool)initialValue
         };
         checkBox.Toggled += value => valueChanged(value);
 
         return checkBox;
     }
 
-    private static Control CreateColorControl(MemberInfo member, Node node, Action<Color> valueChanged)
+    private static Control CreateColorControl(object initialValue, Action<Color> valueChanged)
     {
-        GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
+        GColorPickerButton colorPickerButton = new((Color)initialValue);
         colorPickerButton.OnColorChanged += color => valueChanged(color);
 
         return colorPickerButton.Control;
     }
 
-    private static Control CreateStringControl(MemberInfo member, Node node, Action<string> valueChanged)
+    private static Control CreateStringControl(object initialValue, Action<string> valueChanged)
     {
         LineEdit lineEdit = new()
         {
-            Text = VisualNodeHandler.GetMemberValue<string>(member, node)
+            Text = initialValue.ToString()
         };
 
         lineEdit.TextChanged += text => valueChanged(text);
@@ -506,10 +515,10 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateEnumControl(MemberInfo member, Node node, Type type, Action<object> valueChanged)
+    private static Control CreateEnumControl(object initialValue, Type type, Action<object> valueChanged)
     {
         GOptionButtonEnum optionButton = new(type);
-        optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
+        optionButton.Select(initialValue);
         optionButton.OnItemSelected += item => valueChanged(item);
 
         return optionButton.Control;
@@ -566,7 +575,7 @@ public static class VisualUIBuilder
     {
         HBoxContainer entryHBox = new();
 
-        Control control = CreateControlForType(null, node, type.GetElementType(), debugExportSpinBoxes, v =>
+        Control control = CreateControlForType(null, type.GetElementType(), debugExportSpinBoxes, v =>
         {
             //UpdateArrayValue(arrayVBox, providedValues, index, type);
             VisualNodeHandler.SetMemberValue(member, node, v);
@@ -721,7 +730,9 @@ public static class VisualUIBuilder
 
         Type type = VisualNodeHandler.GetMemberType(member);
 
-        Control element = CreateControlForType(member, node, type, debugExportSpinBoxes, v =>
+        object initialValue = VisualNodeHandler.GetMemberValue(member, node);
+
+        Control element = CreateControlForType(initialValue, type, debugExportSpinBoxes, v =>
         {
             VisualNodeHandler.SetMemberValue(member, node, v);
         });
