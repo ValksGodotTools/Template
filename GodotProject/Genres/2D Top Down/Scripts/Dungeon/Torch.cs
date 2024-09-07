@@ -1,5 +1,6 @@
 using Godot;
 using GodotUtils;
+using System.Collections.Generic;
 
 namespace Template;
 
@@ -38,8 +39,8 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Test(Color[] colorArray)
+    public void Test(List<Color> myList)
     {
-        Game.Log(colorArray.ToFormattedString());
+        Game.Log(myList.ToFormattedString());
     }
 }

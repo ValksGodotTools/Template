@@ -2,6 +2,7 @@
 using Godot;
 using GodotUtils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using static Godot.Control;
@@ -61,6 +62,7 @@ public static class VisualUIBuilder
             _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
             _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
@@ -82,6 +84,93 @@ public static class VisualUIBuilder
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateListControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
+    {
+        VBoxContainer listVBox = new()
+        {
+            SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
+        };
+
+        Button addButton = new() { Text = "+" };
+
+        Type elementType = type.GetGenericArguments()[0];
+        IList list = initialValue as IList ?? (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
+
+        void UpdateList()
+        {
+            // Create a new instance of the list element type
+            object newValue = Activator.CreateInstance(elementType);
+            list.Add(newValue);
+            valueChanged(list);
+
+            // Add a new entry to the UI
+            HBoxContainer hbox = new();
+
+            int newIndex = list.Count - 1;
+
+            Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
+            {
+                list[newIndex] = v;
+                valueChanged(list);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the list and the UI
+                int indexToRemove = listVBox.GetChildCount() - 2; // -2 because of the add button
+                listVBox.RemoveChild(hbox);
+                list.RemoveAt(indexToRemove);
+                valueChanged(list);
+
+                // Reorder the add button to always be at the bottom
+                listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(control);
+            hbox.AddChild(minusButton);
+            listVBox.AddChild(hbox);
+
+            // Reorder the add button to always be at the bottom
+            listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+        }
+
+        // Initialize the UI with the existing list elements
+        for (int i = 0; i < list.Count; i++)
+        {
+            HBoxContainer hbox = new();
+            object value = list[i];
+            Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
+            {
+                list[i] = v;
+                valueChanged(list);
+            });
+
+            Button minusButton = new() { Text = "-" };
+            minusButton.Pressed += () =>
+            {
+                // Remove the entry from the list and the UI
+                int indexToRemove = listVBox.GetChildCount() - 2; // -2 because of the add button
+                listVBox.RemoveChild(hbox);
+                list.RemoveAt(indexToRemove);
+                valueChanged(list);
+
+                // Reorder the add button to always be at the bottom
+                listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+            };
+
+            hbox.AddChild(control);
+            hbox.AddChild(minusButton);
+            listVBox.AddChild(hbox);
+        }
+
+        // Add a button to add more entries
+        addButton.Pressed += UpdateList;
+        listVBox.AddChild(addButton);
+
+        return listVBox;
     }
 
     private static Control CreateArrayControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<Array> valueChanged)
