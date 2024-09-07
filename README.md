@@ -502,10 +502,11 @@ Do a similar process when adding new states.
 ### Extensions
 
 #### Comprehensive Printing
-The `.PrintFull()` extension method outputs all public properties and fields of any object, including nodes, providing a detailed snapshot of the object's state.
+The `.PrintFormatted()` extension method outputs all public properties and fields of any object, including nodes, providing a detailed snapshot of the object's state.
 
 ```cs
-GD.Print(node.PrintFull());
+node.PrintFormatted(); // Prints results with GD.Print()
+Game.Log(node.ToFormattedString()); // .ToFormattedString() may be desired if you don't want to use GD.Print()
 ```
 
 #### Node Type Search
