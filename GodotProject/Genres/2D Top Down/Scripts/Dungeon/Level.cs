@@ -13,7 +13,7 @@ public partial class Level : Node, INetLevel
     [Export] RoomTransitions roomTransitions;
 
     public Player Player { get; set; }
-    public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = new();
+    public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = [];
 
     public override void _Ready()
     {
