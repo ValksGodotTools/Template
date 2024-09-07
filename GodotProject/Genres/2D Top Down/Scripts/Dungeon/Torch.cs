@@ -1,13 +1,12 @@
 using Godot;
+using GodotUtils;
 
 namespace Template;
 
 [Tool]
 public partial class Torch : Node2D
 {
-    [Visualize] Vector4I vec4;
-    [Visualize] protected static Color color = Colors.Blue;
-    [Visualize] [Export] double energy = 1;
+    [Visualize] Vector4 test;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
     [Export] float textureScale
@@ -23,6 +22,7 @@ public partial class Torch : Node2D
         }
     }
 
+    double energy = 1;
     PointLight2D light;
     float _textureScale = 1;
 
@@ -37,17 +37,9 @@ public partial class Torch : Node2D
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
 
-    public enum Test
-    {
-        One,
-        Two,
-        Three
-    }
-
     [Visualize]
-    public void TestMethod(Vector4 vec4, Color color, int someInt, bool someBool, Test test)
+    public void Test(Vector4 test)
     {
-        Game.Log(vec4, color, someInt, someBool, test);
+        Game.Log(test);
     }
 }
-
