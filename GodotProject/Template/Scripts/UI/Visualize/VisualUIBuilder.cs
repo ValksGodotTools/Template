@@ -24,443 +24,14 @@ public static class VisualUIBuilder
 
             hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
 
-            int index = i; // Capture the current value of i
+            providedValues[i] ??= default(Vector2);
 
-            if (paramType.IsNumericType())
-            {
-                SpinBox spinBox = CreateSpinBox(paramType);
+            int capturedIndex = i;
 
-                spinBox.ValueChanged += value =>
-                {
-                    object convertedValue = ConvertNumericValue(spinBox, value, paramType);
-                    providedValues[index] = convertedValue; // Use the captured index
-                };
+            Control control = CreateControlForType(null, null, typeof(Vector2), debugExportSpinBoxes,
+                v => providedValues[capturedIndex] = v);
 
-                hboxParams.AddChild(spinBox);
-            }
-            else if (paramType == typeof(string))
-            {
-                LineEdit lineEdit = new();
-
-                lineEdit.TextChanged += text =>
-                {
-                    providedValues[index] = text;
-                };
-
-                hboxParams.AddChild(lineEdit);
-            }
-            else if (paramType.IsEnum)
-            {
-                GOptionButtonEnum optionButton = new(paramType);
-
-                optionButton.OnItemSelected += item =>
-                {
-                    providedValues[index] = item;
-                };
-
-                hboxParams.AddChild(optionButton.Control);
-            }
-            else if (paramType == typeof(bool))
-            {
-                CheckBox checkBox = new();
-
-                checkBox.Toggled += value =>
-                {
-                    providedValues[index] = value;
-                    checkBox.ReleaseFocus();
-                };
-
-                hboxParams.AddChild(checkBox);
-            }
-            else if (paramType == typeof(Godot.Color))
-            {
-                GColorPickerButton colorPickerButton = new();
-
-                colorPickerButton.OnColorChanged += color =>
-                {
-                    providedValues[index] = color;
-                };
-
-                hboxParams.AddChild(colorPickerButton.Control);
-            }
-            else if (paramType == typeof(Godot.Vector2))
-            {
-                HBoxContainer vector2HBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(float));
-                SpinBox spinBoxY = CreateSpinBox(typeof(float));
-
-                spinBoxX.Step = 0.1;
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector2();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector2 vector2 = (Vector2)providedValues[index];
-                    vector2.X = (float)value;
-                    providedValues[index] = vector2;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector2 vector2 = (Vector2)providedValues[index];
-                    vector2.Y = (float)value;
-                    providedValues[index] = vector2;
-                };
-
-                vector2HBox.AddChild(new GLabel("X"));
-                vector2HBox.AddChild(spinBoxX);
-                vector2HBox.AddChild(new GLabel("Y"));
-                vector2HBox.AddChild(spinBoxY);
-
-                hboxParams.AddChild(vector2HBox);
-            }
-            else if (paramType == typeof(Godot.Vector2I))
-            {
-                HBoxContainer vector2IHBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(int));
-                SpinBox spinBoxY = CreateSpinBox(typeof(int));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector2I();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector2I vector2I = (Vector2I)providedValues[index];
-                    vector2I.X = (int)value;
-                    providedValues[index] = vector2I;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector2I vector2I = (Vector2I)providedValues[index];
-                    vector2I.Y = (int)value;
-                    providedValues[index] = vector2I;
-                };
-
-                vector2IHBox.AddChild(new GLabel("X"));
-                vector2IHBox.AddChild(spinBoxX);
-                vector2IHBox.AddChild(new GLabel("Y"));
-                vector2IHBox.AddChild(spinBoxY);
-
-                hboxParams.AddChild(vector2IHBox);
-            }
-            else if (paramType == typeof(Godot.Vector3))
-            {
-                HBoxContainer vector3HBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(float));
-                SpinBox spinBoxY = CreateSpinBox(typeof(float));
-                SpinBox spinBoxZ = CreateSpinBox(typeof(float));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector3();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector3 vector3 = (Vector3)providedValues[index];
-                    vector3.X = (float)value;
-                    providedValues[index] = vector3;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector3 vector3 = (Vector3)providedValues[index];
-                    vector3.Y = (float)value;
-                    providedValues[index] = vector3;
-                };
-
-                spinBoxZ.ValueChanged += value =>
-                {
-                    Vector3 vector3 = (Vector3)providedValues[index];
-                    vector3.Z = (float)value;
-                    providedValues[index] = vector3;
-                };
-
-                vector3HBox.AddChild(new GLabel("X"));
-                vector3HBox.AddChild(spinBoxX);
-                vector3HBox.AddChild(new GLabel("Y"));
-                vector3HBox.AddChild(spinBoxY);
-                vector3HBox.AddChild(new GLabel("Z"));
-                vector3HBox.AddChild(spinBoxZ);
-
-                hboxParams.AddChild(vector3HBox);
-            }
-            else if (paramType == typeof(Godot.Vector3I))
-            {
-                HBoxContainer vector3IHBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(int));
-                SpinBox spinBoxY = CreateSpinBox(typeof(int));
-                SpinBox spinBoxZ = CreateSpinBox(typeof(int));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector3I();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector3I vector3I = (Vector3I)providedValues[index];
-                    vector3I.X = (int)value;
-                    providedValues[index] = vector3I;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector3I vector3I = (Vector3I)providedValues[index];
-                    vector3I.Y = (int)value;
-                    providedValues[index] = vector3I;
-                };
-
-                spinBoxZ.ValueChanged += value =>
-                {
-                    Vector3I vector3I = (Vector3I)providedValues[index];
-                    vector3I.Z = (int)value;
-                    providedValues[index] = vector3I;
-                };
-
-                vector3IHBox.AddChild(new GLabel("X"));
-                vector3IHBox.AddChild(spinBoxX);
-                vector3IHBox.AddChild(new GLabel("Y"));
-                vector3IHBox.AddChild(spinBoxY);
-                vector3IHBox.AddChild(new GLabel("Z"));
-                vector3IHBox.AddChild(spinBoxZ);
-
-                hboxParams.AddChild(vector3IHBox);
-            }
-            else if (paramType == typeof(Godot.Vector4))
-            {
-                HBoxContainer vector4HBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(float));
-                SpinBox spinBoxY = CreateSpinBox(typeof(float));
-                SpinBox spinBoxZ = CreateSpinBox(typeof(float));
-                SpinBox spinBoxW = CreateSpinBox(typeof(float));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector4();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector4 vector4 = (Vector4)providedValues[index];
-                    vector4.X = (float)value;
-                    providedValues[index] = vector4;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector4 vector4 = (Vector4)providedValues[index];
-                    vector4.Y = (float)value;
-                    providedValues[index] = vector4;
-                };
-
-                spinBoxZ.ValueChanged += value =>
-                {
-                    Vector4 vector4 = (Vector4)providedValues[index];
-                    vector4.Z = (float)value;
-                    providedValues[index] = vector4;
-                };
-
-                spinBoxW.ValueChanged += value =>
-                {
-                    Vector4 vector4 = (Vector4)providedValues[index];
-                    vector4.W = (float)value;
-                    providedValues[index] = vector4;
-                };
-
-                vector4HBox.AddChild(new GLabel("X"));
-                vector4HBox.AddChild(spinBoxX);
-                vector4HBox.AddChild(new GLabel("Y"));
-                vector4HBox.AddChild(spinBoxY);
-                vector4HBox.AddChild(new GLabel("Z"));
-                vector4HBox.AddChild(spinBoxZ);
-                vector4HBox.AddChild(new GLabel("W"));
-                vector4HBox.AddChild(spinBoxW);
-
-                hboxParams.AddChild(vector4HBox);
-            }
-            else if (paramType == typeof(Godot.Vector4I))
-            {
-                HBoxContainer vector4IHBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(int));
-                SpinBox spinBoxY = CreateSpinBox(typeof(int));
-                SpinBox spinBoxZ = CreateSpinBox(typeof(int));
-                SpinBox spinBoxW = CreateSpinBox(typeof(int));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Vector4I();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Vector4I vector4I = (Vector4I)providedValues[index];
-                    vector4I.X = (int)value;
-                    providedValues[index] = vector4I;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Vector4I vector4I = (Vector4I)providedValues[index];
-                    vector4I.Y = (int)value;
-                    providedValues[index] = vector4I;
-                };
-
-                spinBoxZ.ValueChanged += value =>
-                {
-                    Vector4I vector4I = (Vector4I)providedValues[index];
-                    vector4I.Z = (int)value;
-                    providedValues[index] = vector4I;
-                };
-
-                spinBoxW.ValueChanged += value =>
-                {
-                    Vector4I vector4I = (Vector4I)providedValues[index];
-                    vector4I.W = (int)value;
-                    providedValues[index] = vector4I;
-                };
-
-                vector4IHBox.AddChild(new GLabel("X"));
-                vector4IHBox.AddChild(spinBoxX);
-                vector4IHBox.AddChild(new GLabel("Y"));
-                vector4IHBox.AddChild(spinBoxY);
-                vector4IHBox.AddChild(new GLabel("Z"));
-                vector4IHBox.AddChild(spinBoxZ);
-                vector4IHBox.AddChild(new GLabel("W"));
-                vector4IHBox.AddChild(spinBoxW);
-
-                hboxParams.AddChild(vector4IHBox);
-            }
-            else if (paramType == typeof(Godot.Quaternion))
-            {
-                HBoxContainer quaternionHBox = new();
-
-                SpinBox spinBoxX = CreateSpinBox(typeof(float));
-                SpinBox spinBoxY = CreateSpinBox(typeof(float));
-                SpinBox spinBoxZ = CreateSpinBox(typeof(float));
-                SpinBox spinBoxW = CreateSpinBox(typeof(float));
-
-                if (providedValues[index] == null)
-                {
-                    providedValues[index] = new Quaternion();
-                }
-
-                spinBoxX.ValueChanged += value =>
-                {
-                    Quaternion quaternion = (Quaternion)providedValues[index];
-                    quaternion.X = (float)value;
-                    providedValues[index] = quaternion;
-                };
-
-                spinBoxY.ValueChanged += value =>
-                {
-                    Quaternion quaternion = (Quaternion)providedValues[index];
-                    quaternion.Y = (float)value;
-                    providedValues[index] = quaternion;
-                };
-
-                spinBoxZ.ValueChanged += value =>
-                {
-                    Quaternion quaternion = (Quaternion)providedValues[index];
-                    quaternion.Z = (float)value;
-                    providedValues[index] = quaternion;
-                };
-
-                spinBoxW.ValueChanged += value =>
-                {
-                    Quaternion quaternion = (Quaternion)providedValues[index];
-                    quaternion.W = (float)value;
-                    providedValues[index] = quaternion;
-                };
-
-                quaternionHBox.AddChild(new GLabel("X"));
-                quaternionHBox.AddChild(spinBoxX);
-                quaternionHBox.AddChild(new GLabel("Y"));
-                quaternionHBox.AddChild(spinBoxY);
-                quaternionHBox.AddChild(new GLabel("Z"));
-                quaternionHBox.AddChild(spinBoxZ);
-                quaternionHBox.AddChild(new GLabel("W"));
-                quaternionHBox.AddChild(spinBoxW);
-
-                hboxParams.AddChild(quaternionHBox);
-            }
-            else if (paramType == typeof(object))
-            {
-                LineEdit lineEdit = new();
-
-                lineEdit.TextChanged += text =>
-                {
-                    providedValues[index] = text;
-                };
-
-                hboxParams.AddChild(lineEdit);
-            }
-            else if (paramType == typeof(NodePath))
-            {
-                LineEdit lineEdit = new();
-
-                lineEdit.TextChanged += text =>
-                {
-                    providedValues[index] = new NodePath(text);
-                };
-
-                hboxParams.AddChild(lineEdit);
-            }
-            else if (paramType == typeof(StringName))
-            {
-                LineEdit lineEdit = new();
-
-                lineEdit.TextChanged += text =>
-                {
-                    providedValues[index] = new StringName(text);
-                };
-
-                hboxParams.AddChild(lineEdit);
-            }
-            else if (paramType.IsArray)
-            {
-                VBoxContainer arrayVBox = new()
-                {
-                    SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand
-                };
-
-                // Create initial LineEdit for each element in the array
-                Array initialArray = (Array)providedValues[index];
-
-                if (initialArray != null)
-                {
-                    foreach (object item in initialArray)
-                    {
-                        AddArrayEntry(arrayVBox, item, providedValues, index, paramType.GetElementType());
-                    }
-                }
-
-                // Add a button to add more entries
-                Button addButton = new() { Text = "+" };
-
-                addButton.Pressed += () =>
-                {
-                    AddArrayEntry(arrayVBox, null, providedValues, index, paramType.GetElementType());
-
-                    // Reorder the add button to always be at the bottom
-                    arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
-                };
-
-                arrayVBox.AddChild(addButton);
-                hboxParams.AddChild(arrayVBox);
-            }
+            hboxParams.AddChild(control);
         }
 
         return hboxParams;
@@ -468,31 +39,31 @@ public static class VisualUIBuilder
     #endregion
 
     #region Control Types
-    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static Control CreateControlForType(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         return type switch
         {
             // Handle numeric, enum and array types
-            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes),
-            _ when type.IsEnum => CreateEnumControl(member, node, type),
+            _ when type.IsNumericType() => CreateNumericControl(member, node, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsEnum => CreateEnumControl(member, node, type, v => valueChanged(v)),
             _ when type.IsArray => CreateArrayControl(member, node, type),
 
             // Handle C# specific types
-            _ when type == typeof(bool) => CreateBoolControl(member, node),
-            _ when type == typeof(string) => CreateStringControl(member, node),
-            _ when type == typeof(object) => CreateObjectControl(member, node),
+            _ when type == typeof(bool) => CreateBoolControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(string) => CreateStringControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(object) => CreateObjectControl(member, node, v => valueChanged(v)),
 
             // Handle Godot specific types
-            _ when type == typeof(Godot.Color) => CreateColorControl(member, node),
-            _ when type == typeof(Godot.Vector2) => CreateVector2Control(member, node),
-            _ when type == typeof(Godot.Vector2I) => CreateVector2IControl(member, node),
-            _ when type == typeof(Godot.Vector3) => CreateVector3Control(member, node),
-            _ when type == typeof(Godot.Vector3I) => CreateVector3IControl(member, node),
-            _ when type == typeof(Godot.Vector4) => CreateVector4Control(member, node),
-            _ when type == typeof(Godot.Vector4I) => CreateVector4IControl(member, node),
-            _ when type == typeof(Godot.Quaternion) => CreateQuaternionControl(member, node),
-            _ when type == typeof(Godot.NodePath) => CreateNodePathControl(member, node),
-            _ when type == typeof(Godot.StringName) => CreateStringNameControl(member, node),
+            _ when type == typeof(Godot.Color) => CreateColorControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector2) => CreateVector2Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector2I) => CreateVector2IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector3) => CreateVector3Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector3I) => CreateVector3IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector4) => CreateVector4Control(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Vector4I) => CreateVector4IControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.Quaternion) => CreateQuaternionControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.NodePath) => CreateNodePathControl(member, node, v => valueChanged(v)),
+            _ when type == typeof(Godot.StringName) => CreateStringNameControl(member, node, v => valueChanged(v)),
 
             // Handle unsupported types
             _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
@@ -536,7 +107,7 @@ public static class VisualUIBuilder
         return arrayVBox;
     }
 
-    private static Control CreateStringNameControl(MemberInfo member, Node node)
+    private static Control CreateStringNameControl(MemberInfo member, Node node, Action<StringName> valueChanged)
     {
         StringName stringName = VisualNodeHandler.GetMemberValue<StringName>(member, node);
         string initialText = stringName != null ? stringName.ToString() : string.Empty;
@@ -548,13 +119,13 @@ public static class VisualUIBuilder
 
         lineEdit.TextChanged += text =>
         {
-            VisualNodeHandler.SetMemberValue(member, node, new StringName(text));
+            valueChanged(new StringName(text));
         };
 
         return lineEdit;
     }
 
-    private static Control CreateNodePathControl(MemberInfo member, Node node)
+    private static Control CreateNodePathControl(MemberInfo member, Node node, Action<NodePath> valueChanged)
     {
         NodePath nodePath = VisualNodeHandler.GetMemberValue<NodePath>(member, node);
 
@@ -567,13 +138,13 @@ public static class VisualUIBuilder
 
         lineEdit.TextChanged += text =>
         {
-            VisualNodeHandler.SetMemberValue(member, node, new NodePath(text));
+            valueChanged(new NodePath(text));
         };
 
         return lineEdit;
     }
 
-    private static Control CreateObjectControl(MemberInfo member, Node node)
+    private static Control CreateObjectControl(MemberInfo member, Node node, Action<object> valueChanged)
     {
         LineEdit lineEdit = new()
         {
@@ -582,13 +153,13 @@ public static class VisualUIBuilder
 
         lineEdit.TextChanged += text =>
         {
-            VisualNodeHandler.SetMemberValue(member, node, text);
+            valueChanged(text);
         };
 
         return lineEdit;
     }
 
-    private static Control CreateQuaternionControl(MemberInfo member, Node node)
+    private static Control CreateQuaternionControl(MemberInfo member, Node node, Action<Quaternion> valueChanged)
     {
         HBoxContainer quaternionHBox = new();
 
@@ -607,25 +178,25 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             quaternion.X = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+            valueChanged(quaternion);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             quaternion.Y = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+            valueChanged(quaternion);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             quaternion.Z = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+            valueChanged(quaternion);
         };
 
         spinBoxW.ValueChanged += value =>
         {
             quaternion.W = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, quaternion);
+            valueChanged(quaternion);
         };
 
         quaternionHBox.AddChild(new GLabel("X"));
@@ -640,7 +211,7 @@ public static class VisualUIBuilder
         return quaternionHBox;
     }
 
-    private static Control CreateVector2Control(MemberInfo member, Node node)
+    private static Control CreateVector2Control(MemberInfo member, Node node, Action<Vector2> valueChanged)
     {
         HBoxContainer vector2HBox = new();
 
@@ -655,13 +226,13 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector2.X = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector2);
+            valueChanged(vector2);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector2.Y = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector2);
+            valueChanged(vector2);
         };
 
         vector2HBox.AddChild(new GLabel("X"));
@@ -672,7 +243,7 @@ public static class VisualUIBuilder
         return vector2HBox;
     }
 
-    private static Control CreateVector2IControl(MemberInfo member, Node node)
+    private static Control CreateVector2IControl(MemberInfo member, Node node, Action<Vector2I> valueChanged)
     {
         HBoxContainer vector2IHBox = new();
 
@@ -687,13 +258,13 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector2I.X = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector2I);
+            valueChanged(vector2I);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector2I.Y = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector2I);
+            valueChanged(vector2I);
         };
 
         vector2IHBox.AddChild(new GLabel("X"));
@@ -704,7 +275,7 @@ public static class VisualUIBuilder
         return vector2IHBox;
     }
 
-    private static Control CreateVector3Control(MemberInfo member, Node node)
+    private static Control CreateVector3Control(MemberInfo member, Node node, Action<Vector3> valueChanged)
     {
         HBoxContainer vector3HBox = new();
 
@@ -721,19 +292,19 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector3.X = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3);
+            valueChanged(vector3);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector3.Y = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3);
+            valueChanged(vector3);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             vector3.Z = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3);
+            valueChanged(vector3);
         };
 
         vector3HBox.AddChild(new GLabel("X"));
@@ -746,7 +317,7 @@ public static class VisualUIBuilder
         return vector3HBox;
     }
 
-    private static Control CreateVector3IControl(MemberInfo member, Node node)
+    private static Control CreateVector3IControl(MemberInfo member, Node node, Action<Vector3I> valueChanged)
     {
         HBoxContainer vector3IHBox = new();
 
@@ -763,19 +334,19 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector3I.X = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3I);
+            valueChanged(vector3I);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector3I.Y = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3I);
+            valueChanged(vector3I);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             vector3I.Z = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector3I);
+            valueChanged(vector3I);
         };
 
         vector3IHBox.AddChild(new GLabel("X"));
@@ -788,7 +359,7 @@ public static class VisualUIBuilder
         return vector3IHBox;
     }
 
-    private static Control CreateVector4Control(MemberInfo member, Node node)
+    private static Control CreateVector4Control(MemberInfo member, Node node, Action<Vector4> valueChanged)
     {
         HBoxContainer vector4HBox = new();
 
@@ -807,25 +378,25 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector4.X = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4);
+            valueChanged(vector4);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector4.Y = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4);
+            valueChanged(vector4);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             vector4.Z = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4);
+            valueChanged(vector4);
         };
 
         spinBoxW.ValueChanged += value =>
         {
             vector4.W = (float)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4);
+            valueChanged(vector4);
         };
 
         vector4HBox.AddChild(new GLabel("X"));
@@ -840,7 +411,7 @@ public static class VisualUIBuilder
         return vector4HBox;
     }
 
-    private static Control CreateVector4IControl(MemberInfo member, Node node)
+    private static Control CreateVector4IControl(MemberInfo member, Node node, Action<Vector4I> valueChanged)
     {
         HBoxContainer vector4IHBox = new();
 
@@ -859,25 +430,25 @@ public static class VisualUIBuilder
         spinBoxX.ValueChanged += value =>
         {
             vector4I.X = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4I);
+            valueChanged(vector4I);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector4I.Y = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4I);
+            valueChanged(vector4I);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             vector4I.Z = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4I);
+            valueChanged(vector4I);
         };
 
         spinBoxW.ValueChanged += value =>
         {
             vector4I.W = (int)value;
-            VisualNodeHandler.SetMemberValue(member, node, vector4I);
+            valueChanged(vector4I);
         };
 
         vector4IHBox.AddChild(new GLabel("X"));
@@ -892,53 +463,54 @@ public static class VisualUIBuilder
         return vector4IHBox;
     }
 
-    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes)
+    private static Control CreateNumericControl(MemberInfo member, Node node, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<double> valueChanged)
     {
         SpinBox spinBox = CreateSpinBox(type);
 
         double value = VisualNodeHandler.GetMemberValue<double>(member, node);
 
         spinBox.Value = value;
-        spinBox.ValueChanged += value => VisualNodeHandler.SetMemberValue(member, node, value);
+        spinBox.ValueChanged += value => valueChanged(value);
 
         return spinBox;
     }
 
-    private static Control CreateBoolControl(MemberInfo member, Node node)
+    private static Control CreateBoolControl(MemberInfo member, Node node, Action<bool> valueChanged)
     {
         CheckBox checkBox = new()
         {
             ButtonPressed = VisualNodeHandler.GetMemberValue<bool>(member, node)
         };
-        checkBox.Toggled += value => VisualNodeHandler.SetMemberValue(member, node, value);
+        checkBox.Toggled += value => valueChanged(value);
 
         return checkBox;
     }
 
-    private static Control CreateColorControl(MemberInfo member, Node node)
+    private static Control CreateColorControl(MemberInfo member, Node node, Action<Color> valueChanged)
     {
         GColorPickerButton colorPickerButton = new(VisualNodeHandler.GetMemberValue<Color>(member, node));
-        colorPickerButton.OnColorChanged += color => VisualNodeHandler.SetMemberValue(member, node, color);
+        colorPickerButton.OnColorChanged += color => valueChanged(color);
 
         return colorPickerButton.Control;
     }
 
-    private static Control CreateStringControl(MemberInfo member, Node node)
+    private static Control CreateStringControl(MemberInfo member, Node node, Action<string> valueChanged)
     {
         LineEdit lineEdit = new()
         {
             Text = VisualNodeHandler.GetMemberValue<string>(member, node)
         };
-        lineEdit.TextChanged += text => VisualNodeHandler.SetMemberValue(member, node, text);
+
+        lineEdit.TextChanged += text => valueChanged(text);
 
         return lineEdit;
     }
 
-    private static Control CreateEnumControl(MemberInfo member, Node node, Type type)
+    private static Control CreateEnumControl(MemberInfo member, Node node, Type type, Action<object> valueChanged)
     {
         GOptionButtonEnum optionButton = new(type);
         optionButton.Select(VisualNodeHandler.GetMemberValue(member, node));
-        optionButton.OnItemSelected += item => VisualNodeHandler.SetMemberValue(member, node, item);
+        optionButton.OnItemSelected += item => valueChanged(item);
 
         return optionButton.Control;
     }
@@ -1142,7 +714,10 @@ public static class VisualUIBuilder
 
         Type type = VisualNodeHandler.GetMemberType(member);
 
-        Control element = CreateControlForType(member, node, type, debugExportSpinBoxes);
+        Control element = CreateControlForType(member, node, type, debugExportSpinBoxes, v =>
+        {
+            VisualNodeHandler.SetMemberValue(member, node, v);
+        });
 
         hbox.AddChild(element);
 

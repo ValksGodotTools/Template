@@ -62,6 +62,11 @@ public static class VisualNodeHandler
 
     public static T GetMemberValue<T>(MemberInfo member, object node)
     {
+        if (member == null)
+        {
+            return default;
+        }
+
         object value = member switch
         {
             FieldInfo fieldInfo when fieldInfo.IsStatic => fieldInfo.GetValue(null),
