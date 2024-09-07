@@ -580,7 +580,7 @@ A: Feel free to search for your issue in the repository's [issues section](https
 
 ## Contributing
 
-Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/Valks-Games/sankari/wiki/Code-Style). If you have any questions you can talk to me on Discord, my username is `valky5`.
+Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/ValksGodotTools/Template/wiki/Code-Style-Document). If you have any questions you can talk to me on Discord, my username is `valky5`.
 
 [![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues)
 [![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/help%20wanted?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp%20wanted)
