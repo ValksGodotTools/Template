@@ -257,7 +257,6 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Quaternion**    | Represents a rotation in 3D space.                                          |
 | **NodePath**      | Path to a node in the scene tree.                                           |
 | **StringName**    | Optimized string for performance.                                           |
-| **Array**         | Collection of elements of any supported type.                               |
 | **Methods**       | Functions that can take any supported types as parameters.                  |
 | **Static Members**| Class-level variables shared across all instances.                          |
 
@@ -273,9 +272,6 @@ public partial class Player : CharacterBody2D
 
     [Visualize]
     private static int TotalPlayers;
-
-    [Visualize]
-    private int[] highScores = [20, 35, 90, 100];
 
     [Visualize]
     public void ApplyDamage(int damageAmount, string source)
