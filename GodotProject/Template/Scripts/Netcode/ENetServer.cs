@@ -107,7 +107,7 @@ public abstract class ENetServer : ENetLow
 
         if (!IgnoredPackets.Contains(type) && options.PrintPacketSent)
             Log($"Sending packet {type.Name} {FormatByteSize(packet.GetSize())}to client {peer.ID}" +
-                $"{(options.PrintPacketData ? $"\n{packet.PrintFull()}" : "")}");
+                $"{(options.PrintPacketData ? $"\n{packet.ToFormattedString()}" : "")}");
 
         packet.SetSendType(SendType.Peer);
         packet.SetPeer(peer);
@@ -134,13 +134,13 @@ public abstract class ENetServer : ENetLow
             string byteSize = options.PrintPacketByteSize ?
                 $"({packet.GetSize()} bytes)" : "";
 
-            string peerArr = clients.Select(x => x.ID).Print();
+            string peerArr = clients.Select(x => x.ID).ToFormattedString();
 
             string message = $"Broadcasting packet {type.Name} {byteSize}" + (clients.Length == 0 ?
                  "to everyone" : clients.Length == 1 ?
                 $"to everyone except peer {peerArr}" :
                 $"to peers {peerArr}") + (options.PrintPacketData ?
-                $"\n{packet.PrintFull()}" : "");
+                $"\n{packet.ToFormattedString()}" : "");
 
             Log(message);
         }
@@ -271,7 +271,7 @@ public abstract class ENetServer : ENetLow
 
             if (!IgnoredPackets.Contains(type) && options.PrintPacketReceived)
                 Log($"Received packet: {type.Name} from client {packetPeer.Item2.ID}" +
-                    $"{(options.PrintPacketData ? $"\n{handlePacket.PrintFull()}" : "")}", BBColor.LightGreen);
+                    $"{(options.PrintPacketData ? $"\n{handlePacket.ToFormattedString()}" : "")}", BBColor.LightGreen);
         }
 
         // Outgoing

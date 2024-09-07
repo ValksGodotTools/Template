@@ -67,10 +67,10 @@ public partial class UIModLoader : Node
         uiGameVersion.Text = modInfo.GameVersion;
 
         uiDependencies.Text = modInfo.Dependencies.Count != 0 ? 
-            modInfo.Dependencies.Print() : "None";
+            modInfo.Dependencies.ToFormattedString() : "None";
 
         uiIncompatibilities.Text = modInfo.Incompatibilities.Count != 0 ? 
-            modInfo.Incompatibilities.Print() : "None";
+            modInfo.Incompatibilities.ToFormattedString() : "None";
 
         uiDescription.Text = !string.IsNullOrWhiteSpace(modInfo.Description) ? 
             modInfo.Description : "The author did not set a description for this mod";

@@ -11,7 +11,7 @@ public partial class UIConsole
     {
         IEnumerable<string> cmds = Game.Console.Commands.Select(x => x.Name);
 
-        Game.Log(cmds.Print());
+        Game.Log(cmds.ToFormattedString());
     }
 
     [ConsoleCommand("quit", "exit")]
