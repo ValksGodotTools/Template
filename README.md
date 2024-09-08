@@ -246,7 +246,7 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 
 #### Supported Members
 
-| Member Type       | Supported  | Types                                         | Additional Notes                                                      |
+| Member Type       | Supported  | Example Types                                 | Additional Notes                                                      |
 |-------------------|------------|-----------------------------------------------|-----------------------------------------------------------------------|
 | **Numericals**    | ✅         | `int`, `float`, `double`                      | All numerical types are supported                                     |
 | **Enums**         | ✅         | `Direction`, `Colors`                         | All enum types are supported                                          |
