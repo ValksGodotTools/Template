@@ -84,7 +84,6 @@ public static class VisualUIBuilder
         };
 
         Button addButton = new() { Text = "+" };
-        dictionaryVBox.AddChild(addButton);
 
         Type[] genericArguments = type.GetGenericArguments();
 
@@ -96,16 +95,141 @@ public static class VisualUIBuilder
 
         IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
 
-        DictionaryControlContext context = new(keyType, valueType, defaultKey, defaultValue, dictionary, dictionaryVBox, debugExportSpinBoxes, valueChanged, addButton);
-
         // Add the initial values to the UI
         foreach (DictionaryEntry entry in dictionary)
         {
-            AddEntryToDictionary(entry.Key, entry.Value, context);
+            HBoxContainer hbox = new();
+
+            object key = entry.Key;
+            object value = entry.Value;
+
+            // The control for changing the value of the dictionary
+            Control valueControl = CreateControlForType(value, valueType, debugExportSpinBoxes, v =>
+            {
+                dictionary[key] = v;
+                valueChanged(dictionary);
+            });
+
+            // The control for changing the key of the dictionary
+            Control keyControl = CreateControlForType(key, keyType, debugExportSpinBoxes, v =>
+            {
+                if (dictionary.Contains(v))
+                {
+                    // This key exists already, do nothing
+                }
+                else
+                {
+                    if (v.GetType() != keyType)
+                    {
+                        throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    }
+                    else
+                    {
+                        // This key does not exist, remove the old key and add the new key
+                        dictionary.Remove(key);
+                        dictionary[v] = value;
+
+                        // Update key with the new key
+                        key = v;
+
+                        valueChanged(dictionary);
+
+                        // Visually reset the value for this dictionary back to the default value
+                        ResetControlType(valueControl, defaultValue);
+                    }
+                }
+            });
+
+            GButton removeKeyEntryButton = new("-");
+
+            removeKeyEntryButton.Pressed += () =>
+            {
+                dictionaryVBox.RemoveChild(hbox);
+                dictionary.Remove(key);
+                valueChanged(dictionary);
+            };
+
+            hbox.AddChild(keyControl);
+            hbox.AddChild(valueControl);
+            hbox.AddChild(removeKeyEntryButton);
+
+            dictionaryVBox.AddChild(hbox);
+        }
+
+        void AddNewEntryToDictionary()
+        {
+            HBoxContainer hbox = new();
+
+            // Check if the defaultKey exists in the dictionary, if it does not then add it with
+            // the default value
+            if (!dictionary.Contains(defaultKey))
+            {
+                dictionary[defaultKey] = defaultValue;
+                valueChanged(dictionary);
+            }
+
+            // Keep track of the old key
+            object oldKey = defaultKey;
+
+            // The control for changing the value of the dictionary
+            Control valueControl = CreateControlForType(defaultValue, valueType, debugExportSpinBoxes, v =>
+            {
+                dictionary[oldKey] = v;
+                valueChanged(dictionary);
+            });
+
+            // The control for changing the key of the dictionary
+            Control keyControl = CreateControlForType(defaultKey, keyType, debugExportSpinBoxes, v =>
+            {
+                if (dictionary.Contains(v))
+                {
+                    // This key exists already, do nothing
+                }
+                else
+                {
+                    if (v.GetType() != keyType)
+                    {
+                        throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    }
+                    else
+                    {
+                        // This key does not exist, remove the old key and add the new key
+                        dictionary.Remove(oldKey);
+                        dictionary[v] = defaultValue;
+
+                        // Update old key with the new key
+                        oldKey = v;
+
+                        valueChanged(dictionary);
+
+                        // Visually reset the value for this dictionary back to the default value
+                        ResetControlType(valueControl, defaultValue);
+                    }
+                }
+            });
+
+            GButton removeKeyEntryButton = new("-");
+
+            removeKeyEntryButton.Pressed += () =>
+            {
+                dictionaryVBox.RemoveChild(hbox);
+                dictionary.Remove(oldKey);
+                valueChanged(dictionary);
+            };
+
+            hbox.AddChild(keyControl);
+            hbox.AddChild(valueControl);
+            hbox.AddChild(removeKeyEntryButton);
+
+            dictionaryVBox.AddChild(hbox);
+
+            // Reorder the add button to always be at the bottom
+            dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
         }
 
         // Add a button to add more entries
-        addButton.Pressed += () => AddEntryToDictionary(defaultKey, defaultValue, context);
+        addButton.Pressed += AddNewEntryToDictionary;
+        dictionaryVBox.AddChild(addButton);
 
         return dictionaryVBox;
     }
@@ -763,66 +887,6 @@ public static class VisualUIBuilder
         // Implement more control types here
     }
 
-    private static void AddEntryToDictionary(object key, object value, DictionaryControlContext context)
-    {
-        HBoxContainer hbox = new();
-
-        // The control for changing the value of the dictionary
-        Control valueControl = CreateControlForType(value, context.ValueType, context.DebugExportSpinBoxes, v =>
-        {
-            context.Dictionary[key] = v;
-            context.ValueChanged(context.Dictionary);
-        });
-
-        // The control for changing the key of the dictionary
-        Control keyControl = CreateControlForType(key, context.KeyType, context.DebugExportSpinBoxes, v =>
-        {
-            if (context.Dictionary.Contains(v))
-            {
-                // This key exists already, do nothing
-            }
-            else
-            {
-                if (v.GetType() != context.KeyType)
-                {
-                    throw new ArgumentException($"Type mismatch: Expected {context.KeyType}, got {v.GetType()}");
-                }
-                else
-                {
-                    // This key does not exist, remove the old key and add the new key
-                    context.Dictionary.Remove(key);
-                    context.Dictionary[v] = value;
-
-                    // Update key with the new key
-                    key = v;
-
-                    context.ValueChanged(context.Dictionary);
-
-                    // Visually reset the value for this dictionary back to the default value
-                    ResetControlType(valueControl, context.DefaultValue);
-                }
-            }
-        });
-
-        GButton removeKeyEntryButton = new("-");
-
-        removeKeyEntryButton.Pressed += () =>
-        {
-            context.VboxEntries.RemoveChild(hbox);
-            context.Dictionary.Remove(key);
-            context.ValueChanged(context.Dictionary);
-        };
-
-        hbox.AddChild(keyControl);
-        hbox.AddChild(valueControl);
-        hbox.AddChild(removeKeyEntryButton);
-
-        context.VboxEntries.AddChild(hbox);
-
-        // Reorder the add button to always be at the bottom
-        context.VboxEntries.MoveChild(context.AddButton, context.VboxEntries.GetChildCount() - 1);
-    }
-
     // Helper method to remove an element from an array
     private static Array RemoveAt(this Array source, int index)
     {
@@ -971,7 +1035,5 @@ public static class VisualUIBuilder
 
         return spinBox;
     }
-
-    private record DictionaryControlContext(Type KeyType, Type ValueType, object DefaultKey, object DefaultValue, IDictionary Dictionary, VBoxContainer VboxEntries, List<DebugVisualSpinBox> DebugExportSpinBoxes, Action<IDictionary> ValueChanged, Button AddButton);
     #endregion
 }
