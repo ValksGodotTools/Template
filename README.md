@@ -252,7 +252,7 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Enums**         | ✅         | `Direction.North`, `Colors.Red`                |
 | **Booleans**      | ✅         | `true`, `false`                               |
 | **Strings**       | ✅         | `"Hello, World!"`, `"Godot"`                  |
-| **Godot.Color**   | ✅         | `Colors.Red`                                  |
+| **Color**         | ✅         | `Colors.Red`                                  |
 | **Vectors**       | ✅         | `Vector2`, `Vector2I`, `Vector3`, `Vector3I`, `Vector4`, `Vector4I` |
 | **Quaternion**    | ✅         | `Quaternion.Identity`                         |
 | **NodePath**      | ✅         | `NodePath("Path/To/Node")`                    |
