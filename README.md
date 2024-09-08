@@ -260,45 +260,21 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Methods**       | ✅         | `MyMethod()`, `Calculate(x, y, z)`            |
 | **Static Members**| ✅         | `static void MyStaticMethod(x, y, z)`, `static Color uniqueColor` |
 | **Arrays**        | ✅         | `int[]`, `string[]`, `Vector2[]`              |
-| **Lists**         | ✅         | `List<int>`, `List<string>`, `List<Vector2>`  |
-| **Dictionaries**  | ✅         | `Dictionary<int, string>`, `Dictionary<string, Vector2>` |
+| **Lists**         | ✅         | `List<int>`, `List<string[]>`, `List<Vector2>`  |
+| **Dictionaries**  | ✅         | `Dictionary<int, string>`, `Dictionary<List<Color[]>, Vector2>` |
 
 #### Visualizing Player
 ```cs
 public partial class Player : CharacterBody2D
 {
-    [Visualize]
-    public int Health { get; set; }
+    [Visualize] public Dictionary<int, List<Color>> Health { get; set; }
+    [Visualize] private static int TotalPlayers;
 
     [Visualize]
-    protected WeaponType CurrentWeapon;
+    public void ApplyDamage(int damageAmount, string source) {}
 
     [Visualize]
-    private static int TotalPlayers;
-
-    [Visualize]
-    public void ApplyDamage(int damageAmount, string source)
-    {
-        Health -= damageAmount;
-        GD.Print($"Player took {damageAmount} damage from {source}! Health is now {Health}.");
-    }
-
-    [Visualize]
-    public void ChangeWeapon(WeaponType newWeapon, bool isSilent)
-    {
-        CurrentWeapon = newWeapon;
-        if (!isSilent)
-        {
-            GD.Print($"Weapon changed to {newWeapon}.");
-        }
-    }
-
-    [Visualize]
-    public static void IncrementPlayerCount()
-    {
-        TotalPlayers++;
-        GD.Print($"Total players: {TotalPlayers}.");
-    }
+    public static void IncrementPlayerCount() {}
 }
 ```
 
@@ -308,10 +284,7 @@ You might prefer not to have the visual panel initially created at (0, 0) when v
 
 ```csharp
 [Visualize(200, 200)] // The visual panel will initially be positioned at (200, 200)
-public partial class SomeUINode
-{
-    // ...
-}
+public partial class SomeUINode {}
 ```
 
 By annotating your members with `[Visualize]`, you can streamline the debugging process and gain real-time insights into your game's state and behavior.
