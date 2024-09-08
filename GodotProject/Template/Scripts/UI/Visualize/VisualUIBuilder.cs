@@ -958,7 +958,27 @@ public static class VisualUIBuilder
             // All debug UI elements should not be influenced by the game world environments lighting
             vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
 
+            // Add vbox to scene tree to get vbox.Size for later
             node.AddChild(vbox);
+
+            RigidBody2D rigidBody = new();
+            rigidBody.GravityScale = 0;
+            rigidBody.LockRotation = true;
+            rigidBody.SetCollisionLayerAndMask(32);
+            CollisionShape2D collision = new()
+            {
+                Shape = new RectangleShape2D()
+                {
+                    Size = vbox.Size
+                },
+                Position = vbox.Size / 2
+            };
+            rigidBody.AddChild(collision);
+
+            // Reparent vbox to rigidbody
+            vbox.GetParent().RemoveChild(vbox);
+            rigidBody.AddChild(vbox);
+            node.AddChild(rigidBody);
 
             const float INFO_PANEL_SCALE_FACTOR = 0.6f;
 
