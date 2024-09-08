@@ -206,8 +206,9 @@ public static class VisualUIBuilder
             Button minusButton = new() { Text = "-" };
             minusButton.Pressed += () =>
             {
+                int indexToRemove = minusButton.GetParent().GetIndex();
                 listVBox.RemoveChild(hbox);
-                list.RemoveAt(newIndex);
+                list.RemoveAt(indexToRemove);
                 valueChanged(list);
             };
 
@@ -231,16 +232,13 @@ public static class VisualUIBuilder
             });
 
             Button minusButton = new() { Text = "-" };
+
             minusButton.Pressed += () =>
             {
-                // Remove the entry from the list and the UI
-                int indexToRemove = listVBox.GetChildCount() - 2; // -2 because of the add button
+                int indexToRemove = minusButton.GetParent().GetIndex();
                 listVBox.RemoveChild(hbox);
                 list.RemoveAt(indexToRemove);
                 valueChanged(list);
-
-                // Reorder the add button to always be at the bottom
-                listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
             };
 
             hbox.AddChild(control);
@@ -289,10 +287,12 @@ public static class VisualUIBuilder
             });
 
             Button minusButton = new() { Text = "-" };
+
             minusButton.Pressed += () =>
             {
+                int indexToRemove = minusButton.GetParent().GetIndex();
                 arrayVBox.RemoveChild(hbox);
-                array = array.RemoveAt(newIndex);
+                array = array.RemoveAt(indexToRemove);
                 valueChanged(array);
             };
 
@@ -318,14 +318,10 @@ public static class VisualUIBuilder
             Button minusButton = new() { Text = "-" };
             minusButton.Pressed += () =>
             {
-                // Remove the entry from the array and the UI
-                int indexToRemove = arrayVBox.GetChildCount() - 2; // -2 because of the add button
+                int indexToRemove = minusButton.GetParent().GetIndex();
                 arrayVBox.RemoveChild(hbox);
                 array = array.RemoveAt(indexToRemove);
                 valueChanged(array);
-
-                // Reorder the add button to always be at the bottom
-                arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
             };
 
             hbox.AddChild(control);
@@ -834,9 +830,14 @@ public static class VisualUIBuilder
     private static Array RemoveAt(this Array source, int index)
     {
         if (source == null)
+        {
             throw new ArgumentNullException(nameof(source));
+        }
+            
         if (index < 0 || index >= source.Length)
-            throw new ArgumentOutOfRangeException(nameof(index));
+        {
+            throw new ArgumentOutOfRangeException(nameof(index), index, $"Index was out of range");
+        }   
 
         Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
         Array.Copy(source, 0, dest, 0, index);
