@@ -947,34 +947,34 @@ public static class VisualUIBuilder
         {
             Node node = debugVisualNode.Node;
 
-            VBoxContainer vbox = CreateVisualContainer(node.Name);
+            VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
 
-            AddMemberInfoElements(vbox, debugVisualNode.Properties, node, debugExportSpinBoxes);
+            AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, debugExportSpinBoxes);
 
-            AddMemberInfoElements(vbox, debugVisualNode.Fields, node, debugExportSpinBoxes);
+            AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
 
-            AddMethodInfoElements(vbox, debugVisualNode.Methods, node, debugExportSpinBoxes);
-
-            // All debug UI elements should not be influenced by the game world environments lighting
-            vbox.GetChildren<Control>().ForEach(child => child.SetUnshaded());
+            AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
 
             // Add vbox to scene tree to get vbox.Size for later
-            node.AddChild(vbox);
+            node.AddChild(vboxMembers);
 
-            RigidBody2D rigidBody = CreateRigidBody(vbox);
+            RigidBody2D rigidBody = CreateRigidBody(vboxMembers);
 
             // Reparent vbox to rigidbody
-            vbox.GetParent().RemoveChild(vbox);
-            rigidBody.AddChild(vbox);
+            vboxMembers.GetParent().RemoveChild(vboxMembers);
+            rigidBody.AddChild(vboxMembers);
             node.AddChild(rigidBody);
+
+            // All debug UI elements should not be influenced by the game world environments lighting
+            node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
 
             const float INFO_PANEL_SCALE_FACTOR = 0.6f;
 
-            vbox.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
+            vboxMembers.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
 
             if (debugVisualNode.InitialPosition != Vector2.Zero)
             {
-                vbox.GlobalPosition = debugVisualNode.InitialPosition;
+                vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
             }
         }
     }
