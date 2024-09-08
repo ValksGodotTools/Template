@@ -2,7 +2,6 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/network)
-[![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/watchers)
 [![License](https://img.shields.io/github/license/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/blob/main/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/commits/main)
 [![Contributors](https://img.shields.io/github/contributors/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/graphs/contributors)
