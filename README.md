@@ -263,7 +263,7 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Lists**         | ✅         | `List<int>`, `List<string[]>`, `List<Vector2>`  |
 | **Dictionaries**  | ✅         | `Dictionary<int, string>`, `Dictionary<List<Color[]>, Vector2>` |
 
-#### Visualizing Player
+#### Example Usage
 ```cs
 public partial class Player : CharacterBody2D
 {
@@ -278,7 +278,7 @@ public partial class Player : CharacterBody2D
 }
 ```
 
-#### Visualizing Nodes at a Specific Position
+#### Visualizing Info at a Specific Position
 
 You might prefer not to have the visual panel initially created at (0, 0) when visualizing members within a UI node that is always positioned at (0, 0). This can be easily adjusted by adding the `[Visualize(x, y)]` attribute at the top of the class. This attribute will set the initial position of the visual panel to the specified coordinates.
 
