@@ -77,10 +77,10 @@ public static class VisualUIBuilder
             _ => null
         };
 
-        /*if (control == null)
+        if (control == null)
         {
-            GD.Print($"The type '{type}' is not supported for {nameof(VisualizeAttribute)}");
-        }*/
+            GD.PushWarning($"The type '{type}' is not supported for the {nameof(VisualizeAttribute)}");
+        }
 
         return control;
     }
