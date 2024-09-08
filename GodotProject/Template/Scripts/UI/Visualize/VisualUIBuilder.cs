@@ -118,74 +118,29 @@ public static class VisualUIBuilder
         };
 
         Button addButton = new() { Text = "+" };
+        listVBox.AddChild(addButton);
 
         Type elementType = type.GetGenericArguments()[0];
         IList list = initialValue as IList ?? (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
 
-        void AddNewEntryToList()
+        ListControlContext context = new(elementType, listVBox, list, debugExportSpinBoxes, addButton, valueChanged);
+
+        // Create a temporary list to avoid modifying the original list during iteration
+        List<object> tempList = [];
+
+        foreach (object item in list)
         {
-            // Create a new instance of the list element type
-            object newValue = CreateDefaultValue(elementType);
-            list.Add(newValue);
-            valueChanged(list);
-
-            // Add a new entry to the UI
-            HBoxContainer hbox = new();
-
-            int newIndex = list.Count - 1;
-
-            Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
-            {
-                list[newIndex] = v;
-                valueChanged(list);
-            });
-
-            Button minusButton = new() { Text = "-" };
-            minusButton.Pressed += () =>
-            {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                listVBox.RemoveChild(hbox);
-                list.RemoveAt(indexToRemove);
-                valueChanged(list);
-            };
-
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            listVBox.AddChild(hbox);
-
-            // Reorder the add button to always be at the bottom
-            listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+            tempList.Add(item);
         }
 
         // Initialize the UI with the existing list elements
-        for (int i = 0; i < list.Count; i++)
+        foreach (object item in tempList)
         {
-            HBoxContainer hbox = new();
-            object value = list[i];
-            Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
-            {
-                list[i] = v;
-                valueChanged(list);
-            });
-
-            Button minusButton = new() { Text = "-" };
-
-            minusButton.Pressed += () =>
-            {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                listVBox.RemoveChild(hbox);
-                list.RemoveAt(indexToRemove);
-                valueChanged(list);
-            };
-
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            listVBox.AddChild(hbox);
+            AddEntryToList(item, context);
         }
 
         // Add a button to add more entries
-        addButton.Pressed += AddNewEntryToList;
-        listVBox.AddChild(addButton);
+        addButton.Pressed += () => AddEntryToList(CreateDefaultValue(context.ElementType), context);
 
         return listVBox;
     }
@@ -823,6 +778,39 @@ public static class VisualUIBuilder
         context.VboxEntries.MoveChild(context.AddButton, context.VboxEntries.GetChildCount() - 1);
     }
 
+    private static void AddEntryToList(object value, ListControlContext context)
+    {
+        context.List.Add(value);
+        context.ValueChanged(context.List);
+
+        // Add a new entry to the UI
+        HBoxContainer hbox = new();
+
+        int newIndex = context.List.Count - 1;
+
+        Control control = CreateControlForType(value, context.ElementType, context.DebugExportSpinBoxes, v =>
+        {
+            context.List[newIndex] = v;
+            context.ValueChanged(context.List);
+        });
+
+        Button minusButton = new() { Text = "-" };
+        minusButton.Pressed += () =>
+        {
+            int indexToRemove = minusButton.GetParent().GetIndex();
+            context.ListVBox.RemoveChild(hbox);
+            context.List.RemoveAt(indexToRemove);
+            context.ValueChanged(context.List);
+        };
+
+        hbox.AddChild(control);
+        hbox.AddChild(minusButton);
+        context.ListVBox.AddChild(hbox);
+
+        // Reorder the add button to always be at the bottom
+        context.ListVBox.MoveChild(context.AddButton, context.ListVBox.GetChildCount() - 1);
+    }
+
     // Helper method to remove an element from an array
     private static Array RemoveAt(this Array source, int index)
     {
@@ -973,5 +961,7 @@ public static class VisualUIBuilder
     }
 
     private record DictionaryControlContext(Type KeyType, Type ValueType, object DefaultKey, object DefaultValue, IDictionary Dictionary, VBoxContainer VboxEntries, List<DebugVisualSpinBox> DebugExportSpinBoxes, Action<IDictionary> ValueChanged, Button AddButton);
+    private record ListControlContext(Type ElementType, VBoxContainer ListVBox, IList List, List<DebugVisualSpinBox> DebugExportSpinBoxes, Button AddButton, Action<IList> ValueChanged);
+    
     #endregion
 }
