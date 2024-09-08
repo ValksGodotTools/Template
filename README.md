@@ -261,7 +261,7 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Static Members**| ✅         | `static void MyStaticMethod(x, y, z)`, `static Color uniqueColor` |
 | **Arrays**        | ✅         | `int[]`, `string[]`, `Vector2[]`              |
 | **Lists**         | ✅         | `List<int>`, `List<string>`, `List<Vector2>`  |
-| **Dictionaries**  | ❌         | `Dictionary<int, string>`, `Dictionary<string, Vector2>` |
+| **Dictionaries**  | ✅         | `Dictionary<int, string>`, `Dictionary<string, Vector2>` |
 
 #### Visualizing Player
 ```cs
