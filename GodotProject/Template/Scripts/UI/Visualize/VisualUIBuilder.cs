@@ -85,11 +85,23 @@ public static class VisualUIBuilder
 
     private static Control CreateClassControl(object target, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
-        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
         PropertyInfo[] properties = type.GetProperties(flags);
-        FieldInfo[] fields = type.GetFields(flags);
-        MethodInfo[] methods = type.GetMethods(flags | BindingFlags.DeclaredOnly);
+
+        FieldInfo[] allFields = type.GetFields(flags);
+
+        // Filter out fields that are backing fields for properties
+        FieldInfo[] nonBackingFields = allFields
+            .Where(f => !f.Name.StartsWith("<") || !f.Name.EndsWith(">k__BackingField"))
+            .ToArray();
+
+        MethodInfo[] allMethods = type.GetMethods(flags);
+
+        // Filter out methods that are property accessors
+        MethodInfo[] nonPropertyMethods = allMethods
+            .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))
+            .ToArray();
 
         VBoxContainer vbox = new();
 
@@ -105,11 +117,14 @@ public static class VisualUIBuilder
 
             if (control != null)
             {
-                vbox.AddChild(control);
+                HBoxContainer hbox = new();
+                hbox.AddChild(new GLabel(property.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
+                hbox.AddChild(control);
+                vbox.AddChild(hbox);
             }
         }
 
-        foreach (FieldInfo field in fields)
+        foreach (FieldInfo field in nonBackingFields)
         {
             object initialValue = field.GetValue(target);
 
@@ -121,11 +136,27 @@ public static class VisualUIBuilder
 
             if (control != null)
             {
-                vbox.AddChild(control);
+                if (control is SpinBox spinBox)
+                {
+                    spinBox.Editable = !field.IsLiteral;
+                }
+                else if (control is LineEdit lineEdit)
+                {
+                    lineEdit.Editable = !field.IsLiteral;
+                }
+                else if (control is BaseButton baseButton)
+                {
+                    baseButton.Disabled = field.IsLiteral;
+                }
+
+                HBoxContainer hbox = new();
+                hbox.AddChild(new GLabel(field.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
+                hbox.AddChild(control);
+                vbox.AddChild(hbox);
             }
         }
 
-        foreach (MethodInfo method in methods)
+        foreach (MethodInfo method in nonPropertyMethods)
         {
             ParameterInfo[] paramInfos = method.GetParameters();
             object[] providedValues = new object[paramInfos.Length];
