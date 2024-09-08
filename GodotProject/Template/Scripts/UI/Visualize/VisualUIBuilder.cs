@@ -97,113 +97,73 @@ public static class VisualUIBuilder
         Button addButton = new() { Text = "+" };
 
         Type[] genericArguments = type.GetGenericArguments();
+
         Type keyType = genericArguments[0];
         Type valueType = genericArguments[1];
 
         IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
 
-        void UpdateDictionary()
+        void AddNewEntryToDictionary()
         {
-            // Create a new key and value
-            object newKey = Activator.CreateInstance(keyType);
-            object newValue = Activator.CreateInstance(valueType);
-
-            // Add the new key-value pair to the dictionary
-            dictionary[newKey] = newValue;
-            valueChanged(dictionary);
-
-            // Add a new entry to the UI
             HBoxContainer hbox = new();
 
-            //////////////////////////// Capture the dictionary and newKey/newValue
-            IDictionary capturedDictionary = dictionary;
-            object capturedNewKey = newKey;
-            object capturedNewValue = newValue;
+            object defaultKey = Activator.CreateInstance(keyType);
+            object defaultValue = Activator.CreateInstance(valueType);
 
-            Control keyControl = CreateControlForType(newKey, keyType, debugExportSpinBoxes, v =>
+            // Check if the defaultKey exists in the dictionary, if it does not then add it with
+            // the default value
+            if (!dictionary.Contains(defaultKey))
             {
-                capturedNewKey = v;
-                capturedDictionary[capturedNewKey] = capturedNewValue;
-                valueChanged(capturedDictionary);
+                dictionary[defaultKey] = defaultValue;
+                valueChanged(dictionary);
+            }
+
+            object oldKey = defaultKey;
+
+            // The control for changing the value of the dictionary
+            Control valueControl = CreateControlForType(defaultValue, valueType, debugExportSpinBoxes, v =>
+            {
+                dictionary[oldKey] = v;
+                valueChanged(dictionary);
             });
 
-            Control valueControl = CreateControlForType(newValue, valueType, debugExportSpinBoxes, v =>
+            // The control for changing the key of the dictionary
+            Control keyControl = CreateControlForType(defaultKey, keyType, debugExportSpinBoxes, v =>
             {
-                capturedNewValue = v;
-                capturedDictionary[capturedNewKey] = capturedNewValue;
-                valueChanged(capturedDictionary);
+                if (dictionary.Contains(v))
+                {
+                    // This key exists already, do nothing
+                }
+                else
+                {
+                    // This key does not exist, remove the old key and add the new key
+                    dictionary.Remove(oldKey);
+                    dictionary[v] = defaultValue;
+
+                    // Keep track of the new old key
+                    oldKey = v;
+
+                    valueChanged(dictionary);
+
+                    // Update the ColorPickerButton's color to the default value
+                    if (valueControl is ColorPickerButton colorPickerButton)
+                    {
+                        colorPickerButton.Color = (Color)defaultValue;
+                    }
+                }
             });
-
-            Button minusButton = new() { Text = "-" };
-            minusButton.Pressed += () =>
-            {
-                // Remove the entry from the dictionary and the UI
-                int indexToRemove = dictionaryVBox.GetChildCount() - 2; // -2 because of the add button
-                dictionaryVBox.RemoveChild(hbox);
-                capturedDictionary.Remove(capturedNewKey);
-                valueChanged(capturedDictionary);
-
-                // Reorder the add button to always be at the bottom
-                dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
-            };
 
             hbox.AddChild(keyControl);
             hbox.AddChild(valueControl);
-            hbox.AddChild(minusButton);
+
             dictionaryVBox.AddChild(hbox);
 
             // Reorder the add button to always be at the bottom
             dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
         }
 
-        // Initialize the UI with the existing dictionary elements
-        foreach (DictionaryEntry entry in dictionary)
-        {
-            HBoxContainer hbox = new();
-            object key = entry.Key;
-            object value = entry.Value;
-
-            //////////////////////////// Capture the dictionary and key/value
-            IDictionary capturedDictionary = dictionary;
-            object capturedKey = key;
-            object capturedValue = value;
-
-            Control keyControl = CreateControlForType(key, keyType, debugExportSpinBoxes, v =>
-            {
-                capturedDictionary.Remove(capturedKey);
-                capturedKey = v;
-                capturedDictionary[capturedKey] = capturedValue;
-                valueChanged(capturedDictionary);
-            });
-
-            Control valueControl = CreateControlForType(value, valueType, debugExportSpinBoxes, v =>
-            {
-                capturedValue = v;
-                capturedDictionary[capturedKey] = capturedValue;
-                valueChanged(capturedDictionary);
-            });
-
-            Button minusButton = new() { Text = "-" };
-            minusButton.Pressed += () =>
-            {
-                // Remove the entry from the dictionary and the UI
-                int indexToRemove = dictionaryVBox.GetChildCount() - 2; // -2 because of the add button
-                dictionaryVBox.RemoveChild(hbox);
-                capturedDictionary.Remove(capturedKey);
-                valueChanged(capturedDictionary);
-
-                // Reorder the add button to always be at the bottom
-                dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
-            };
-
-            hbox.AddChild(keyControl);
-            hbox.AddChild(valueControl);
-            hbox.AddChild(minusButton);
-            dictionaryVBox.AddChild(hbox);
-        }
-
         // Add a button to add more entries
-        addButton.Pressed += UpdateDictionary;
+        addButton.Pressed += AddNewEntryToDictionary;
         dictionaryVBox.AddChild(addButton);
 
         return dictionaryVBox;
