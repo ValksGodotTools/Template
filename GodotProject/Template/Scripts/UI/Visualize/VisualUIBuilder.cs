@@ -961,19 +961,7 @@ public static class VisualUIBuilder
             // Add vbox to scene tree to get vbox.Size for later
             node.AddChild(vbox);
 
-            RigidBody2D rigidBody = new();
-            rigidBody.GravityScale = 0;
-            rigidBody.LockRotation = true;
-            rigidBody.SetCollisionLayerAndMask(32);
-            CollisionShape2D collision = new()
-            {
-                Shape = new RectangleShape2D()
-                {
-                    Size = vbox.Size
-                },
-                Position = vbox.Size / 2
-            };
-            rigidBody.AddChild(collision);
+            RigidBody2D rigidBody = CreateRigidBody(vbox);
 
             // Reparent vbox to rigidbody
             vbox.GetParent().RemoveChild(vbox);
@@ -989,6 +977,29 @@ public static class VisualUIBuilder
                 vbox.GlobalPosition = debugVisualNode.InitialPosition;
             }
         }
+    }
+
+    private static RigidBody2D CreateRigidBody(VBoxContainer vbox)
+    {
+        RigidBody2D rigidBody = new()
+        {
+            GravityScale = 0,
+            LockRotation = true
+        };
+        rigidBody.SetCollisionLayerAndMask(32);
+
+        CollisionShape2D collision = new()
+        {
+            Shape = new RectangleShape2D
+            {
+                Size = vbox.Size
+            },
+            Position = vbox.Size / 2
+        };
+
+        rigidBody.AddChild(collision);
+
+        return rigidBody;
     }
 
     private static VBoxContainer CreateVisualContainer(string nodeName)
