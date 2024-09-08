@@ -267,7 +267,7 @@ public static class VisualUIBuilder
         Type elementType = type.GetElementType();
         Array array = initialValue as Array ?? Array.CreateInstance(elementType, 0);
 
-        void UpdateArray()
+        void AddNewEntryToArray()
         {
             // Create a new array with the updated length
             Array newArray = Array.CreateInstance(elementType, array.Length + 1);
@@ -334,7 +334,7 @@ public static class VisualUIBuilder
         }
 
         // Add a button to add more entries
-        addButton.Pressed += UpdateArray;
+        addButton.Pressed += AddNewEntryToArray;
         arrayVBox.AddChild(addButton);
 
         return arrayVBox;
