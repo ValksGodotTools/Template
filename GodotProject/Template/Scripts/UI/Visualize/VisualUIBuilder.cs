@@ -45,16 +45,9 @@ public static class VisualUIBuilder
     #region Control Types
     private static Control CreateControlForType(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
+        // Order of which these are handled matters
         Control control = type switch
         {
-            // Handle numeric, enum and array types
-            _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
-            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => CreateDictionaryControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-
             // Handle C# specific types
             _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
             _ when type == typeof(string) => CreateStringControl(initialValue, v => valueChanged(v)),
@@ -71,6 +64,15 @@ public static class VisualUIBuilder
             _ when type == typeof(Quaternion) => CreateQuaternionControl(initialValue, v => valueChanged(v)),
             _ when type == typeof(NodePath) => CreateNodePathControl(initialValue, v => valueChanged(v)),
             _ when type == typeof(StringName) => CreateStringNameControl(initialValue, v => valueChanged(v)),
+
+            // Handle numeric, enum and array types
+            _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
+            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => CreateDictionaryControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsValueType && !type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
             _ => null
         };
