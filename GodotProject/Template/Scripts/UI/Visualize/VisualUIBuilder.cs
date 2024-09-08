@@ -4,6 +4,7 @@ using GodotUtils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using static Godot.Control;
 
@@ -23,19 +24,18 @@ public static class VisualUIBuilder
             ParameterInfo paramInfo = paramInfos[i];
             Type paramType = paramInfo.ParameterType;
 
-            hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
-
             providedValues[i] = CreateDefaultValue(paramType);
 
             int capturedIndex = i;
 
             Control control = CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
-                v =>
-                {
-                    providedValues[capturedIndex] = v;
-                });
+                v => providedValues[capturedIndex] = v);
 
-            hboxParams.AddChild(control);
+            if (control != null)
+            {
+                hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
+                hboxParams.AddChild(control);
+            }
         }
 
         return hboxParams;
@@ -45,7 +45,7 @@ public static class VisualUIBuilder
     #region Control Types
     private static Control CreateControlForType(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
-        return type switch
+        Control control = type switch
         {
             // Handle numeric, enum and array types
             _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
@@ -72,9 +72,15 @@ public static class VisualUIBuilder
             _ when type == typeof(NodePath) => CreateNodePathControl(initialValue, v => valueChanged(v)),
             _ when type == typeof(StringName) => CreateStringNameControl(initialValue, v => valueChanged(v)),
 
-            // Handle unsupported types
-            _ => throw new NotImplementedException($"The type '{type}' is not supported for {nameof(VisualizeAttribute)}")
+            _ => null
         };
+
+        /*if (control == null)
+        {
+            GD.Print($"The type '{type}' is not supported for {nameof(VisualizeAttribute)}");
+        }*/
+
+        return control;
     }
 
     private static Control CreateClassControl(object target, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
@@ -108,7 +114,10 @@ public static class VisualUIBuilder
                 valueChanged(target);
             });
 
-            vbox.AddChild(control);
+            if (control != null)
+            {
+                vbox.AddChild(control);
+            }
         }
 
         foreach (MethodInfo method in methods)
@@ -150,8 +159,6 @@ public static class VisualUIBuilder
         // Add the initial values to the UI
         foreach (DictionaryEntry entry in dictionary)
         {
-            HBoxContainer hbox = new();
-
             object key = entry.Key;
             object value = entry.Value;
 
@@ -192,29 +199,32 @@ public static class VisualUIBuilder
                 }
             });
 
-            SetControlValue(keyControl, key);
-            SetControlValue(valueControl, value);
-
-            GButton removeKeyEntryButton = new("-");
-
-            removeKeyEntryButton.Pressed += () =>
+            if (keyControl != null && valueControl != null)
             {
-                dictionaryVBox.RemoveChild(hbox);
-                dictionary.Remove(key);
-                valueChanged(dictionary);
-            };
+                SetControlValue(keyControl, key);
+                SetControlValue(valueControl, value);
 
-            hbox.AddChild(keyControl);
-            hbox.AddChild(valueControl);
-            hbox.AddChild(removeKeyEntryButton);
+                GButton removeKeyEntryButton = new("-");
 
-            dictionaryVBox.AddChild(hbox);
+                HBoxContainer hbox = new();
+
+                removeKeyEntryButton.Pressed += () =>
+                {
+                    dictionaryVBox.RemoveChild(hbox);
+                    dictionary.Remove(key);
+                    valueChanged(dictionary);
+                };
+
+                hbox.AddChild(keyControl);
+                hbox.AddChild(valueControl);
+                hbox.AddChild(removeKeyEntryButton);
+
+                dictionaryVBox.AddChild(hbox);
+            }
         }
 
         void AddNewEntryToDictionary()
         {
-            HBoxContainer hbox = new();
-
             // Check if the defaultKey exists in the dictionary, if it does not then add it with
             // the default value
             if (!dictionary.Contains(defaultKey))
@@ -263,23 +273,28 @@ public static class VisualUIBuilder
                 }
             });
 
-            GButton removeKeyEntryButton = new("-");
-
-            removeKeyEntryButton.Pressed += () =>
+            if (keyControl != null && valueControl != null)
             {
-                dictionaryVBox.RemoveChild(hbox);
-                dictionary.Remove(oldKey);
-                valueChanged(dictionary);
-            };
+                GButton removeKeyEntryButton = new("-");
 
-            hbox.AddChild(keyControl);
-            hbox.AddChild(valueControl);
-            hbox.AddChild(removeKeyEntryButton);
+                HBoxContainer hbox = new();
 
-            dictionaryVBox.AddChild(hbox);
+                removeKeyEntryButton.Pressed += () =>
+                {
+                    dictionaryVBox.RemoveChild(hbox);
+                    dictionary.Remove(oldKey);
+                    valueChanged(dictionary);
+                };
 
-            // Reorder the add button to always be at the bottom
-            dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
+                hbox.AddChild(keyControl);
+                hbox.AddChild(valueControl);
+                hbox.AddChild(removeKeyEntryButton);
+
+                dictionaryVBox.AddChild(hbox);
+
+                // Reorder the add button to always be at the bottom
+                dictionaryVBox.MoveChild(addButton, dictionaryVBox.GetChildCount() - 1);
+            }
         }
 
         // Add a button to add more entries
@@ -308,9 +323,6 @@ public static class VisualUIBuilder
             list.Add(newValue);
             valueChanged(list);
 
-            // Add a new entry to the UI
-            HBoxContainer hbox = new();
-
             int newIndex = list.Count - 1;
 
             Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
@@ -319,49 +331,60 @@ public static class VisualUIBuilder
                 valueChanged(list);
             });
 
-            Button minusButton = new() { Text = "-" };
-            minusButton.Pressed += () =>
+            if (control != null)
             {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                listVBox.RemoveChild(hbox);
-                list.RemoveAt(indexToRemove);
-                valueChanged(list);
-            };
+                // Add a new entry to the UI
+                HBoxContainer hbox = new();
 
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            listVBox.AddChild(hbox);
+                Button minusButton = new() { Text = "-" };
+                minusButton.Pressed += () =>
+                {
+                    int indexToRemove = minusButton.GetParent().GetIndex();
+                    listVBox.RemoveChild(hbox);
+                    list.RemoveAt(indexToRemove);
+                    valueChanged(list);
+                };
 
-            // Reorder the add button to always be at the bottom
-            listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+                hbox.AddChild(control);
+                hbox.AddChild(minusButton);
+                listVBox.AddChild(hbox);
+
+                // Reorder the add button to always be at the bottom
+                listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
+            }
         }
 
         // Initialize the UI with the existing list elements
         for (int i = 0; i < list.Count; i++)
         {
-            HBoxContainer hbox = new();
             object value = list[i];
+
             Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
             {
                 list[i] = v;
                 valueChanged(list);
             });
 
-            SetControlValue(control, value);
-
-            Button minusButton = new() { Text = "-" };
-
-            minusButton.Pressed += () =>
+            if (control != null)
             {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                listVBox.RemoveChild(hbox);
-                list.RemoveAt(indexToRemove);
-                valueChanged(list);
-            };
+                SetControlValue(control, value);
 
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            listVBox.AddChild(hbox);
+                Button minusButton = new() { Text = "-" };
+
+                HBoxContainer hbox = new();
+
+                minusButton.Pressed += () =>
+                {
+                    int indexToRemove = minusButton.GetParent().GetIndex();
+                    listVBox.RemoveChild(hbox);
+                    list.RemoveAt(indexToRemove);
+                    valueChanged(list);
+                };
+
+                hbox.AddChild(control);
+                hbox.AddChild(minusButton);
+                listVBox.AddChild(hbox);
+            }
         }
 
         // Add a button to add more entries
@@ -391,8 +414,6 @@ public static class VisualUIBuilder
             array = newArray;
             valueChanged(array);
 
-            // Add a new entry to the UI
-            HBoxContainer hbox = new();
             object newValue = CreateDefaultValue(elementType);
 
             int newIndex = array.Length - 1;
@@ -404,49 +425,61 @@ public static class VisualUIBuilder
                 valueChanged(array);
             });
 
-            Button minusButton = new() { Text = "-" };
-
-            minusButton.Pressed += () =>
+            if (control != null)
             {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                arrayVBox.RemoveChild(hbox);
-                array = array.RemoveAt(indexToRemove);
-                valueChanged(array);
-            };
+                Button minusButton = new() { Text = "-" };
 
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            arrayVBox.AddChild(hbox);
+                // Add a new entry to the UI
+                HBoxContainer hbox = new();
 
-            // Reorder the add button to always be at the bottom
-            arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+                minusButton.Pressed += () =>
+                {
+                    int indexToRemove = minusButton.GetParent().GetIndex();
+                    arrayVBox.RemoveChild(hbox);
+                    array = array.RemoveAt(indexToRemove);
+                    valueChanged(array);
+                };
+
+                hbox.AddChild(control);
+                hbox.AddChild(minusButton);
+                arrayVBox.AddChild(hbox);
+
+                // Reorder the add button to always be at the bottom
+                arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
+            }
         }
 
         // Initialize the UI with the existing array elements
         for (int i = 0; i < array.Length; i++)
-        {
-            HBoxContainer hbox = new();
+        { 
             object value = array.GetValue(i);
+
             Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
             {
                 array.SetValue(v, i);
                 valueChanged(array);
             });
 
-            SetControlValue(control, value);
-
-            Button minusButton = new() { Text = "-" };
-            minusButton.Pressed += () =>
+            if (control != null)
             {
-                int indexToRemove = minusButton.GetParent().GetIndex();
-                arrayVBox.RemoveChild(hbox);
-                array = array.RemoveAt(indexToRemove);
-                valueChanged(array);
-            };
+                SetControlValue(control, value);
 
-            hbox.AddChild(control);
-            hbox.AddChild(minusButton);
-            arrayVBox.AddChild(hbox);
+                Button minusButton = new() { Text = "-" };
+
+                HBoxContainer hbox = new();
+
+                minusButton.Pressed += () =>
+                {
+                    int indexToRemove = minusButton.GetParent().GetIndex();
+                    arrayVBox.RemoveChild(hbox);
+                    array = array.RemoveAt(indexToRemove);
+                    valueChanged(array);
+                };
+
+                hbox.AddChild(control);
+                hbox.AddChild(minusButton);
+                arrayVBox.AddChild(hbox);
+            }
         }
 
         // Add a button to add more entries
@@ -1048,14 +1081,6 @@ public static class VisualUIBuilder
     {
         HBoxContainer hbox = new();
 
-        GLabel label = new()
-        {
-            Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
-            SizeFlagsHorizontal = SizeFlags.ExpandFill
-        };
-
-        hbox.AddChild(label);
-
         Type type = VisualNodeHandler.GetMemberType(member);
 
         object initialValue = VisualNodeHandler.GetMemberValue(member, node);
@@ -1065,7 +1090,17 @@ public static class VisualUIBuilder
             VisualNodeHandler.SetMemberValue(member, node, v);
         });
 
-        hbox.AddChild(element);
+        if (element != null)
+        {
+            GLabel label = new()
+            {
+                Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
+                SizeFlagsHorizontal = SizeFlags.ExpandFill
+            };
+
+            hbox.AddChild(label);
+            hbox.AddChild(element);
+        }
 
         return hbox;
     }
