@@ -135,10 +135,13 @@ public static class VisualUIBuilder
                         valueChanged(dictionary);
 
                         // Visually reset the value for this dictionary back to the default value
-                        ResetControlType(valueControl, defaultValue);
+                        SetControlValue(valueControl, defaultValue);
                     }
                 }
             });
+
+            SetControlValue(keyControl, key);
+            SetControlValue(valueControl, value);
 
             GButton removeKeyEntryButton = new("-");
 
@@ -203,7 +206,7 @@ public static class VisualUIBuilder
                         valueChanged(dictionary);
 
                         // Visually reset the value for this dictionary back to the default value
-                        ResetControlType(valueControl, defaultValue);
+                        SetControlValue(valueControl, defaultValue);
                     }
                 }
             });
@@ -292,6 +295,8 @@ public static class VisualUIBuilder
                 valueChanged(list);
             });
 
+            SetControlValue(control, value);
+
             Button minusButton = new() { Text = "-" };
 
             minusButton.Pressed += () =>
@@ -375,6 +380,8 @@ public static class VisualUIBuilder
                 array.SetValue(v, i);
                 valueChanged(array);
             });
+
+            SetControlValue(control, value);
 
             Button minusButton = new() { Text = "-" };
             minusButton.Pressed += () =>
@@ -781,7 +788,6 @@ public static class VisualUIBuilder
     private static Control CreateColorControl(object initialValue, Action<Color> valueChanged)
     {
         Color initialColor = (Color)initialValue;
-        initialColor.A = 1;
 
         GColorPickerButton colorPickerButton = new(initialColor);
         colorPickerButton.OnColorChanged += color => valueChanged(color);
@@ -873,15 +879,15 @@ public static class VisualUIBuilder
         return null;
     }
 
-    private static void ResetControlType(Control control, object defaultValue)
+    private static void SetControlValue(Control control, object value)
     {
         if (control is ColorPickerButton colorPickerButton)
         {
-            colorPickerButton.Color = (Color)defaultValue;
+            colorPickerButton.Color = (Color)value;
         }
         else if (control is LineEdit lineEdit)
         {
-            lineEdit.Text = (string)defaultValue;
+            lineEdit.Text = (string)value;
         }
 
         // Implement more control types here
