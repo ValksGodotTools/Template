@@ -39,7 +39,7 @@ public partial class Torch : Node2D
     }
 
     [Visualize]
-    public void Test(List<Color> myList)
+    public void Test(string[] myList)
     {
         Game.Log(myList.ToFormattedString());
     }
