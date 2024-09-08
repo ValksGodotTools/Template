@@ -51,6 +51,7 @@ public static class VisualUIBuilder
             _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
             _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
             _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => CreateDictionaryControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
@@ -72,8 +73,59 @@ public static class VisualUIBuilder
             _ when type == typeof(StringName) => CreateStringNameControl(initialValue, v => valueChanged(v)),
 
             // Handle unsupported types
-            _ => throw new NotImplementedException($"The type '{type}' is not yet supported for the {nameof(VisualizeAttribute)}")
+            _ => throw new NotImplementedException($"The type '{type}' is not supported for {nameof(VisualizeAttribute)}")
         };
+    }
+
+    private static Control CreateClassControl(object target, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    {
+        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
+        PropertyInfo[] properties = type.GetProperties(flags);
+        FieldInfo[] fields = type.GetFields(flags);
+        MethodInfo[] methods = type.GetMethods(flags | BindingFlags.DeclaredOnly);
+
+        VBoxContainer vbox = new();
+
+        foreach (PropertyInfo property in properties)
+        {
+            object initialValue = property.GetValue(target); // Non-Static method requires a target
+
+            Control control = CreateControlForType(initialValue, property.PropertyType, debugExportSpinBoxes, v =>
+            {
+                property.SetValue(target, v);
+                valueChanged(target);
+            });
+        }
+
+        foreach (FieldInfo field in fields)
+        {
+            object initialValue = field.GetValue(target);
+
+            Control control = CreateControlForType(initialValue, field.FieldType, debugExportSpinBoxes, v =>
+            {
+                field.SetValue(target, v);
+                valueChanged(target);
+            });
+
+            vbox.AddChild(control);
+        }
+
+        foreach (MethodInfo method in methods)
+        {
+            ParameterInfo[] paramInfos = method.GetParameters();
+            object[] providedValues = new object[paramInfos.Length];
+
+            HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, providedValues);
+
+            vbox.AddChild(hboxParams);
+
+            Button button = CreateMethodButton(method, target, paramInfos, providedValues);
+
+            vbox.AddChild(button);
+        }
+
+        return vbox;
     }
 
     private static Control CreateDictionaryControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IDictionary> valueChanged)
@@ -945,7 +997,7 @@ public static class VisualUIBuilder
         return convertedValue;
     }
 
-    private static Button CreateMethodButton(MethodInfo method, Node node, ParameterInfo[] paramInfos, object[] providedValues)
+    private static Button CreateMethodButton(MethodInfo method, object target, ParameterInfo[] paramInfos, object[] providedValues)
     {
         Button button = new()
         {
@@ -957,7 +1009,7 @@ public static class VisualUIBuilder
         {
             object[] parameters = ParameterConverter.ConvertParameterInfoToObjectArray(paramInfos, providedValues);
 
-            method.Invoke(node, parameters);
+            method.Invoke(target, parameters);
         };
 
         return button;

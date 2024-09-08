@@ -91,15 +91,15 @@ public static class VisualNodeHandler
         return (T)value;
     }
 
-    public static object GetMemberValue(MemberInfo member, Node node)
+    public static object GetMemberValue(MemberInfo member, object obj)
     {
         return member switch
         {
             FieldInfo fieldInfo when fieldInfo.IsStatic => fieldInfo.GetValue(null),
-            FieldInfo fieldInfo => fieldInfo.GetValue(node),
+            FieldInfo fieldInfo => fieldInfo.GetValue(obj),
 
             PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
-            PropertyInfo propertyInfo => propertyInfo.GetValue(node),
+            PropertyInfo propertyInfo => propertyInfo.GetValue(obj),
 
             _ => throw new ArgumentException("Member must be a field or property.")
         };

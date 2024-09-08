@@ -23,9 +23,9 @@ public static class VisualizeAttributeHandler
 
             foreach (Node node in nodes)
             {
-                List<PropertyInfo> properties = GetMembersWithAttribute(type, type.GetProperties);
-                List<FieldInfo> fields = GetMembersWithAttribute(type, type.GetFields);
-                List<MethodInfo> methods = GetMembersWithAttribute(type, type.GetMethods);
+                List<PropertyInfo> properties = GetVisualMembers(type.GetProperties);
+                List<FieldInfo> fields = GetVisualMembers(type.GetFields);
+                List<MethodInfo> methods = GetVisualMembers(type.GetMethods);
 
                 if (properties.Any() || fields.Any() || methods.Any())
                 {
@@ -44,7 +44,7 @@ public static class VisualizeAttributeHandler
         return attribute?.InitialPosition ?? Vector2.Zero;
     }
 
-    private static List<T> GetMembersWithAttribute<T>(Type type, Func<BindingFlags, T[]> getMembers) where T : MemberInfo
+    private static List<T> GetVisualMembers<T>(Func<BindingFlags, T[]> getMembers) where T : MemberInfo
     {
         return getMembers(Flags)
             .Where(member => member.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
