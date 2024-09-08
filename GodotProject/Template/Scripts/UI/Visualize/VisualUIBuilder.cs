@@ -102,6 +102,11 @@ public static class VisualUIBuilder
                 property.SetValue(target, v);
                 valueChanged(target);
             });
+
+            if (control != null)
+            {
+                vbox.AddChild(control);
+            }
         }
 
         foreach (FieldInfo field in fields)
