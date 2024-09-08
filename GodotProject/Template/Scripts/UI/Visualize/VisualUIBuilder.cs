@@ -90,14 +90,75 @@ public static class VisualUIBuilder
         Type keyType = genericArguments[0];
         Type valueType = genericArguments[1];
 
+        object defaultKey = CreateDefaultValue(keyType);
+        object defaultValue = CreateDefaultValue(valueType);
+
         IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
+
+        // Add the initial values to the UI
+        foreach (DictionaryEntry entry in dictionary)
+        {
+            HBoxContainer hbox = new();
+
+            object key = entry.Key;
+            object value = entry.Value;
+
+            // The control for changing the value of the dictionary
+            Control valueControl = CreateControlForType(value, valueType, debugExportSpinBoxes, v =>
+            {
+                dictionary[key] = v;
+                valueChanged(dictionary);
+            });
+
+            // The control for changing the key of the dictionary
+            Control keyControl = CreateControlForType(key, keyType, debugExportSpinBoxes, v =>
+            {
+                if (dictionary.Contains(v))
+                {
+                    // This key exists already, do nothing
+                }
+                else
+                {
+                    if (v.GetType() != keyType)
+                    {
+                        throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    }
+                    else
+                    {
+                        // This key does not exist, remove the old key and add the new key
+                        dictionary.Remove(key);
+                        dictionary[v] = value;
+
+                        // Update key with the new key
+                        key = v;
+
+                        valueChanged(dictionary);
+
+                        // Visually reset the value for this dictionary back to the default value
+                        ResetControlType(valueControl, defaultValue);
+                    }
+                }
+            });
+
+            GButton removeKeyEntryButton = new("-");
+
+            removeKeyEntryButton.Pressed += () =>
+            {
+                dictionaryVBox.RemoveChild(hbox);
+                dictionary.Remove(key);
+                valueChanged(dictionary);
+            };
+
+            hbox.AddChild(keyControl);
+            hbox.AddChild(valueControl);
+            hbox.AddChild(removeKeyEntryButton);
+
+            dictionaryVBox.AddChild(hbox);
+        }
 
         void AddNewEntryToDictionary()
         {
             HBoxContainer hbox = new();
-
-            object defaultKey = CreateDefaultValue(keyType);
-            object defaultValue = CreateDefaultValue(valueType);
 
             // Check if the defaultKey exists in the dictionary, if it does not then add it with
             // the default value
