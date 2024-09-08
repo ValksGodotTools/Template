@@ -25,18 +25,7 @@ public static class VisualUIBuilder
 
             hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
 
-            // providedValues will ALWAYS be null since we are passing in a empty object[] array
-
-            // Examples of Value Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types#kinds-of-value-types-and-type-constraints
-            if (paramType.IsValueType)
-            {
-                providedValues[i] = Activator.CreateInstance(paramType);
-            }
-            // Examples of Reference Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types
-            else if (paramType == typeof(string))
-            {
-                providedValues[i] = string.Empty;
-            }
+            providedValues[i] = CreateDefaultValue(paramType);
 
             int capturedIndex = i;
 
@@ -107,8 +96,8 @@ public static class VisualUIBuilder
         {
             HBoxContainer hbox = new();
 
-            object defaultKey = Activator.CreateInstance(keyType);
-            object defaultValue = Activator.CreateInstance(valueType);
+            object defaultKey = CreateDefaultValue(keyType);
+            object defaultValue = CreateDefaultValue(valueType);
 
             // Check if the defaultKey exists in the dictionary, if it does not then add it with
             // the default value
@@ -137,17 +126,24 @@ public static class VisualUIBuilder
                 }
                 else
                 {
-                    // This key does not exist, remove the old key and add the new key
-                    dictionary.Remove(oldKey);
-                    dictionary[v] = defaultValue;
+                    if (v.GetType() != keyType)
+                    {
+                        throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    }
+                    else
+                    {
+                        // This key does not exist, remove the old key and add the new key
+                        dictionary.Remove(oldKey);
+                        dictionary[v] = defaultValue;
 
-                    // Update old key with the new key
-                    oldKey = v;
+                        // Update old key with the new key
+                        oldKey = v;
 
-                    valueChanged(dictionary);
+                        valueChanged(dictionary);
 
-                    // Visually reset the value for this dictionary back to the default value
-                    ResetControlType(valueControl, defaultValue);
+                        // Visually reset the value for this dictionary back to the default value
+                        ResetControlType(valueControl, defaultValue);
+                    }
                 }
             });
 
@@ -177,18 +173,6 @@ public static class VisualUIBuilder
         return dictionaryVBox;
     }
 
-    private static void ResetControlType(Control control, object defaultValue)
-    {
-        if (control is ColorPickerButton colorPickerButton)
-        {
-            colorPickerButton.Color = (Color)defaultValue;
-        }
-        else if (control is LineEdit lineEdit)
-        {
-            lineEdit.Text = (string)defaultValue;
-        }
-    }
-
     private static Control CreateListControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
     {
         VBoxContainer listVBox = new()
@@ -201,10 +185,10 @@ public static class VisualUIBuilder
         Type elementType = type.GetGenericArguments()[0];
         IList list = initialValue as IList ?? (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
 
-        void UpdateList()
+        void AddNewEntryToList()
         {
             // Create a new instance of the list element type
-            object newValue = Activator.CreateInstance(elementType);
+            object newValue = CreateDefaultValue(elementType);
             list.Add(newValue);
             valueChanged(list);
 
@@ -222,14 +206,9 @@ public static class VisualUIBuilder
             Button minusButton = new() { Text = "-" };
             minusButton.Pressed += () =>
             {
-                // Remove the entry from the list and the UI
-                int indexToRemove = listVBox.GetChildCount() - 2; // -2 because of the add button
                 listVBox.RemoveChild(hbox);
-                list.RemoveAt(indexToRemove);
+                list.RemoveAt(newIndex);
                 valueChanged(list);
-
-                // Reorder the add button to always be at the bottom
-                listVBox.MoveChild(addButton, listVBox.GetChildCount() - 1);
             };
 
             hbox.AddChild(control);
@@ -270,7 +249,7 @@ public static class VisualUIBuilder
         }
 
         // Add a button to add more entries
-        addButton.Pressed += UpdateList;
+        addButton.Pressed += AddNewEntryToList;
         listVBox.AddChild(addButton);
 
         return listVBox;
@@ -298,27 +277,23 @@ public static class VisualUIBuilder
 
             // Add a new entry to the UI
             HBoxContainer hbox = new();
-            object newValue = Activator.CreateInstance(elementType);
+            object newValue = CreateDefaultValue(elementType);
 
             int newIndex = array.Length - 1;
 
             Control control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
             {
                 array.SetValue(v, newIndex);
+
                 valueChanged(array);
             });
 
             Button minusButton = new() { Text = "-" };
             minusButton.Pressed += () =>
             {
-                // Remove the entry from the array and the UI
-                int indexToRemove = arrayVBox.GetChildCount() - 2; // -2 because of the add button
                 arrayVBox.RemoveChild(hbox);
-                array = array.RemoveAt(indexToRemove);
+                array = array.RemoveAt(newIndex);
                 valueChanged(array);
-
-                // Reorder the add button to always be at the bottom
-                arrayVBox.MoveChild(addButton, arrayVBox.GetChildCount() - 1);
             };
 
             hbox.AddChild(control);
@@ -721,12 +696,16 @@ public static class VisualUIBuilder
         return vector4IHBox;
     }
 
-    private static Control CreateNumericControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<double> valueChanged)
+    private static Control CreateNumericControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         SpinBox spinBox = CreateSpinBox(type);
 
         spinBox.Value = Convert.ToDouble(initialValue);
-        spinBox.ValueChanged += value => valueChanged(value);
+        spinBox.ValueChanged += value =>
+        {
+            object convertedValue = Convert.ChangeType(value, type);
+            valueChanged(convertedValue);
+        };
 
         return spinBox;
     }
@@ -819,6 +798,36 @@ public static class VisualUIBuilder
         vbox.AddChild(label);
 
         return vbox;
+    }
+
+    private static object CreateDefaultValue(Type type)
+    {
+        // Examples of Value Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types#kinds-of-value-types-and-type-constraints
+        if (type.IsValueType)
+        {
+            return Activator.CreateInstance(type);
+        }
+        // Examples of Reference Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types
+        else if (type == typeof(string))
+        {
+            return string.Empty;
+        }
+
+        return null;
+    }
+
+    private static void ResetControlType(Control control, object defaultValue)
+    {
+        if (control is ColorPickerButton colorPickerButton)
+        {
+            colorPickerButton.Color = (Color)defaultValue;
+        }
+        else if (control is LineEdit lineEdit)
+        {
+            lineEdit.Text = (string)defaultValue;
+        }
+
+        // Implement more control types here
     }
 
     // Helper method to remove an element from an array
