@@ -118,6 +118,7 @@ public static class VisualUIBuilder
                 valueChanged(dictionary);
             }
 
+            // Keep track of the old key
             object oldKey = defaultKey;
 
             // The control for changing the value of the dictionary
@@ -140,21 +141,28 @@ public static class VisualUIBuilder
                     dictionary.Remove(oldKey);
                     dictionary[v] = defaultValue;
 
-                    // Keep track of the new old key
+                    // Update old key with the new key
                     oldKey = v;
 
                     valueChanged(dictionary);
 
-                    // Update the ColorPickerButton's color to the default value
-                    if (valueControl is ColorPickerButton colorPickerButton)
-                    {
-                        colorPickerButton.Color = (Color)defaultValue;
-                    }
+                    // Visually reset the value for this dictionary back to the default value
+                    ResetControlType(valueControl, defaultValue);
                 }
             });
 
+            GButton removeKeyEntryButton = new("-");
+
+            removeKeyEntryButton.Pressed += () =>
+            {
+                dictionaryVBox.RemoveChild(hbox);
+                dictionary.Remove(oldKey);
+                valueChanged(dictionary);
+            };
+
             hbox.AddChild(keyControl);
             hbox.AddChild(valueControl);
+            hbox.AddChild(removeKeyEntryButton);
 
             dictionaryVBox.AddChild(hbox);
 
@@ -167,6 +175,18 @@ public static class VisualUIBuilder
         dictionaryVBox.AddChild(addButton);
 
         return dictionaryVBox;
+    }
+
+    private static void ResetControlType(Control control, object defaultValue)
+    {
+        if (control is ColorPickerButton colorPickerButton)
+        {
+            colorPickerButton.Color = (Color)defaultValue;
+        }
+        else if (control is LineEdit lineEdit)
+        {
+            lineEdit.Text = (string)defaultValue;
+        }
     }
 
     private static Control CreateListControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
