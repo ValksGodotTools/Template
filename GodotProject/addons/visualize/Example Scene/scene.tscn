@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpt16oa8hjtej"]
+
+[ext_resource type="Texture2D" uid="uid://bta173dmvpgj3" path="res://icon.svg" id="1_0mcxu"]
+[ext_resource type="Script" path="res://addons/visualize/Example Scene/VisualizeExample.cs" id="1_t5kvf"]
+
+[node name="Scene" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(560, 301)
+texture = ExtResource("1_0mcxu")
+script = ExtResource("1_t5kvf")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "This is an example scene for the Visualize plugin.
+
+Run the scene to see the plugin do its magic.
+
+You can use the mouse scroll wheel to change the values of the SpinBox's."

@@ -1,0 +1,64 @@
+using Godot;
+using System.Collections.Generic;
+
+namespace Visualize.Example;
+
+public partial class VisualizeExample : Sprite2D
+{
+	[Visualize] Vector2I position;
+    [Visualize] float rotation;
+    [Visualize] Color color = Colors.White;
+    [Visualize] float skew;
+
+    private readonly VisualLogger logger = new();
+
+    Vector2 initialPositionOffset;
+
+    public override void _Ready()
+    {
+        initialPositionOffset = DisplayServer.WindowGetSize() / 2;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        Position = position + initialPositionOffset;
+        Rotation = rotation;
+        Modulate = color;
+        Skew = skew;
+    }
+
+    [Visualize]
+    public void PrintDictionary(Dictionary<int, Vector4> dictionary)
+    {
+        if (dictionary == null || dictionary.Count == 0)
+        {
+            logger.Log("Method dictionary param has no elements", this);
+        }
+        else
+        {
+            string logMessage = "[\n";
+
+            foreach (KeyValuePair<int, Vector4> kvp in dictionary)
+            {
+                logMessage += $"    {{ {kvp.Key}, {kvp.Value} }},\n";
+            }
+
+            logMessage = logMessage.TrimEnd('\n', ',') + "\n]";
+
+            logger.Log(logMessage, this);
+        }
+    }
+
+    [Visualize]
+    public void PrintEnum(SomeEnum someEnum)
+    {
+        logger.Log(someEnum, this);
+    }
+
+    public enum SomeEnum
+    {
+        One,
+        Two,
+        Three
+    }
+}

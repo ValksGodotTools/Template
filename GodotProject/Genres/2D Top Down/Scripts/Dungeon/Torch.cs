@@ -1,13 +1,13 @@
 using Godot;
 using GodotUtils;
 using System.Collections.Generic;
+using Visualize;
 
 namespace Template;
 
 [Tool]
 public partial class Torch : Node2D
 {
-    //[Visualize] Vector4[] vec4Array;
     [Export] double flickerRange = 0.05;
     [Export] double pulseAmplitude = 0.1;
     [Export] float textureScale
@@ -23,9 +23,11 @@ public partial class Torch : Node2D
         }
     }
 
-    double energy = 1;
+    [Visualize] double energy = 1;
     PointLight2D light;
     float _textureScale = 1;
+
+    VisualLogger visualLogger = new();
 
     public override void _Ready()
     {
@@ -38,8 +40,9 @@ public partial class Torch : Node2D
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
 
+    [Visualize]
     public void Test(string[] myList)
     {
-        Game.Log(myList.ToFormattedString());
+        visualLogger.Log(myList.ToFormattedString(), this);
     }
 }
