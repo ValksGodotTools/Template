@@ -242,28 +242,7 @@ https://github.com/user-attachments/assets/2f44ae8e-0c99-4bd2-b15f-a72a70ffaa74
 
 Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
 
-#### Supported Members
-
-| Member Type       | Supported  | Example Types                                 | Additional Notes                                                      |
-|-------------------|------------|-----------------------------------------------|-----------------------------------------------------------------------|
-| **Numericals**    | ✅         | `int`, `float`, `double`                      | All numerical types are supported                                     |
-| **Enums**         | ✅         | `Direction`, `Colors`                         | All enum types are supported                                          |
-| **Booleans**      | ✅         | `bool`                                        |                                                                       |
-| **Strings**       | ✅         | `string`                                      |                                                                       |
-| **Color**         | ✅         | `Color`                                       |                                                                       |
-| **Vectors**       | ✅         | `Vector2`, `Vector2I`, `Vector3`, `Vector3I`, `Vector4`, `Vector4I` |                                                 |
-| **Quaternion**    | ✅         | `Quaternion`                                  |                                                                       |
-| **NodePath**      | ✅         | `NodePath`                                    |                                                                       |
-| **StringName**    | ✅         | `StringName`                                  |                                                                       |
-| **Methods**       | ✅         |                                               | Method parameters support all listed types here                       |
-| **Static Members**| ✅         |                                               | This includes static methods, fields, and properties                  |
-| **Arrays**        | ✅         | `int[]`, `string[]`, `Vector2[]`              | Arrays support all listed types here                                  |
-| **Lists**         | ✅         | `List<string[]>`, `List<Vector2>`             | Lists support all listed types here                                   |
-| **Dictionaries**  | ✅         | `Dictionary<List<Color[]>, Vector2>`          | Dictionaries support all listed types here                            |
-| **Structs**       | ⚠️         |                                               | Appears to work for the most part, needs more testing                 |
-| **Classes**       | ⚠️         |                                               | Lots of missing features, things may break if used                    |
-| **Records**       | ❌         | `record`                                      | I couldn't get it to work for some reason                             |
-| **Godot Classes** | ❌         | `Node`, `PointLight2D`                        | I'm not even sure how this would work                                 |
+Visualize is now a Godot plugin. Repo: https://github.com/ValksGodotTools/Visualize
 
 #### Example Usage
 ```cs
