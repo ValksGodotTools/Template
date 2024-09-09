@@ -38,7 +38,6 @@ public partial class Torch : Node2D
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
 
-    [Visualize]
     public void Test(string[] myList)
     {
         Game.Log(myList.ToFormattedString());

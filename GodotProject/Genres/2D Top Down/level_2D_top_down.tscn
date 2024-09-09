@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://btkfgi3rc5wm1"]
+[gd_scene load_steps=35 format=4 uid="uid://btkfgi3rc5wm1"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Dungeon/Level.cs" id="1_jdty6"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/popup_menu.tscn" id="2_ep4f7"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://ca2xb7tvce5xj" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/multiplayer_control_panel.tscn" id="3_uykib"]
 [ext_resource type="Texture2D" uid="uid://cmi46negp3jqi" path="res://Genres/2D Top Down/Sprites/dungeon.png" id="4_ai2f7"]
 [ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/puddle.gdshader" id="5_l6cl7"]
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIVisualizeAttribute.cs" id="6_41hkm"]
 [ext_resource type="Texture2D" uid="uid://vo2m8kod8vn1" path="res://Genres/2D Top Down/Sprites/puddle_mask.png" id="6_r6pwu"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerCamera.cs" id="7_iqnw1"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/CameraShakeComponent.cs" id="7_tebhc"]
@@ -352,19 +351,6 @@ tileMap = NodePath("../TileMapLayer")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MultiplayerControlPanel" parent="CanvasLayer" instance=ExtResource("3_uykib")]
-
-[node name="UIVisualizeAttribute" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
-script = ExtResource("6_41hkm")
-metadata/_edit_lock_ = true
 
 [node name="PopupMenu" parent="CanvasLayer" instance=ExtResource("2_ep4f7")]
 visible = false
