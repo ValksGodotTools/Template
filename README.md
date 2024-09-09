@@ -239,7 +239,7 @@ public class PlayerData
 
 ### In-Game Debugging
 
-https://github.com/user-attachments/assets/2e4e31e7-92d4-4c00-a7dd-1a2e7d6a6ad8
+https://github.com/user-attachments/assets/2f44ae8e-0c99-4bd2-b15f-a72a70ffaa74
 
 Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
 
@@ -277,7 +277,12 @@ public partial class Player : CharacterBody2D
     public void ApplyDamage(int damageAmount, string source) {}
 
     [Visualize]
-    public static void IncrementPlayerCount() {}
+    public static void IncrementPlayerCount()
+    {
+        // This will be displayed next to the node in the game world
+        // No [Visualize] attributes are needed for this to work
+        Game.Log($"Added a player, there are now {++TotalPlayers} players", this);
+    }
 }
 ```
 
