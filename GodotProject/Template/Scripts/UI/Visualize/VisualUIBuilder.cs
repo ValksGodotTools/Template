@@ -12,6 +12,8 @@ namespace Template;
 
 public static class VisualUIBuilder
 {
+    public const float VISUAL_UI_SCALE_FACTOR = 0.6f;
+
     #region Method Parameters
     private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
     {
@@ -975,9 +977,7 @@ public static class VisualUIBuilder
             // All debug UI elements should not be influenced by the game world environments lighting
             node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
 
-            const float INFO_PANEL_SCALE_FACTOR = 0.6f;
-
-            vboxMembers.Scale = Vector2.One * INFO_PANEL_SCALE_FACTOR;
+            vboxMembers.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
 
             if (debugVisualNode.InitialPosition != Vector2.Zero)
             {
