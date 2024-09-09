@@ -10,6 +10,7 @@ public partial class Player : Character, INetPlayer
     private const float SPEED = 50;
     private const float FRICTION = 0.2f;
     private const float DASH_STRENGTH = 1500;
+    private const float LOOK_LERP_SPEED = 5;
 
     #endregion
 
@@ -24,6 +25,8 @@ public partial class Player : Character, INetPlayer
     private double _controllerLookInputsActiveBuffer;
 
     private bool _canDash;
+    private Vector2 _targetLookDirection;
+    private Vector2 _currentLookDirection;
 
     #endregion
 
@@ -53,7 +56,7 @@ public partial class Player : Character, INetPlayer
 
         HandleMovement(delta);
         HandleDash();
-        HandleLookDirection();
+        HandleLookDirection(delta);
         UpdateControllerLookInputs(delta);
     }
 
@@ -93,10 +96,11 @@ public partial class Player : Character, INetPlayer
         GTween.Delay(this, 0.2, () => _canDash = true);
     }
 
-    private void HandleLookDirection()
+    private void HandleLookDirection(double delta)
     {
-        Vector2 lookDirection = GetLookDirection();
-        _cursor.LookAt(Position + lookDirection.Normalized() * 100);
+        _targetLookDirection = GetLookDirection();
+        _currentLookDirection = _currentLookDirection.Lerp(_targetLookDirection, (float)(LOOK_LERP_SPEED * delta));
+        _cursor.LookAt(Position + _currentLookDirection.Normalized() * 100);
     }
 
     private Vector2 GetLookDirection()
@@ -122,7 +126,7 @@ public partial class Player : Character, INetPlayer
 
     private Vector2 GetMouseLookDirection()
     {
-        return GetGlobalMousePosition() - Position;
+        return (GetGlobalMousePosition() - Position).Normalized();
     }
 
     private void UpdateControllerLookInputs(double delta)
