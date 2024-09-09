@@ -7,140 +7,167 @@ public partial class Player : Character, INetPlayer
 {
     #region Config
 
-    float speed = 50;
-    float friction = 0.2f;
-    float dashStrength = 1500;
+    private const float SPEED = 50;
+    private const float FRICTION = 0.2f;
+    private const float DASH_STRENGTH = 1500;
 
     #endregion
 
     #region Variables
 
-    CameraShakeComponent cameraShake;
-    Vector2 prevPosition;
-    Vector2 moveDirection;
-    GameClient client;
-    Sprite2D sprite;
-    Sprite2D cursor;
-    double controllerLookInputsActiveBuffer;
+    private CameraShakeComponent _cameraShake;
+    private Vector2 _prevPosition;
+    private Vector2 _moveDirection;
+    private GameClient _client;
+    private Sprite2D _sprite;
+    private Sprite2D _cursor;
+    private double _controllerLookInputsActiveBuffer;
 
-    bool canDash;
+    private bool _canDash;
 
     #endregion
 
     public override void _Ready()
     {
         base._Ready();
-        canDash = true;
-        client = Game.Net.Client;
-        sprite = GetNode<Sprite2D>("Sprite2D");
-        cursor = GetNode<Sprite2D>("Cursor");
-        cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
+        InitializeComponents();
+        ResetDashState();
+    }
+
+    private void InitializeComponents()
+    {
+        _client = Game.Net.Client;
+        _sprite = GetNode<Sprite2D>("Sprite2D");
+        _cursor = GetNode<Sprite2D>("Cursor");
+        _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
+    }
+
+    private void ResetDashState()
+    {
+        _canDash = true;
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
 
+        HandleMovement(delta);
+        HandleDash();
+        HandleLookDirection();
+        UpdateControllerLookInputs(delta);
+    }
+
+    private void HandleMovement(double delta)
+    {
+        Vector2 moveDirection = GetMoveDirection();
+        _moveDirection = moveDirection;
+
+        Velocity += moveDirection * SPEED;
+        Velocity = Velocity.Lerp(Vector2.Zero, FRICTION);
+    }
+
+    private Vector2 GetMoveDirection()
+    {
         Vector2 moveDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-        
         moveDirection += new Vector2(Input.GetJoyAxis(0, JoyAxis.LeftX), Input.GetJoyAxis(0, JoyAxis.LeftY));
-        
-        moveDirection = moveDirection.Normalized();
+        return moveDirection.Normalized();
+    }
 
-        this.moveDirection = moveDirection;
-
-        // Velocity is mutiplied by delta for us already
-        Velocity += moveDirection * speed;
-        Velocity = Velocity.Lerp(Vector2.Zero, friction);
-
-        if (Input.IsActionJustPressed("dash") && canDash && moveDirection != Vector2.Zero)
+    private void HandleDash()
+    {
+        if (Input.IsActionJustPressed("dash") && _canDash && _moveDirection != Vector2.Zero)
         {
-            Dash();
-            canDash = false;
-            GTween.Delay(this, 0.2, () => canDash = true);
+            PerformDash();
+            ResetDashStateAfterDelay();
         }
+    }
 
-        Vector2 lookDirection = Vector2.Zero;
+    private void PerformDash()
+    {
+        Dash();
+        _canDash = false;
+    }
 
-        if (controllerLookInputsActiveBuffer > 0)
+    private void ResetDashStateAfterDelay()
+    {
+        GTween.Delay(this, 0.2, () => _canDash = true);
+    }
+
+    private void HandleLookDirection()
+    {
+        Vector2 lookDirection = GetLookDirection();
+        _cursor.LookAt(Position + lookDirection.Normalized() * 100);
+    }
+
+    private Vector2 GetLookDirection()
+    {
+        if (_controllerLookInputsActiveBuffer > 0)
         {
-            lookDirection = Input.GetJoyName(0) switch
-            {
-                // My PS2 controller shows up as "PS3 Controller" when I do Input.GetJoyName(0)
-                // My PS2 controller requires a specific implementation in order for it to work in Godot
-                "PS3 Controller" => new Vector2(Input.GetJoyAxis(0, JoyAxis.RightX), -(Input.GetJoyAxis(0, JoyAxis.TriggerLeft) - 0.5f) * 2),
-
-                // All other controllers
-                _ => new Vector2(Input.GetJoyAxis(0, JoyAxis.RightX), Input.GetJoyAxis(0, JoyAxis.RightY))
-            };
+            return GetControllerLookDirection();
         }
         else
         {
-            lookDirection = GetGlobalMousePosition() - Position;
+            return GetMouseLookDirection();
         }
-
-        cursor.LookAt(Position + lookDirection.Normalized() * 100);
-
-        AreControllerLookInputsActive();
-        controllerLookInputsActiveBuffer -= delta;
     }
 
-    private void AreControllerLookInputsActive()
+    private Vector2 GetControllerLookDirection()
+    {
+        return Input.GetJoyName(0) switch
+        {
+            "PS3 Controller" => new Vector2(Input.GetJoyAxis(0, JoyAxis.RightX), -(Input.GetJoyAxis(0, JoyAxis.TriggerLeft) - 0.5f) * 2),
+            _ => new Vector2(Input.GetJoyAxis(0, JoyAxis.RightX), Input.GetJoyAxis(0, JoyAxis.RightY))
+        };
+    }
+
+    private Vector2 GetMouseLookDirection()
+    {
+        return GetGlobalMousePosition() - Position;
+    }
+
+    private void UpdateControllerLookInputs(double delta)
     {
         float rightX = Input.GetJoyAxis(0, JoyAxis.RightX);
         float rightY = Input.GetJoyAxis(0, JoyAxis.RightY);
-
-        float triggerLeft = 0;
-        
-        if (Input.GetJoyName(0) == "PS3 Controller")
-        {
-            triggerLeft = -(Input.GetJoyAxis(0, JoyAxis.TriggerLeft) - 0.5f) * 2;
-        }
+        float triggerLeft = Input.GetJoyName(0) == "PS3 Controller" ? -(Input.GetJoyAxis(0, JoyAxis.TriggerLeft) - 0.5f) * 2 : 0;
 
         float sum = Mathf.Abs(rightX) + Mathf.Abs(rightY) + Mathf.Abs(triggerLeft);
 
-        GD.Print(sum);
-
         if (sum > 0.3)
         {
-            controllerLookInputsActiveBuffer = 1;
+            _controllerLookInputsActiveBuffer = 1;
         }
+
+        _controllerLookInputsActiveBuffer -= delta;
     }
 
-    public void Dash()
+    private void Dash()
     {
         GTween ghosts = new GTween(this)
-            .Delay(0.0565) //0.0565 for exactly 3 ghosts at perfect spacing
+            .Delay(0.0565)
             .Callback(AddGhost)
             .Loop();
 
         new GTween(this)
-            .Animate(CharacterBody2D.PropertyName.Velocity, moveDirection * dashStrength, 0.1)
+            .Animate(CharacterBody2D.PropertyName.Velocity, _moveDirection * DASH_STRENGTH, 0.1)
             .Delay(0.1)
             .Callback(() => ghosts.Stop());
     }
 
-    public void AddGhost()
+    private void AddGhost()
     {
         PlayerDashGhost ghost = Game.LoadPrefab<PlayerDashGhost>(Prefab.PlayerDashGhost);
-
         ghost.Position = Position;
-        ghost.AddChild(sprite.Duplicate());
-
+        ghost.AddChild(_sprite.Duplicate());
         GetTree().CurrentScene.AddChild(ghost);
     }
 
     public void NetSendPosition()
     {
-        if (Position != prevPosition)
+        if (Position != _prevPosition)
         {
-            client.Send(new CPacketPosition
-            {
-                Position = Position
-            });
+            _client.Send(new CPacketPosition { Position = Position });
+            _prevPosition = Position;
         }
-
-        prevPosition = Position;
     }
 }
-
