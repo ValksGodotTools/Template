@@ -99,7 +99,7 @@ public partial class Player : Character, INetPlayer
     private void HandleLookDirection(double delta)
     {
         _targetLookDirection = GetLookDirection();
-        _currentLookDirection = _currentLookDirection.Lerp(_targetLookDirection, (float)(LOOK_LERP_SPEED * delta));
+        _currentLookDirection = _currentLookDirection.Slerp(_targetLookDirection, (float)(LOOK_LERP_SPEED * delta));
         _cursor.LookAt(Position + _currentLookDirection.Normalized() * 100);
     }
 
