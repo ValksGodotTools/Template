@@ -80,7 +80,7 @@ public partial class Game
 
     private static void AddLabel(VBoxContainer vbox, object message, double fadeTime)
     {
-        GLabel label = new(message.ToString());
+        GLabel label = new(message?.ToString());
         label.SetUnshaded();
 
         vbox.AddChild(label);
