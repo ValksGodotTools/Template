@@ -943,6 +943,8 @@ public static class VisualUIBuilder
     #region Specific Util Functions
     public static void CreateVisualPanels(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
     {
+        Dictionary<Node, VBoxContainer> visualNodes = [];
+
         foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
         {
             Node node = debugVisualNode.Node;
@@ -954,6 +956,11 @@ public static class VisualUIBuilder
             AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
 
             AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
+
+            VBoxContainer vboxLogs = new();
+            vboxMembers.AddChild(vboxLogs);
+
+            visualNodes.Add(node, vboxLogs);
 
             // Add vbox to scene tree to get vbox.Size for later
             node.AddChild(vboxMembers);
@@ -977,6 +984,8 @@ public static class VisualUIBuilder
                 vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
             }
         }
+
+        Game.VisualNodes = visualNodes;
     }
 
     private static RigidBody2D CreateRigidBody(VBoxContainer vbox)
