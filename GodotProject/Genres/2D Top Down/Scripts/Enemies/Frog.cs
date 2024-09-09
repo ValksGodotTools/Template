@@ -37,7 +37,7 @@ public partial class Frog : RigidBody
     {
         state.Enter = () =>
         {
-            animatedSprite.Play("idle");
+            animatedSprite.PlayRandom("idle");
 
             GTween.Delay(this, 1, () =>
             {
