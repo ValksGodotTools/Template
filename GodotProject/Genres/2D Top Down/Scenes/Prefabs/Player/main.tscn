@@ -31,3 +31,8 @@ shadow_filter = 2
 shadow_filter_smooth = 1.0
 texture = ExtResource("4_y4jhi")
 texture_scale = 1.5
+
+[node name="Cursor" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_s0wn2")
+offset = Vector2(500, 0)
