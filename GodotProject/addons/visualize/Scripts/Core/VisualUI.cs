@@ -75,7 +75,8 @@ public static class VisualUI
             {
                 Size = vbox.Size
             },
-            Position = vbox.Size / 2
+            Position = vbox.Size / 2,
+            DebugColor = new Color(0, 0.3f, 0, 0)
         };
 
         rigidBody.AddChild(collision);
