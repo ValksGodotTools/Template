@@ -25,7 +25,6 @@ Say goodbye to the hassle of setting up a new project. `ValksGodotTools/Template
     - [State Manager](#state-manager)
     - [Extensions](#extensions)
     - [Mod Loader](#mod-loader)
-    - [Localisation](#localisation)
 5. [Tips](#tips)
 6. [FAQ](#faq)
 7. [Contributing](#contributing)
@@ -303,6 +302,8 @@ By annotating your members with `[Visualize]`, you can streamline the debugging 
 ![options](https://github.com/ValksGodotTools/Template/assets/6277739/c5a9e011-f433-4887-8947-36130dd83426)
 ![keybindings](https://user-images.githubusercontent.com/6277739/236582745-8d69b91f-497f-4188-b669-66daaa43691d.png)
 
+The majority of UI elements have localisation support for English, French and Japanese.
+
 ### Simplified Tweens
 Tweening has never been so easy! 🦄
 ```cs
@@ -525,10 +526,6 @@ Mods have the ability to swap out game assets and run C# scripts. You can find a
 
 > [!IMPORTANT]
 > The mod loader currently cannot handle loading more than one mod with scripts. See https://github.com/ValksGodotTools/Template/issues/15 for more info on this.
-
-### Localisation
-> [!NOTE]
-> By using `Game.Log()`, you can ensure that your logs are consistent across any thread. This means you won't have to deal with mixed-up logs when logging from the client, server, and Godot threads.
 
 ## Tips
 > [!TIP]
