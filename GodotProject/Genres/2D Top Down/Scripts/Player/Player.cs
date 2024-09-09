@@ -78,7 +78,9 @@ public partial class Player : Character, INetPlayer
 
     private void HandleDash()
     {
-        if (Input.IsActionJustPressed("dash") && _canDash && _moveDirection != Vector2.Zero)
+        bool dashJustPressed = Input.IsActionJustPressed("dash") || Input.IsJoyButtonPressed(0, JoyButton.LeftShoulder);
+
+        if (dashJustPressed && _canDash && _moveDirection != Vector2.Zero)
         {
             PerformDash();
             ResetDashStateAfterDelay();
