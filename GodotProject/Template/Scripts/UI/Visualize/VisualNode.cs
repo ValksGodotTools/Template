@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Template;
 
-public class DebugVisualNode(Node node, Vector2 initialPosition, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
+public class VisualNode(Node node, Vector2 initialPosition, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
 {
     public Node Node { get; } = node;
     public Vector2 InitialPosition { get; } = initialPosition;
@@ -14,7 +14,7 @@ public class DebugVisualNode(Node node, Vector2 initialPosition, IEnumerable<Pro
     public IEnumerable<MethodInfo> Methods { get; } = methods;
 }
 
-public class DebugVisualSpinBox
+public class VisualSpinBox
 {
     public SpinBox SpinBox { get; set; }
     public Type Type { get; set; }

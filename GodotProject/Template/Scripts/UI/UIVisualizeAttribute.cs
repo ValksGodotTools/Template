@@ -7,13 +7,13 @@ public partial class UIVisualizeAttribute : Control
 {
     public override void _Ready()
     {
-        List<DebugVisualNode> visualAttributeData = VisualizeAttributeHandler.RetrieveData(GetTree().Root);
+        List<VisualNode> visualAttributeData = VisualizeAttributeHandler.RetrieveData(GetTree().Root);
 
         if (visualAttributeData.Count > 0)
         {
-            List<DebugVisualSpinBox> debugExportSpinBoxes = [];
+            List<VisualSpinBox> debugExportSpinBoxes = [];
 
-            VisualUIBuilder.CreateVisualPanels(visualAttributeData, debugExportSpinBoxes);
+            VisualUI.CreateVisualPanels(visualAttributeData, debugExportSpinBoxes);
         }
     }
 }

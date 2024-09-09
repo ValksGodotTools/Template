@@ -68,7 +68,7 @@ public partial class Game
         {
             vbox = new VBoxContainer
             {
-                Scale = Vector2.One * VisualUIBuilder.VISUAL_UI_SCALE_FACTOR
+                Scale = Vector2.One * VisualUI.VISUAL_UI_SCALE_FACTOR
             };
 
             node.AddChild(vbox);

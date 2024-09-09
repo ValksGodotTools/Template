@@ -11,9 +11,9 @@ public static class VisualizeAttributeHandler
 {
     private static readonly BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
-    public static List<DebugVisualNode> RetrieveData(Node parent)
+    public static List<VisualNode> RetrieveData(Node parent)
     {
-        List<DebugVisualNode> debugVisualNodes = [];
+        List<VisualNode> debugVisualNodes = [];
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
         foreach (Type type in types)
@@ -29,7 +29,7 @@ public static class VisualizeAttributeHandler
 
                 if (properties.Any() || fields.Any() || methods.Any())
                 {
-                    debugVisualNodes.Add(new DebugVisualNode(node, initialPosition, properties, fields, methods));
+                    debugVisualNodes.Add(new VisualNode(node, initialPosition, properties, fields, methods));
                 }
             }
         }

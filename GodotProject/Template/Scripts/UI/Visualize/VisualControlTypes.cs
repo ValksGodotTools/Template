@@ -10,71 +10,38 @@ using static Godot.Control;
 
 namespace Template;
 
-public static class VisualUIBuilder
+public static class VisualControlTypes
 {
-    public const float VISUAL_UI_SCALE_FACTOR = 0.6f;
-
-    #region Method Parameters
-    private static HBoxContainer CreateMethodParameterControls(MethodInfo method, List<DebugVisualSpinBox> debugExportSpinBoxes, object[] providedValues)
-    {
-        HBoxContainer hboxParams = new();
-
-        ParameterInfo[] paramInfos = method.GetParameters();
-
-        for (int i = 0; i < paramInfos.Length; i++)
-        {
-            ParameterInfo paramInfo = paramInfos[i];
-            Type paramType = paramInfo.ParameterType;
-
-            providedValues[i] = CreateDefaultValue(paramType);
-
-            int capturedIndex = i;
-
-            Control control = CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
-                v => providedValues[capturedIndex] = v);
-
-            if (control != null)
-            {
-                hboxParams.AddChild(new GLabel(paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital()));
-                hboxParams.AddChild(control);
-            }
-        }
-
-        return hboxParams;
-    }
-    #endregion
-
-    #region Control Types
-    private static Control CreateControlForType(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    public static Control CreateControlForType(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         // Order of which these are handled matters
         Control control = type switch
         {
             // Handle C# specific types
-            _ when type == typeof(bool) => CreateBoolControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(string) => CreateStringControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(object) => CreateObjectControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(bool) => Bool(initialValue, v => valueChanged(v)),
+            _ when type == typeof(string) => String(initialValue, v => valueChanged(v)),
+            _ when type == typeof(object) => Object(initialValue, v => valueChanged(v)),
 
             // Handle Godot specific types
-            _ when type == typeof(Color) => CreateColorControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector2) => CreateVector2Control(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector2I) => CreateVector2IControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector3) => CreateVector3Control(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector3I) => CreateVector3IControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector4) => CreateVector4Control(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector4I) => CreateVector4IControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Quaternion) => CreateQuaternionControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(NodePath) => CreateNodePathControl(initialValue, v => valueChanged(v)),
-            _ when type == typeof(StringName) => CreateStringNameControl(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Color) => Color(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector2) => Vector2(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector2I) => Vector2I(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector3) => Vector3(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector3I) => Vector3I(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector4) => Vector4(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Vector4I) => Vector4I(initialValue, v => valueChanged(v)),
+            _ when type == typeof(Quaternion) => Quaternion(initialValue, v => valueChanged(v)),
+            _ when type == typeof(NodePath) => NodePath(initialValue, v => valueChanged(v)),
+            _ when type == typeof(StringName) => StringName(initialValue, v => valueChanged(v)),
 
             // Handle numeric, enum and array types
-            _ when type.IsNumericType() => CreateNumericControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsEnum => CreateEnumControl(initialValue, type, v => valueChanged(v)),
-            _ when type.IsArray => CreateArrayControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => CreateListControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => CreateDictionaryControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsValueType && !type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => CreateClassControl(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsNumericType() => Numeric(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsEnum => Enum(initialValue, type, v => valueChanged(v)),
+            _ when type.IsArray => Array(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => List(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => Dictionary(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => Class(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type.IsValueType && !type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => Class(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
 
             _ => null
         };
@@ -87,7 +54,7 @@ public static class VisualUIBuilder
         return control;
     }
 
-    private static Control CreateClassControl(object target, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    private static Control Class(object target, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
@@ -165,11 +132,11 @@ public static class VisualUIBuilder
             ParameterInfo[] paramInfos = method.GetParameters();
             object[] providedValues = new object[paramInfos.Length];
 
-            HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, providedValues);
+            HBoxContainer hboxParams = VisualMethods.CreateMethodParameterControls(method, debugExportSpinBoxes, providedValues);
 
             vbox.AddChild(hboxParams);
 
-            Button button = CreateMethodButton(method, target, paramInfos, providedValues);
+            Button button = VisualMethods.CreateMethodButton(method, target, paramInfos, providedValues);
 
             vbox.AddChild(button);
         }
@@ -177,7 +144,7 @@ public static class VisualUIBuilder
         return vbox;
     }
 
-    private static Control CreateDictionaryControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IDictionary> valueChanged)
+    private static Control Dictionary(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<IDictionary> valueChanged)
     {
         VBoxContainer dictionaryVBox = new()
         {
@@ -191,8 +158,8 @@ public static class VisualUIBuilder
         Type keyType = genericArguments[0];
         Type valueType = genericArguments[1];
 
-        object defaultKey = CreateDefaultValue(keyType);
-        object defaultValue = CreateDefaultValue(valueType);
+        object defaultKey = VisualMethods.CreateDefaultValue(keyType);
+        object defaultValue = VisualMethods.CreateDefaultValue(valueType);
 
         IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
 
@@ -344,7 +311,7 @@ public static class VisualUIBuilder
         return dictionaryVBox;
     }
 
-    private static Control CreateListControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
+    private static Control List(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
     {
         VBoxContainer listVBox = new()
         {
@@ -359,7 +326,7 @@ public static class VisualUIBuilder
         void AddNewEntryToList()
         {
             // Create a new instance of the list element type
-            object newValue = CreateDefaultValue(elementType);
+            object newValue = VisualMethods.CreateDefaultValue(elementType);
             list.Add(newValue);
             valueChanged(list);
 
@@ -434,7 +401,7 @@ public static class VisualUIBuilder
         return listVBox;
     }
 
-    private static Control CreateArrayControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<Array> valueChanged)
+    private static Control Array(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<Array> valueChanged)
     {
         VBoxContainer arrayVBox = new()
         {
@@ -444,17 +411,17 @@ public static class VisualUIBuilder
         Button addButton = new() { Text = "+" };
 
         Type elementType = type.GetElementType();
-        Array array = initialValue as Array ?? Array.CreateInstance(elementType, 0);
+        Array array = initialValue as Array ?? System.Array.CreateInstance(elementType, 0);
 
         void AddNewEntryToArray()
         {
             // Create a new array with the updated length
-            Array newArray = Array.CreateInstance(elementType, array.Length + 1);
-            Array.Copy(array, newArray, array.Length);
+            Array newArray = System.Array.CreateInstance(elementType, array.Length + 1);
+            System.Array.Copy(array, newArray, array.Length);
             array = newArray;
             valueChanged(array);
 
-            object newValue = CreateDefaultValue(elementType);
+            object newValue = VisualMethods.CreateDefaultValue(elementType);
 
             int newIndex = array.Length - 1;
 
@@ -491,7 +458,7 @@ public static class VisualUIBuilder
 
         // Initialize the UI with the existing array elements
         for (int i = 0; i < array.Length; i++)
-        { 
+        {
             object value = array.GetValue(i);
 
             Control control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
@@ -529,7 +496,7 @@ public static class VisualUIBuilder
         return arrayVBox;
     }
 
-    private static Control CreateStringNameControl(object initialValue, Action<StringName> valueChanged)
+    private static Control StringName(object initialValue, Action<StringName> valueChanged)
     {
         StringName stringName = (StringName)initialValue;
         string initialText = stringName != null ? stringName.ToString() : string.Empty;
@@ -547,7 +514,7 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateNodePathControl(object initialValue, Action<NodePath> valueChanged)
+    private static Control NodePath(object initialValue, Action<NodePath> valueChanged)
     {
         NodePath nodePath = (NodePath)initialValue;
 
@@ -566,7 +533,7 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateObjectControl(object initialValue, Action<object> valueChanged)
+    private static Control Object(object initialValue, Action<object> valueChanged)
     {
         LineEdit lineEdit = new()
         {
@@ -581,7 +548,7 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateQuaternionControl(object initialValue, Action<Quaternion> valueChanged)
+    private static Control Quaternion(object initialValue, Action<Quaternion> valueChanged)
     {
         HBoxContainer quaternionHBox = new();
 
@@ -633,7 +600,7 @@ public static class VisualUIBuilder
         return quaternionHBox;
     }
 
-    private static Control CreateVector2Control(object initialValue, Action<Vector2> valueChanged)
+    private static Control Vector2(object initialValue, Action<Vector2> valueChanged)
     {
         HBoxContainer vector2HBox = new();
 
@@ -665,7 +632,7 @@ public static class VisualUIBuilder
         return vector2HBox;
     }
 
-    private static Control CreateVector2IControl(object initialValue, Action<Vector2I> valueChanged)
+    private static Control Vector2I(object initialValue, Action<Vector2I> valueChanged)
     {
         HBoxContainer vector2IHBox = new();
 
@@ -697,7 +664,7 @@ public static class VisualUIBuilder
         return vector2IHBox;
     }
 
-    private static Control CreateVector3Control(object initialValue, Action<Vector3> valueChanged)
+    private static Control Vector3(object initialValue, Action<Vector3> valueChanged)
     {
         HBoxContainer vector3HBox = new();
 
@@ -739,7 +706,7 @@ public static class VisualUIBuilder
         return vector3HBox;
     }
 
-    private static Control CreateVector3IControl(object initialValue, Action<Vector3I> valueChanged)
+    private static Control Vector3I(object initialValue, Action<Vector3I> valueChanged)
     {
         HBoxContainer vector3IHBox = new();
 
@@ -781,7 +748,7 @@ public static class VisualUIBuilder
         return vector3IHBox;
     }
 
-    private static Control CreateVector4Control(object initialValue, Action<Vector4> valueChanged)
+    private static Control Vector4(object initialValue, Action<Vector4> valueChanged)
     {
         HBoxContainer vector4HBox = new();
 
@@ -833,7 +800,7 @@ public static class VisualUIBuilder
         return vector4HBox;
     }
 
-    private static Control CreateVector4IControl(object initialValue, Action<Vector4I> valueChanged)
+    private static Control Vector4I(object initialValue, Action<Vector4I> valueChanged)
     {
         HBoxContainer vector4IHBox = new();
 
@@ -885,7 +852,7 @@ public static class VisualUIBuilder
         return vector4IHBox;
     }
 
-    private static Control CreateNumericControl(object initialValue, Type type, List<DebugVisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    private static Control Numeric(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
     {
         SpinBox spinBox = CreateSpinBox(type);
 
@@ -899,7 +866,7 @@ public static class VisualUIBuilder
         return spinBox;
     }
 
-    private static Control CreateBoolControl(object initialValue, Action<bool> valueChanged)
+    private static Control Bool(object initialValue, Action<bool> valueChanged)
     {
         CheckBox checkBox = new()
         {
@@ -910,7 +877,7 @@ public static class VisualUIBuilder
         return checkBox;
     }
 
-    private static Control CreateColorControl(object initialValue, Action<Color> valueChanged)
+    private static Control Color(object initialValue, Action<Color> valueChanged)
     {
         Color initialColor = (Color)initialValue;
 
@@ -920,7 +887,7 @@ public static class VisualUIBuilder
         return colorPickerButton.Control;
     }
 
-    private static Control CreateStringControl(object initialValue, Action<string> valueChanged)
+    private static Control String(object initialValue, Action<string> valueChanged)
     {
         LineEdit lineEdit = new()
         {
@@ -932,7 +899,7 @@ public static class VisualUIBuilder
         return lineEdit;
     }
 
-    private static Control CreateEnumControl(object initialValue, Type type, Action<object> valueChanged)
+    private static Control Enum(object initialValue, Type type, Action<object> valueChanged)
     {
         GOptionButtonEnum optionButton = new(type);
         optionButton.Select(initialValue);
@@ -940,108 +907,8 @@ public static class VisualUIBuilder
 
         return optionButton.Control;
     }
-    #endregion
 
-    #region Specific Util Functions
-    public static void CreateVisualPanels(List<DebugVisualNode> debugVisualNodes, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        Dictionary<Node, VBoxContainer> visualNodes = [];
-
-        foreach (DebugVisualNode debugVisualNode in debugVisualNodes)
-        {
-            Node node = debugVisualNode.Node;
-
-            VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
-
-            AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, debugExportSpinBoxes);
-
-            AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
-
-            AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
-
-            VBoxContainer vboxLogs = new();
-            vboxMembers.AddChild(vboxLogs);
-
-            visualNodes.Add(node, vboxLogs);
-
-            // Add vbox to scene tree to get vbox.Size for later
-            node.AddChild(vboxMembers);
-
-            RigidBody2D rigidBody = CreateRigidBody(vboxMembers);
-
-            // Reparent vbox to rigidbody
-            vboxMembers.GetParent().RemoveChild(vboxMembers);
-            rigidBody.AddChild(vboxMembers);
-            node.AddChild(rigidBody);
-
-            // All debug UI elements should not be influenced by the game world environments lighting
-            node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
-
-            vboxMembers.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
-
-            if (debugVisualNode.InitialPosition != Vector2.Zero)
-            {
-                vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
-            }
-        }
-
-        Game.VisualNodes = visualNodes;
-    }
-
-    private static RigidBody2D CreateRigidBody(VBoxContainer vbox)
-    {
-        RigidBody2D rigidBody = new()
-        {
-            GravityScale = 0,
-            LockRotation = true
-        };
-        rigidBody.SetCollisionLayerAndMask(32);
-
-        CollisionShape2D collision = new()
-        {
-            Shape = new RectangleShape2D
-            {
-                Size = vbox.Size
-            },
-            Position = vbox.Size / 2
-        };
-
-        rigidBody.AddChild(collision);
-
-        return rigidBody;
-    }
-
-    private static VBoxContainer CreateVisualContainer(string nodeName)
-    {
-        VBoxContainer vbox = new()
-        {
-            // Ensure this info is rendered above all game elements
-            ZIndex = (int)RenderingServer.CanvasItemZMax
-        };
-
-        GLabel label = new(nodeName);
-
-        vbox.AddChild(label);
-
-        return vbox;
-    }
-
-    private static object CreateDefaultValue(Type type)
-    {
-        // Examples of Value Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types#kinds-of-value-types-and-type-constraints
-        if (type.IsValueType)
-        {
-            return Activator.CreateInstance(type);
-        }
-        // Examples of Reference Types: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types
-        else if (type == typeof(string))
-        {
-            return string.Empty;
-        }
-
-        return null;
-    }
-
+    #region Util Functions
     private static void SetControlValue(Control control, object value)
     {
         if (control is ColorPickerButton colorPickerButton)
@@ -1063,15 +930,15 @@ public static class VisualUIBuilder
         {
             throw new ArgumentNullException(nameof(source));
         }
-            
+
         if (index < 0 || index >= source.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(index), index, $"Index was out of range");
-        }   
+        }
 
-        Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
-        Array.Copy(source, 0, dest, 0, index);
-        Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
+        Array dest = System.Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
+        System.Array.Copy(source, 0, dest, 0, index);
+        System.Array.Copy(source, index + 1, dest, index, source.Length - index - 1);
 
         return dest;
     }
@@ -1106,81 +973,6 @@ public static class VisualUIBuilder
         }
 
         return convertedValue;
-    }
-
-    private static Button CreateMethodButton(MethodInfo method, object target, ParameterInfo[] paramInfos, object[] providedValues)
-    {
-        Button button = new()
-        {
-            Text = method.Name,
-            SizeFlagsHorizontal = SizeFlags.ShrinkCenter
-        };
-
-        button.Pressed += () =>
-        {
-            object[] parameters = ParameterConverter.ConvertParameterInfoToObjectArray(paramInfos, providedValues);
-
-            method.Invoke(target, parameters);
-        };
-
-        return button;
-    }
-
-    private static void AddMethodInfoElements(VBoxContainer vbox, IEnumerable<MethodInfo> methods, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        foreach (MethodInfo method in methods)
-        {
-            if (method.DeclaringType.IsSubclassOf(typeof(GodotObject)))
-            {
-                ParameterInfo[] paramInfos = method.GetParameters();
-                object[] providedValues = new object[paramInfos.Length];
-
-                HBoxContainer hboxParams = CreateMethodParameterControls(method, debugExportSpinBoxes, providedValues);
-
-                vbox.AddChild(hboxParams);
-
-                Button button = CreateMethodButton(method, node, paramInfos, providedValues);
-
-                vbox.AddChild(button);
-            }
-        }
-    }
-
-    private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        foreach (MemberInfo member in members)
-        {
-            Control element = CreateMemberInfoElement(member, node, debugExportSpinBoxes);
-            vbox.AddChild(element);
-        }
-    }
-
-    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<DebugVisualSpinBox> debugExportSpinBoxes)
-    {
-        HBoxContainer hbox = new();
-
-        Type type = VisualNodeHandler.GetMemberType(member);
-
-        object initialValue = VisualNodeHandler.GetMemberValue(member, node);
-
-        Control element = CreateControlForType(initialValue, type, debugExportSpinBoxes, v =>
-        {
-            VisualNodeHandler.SetMemberValue(member, node, v);
-        });
-
-        if (element != null)
-        {
-            GLabel label = new()
-            {
-                Text = member.Name.ToPascalCase().AddSpaceBeforeEachCapital(),
-                SizeFlagsHorizontal = SizeFlags.ExpandFill
-            };
-
-            hbox.AddChild(label);
-            hbox.AddChild(element);
-        }
-
-        return hbox;
     }
 
     private static SpinBox CreateSpinBox(Type type)

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Template;
 
-public static class VisualNodeHandler
+public static class VisualHandler
 {
     public static void SetMemberValue(MemberInfo member, object target, object value)
     {
