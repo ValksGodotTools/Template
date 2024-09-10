@@ -53,7 +53,6 @@ public class VisualLogger
     private static void AddLabel(VBoxContainer vbox, object message, double fadeTime)
     {
         Label label = new() { Text = message?.ToString() };
-        label.SetUnshaded();
 
         vbox.AddChild(label);
         vbox.MoveChild(label, 0);

@@ -19,7 +19,11 @@ public static class VisualUI
 
         Node node = debugVisualNode.Node;
 
+        VBoxContainer vboxParent = new();
+
         VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
+
+        VBoxContainer readonlyMembers = new();
 
         string[] visualizeMembers = debugVisualNode.VisualizeMembers;
 
@@ -59,7 +63,8 @@ public static class VisualUI
                     // Do nothing
                 });
 
-                visualControlInfo.Control.SetEditable(false);
+                // Godot makes it harder to see when their non-editable
+                //visualControlInfo.Control.SetEditable(false);
 
                 updateControls.Add(() =>
                 {
@@ -70,11 +75,10 @@ public static class VisualUI
                     visualControlInfo.Control.SetValue(newValue);
                 });
 
-                HBoxContainer hbox = new();
+                HBoxContainer hbox = new() { Modulate = new Color(1.0f, 0.75f, 0.8f, 1) };
                 hbox.AddChild(new Label { Text = visualMember });
                 hbox.AddChild(visualControlInfo.Control.Control);
-
-                vboxMembers.AddChild(hbox);
+                readonlyMembers.AddChild(hbox);
             }
         }
 
@@ -89,13 +93,29 @@ public static class VisualUI
 
         visualNodes.Add(node, vboxLogs);
 
-        // Add vbox to scene tree to get vbox.Size for later
-        tree.Root.AddChild(vboxMembers);
+        vboxParent.AddChild(readonlyMembers);
+        vboxParent.AddChild(vboxMembers);
 
-        // All debug UI elements should not be influenced by the game world environments lighting
-        node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
+        foreach (BaseButton baseButton in vboxParent.GetChildren<BaseButton>())
+        {
+            baseButton.Pressed += () =>
+            {
+                _ = new GTween(baseButton)
+                    .Delay(0.1)
+                    .Callback(() => baseButton.ReleaseFocus());
+            };
+        }
 
-        vboxMembers.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
+        vboxMembers.Modulate = new Color(0.8f, 1, 0.8f, 1);
+
+        // Add to canvas layer so UI is not affected by lighting in game world
+        CanvasLayer canvasLayer = new();
+        canvasLayer.FollowViewportEnabled = true;
+        canvasLayer.AddChild(vboxParent);
+
+        tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
+
+        vboxParent.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
 
         if (debugVisualNode.InitialPosition != Vector2.Zero)
         {
@@ -105,7 +125,7 @@ public static class VisualUI
         // This is ugly but I don't know how else to do it
         VisualLogger.VisualNodes = visualNodes;
 
-        return (vboxMembers, updateControls);
+        return (vboxParent, updateControls);
     }
 
     private static VBoxContainer CreateVisualContainer(string nodeName)

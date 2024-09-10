@@ -46,7 +46,7 @@ public partial class VisualizeAutoload : Node
         }
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
         foreach (KeyValuePair<ulong, VisualNodeInfo> kvp in nodeTrackers)
         {

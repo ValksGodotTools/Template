@@ -5,7 +5,7 @@ using Visualize.Utils;
 
 namespace Visualize.Example;
 
-[Visualize(nameof(Position), nameof(Offset), nameof(Rotation), nameof(initialPositionOffset))]
+[Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
 public partial class VisualizeExample : Sprite2D
 {
 	[Visualize] Vector2I position;
@@ -16,16 +16,9 @@ public partial class VisualizeExample : Sprite2D
 
     private readonly VisualLogger logger = new();
 
-    Vector2 initialPositionOffset;
-
-    public override void _Ready()
-    {
-        initialPositionOffset = DisplayServer.WindowGetSize() / 2;
-    }
-
     public override void _PhysicsProcess(double delta)
     {
-        Position = position + initialPositionOffset;
+        Position = position;
         Rotation = rotation;
         Modulate = color;
         Skew = skew;

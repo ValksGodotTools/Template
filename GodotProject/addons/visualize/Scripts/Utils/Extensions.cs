@@ -16,14 +16,6 @@ public static class Extensions
         collisionObject.CollisionMask = (uint)GMath.GetLayerValues(layers);
     }
 
-    public static void SetUnshaded(this CanvasItem canvasItem)
-    {
-        canvasItem.Material = new CanvasItemMaterial
-        {
-            LightMode = CanvasItemMaterial.LightModeEnum.Unshaded
-        };
-    }
-
     /// <summary>
     /// Recursively searches for all nodes of <paramref name="type"/>
     /// </summary>
