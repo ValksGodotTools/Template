@@ -1,4 +1,4 @@
-# Godot ignores
+# Godot
 .godot/*
 Exported/*
 .import/
@@ -6,14 +6,17 @@ export.cfg
 export_presets.cfg
 *.translation
 
-# Mono-specific ignores
+# Mono-specific
 .mono/
 data_*/
 mono_crash.*.json
 
-# Visual Studio ignores
+# Visual Studio
 .vs/*
 Properties/*
+
+# Visual Studio Code
+.vscode/settings.json
 
 # Include these files
 !Properties/.gdignore
