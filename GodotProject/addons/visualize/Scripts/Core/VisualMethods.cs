@@ -5,7 +5,7 @@ using System.Reflection;
 using Visualize.Utils;
 using static Godot.Control;
 
-namespace Visualize;
+namespace Visualize.Core;
 
 public static class VisualMethods
 {
@@ -24,13 +24,13 @@ public static class VisualMethods
 
             int capturedIndex = i;
 
-            Control control = VisualControlTypes.CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
+            VisualControlInfo control = VisualControlTypes.CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
                 v => providedValues[capturedIndex] = v);
 
-            if (control != null)
+            if (control.Control.Control != null)
             {
                 hboxParams.AddChild(new Label { Text = paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital() });
-                hboxParams.AddChild(control);
+                hboxParams.AddChild(control.Control.Control);
             }
         }
 

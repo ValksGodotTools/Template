@@ -5,43 +5,37 @@ using System.Linq;
 using System.Reflection;
 using Visualize.Utils;
 
-namespace Visualize;
+namespace Visualize.Core;
 
 public static class VisualizeAttributeHandler
 {
     private static readonly BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
-    public static List<VisualNode> RetrieveData(Node parent)
+    public static VisualNode RetrieveData(Node specificNode)
     {
-        List<VisualNode> debugVisualNodes = [];
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        Type type = specificNode.GetType();
 
-        foreach (Type type in types)
+        VisualizeAttribute attribute = (VisualizeAttribute)type.GetCustomAttribute(typeof(VisualizeAttribute), false);
+
+        Vector2 initialPosition = Vector2.Zero;
+        string[] visualizeMembers = null;
+
+        if (attribute != null)
         {
-            Vector2 initialPosition = GetInitialPosition(type);
-            List<Node> nodes = parent.GetNodes(type);
-
-            foreach (Node node in nodes)
-            {
-                List<PropertyInfo> properties = GetVisualMembers(type.GetProperties);
-                List<FieldInfo> fields = GetVisualMembers(type.GetFields);
-                List<MethodInfo> methods = GetVisualMembers(type.GetMethods);
-
-                if (properties.Any() || fields.Any() || methods.Any())
-                {
-                    debugVisualNodes.Add(new VisualNode(node, initialPosition, properties, fields, methods));
-                }
-            }
+            initialPosition = attribute.InitialPosition;
+            visualizeMembers = attribute.VisualizeMembers;
         }
 
-        return debugVisualNodes;
-    }
+        List<PropertyInfo> properties = GetVisualMembers(type.GetProperties);
+        List<FieldInfo> fields = GetVisualMembers(type.GetFields);
+        List<MethodInfo> methods = GetVisualMembers(type.GetMethods);
 
-    private static Vector2 GetInitialPosition(Type type)
-    {
-        VisualizeAttribute attribute = (VisualizeAttribute)type.GetCustomAttribute(typeof(VisualizeAttribute), false);
-        
-        return attribute?.InitialPosition ?? Vector2.Zero;
+        if (properties.Any() || fields.Any() || methods.Any())
+        {
+            return new VisualNode(specificNode, initialPosition, visualizeMembers, properties, fields, methods);
+        }
+
+        return null;
     }
 
     private static List<T> GetVisualMembers<T>(Func<BindingFlags, T[]> getMembers) where T : MemberInfo

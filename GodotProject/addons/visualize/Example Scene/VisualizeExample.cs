@@ -1,14 +1,18 @@
 using Godot;
 using System.Collections.Generic;
+using Visualize;
+using Visualize.Utils;
 
 namespace Visualize.Example;
 
+[Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
 public partial class VisualizeExample : Sprite2D
 {
 	[Visualize] Vector2I position;
     [Visualize] float rotation;
     [Visualize] Color color = Colors.White;
     [Visualize] float skew;
+    [Visualize] Vector2 offset;
 
     private readonly VisualLogger logger = new();
 
@@ -25,6 +29,7 @@ public partial class VisualizeExample : Sprite2D
         Rotation = rotation;
         Modulate = color;
         Skew = skew;
+        Offset = offset;
     }
 
     [Visualize]

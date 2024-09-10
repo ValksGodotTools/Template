@@ -1,14 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpt16oa8hjtej"]
+[gd_scene load_steps=2 format=3 uid="uid://dpt16oa8hjtej"]
 
-[ext_resource type="Texture2D" uid="uid://bta173dmvpgj3" path="res://addons/visualize/Example Scene/icon.svg" id="1_0mcxu"]
-[ext_resource type="Script" path="res://addons/visualize/Example Scene/VisualizeExample.cs" id="1_t5kvf"]
+[ext_resource type="Script" path="res://addons/visualize/Example Scene/ExampleScene.cs" id="1_p5fwf"]
 
 [node name="Scene" type="Node2D"]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(560, 301)
-texture = ExtResource("1_0mcxu")
-script = ExtResource("1_t5kvf")
+script = ExtResource("1_p5fwf")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0

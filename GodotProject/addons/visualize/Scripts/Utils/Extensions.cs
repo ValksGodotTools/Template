@@ -29,7 +29,7 @@ public static class Extensions
     /// </summary>
     public static List<Node> GetNodes(this Node node, Type type)
     {
-        List<Node> nodes = [];
+        List<Node> nodes = new();
         RecursiveTypeMatchSearch(node, type, nodes);
         return nodes;
     }
@@ -76,8 +76,8 @@ public static class Extensions
     /// </summary>
     public static bool IsNumericType(this Type @type)
     {
-        HashSet<Type> numericTypes =
-        [
+        HashSet<Type> numericTypes = new()
+        {
             typeof(int),
             typeof(float),
             typeof(double),
@@ -89,7 +89,7 @@ public static class Extensions
             typeof(decimal),
             typeof(byte),
             typeof(sbyte)
-        ];
+        };
 
         return numericTypes.Contains(type);
     }

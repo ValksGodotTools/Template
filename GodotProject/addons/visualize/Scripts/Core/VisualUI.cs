@@ -5,83 +5,80 @@ using System.Reflection;
 using Visualize.Utils;
 using static Godot.Control;
 
-namespace Visualize;
+namespace Visualize.Core;
 
 public static class VisualUI
 {
     public const float VISUAL_UI_SCALE_FACTOR = 0.6f;
 
-    public static void CreateVisualPanels(List<VisualNode> debugVisualNodes, List<VisualSpinBox> debugExportSpinBoxes)
+    public static (VBoxContainer, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
-        Dictionary<Node, VBoxContainer> visualNodes = [];
+        List<VisualSpinBox> debugExportSpinBoxes = new();
+        Dictionary<Node, VBoxContainer> visualNodes = new();
+        List<Action> updateControls = new();
 
-        foreach (VisualNode debugVisualNode in debugVisualNodes)
+        Node node = debugVisualNode.Node;
+
+        VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
+
+        string[] visualizeMembers = debugVisualNode.VisualizeMembers;
+
+        if (visualizeMembers != null)
         {
-            Node node = debugVisualNode.Node;
-
-            VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
-
-            AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, debugExportSpinBoxes);
-
-            AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
-
-            VisualMethods.AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
-
-            VBoxContainer vboxLogs = new();
-            vboxMembers.AddChild(vboxLogs);
-
-            visualNodes.Add(node, vboxLogs);
-
-            // Add vbox to scene tree to get vbox.Size for later
-            node.AddChild(vboxMembers);
-
-            // Using RigidBodies as a temporary workaround to overlapping visual panels
-            // Of course updating the control positions would be better but I'm not sure
-            // how to do this right now
-            RigidBody2D rigidBody = CreateRigidBody(vboxMembers);
-
-            // Reparent vbox to rigidbody
-            vboxMembers.GetParent().RemoveChild(vboxMembers);
-            rigidBody.AddChild(vboxMembers);
-            node.AddChild(rigidBody);
-
-            // All debug UI elements should not be influenced by the game world environments lighting
-            node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
-
-            vboxMembers.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
-
-            if (debugVisualNode.InitialPosition != Vector2.Zero)
+            foreach (string visualMember in visualizeMembers)
             {
-                vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
+                PropertyInfo property = node.GetType().GetProperty(visualMember);
+
+                object initialValue = property.GetValue(node);
+
+                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(initialValue, property.PropertyType, debugExportSpinBoxes, v =>
+                {
+                    // Do nothing
+                });
+
+                visualControlInfo.Control.SetEditable(false);
+
+                updateControls.Add(() =>
+                {
+                    visualControlInfo.Control.SetValue(property.GetValue(node));
+                });
+
+                HBoxContainer hbox = new();
+                hbox.AddChild(new Label { Text = property.Name });
+                hbox.AddChild(visualControlInfo.Control.Control);
+
+                vboxMembers.AddChild(hbox);
             }
+        }
+
+        AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, debugExportSpinBoxes);
+
+        AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
+
+        VisualMethods.AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
+
+        VBoxContainer vboxLogs = new();
+        vboxMembers.AddChild(vboxLogs);
+
+        visualNodes.Add(node, vboxLogs);
+
+        // Add vbox to scene tree to get vbox.Size for later
+        tree.Root.AddChild(vboxMembers);
+
+        // All debug UI elements should not be influenced by the game world environments lighting
+        node.GetChildren<Control>().ForEach(child => child.SetUnshaded());
+
+        vboxMembers.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
+
+        if (debugVisualNode.InitialPosition != Vector2.Zero)
+        {
+            vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
         }
 
         // This is ugly but I don't know how else to do it
         VisualLogger.VisualNodes = visualNodes;
-    }
 
-    private static RigidBody2D CreateRigidBody(VBoxContainer vbox)
-    {
-        RigidBody2D rigidBody = new()
-        {
-            GravityScale = 0,
-            LockRotation = true
-        };
-        rigidBody.SetCollisionLayerAndMask(32);
-
-        CollisionShape2D collision = new()
-        {
-            Shape = new RectangleShape2D
-            {
-                Size = vbox.Size
-            },
-            Position = vbox.Size / 2,
-            DebugColor = new Color(0, 0.3f, 0, 0)
-        };
-
-        rigidBody.AddChild(collision);
-
-        return rigidBody;
+        return (vboxMembers, updateControls);
     }
 
     private static VBoxContainer CreateVisualContainer(string nodeName)
@@ -116,12 +113,12 @@ public static class VisualUI
 
         object initialValue = VisualHandler.GetMemberValue(member, node);
 
-        Control element = VisualControlTypes.CreateControlForType(initialValue, type, debugExportSpinBoxes, v =>
+        VisualControlInfo element = VisualControlTypes.CreateControlForType(initialValue, type, debugExportSpinBoxes, v =>
         {
             VisualHandler.SetMemberValue(member, node, v);
         });
 
-        if (element != null)
+        if (element.Control.Control != null)
         {
             Label label = new()
             {
@@ -130,7 +127,7 @@ public static class VisualUI
             };
 
             hbox.AddChild(label);
-            hbox.AddChild(element);
+            hbox.AddChild(element.Control.Control);
         }
 
         return hbox;
