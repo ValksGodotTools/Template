@@ -5,7 +5,7 @@ using Visualize.Utils;
 
 namespace Visualize.Example;
 
-[Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
+[Visualize(nameof(Position), nameof(Offset), nameof(Rotation), nameof(initialPositionOffset))]
 public partial class VisualizeExample : Sprite2D
 {
 	[Visualize] Vector2I position;

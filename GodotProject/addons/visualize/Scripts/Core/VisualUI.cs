@@ -27,11 +27,34 @@ public static class VisualUI
         {
             foreach (string visualMember in visualizeMembers)
             {
-                PropertyInfo property = node.GetType().GetProperty(visualMember);
+                // Try to get the property first
+                PropertyInfo property = node.GetType().GetProperty(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+                FieldInfo field = null;
+                object initialValue = null;
 
-                object initialValue = property.GetValue(node);
+                if (property != null)
+                {
+                    initialValue = property.GetValue(property.GetGetMethod(true).IsStatic ? null : node);
+                }
+                else
+                {
+                    // If property is null, try to get the field
+                    field = node.GetType().GetField(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+                    if (field != null)
+                    {
+                        initialValue = field.GetValue(field.IsStatic ? null : node);
+                    }
+                }
 
-                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(initialValue, property.PropertyType, debugExportSpinBoxes, v =>
+                // If neither property nor field is found, skip this member
+                if (property == null && field == null)
+                {
+                    continue;
+                }
+
+                Type memberType = property != null ? property.PropertyType : field.FieldType;
+
+                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(initialValue, memberType, debugExportSpinBoxes, v =>
                 {
                     // Do nothing
                 });
@@ -40,11 +63,15 @@ public static class VisualUI
 
                 updateControls.Add(() =>
                 {
-                    visualControlInfo.Control.SetValue(property.GetValue(node));
+                    object newValue = property != null
+                        ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
+                        : field.GetValue(field.IsStatic ? null : node);
+
+                    visualControlInfo.Control.SetValue(newValue);
                 });
 
                 HBoxContainer hbox = new();
-                hbox.AddChild(new Label { Text = property.Name });
+                hbox.AddChild(new Label { Text = visualMember });
                 hbox.AddChild(visualControlInfo.Control.Control);
 
                 vboxMembers.AddChild(hbox);

@@ -30,7 +30,7 @@ public static class VisualizeAttributeHandler
         List<FieldInfo> fields = GetVisualMembers(type.GetFields);
         List<MethodInfo> methods = GetVisualMembers(type.GetMethods);
 
-        if (properties.Any() || fields.Any() || methods.Any())
+        if (properties.Any() || fields.Any() || methods.Any() || (attribute != null && attribute.VisualizeMembers != null))
         {
             return new VisualNode(specificNode, initialPosition, visualizeMembers, properties, fields, methods);
         }
