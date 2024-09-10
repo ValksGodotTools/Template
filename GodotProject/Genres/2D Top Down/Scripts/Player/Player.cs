@@ -1,8 +1,10 @@
 using Godot;
 using GodotUtils;
+using Visualize;
 
 namespace Template.TopDown2D;
 
+[Visualize(nameof(Position), nameof(Velocity))]
 public partial class Player : Character, INetPlayer
 {
     #region Config
