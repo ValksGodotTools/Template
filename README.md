@@ -240,12 +240,15 @@ public class PlayerData
 
 https://github.com/user-attachments/assets/2f44ae8e-0c99-4bd2-b15f-a72a70ffaa74
 
+https://github.com/user-attachments/assets/a7093387-c70a-4826-af49-4dc0b5b2b05d
+
 Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
 
 Visualize is now a Godot plugin. Repo: https://github.com/ValksGodotTools/Visualize
 
 #### Example Usage
 ```cs
+[Visualize(nameof(Position), nameof(Rotation))]
 public partial class Player : CharacterBody2D
 {
     [Visualize] public Dictionary<int, List<Color>> Health { get; set; }
