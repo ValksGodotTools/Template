@@ -1,7 +1,7 @@
 using CSharpUtils;
 using Godot;
 
-namespace Template.Platformer2D;
+namespace Template.Platformer2D.Retro;
 
 public abstract partial class Entity : CharacterBody2D
 {
