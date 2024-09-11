@@ -1,6 +1,10 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
+# Exclude the addons folder from IntelliSense
+[addons/**/*.cs]
+dotnet_diagnostic.exclude_from_source_analysis = true
+
 # C# files
 [*.cs]
 
