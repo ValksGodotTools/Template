@@ -9,3 +9,6 @@ enet.dylib
 
 # os files
 .DS_Store
+
+# VSCode
+.vscode/
