@@ -277,3 +277,6 @@ dotnet_diagnostic.IDE0046.severity = silent
 
 # IDE0045: Convert to conditional expression
 dotnet_diagnostic.IDE0045.severity = silent
+
+# IDE0305: Simplify collection initialization
+dotnet_diagnostic.IDE0305.severity = none
