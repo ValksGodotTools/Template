@@ -21,10 +21,7 @@ public class Net
     public Net()
     {
         Global.Services.Add(this);
-        Global.Services.Get<Global>().OnQuit += async () =>
-        {
-            await StopThreads();
-        };
+        Global.Services.Get<Global>().OnQuit += StopThreads;
     }
 
     public void StartServer()

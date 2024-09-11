@@ -22,7 +22,7 @@ public partial class RoomGeneration : Node
 
     private List<Vector2I> GetFloorTiles()
     {
-        List<Vector2I> floorTiles = new();
+        List<Vector2I> floorTiles = [];
 
         for (int x = 0; x < 10; x++)
         {

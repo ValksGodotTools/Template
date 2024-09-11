@@ -28,6 +28,9 @@ public partial class EntityComponent : Node
         curState = newState;
     }
 
-    public bool IsState(string state) => curState.ToString() == state.ToLower();
+    public bool IsState(string state)
+    {
+        return curState.ToString() == state.ToLower();
+    }
 }
 

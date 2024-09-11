@@ -20,7 +20,7 @@ public partial class UIConsole : PanelContainer
     readonly ConsoleHistory history = new();
     bool autoScroll = true;
 
-    public List<ConsoleCommandInfo> Commands { get; } = new();
+    public List<ConsoleCommandInfo> Commands { get; } = [];
 
     public override void _Ready()
     {

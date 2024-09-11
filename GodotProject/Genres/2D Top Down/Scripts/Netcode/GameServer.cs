@@ -9,10 +9,12 @@ using Template.Netcode.Server;
 
 public partial class GameServer : ENetServer
 {
-    public Dictionary<uint, PlayerData> Players { get; set; } = new();
+    public Dictionary<uint, PlayerData> Players { get; set; } = [];
 
-    public IEnumerable<KeyValuePair<uint, PlayerData>> GetOtherPlayers(uint excludeId) => 
-        Players.Where(x => x.Key != excludeId);
+    public IEnumerable<KeyValuePair<uint, PlayerData>> GetOtherPlayers(uint excludeId)
+    {
+        return Players.Where(x => x.Key != excludeId);
+    }
 
     protected override void Starting()
     {

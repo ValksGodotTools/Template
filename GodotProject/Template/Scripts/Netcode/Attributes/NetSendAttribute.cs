@@ -3,13 +3,8 @@ using System;
 namespace Template.Netcode;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class NetSendAttribute : Attribute
+public class NetSendAttribute(int order) : Attribute
 {
-    public int Order { get; }
-
-    public NetSendAttribute(int order)
-    {
-        Order = order;
-    }
+    public int Order { get; } = order;
 }
 

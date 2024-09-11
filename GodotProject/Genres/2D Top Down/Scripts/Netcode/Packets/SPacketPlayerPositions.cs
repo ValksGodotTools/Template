@@ -17,8 +17,8 @@ public class SPacketPlayerPositions : ServerPacket
 
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {
-            if (level.OtherPlayers.ContainsKey(pair.Key))
-                level.OtherPlayers[pair.Key].LastServerPosition = pair.Value;
+            if (level.OtherPlayers.TryGetValue(pair.Key, out OtherPlayer otherPlayer))
+                otherPlayer.LastServerPosition = pair.Value;
         }
 
         // Send a client position packet to the server immediately right after

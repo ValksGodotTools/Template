@@ -15,7 +15,7 @@ public static class NetcodeUtils
             .OrderBy(x => x.Name)
             .ToList();
 
-        Dictionary<Type, PacketInfo<T>> dict = new();
+        Dictionary<Type, PacketInfo<T>> dict = [];
 
         for (byte i = 0; i < types.Count; i++)
             dict.Add(types[i], new PacketInfo<T>

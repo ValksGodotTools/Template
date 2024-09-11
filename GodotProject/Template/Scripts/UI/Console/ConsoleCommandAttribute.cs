@@ -3,16 +3,10 @@ using System;
 namespace Template;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ConsoleCommandAttribute : Attribute
+public class ConsoleCommandAttribute(string name, params string[] aliases) : Attribute
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = name;
     public string Description { get; set; }
-    public string[] Aliases { get; set; }
-
-    public ConsoleCommandAttribute(string name, params string[] aliases)
-    {
-        Name = name;
-        Aliases = aliases;
-    }
+    public string[] Aliases { get; set; } = aliases;
 }
 

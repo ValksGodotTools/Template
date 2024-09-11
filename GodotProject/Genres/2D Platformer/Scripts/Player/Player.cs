@@ -25,6 +25,9 @@ public partial class Player : Entity
         Velocity = vel;
     }
 
-    protected override State InitialState() => Idle();
+    protected override State InitialState()
+    {
+        return Idle();
+    }
 }
 

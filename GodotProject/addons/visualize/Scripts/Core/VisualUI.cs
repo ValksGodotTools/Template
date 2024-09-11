@@ -13,9 +13,9 @@ public static class VisualUI
 
     public static (VBoxContainer, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
-        List<VisualSpinBox> debugExportSpinBoxes = new();
-        Dictionary<Node, VBoxContainer> visualNodes = new();
-        List<Action> updateControls = new();
+        List<VisualSpinBox> debugExportSpinBoxes = [];
+        Dictionary<Node, VBoxContainer> visualNodes = [];
+        List<Action> updateControls = [];
 
         Node node = debugVisualNode.Node;
 

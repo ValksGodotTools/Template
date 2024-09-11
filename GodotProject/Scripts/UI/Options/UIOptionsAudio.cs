@@ -27,10 +27,14 @@ public partial class UIOptionsAudio : Control
         slider.Value = options.SFXVolume;
     }
 
-    void _on_music_value_changed(float v) =>
+    void _on_music_value_changed(float v)
+    {
         Global.Services.Get<AudioManager>().SetMusicVolume(v);
+    }
 
-    void _on_sounds_value_changed(float v) =>
+    void _on_sounds_value_changed(float v)
+    {
         Global.Services.Get<AudioManager>().SetSFXVolume(v);
+    }
 }
 

@@ -18,7 +18,7 @@ public partial class RoomTransitions : Node
     Vector2I tileSize; // Size of each tile
 
     // List to keep track of room boundary nodes
-    readonly List<Node2D> roomBoundNodes = new();
+    readonly List<Node2D> roomBoundNodes = [];
 
     public override void _Ready()
     {

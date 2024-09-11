@@ -126,15 +126,30 @@ public partial class UIOptionsDisplay : Control
         options.WindowSize = winSize;
     }
 
-    void _on_window_width_text_changed(string text) =>
+    void _on_window_width_text_changed(string text)
+    {
         text.ValidateNumber(resX, 0, ScreenGetSize().X, ref prevNumX);
+    }
 
-    void _on_window_height_text_changed(string text) =>
+    void _on_window_height_text_changed(string text)
+    {
         text.ValidateNumber(resY, 0, ScreenGetSize().Y, ref prevNumY);
+    }
 
-    void _on_window_width_text_submitted(string t) => ApplyWindowSize();
-    void _on_window_height_text_submitted(string t) => ApplyWindowSize();
-    void _on_window_size_apply_pressed() => ApplyWindowSize();
+    void _on_window_width_text_submitted(string t)
+    {
+        ApplyWindowSize();
+    }
+
+    void _on_window_height_text_submitted(string t)
+    {
+        ApplyWindowSize();
+    }
+
+    void _on_window_size_apply_pressed()
+    {
+        ApplyWindowSize();
+    }
 
     void _on_resolution_value_changed(float value)
     {

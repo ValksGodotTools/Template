@@ -61,24 +61,34 @@ public abstract class ENetServer : ENetLow
     /// <summary>
     /// Ban someone by their ID. Thread safe.
     /// </summary>
-    public void Ban(uint id) => Kick(id, DisconnectOpcode.Banned);
+    public void Ban(uint id)
+    {
+        Kick(id, DisconnectOpcode.Banned);
+    }
 
     /// <summary>
     /// Ban everyone on the server. Thread safe.
     /// </summary>
-    public void BanAll() => KickAll(DisconnectOpcode.Banned);
+    public void BanAll()
+    {
+        KickAll(DisconnectOpcode.Banned);
+    }
 
     /// <summary>
     /// Kick everyone on the server with a specified opcode. Thread safe.
     /// </summary>
-    public void KickAll(DisconnectOpcode opcode) =>
+    public void KickAll(DisconnectOpcode opcode)
+    {
         enetCmds.Enqueue(new Cmd<ENetServerOpcode>(ENetServerOpcode.KickAll, opcode));
+    }
 
     /// <summary>
     /// Kick someone by their ID with a specified opcode. Thread safe.
     /// </summary>
-    public void Kick(uint id, DisconnectOpcode opcode) =>
+    public void Kick(uint id, DisconnectOpcode opcode)
+    {
         enetCmds.Enqueue(new Cmd<ENetServerOpcode>(ENetServerOpcode.Kick, id, opcode));
+    }
 
     /// <summary>
     /// Stop the server. Thread safe.
@@ -154,15 +164,17 @@ public abstract class ENetServer : ENetLow
     /// <summary>
     /// Log a message as the server. This function is thread safe.
     /// </summary>
-    public override void Log(object message, BBColor color = BBColor.Green) =>
+    public override void Log(object message, BBColor color = BBColor.Green)
+    {
         ServiceProvider.Services.Get<Logger>().Log($"[Server] {message}", color);
+    }
     #endregion
 
     #region ENet Thread
     /// <summary>
     /// This Dictionary is NOT thread safe and should only be accessed on the ENet Thread
     /// </summary>
-    public Dictionary<uint, Peer> Peers { get; } = new();
+    public Dictionary<uint, Peer> Peers { get; } = [];
     protected STimer EmitLoop { get; set; }
 
     private readonly ConcurrentQueue<(Packet, Peer)> incoming = new();
@@ -248,13 +260,13 @@ public abstract class ENetServer : ENetLow
             PacketReader packetReader = new(packetPeer.Item1);
             byte opcode = packetReader.ReadByte();
 
-            if (!ClientPacket.PacketMapBytes.ContainsKey(opcode))
+            if (!ClientPacket.PacketMapBytes.TryGetValue(opcode, out Type value))
             {
                 Log($"Received malformed opcode: {opcode} (Ignoring)");
                 return;
             }
 
-            Type type = ClientPacket.PacketMapBytes[opcode];
+            Type type = value;
             ClientPacket handlePacket = ClientPacket.PacketMap[type].Instance;
             try
             {

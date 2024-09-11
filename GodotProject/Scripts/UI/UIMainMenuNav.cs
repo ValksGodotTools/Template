@@ -39,9 +39,19 @@ public partial class UIMainMenuNav : Node
         Game.SwitchScene(Scene.UICredits);
     }
 
-    async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
+    async void _on_quit_pressed()
+    {
+        await GetNode<Global>("/root/Global").QuitAndCleanup();
+    }
 
-    void _on_discord_pressed() => OS.ShellOpen("https://discord.gg/j8HQZZ76r8");
-    void _on_github_pressed() => OS.ShellOpen("https://github.com/ValksGodotTools/Template");
+    void _on_discord_pressed()
+    {
+        OS.ShellOpen("https://discord.gg/j8HQZZ76r8");
+    }
+
+    void _on_github_pressed()
+    {
+        OS.ShellOpen("https://github.com/ValksGodotTools/Template");
+    }
 }
 

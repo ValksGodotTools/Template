@@ -34,7 +34,7 @@ public abstract class ENetLow
 
     protected Host Host { get; set; }
     protected CancellationTokenSource CTS { get; set; }
-    protected List<Type> IgnoredPackets { get; set; } = new();
+    protected List<Type> IgnoredPackets { get; set; } = [];
     
     protected ENetOptions options;
 
@@ -98,8 +98,10 @@ public abstract class ENetLow
     /// returned. A empty string is returned if printing the packet size is disabled in
     /// options.
     /// </summary>
-    protected string FormatByteSize(long bytes) => 
-        options.PrintPacketByteSize ? $"({bytes} byte{(bytes == 1 ? "" : "s")}) " : "";
+    protected string FormatByteSize(long bytes)
+    {
+        return options.PrintPacketByteSize ? $"({bytes} byte{(bytes == 1 ? "" : "s")}) " : "";
+    }
 
     protected abstract void Stopped();
     protected virtual void Starting() { }

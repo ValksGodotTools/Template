@@ -169,7 +169,7 @@ public class PacketReader : IDisposable
         // Get and order public instance properties with setters
         IOrderedEnumerable<PropertyInfo> properties = t
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(p => p.CanWrite && !p.GetCustomAttributes(typeof(NetExcludeAttribute), true).Any())
+            .Where(p => p.CanWrite && p.GetCustomAttributes(typeof(NetExcludeAttribute), true).Length == 0)
             .OrderBy(property => property.MetadataToken);
 
         // Set property values

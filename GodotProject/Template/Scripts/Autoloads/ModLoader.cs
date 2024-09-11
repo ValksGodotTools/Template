@@ -10,7 +10,7 @@ namespace Template;
 
 public partial class ModLoader
 {
-    public Dictionary<string, ModInfo> Mods { get; } = new();
+    public Dictionary<string, ModInfo> Mods { get; } = [];
 
     public void LoadMods(Node node)
     {
@@ -34,6 +34,11 @@ public partial class ModLoader
 
         string filename = dir.GetNext();
 
+        JsonSerializerOptions options = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
         while (filename != "")
         {
             if (!dir.CurrentIsDir())
@@ -52,10 +57,7 @@ public partial class ModLoader
 
             jsonFileContents = jsonFileContents.Replace("*", "Any");
 
-            ModInfo modInfo = JsonSerializer.Deserialize<ModInfo>(jsonFileContents, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            ModInfo modInfo = JsonSerializer.Deserialize<ModInfo>(jsonFileContents, options);
 
             if (Mods.ContainsKey(modInfo.Id))
             {

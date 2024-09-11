@@ -8,7 +8,7 @@ namespace Template.Netcode;
 public abstract class ServerPacket : GamePacket
 {
     public static Dictionary<Type, PacketInfo<ServerPacket>> PacketMap { get; } = NetcodeUtils.MapPackets<ServerPacket>();
-    public static Dictionary<byte, Type> PacketMapBytes { get; set; } = new();
+    public static Dictionary<byte, Type> PacketMapBytes { get; set; } = [];
 
     SendType sendType;
 
@@ -42,10 +42,20 @@ public abstract class ServerPacket : GamePacket
         }
     }
 
-    public void SetSendType(SendType sendType) => this.sendType = sendType;
-    public SendType GetSendType() => sendType;
+    public void SetSendType(SendType sendType)
+    {
+        this.sendType = sendType;
+    }
 
-    public override byte GetOpcode() => PacketMap[GetType()].Opcode;
+    public SendType GetSendType()
+    {
+        return sendType;
+    }
+
+    public override byte GetOpcode()
+    {
+        return PacketMap[GetType()].Opcode;
+    }
 
     /// <summary>
     /// The packet handled client-side (Godot thread)

@@ -28,9 +28,21 @@ public abstract class GamePacket
         size = writer.Stream.Length;
     }
 
-    public void SetPeer(Peer peer) => Peers = new Peer[] { peer };
-    public void SetPeers(Peer[] peers) => Peers = peers;
-    public long GetSize() => size;
+    public void SetPeer(Peer peer)
+    {
+        Peers = [peer];
+    }
+
+    public void SetPeers(Peer[] peers)
+    {
+        Peers = peers;
+    }
+
+    public long GetSize()
+    {
+        return size;
+    }
+
     public abstract byte GetOpcode();
 
     public virtual void Write(PacketWriter writer)
@@ -55,14 +67,11 @@ public abstract class GamePacket
 
     private PropertyInfo[] GetProperties()
     {
-        if (_cachedProperties == null)
-        {
-            _cachedProperties = GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && p.GetCustomAttributes(typeof(NetSendAttribute), true).Any())
-                .OrderBy(p => ((NetSendAttribute)p.GetCustomAttributes(typeof(NetSendAttribute), true).First()).Order)
-                .ToArray();
-        }
+        _cachedProperties ??= GetType()
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.CanRead && p.GetCustomAttributes(typeof(NetSendAttribute), true).Length != 0)
+            .OrderBy(p => ((NetSendAttribute)p.GetCustomAttributes(typeof(NetSendAttribute), true).First()).Order)
+            .ToArray();
 
         return _cachedProperties;
     }

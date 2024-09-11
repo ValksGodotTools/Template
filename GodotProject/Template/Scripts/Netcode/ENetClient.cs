@@ -138,8 +138,10 @@ public abstract class ENetClient : ENetLow
     /// <summary>
     /// Log messages as the client. Thread safe.
     /// </summary>
-    public override void Log(object message, BBColor color = BBColor.Aqua) =>
+    public override void Log(object message, BBColor color = BBColor.Aqua)
+    {
         ServiceProvider.Services.Get<Logger>().Log($"[Client] {message}", color);
+    }
 
     #endregion
 

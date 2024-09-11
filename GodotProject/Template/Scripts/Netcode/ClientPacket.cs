@@ -7,7 +7,7 @@ namespace Template.Netcode;
 public abstract class ClientPacket : GamePacket
 {
     public static Dictionary<Type, PacketInfo<ClientPacket>> PacketMap { get; } = NetcodeUtils.MapPackets<ClientPacket>();
-    public static Dictionary<byte, Type> PacketMapBytes { get; set; } = new();
+    public static Dictionary<byte, Type> PacketMapBytes { get; set; } = [];
 
     public static void MapOpcodes()
     {
@@ -21,7 +21,10 @@ public abstract class ClientPacket : GamePacket
         Peers[0].Send(ChannelId, ref enetPacket);
     }
 
-    public override byte GetOpcode() => PacketMap[GetType()].Opcode;
+    public override byte GetOpcode()
+    {
+        return PacketMap[GetType()].Opcode;
+    }
 
     /// <summary>
     /// The packet handled server-side

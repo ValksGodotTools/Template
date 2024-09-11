@@ -68,11 +68,11 @@ public partial class OptionsManager : Resource
     public void ResetHotkeys()
     {
         // Deep clone default hotkeys over
-        Hotkeys.Actions = new();
+        Hotkeys.Actions = [];
 
         foreach (KeyValuePair<StringName, Array<InputEvent>> element in DefaultHotkeys)
         {
-            Array<InputEvent> arr = new();
+            Array<InputEvent> arr = [];
 
             foreach (InputEvent item in DefaultHotkeys[element.Key])
             {
@@ -137,11 +137,11 @@ public partial class OptionsManager : Resource
     void GetDefaultHotkeys()
     {
         // Get all the default actions defined in the input map
-        Dictionary<StringName, Array<InputEvent>> actions = new();
+        Dictionary<StringName, Array<InputEvent>> actions = [];
 
         foreach (StringName action in InputMap.GetActions())
         {
-            actions.Add(action, new Array<InputEvent>());
+            actions.Add(action, []);
 
             foreach (InputEvent actionEvent in InputMap.ActionGetEvents(action))
                 actions[action].Add(actionEvent);
@@ -175,9 +175,11 @@ public partial class OptionsManager : Resource
     }
 
     bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
-                         Dictionary<StringName, Array<InputEvent>> dict2) =>
-        dict1.Count == dict2.Count &&
+                         Dictionary<StringName, Array<InputEvent>> dict2)
+    {
+        return dict1.Count == dict2.Count &&
         dict1.All(pair => dict2.ContainsKey(pair.Key));
+    }
 
     void SetWindowMode()
     {
@@ -209,7 +211,10 @@ public partial class OptionsManager : Resource
         WindowModeChanged?.Invoke(WindowMode.Windowed);
     }
 
-    void SetVSyncMode() => DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
+    void SetVSyncMode()
+    {
+        DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
+    }
 
     void SetWinSize()
     {
@@ -232,8 +237,11 @@ public partial class OptionsManager : Resource
         }
     }
 
-    void SetLanguage() => TranslationServer.SetLocale(
+    void SetLanguage()
+    {
+        TranslationServer.SetLocale(
         Options.Language.ToString().Substring(0, 2).ToLower());
+    }
 
     void SetAntialiasing()
     {

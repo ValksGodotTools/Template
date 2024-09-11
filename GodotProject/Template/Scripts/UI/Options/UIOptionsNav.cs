@@ -8,8 +8,8 @@ public partial class UIOptionsNav : Control
 {
     [Export] OptionsManager optionsManager;
 
-    readonly Dictionary<string, Control> tabs = new();
-    readonly Dictionary<string, Button> buttons = new();
+    readonly Dictionary<string, Control> tabs = [];
+    readonly Dictionary<string, Button> buttons = [];
 
     public override void _Ready()
     {
@@ -39,6 +39,9 @@ public partial class UIOptionsNav : Control
         tabs[tabName].Show();
     }
 
-    void HideAllTabs() => tabs.Values.ForEach(x => x.Hide());
+    void HideAllTabs()
+    {
+        tabs.Values.ForEach(x => x.Hide());
+    }
 }
 

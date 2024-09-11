@@ -127,7 +127,10 @@ public partial class Setup : Node
         prevGameName = newText;
     }
 
-    private void _on_no_pressed() => popupPanel.Hide();
+    private void _on_no_pressed()
+    {
+        popupPanel.Hide();
+    }
 
     private void _on_yes_pressed()
     {
@@ -172,10 +175,15 @@ public partial class Setup : Node
         popupPanel.PopupCentered();
     }
 
-    private static string Highlight(string text) =>
-        $"[wave amp=20.0 freq=2.0 connected=1][color=white]{text}[/color][/wave]";
+    private static string Highlight(string text)
+    {
+        return $"[wave amp=20.0 freq=2.0 connected=1][color=white]{text}[/color][/wave]";
+    }
 
-    private static string FormatGameName(string name) => name.Trim().FirstCharToUpper().Replace(" ", "");
+    private static string FormatGameName(string name)
+    {
+        return name.Trim().FirstCharToUpper().Replace(" ", "");
+    }
 
     private static void SetMainScene(string path, string scene)
     {
@@ -188,14 +196,17 @@ public partial class Setup : Node
         File.WriteAllText($"{path}project.godot", text);
     }
 
-    private static string GetMainSceneName(Genre genre) => genre switch
+    private static string GetMainSceneName(Genre genre)
     {
-        Genre.None => "main",
-        Genre.Platformer2D => "level_2D_platformer",
-        Genre.TopDown2D => "level_2D_top_down",
-        Genre.FPS3D => "level_3D",
-        _ => throw new NotImplementedException()
-    } + ".tscn";
+        return genre switch
+        {
+            Genre.None => "main",
+            Genre.Platformer2D => "level_2D_platformer",
+            Genre.TopDown2D => "level_2D_top_down",
+            Genre.FPS3D => "level_3D",
+            _ => throw new NotImplementedException()
+        } + ".tscn";
+    }
 
     private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {

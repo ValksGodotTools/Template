@@ -71,7 +71,10 @@ public partial class UIPopupMenu : Control
             WorldEnvironment = worldEnvironment;
     }
 
-    void _on_resume_pressed() => Hide();
+    void _on_resume_pressed()
+    {
+        Hide();
+    }
 
     void _on_options_pressed()
     {
@@ -86,6 +89,9 @@ public partial class UIPopupMenu : Control
         Game.SwitchScene(Scene.UIMainMenu);
     }
 
-    async void _on_quit_pressed() => await GetNode<Global>("/root/Global").QuitAndCleanup();
+    async void _on_quit_pressed()
+    {
+        await GetNode<Global>("/root/Global").QuitAndCleanup();
+    }
 }
 

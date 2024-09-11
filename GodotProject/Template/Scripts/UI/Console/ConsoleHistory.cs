@@ -4,7 +4,7 @@ namespace Template;
 
 public class ConsoleHistory
 {
-    readonly Dictionary<int, string> inputHistory = new();
+    readonly Dictionary<int, string> inputHistory = [];
     int inputHistoryIndex;
     int inputHistoryNav;
 
@@ -43,8 +43,14 @@ public class ConsoleHistory
         return Get(inputHistoryNav);
     }
 
-    public bool NoHistory() => inputHistory.Count == 0;
+    public bool NoHistory()
+    {
+        return inputHistory.Count == 0;
+    }
 
-    public string Get(int nav) => inputHistory[nav];
+    public string Get(int nav)
+    {
+        return inputHistory[nav];
+    }
 }
 

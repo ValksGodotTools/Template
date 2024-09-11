@@ -40,6 +40,9 @@ public partial class OtherPlayer : Node2D
             Position.MoveToward(LastServerPosition, distance * smoothFactor) : LastServerPosition;
     }
 
-    public void SetLabelText(string text) => GetNode<Label>("Label").Text = text;
+    public void SetLabelText(string text)
+    {
+        GetNode<Label>("Label").Text = text;
+    }
 }
 

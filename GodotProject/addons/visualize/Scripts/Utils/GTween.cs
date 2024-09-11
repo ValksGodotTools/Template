@@ -61,7 +61,9 @@ public class GTween
     /// Creates a 0.01s delay followed by a <paramref name="callback"/>
     /// </summary>
     public static GTween SmallDelay(Node node, Action callback)
-        => Delay(node, 0.01, callback);
+    {
+        return Delay(node, 0.01, callback);
+    }
 
     /// <summary>
     /// Animates the property that was set with SetAnimatingProp(string prop)
@@ -307,7 +309,10 @@ public class GTween
     /// <summary>
     /// Checks if the tween is still playing
     /// </summary>
-    public bool IsRunning() => tween.IsRunning();
+    public bool IsRunning()
+    {
+        return tween.IsRunning();
+    }
 
     private GTween UpdateTweener(string methodName, Action action)
     {
