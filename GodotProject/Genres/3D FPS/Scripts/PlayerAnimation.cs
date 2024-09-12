@@ -26,7 +26,7 @@ public partial class Player : CharacterBody3D
         camera = GetNode<Camera3D>("%Camera3D");
         camOffset = camera.Position - Position;
 
-        foreach (Node3D node in nodeItems.GetChildren<Node3D>())
+        foreach (Node3D node in nodeItems.GetChildren(false))
         {
             items.Add(new Item(node));
         }
