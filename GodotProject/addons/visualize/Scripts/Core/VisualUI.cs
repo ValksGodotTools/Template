@@ -13,9 +13,9 @@ public static class VisualUI
 
     public static (VBoxContainer, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
-        List<VisualSpinBox> debugExportSpinBoxes = [];
-        Dictionary<Node, VBoxContainer> visualNodes = [];
-        List<Action> updateControls = [];
+        List<VisualSpinBox> debugExportSpinBoxes = new();
+        Dictionary<Node, VBoxContainer> visualNodes = new();
+        List<Action> updateControls = new();
 
         Node node = debugVisualNode.Node;
 
@@ -63,21 +63,18 @@ public static class VisualUI
                     // Do nothing
                 });
 
-                // Godot makes it harder to see when their non-editable
-                //visualControlInfo.Control.SetEditable(false);
-
                 updateControls.Add(() =>
                 {
                     object newValue = property != null
                         ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
                         : field.GetValue(field.IsStatic ? null : node);
 
-                    visualControlInfo.Control.SetValue(newValue);
+                    visualControlInfo.VisualControl.SetValue(newValue);
                 });
 
                 HBoxContainer hbox = new() { Modulate = new Color(1.0f, 0.75f, 0.8f, 1) };
                 hbox.AddChild(new Label { Text = visualMember });
-                hbox.AddChild(visualControlInfo.Control.Control);
+                hbox.AddChild(visualControlInfo.VisualControl.Control);
                 readonlyMembers.AddChild(hbox);
             }
         }
@@ -165,7 +162,7 @@ public static class VisualUI
             VisualHandler.SetMemberValue(member, node, v);
         });
 
-        if (element.Control.Control != null)
+        if (element.VisualControl.Control != null)
         {
             Label label = new()
             {
@@ -174,7 +171,7 @@ public static class VisualUI
             };
 
             hbox.AddChild(label);
-            hbox.AddChild(element.Control.Control);
+            hbox.AddChild(element.VisualControl.Control);
         }
 
         return hbox;

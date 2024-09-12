@@ -21,7 +21,7 @@ public static class Extensions
     /// </summary>
     public static List<Node> GetNodes(this Node node, Type type)
     {
-        List<Node> nodes = [];
+        List<Node> nodes = new();
         RecursiveTypeMatchSearch(node, type, nodes);
         return nodes;
     }
@@ -44,7 +44,7 @@ public static class Extensions
     /// </summary>
     public static List<T> GetChildren<T>(this Node node) where T : Node
     {
-        List<T> children = [];
+        List<T> children = new();
         FindChildrenOfType<T>(node, children);
         return children;
     }
@@ -68,8 +68,8 @@ public static class Extensions
     /// </summary>
     public static bool IsNumericType(this Type @type)
     {
-        HashSet<Type> numericTypes =
-        [
+        HashSet<Type> numericTypes = new()
+        {
             typeof(int),
             typeof(float),
             typeof(double),
@@ -81,7 +81,7 @@ public static class Extensions
             typeof(decimal),
             typeof(byte),
             typeof(sbyte)
-        ];
+        };
 
         return numericTypes.Contains(type);
     }
@@ -89,8 +89,6 @@ public static class Extensions
     /// <summary>
     /// This will transform for example "helloWorld" to "hello World"
     /// </summary>
-    public static string AddSpaceBeforeEachCapital(this string v)
-    {
-        return string.Concat(v.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-    }
+    public static string AddSpaceBeforeEachCapital(this string v) =>
+        string.Concat(v.Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
 }

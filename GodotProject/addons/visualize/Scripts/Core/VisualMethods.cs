@@ -27,10 +27,10 @@ public static class VisualMethods
             VisualControlInfo control = VisualControlTypes.CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
                 v => providedValues[capturedIndex] = v);
 
-            if (control.Control.Control != null)
+            if (control.VisualControl != null)
             {
                 hboxParams.AddChild(new Label { Text = paramInfo.Name.ToPascalCase().AddSpaceBeforeEachCapital() });
-                hboxParams.AddChild(control.Control.Control);
+                hboxParams.AddChild(control.VisualControl.Control);
             }
         }
 

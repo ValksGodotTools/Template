@@ -20,7 +20,7 @@ public class GTween
         tween = node.CreateTween();
 
         // This helps to prevent the camera from lagging behind the players movement
-        tween.SetProcessMode(Tween.TweenProcessMode.Physics);
+        tween.SetProcessMode(TweenProcessMode.Physics);
     }
 
     /// <summary>
@@ -61,9 +61,7 @@ public class GTween
     /// Creates a 0.01s delay followed by a <paramref name="callback"/>
     /// </summary>
     public static GTween SmallDelay(Node node, Action callback)
-    {
-        return Delay(node, 0.01, callback);
-    }
+        => Delay(node, 0.01, callback);
 
     /// <summary>
     /// Animates the property that was set with SetAnimatingProp(string prop)
@@ -93,7 +91,7 @@ public class GTween
     {
         tweener = tween
             .TweenProperty(node, property, finalValue, duration)
-            .SetTrans(Tween.TransitionType.Sine);
+            .SetTrans(TransitionType.Sine);
 
         return this;
     }
@@ -309,10 +307,7 @@ public class GTween
     /// <summary>
     /// Checks if the tween is still playing
     /// </summary>
-    public bool IsRunning()
-    {
-        return tween.IsRunning();
-    }
+    public bool IsRunning() => tween.IsRunning();
 
     private GTween UpdateTweener(string methodName, Action action)
     {

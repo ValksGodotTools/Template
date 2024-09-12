@@ -10,7 +10,7 @@ public class VisualLogger
     // This is ugly using public static here but I don't know how else to do it
     public static Dictionary<Node, VBoxContainer> VisualNodes { get; set; }
 
-    private static readonly Dictionary<Node, VBoxContainer> visualNodesWithoutVisualAttribute = [];
+    private static readonly Dictionary<Node, VBoxContainer> visualNodesWithoutVisualAttribute = new();
 
     private const int MAX_LABELS_VISIBLE_AT_ONE_TIME = 5;
 
@@ -63,7 +63,7 @@ public class VisualLogger
         }
 
         _ = new GTween(label)
-            .SetAnimatingProp(Label.PropertyName.Modulate)
+            .SetAnimatingProp(CanvasItem.PropertyName.Modulate)
             .AnimateProp(Colors.Transparent, fadeTime)
             .Callback(label.QueueFree);
     }

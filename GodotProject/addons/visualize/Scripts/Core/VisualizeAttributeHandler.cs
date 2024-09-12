@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Visualize.Utils;
 
 namespace Visualize.Core;
 
@@ -30,7 +29,7 @@ public static class VisualizeAttributeHandler
         List<FieldInfo> fields = GetVisualMembers(type.GetFields);
         List<MethodInfo> methods = GetVisualMembers(type.GetMethods);
 
-        if (properties.Count != 0 || fields.Count != 0 || methods.Count != 0 || (attribute != null && attribute.VisualizeMembers != null))
+        if (properties.Any() || fields.Any() || methods.Any() || (attribute != null && attribute.VisualizeMembers != null))
         {
             return new VisualNode(specificNode, initialPosition, visualizeMembers, properties, fields, methods);
         }
@@ -41,7 +40,7 @@ public static class VisualizeAttributeHandler
     private static List<T> GetVisualMembers<T>(Func<BindingFlags, T[]> getMembers) where T : MemberInfo
     {
         return getMembers(Flags)
-            .Where(member => member.GetCustomAttributes(typeof(VisualizeAttribute), false).Length != 0)
+            .Where(member => member.GetCustomAttributes(typeof(VisualizeAttribute), false).Any())
             .ToList();
     }
 }

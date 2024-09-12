@@ -1,4 +1,5 @@
 using Godot;
+using Visualize.Utils;
 
 namespace Visualize.Core;
 
@@ -20,7 +21,7 @@ public partial class Visualize : EditorPlugin
             GD.Print("Enabled plugin");
             if (error != Error.Ok)
             {
-                GD.PushWarning($"Failed to save project settings when entering {PLUGIN} plugin");
+                PrintUtils.Warning($"Failed to save project settings when entering {PLUGIN} plugin");
             }
         }
     }
@@ -34,7 +35,7 @@ public partial class Visualize : EditorPlugin
             GD.Print("Disabled plugin");
             if (error != Error.Ok)
             {
-                GD.PushWarning($"Failed to save project settings when exiting {PLUGIN} plugin");
+                PrintUtils.Warning($"Failed to save project settings when exiting {PLUGIN} plugin");
             }
         }
     }

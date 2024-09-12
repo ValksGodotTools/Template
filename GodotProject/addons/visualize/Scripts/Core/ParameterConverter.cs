@@ -21,9 +21,15 @@ public static class ParameterConverter
 
     private static void ValidateInput(ParameterInfo[] paramInfos, object[] providedValues)
     {
-        ArgumentNullException.ThrowIfNull(paramInfos);
+        if (paramInfos == null)
+        {
+            throw new ArgumentNullException(nameof(paramInfos));
+        }
 
-        ArgumentNullException.ThrowIfNull(providedValues);
+        if (providedValues == null)
+        {
+            throw new ArgumentNullException(nameof(providedValues));
+        }
 
         if (paramInfos.Length != providedValues.Length)
         {

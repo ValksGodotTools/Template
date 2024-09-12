@@ -6,7 +6,7 @@ namespace Visualize.Core;
 
 public partial class VisualizeAutoload : Node
 {
-    private readonly Dictionary<ulong, VisualNodeInfo> nodeTrackers = [];
+    private readonly Dictionary<ulong, VisualNodeInfo> nodeTrackers = new();
 
     public override void _Ready()
     {
@@ -73,9 +73,16 @@ public partial class VisualizeAutoload : Node
     }
 }
 
-public class VisualNodeInfo(List<Action> actions, VBoxContainer visualControl, Node node)
+public class VisualNodeInfo
 {
-    public List<Action> Actions { get; } = actions ?? throw new ArgumentNullException(nameof(actions));
-    public VBoxContainer VisualControl { get; } = visualControl ?? throw new ArgumentNullException(nameof(visualControl));
-    public Node Node { get; } = node ?? throw new ArgumentNullException(nameof(node));
+    public List<Action> Actions { get; }
+    public VBoxContainer VisualControl { get; }
+    public Node Node { get; }
+
+    public VisualNodeInfo(List<Action> actions, VBoxContainer visualControl, Node node)
+    {
+        Actions = actions ?? throw new ArgumentNullException(nameof(actions));
+        VisualControl = visualControl ?? throw new ArgumentNullException(nameof(visualControl));
+        Node = node ?? throw new ArgumentNullException(nameof(node));
+    }
 }
