@@ -5,21 +5,21 @@ namespace Template;
 
 public partial class UICredits : Node
 {
-    const float STARTING_SPEED = 0.75f;
+    private const float STARTING_SPEED = 0.75f;
 
-    VBoxContainer vbox;
-    Button btnPause;
-    Button btnSpeed;
-    bool paused;
-    byte curSpeedSetting = 1;
-    float speed = STARTING_SPEED;
+    private VBoxContainer _vbox;
+    private Button _btnPause;
+    private Button _btnSpeed;
+    private bool _paused;
+    private byte _curSpeedSetting = 1;
+    private float _speed = STARTING_SPEED;
 
     public override void _Ready()
     {
-        btnPause = GetNode<Button>("%Pause");
-        btnSpeed = GetNode<Button>("%Speed");
+        _btnPause = GetNode<Button>("%Pause");
+        _btnSpeed = GetNode<Button>("%Speed");
 
-        vbox = new VBoxContainer
+        _vbox = new VBoxContainer
         {
             SizeFlagsVertical = Control.SizeFlags.ShrinkBegin
         };
@@ -45,7 +45,7 @@ public partial class UICredits : Node
                 line = line.Replace("[h2]", "");
             }
 
-            string translatedLine = "";
+            string translatedLine = string.Empty;
 
             foreach (string word in line.Split(' '))
             {
@@ -62,26 +62,26 @@ public partial class UICredits : Node
                 {
                     Control control = new GPadding(0, 10);
                     control.MouseFilter = Control.MouseFilterEnum.Ignore;
-                    vbox.AddChild(control);
+                    _vbox.AddChild(control);
                 }
                 else
                 {
                     Control control = new GLabel(translatedLine, size);
                     control.MouseFilter = Control.MouseFilterEnum.Ignore;
-                    vbox.AddChild(control);
+                    _vbox.AddChild(control);
                 }
             }   
         } 
 
         file.Close();
 
-        AddChild(vbox);
+        AddChild(_vbox);
 
-        vbox.MouseFilter = Control.MouseFilterEnum.Ignore;
+        _vbox.MouseFilter = Control.MouseFilterEnum.Ignore;
 
         // Set starting position of the credits
-        vbox.Position = new Vector2(
-            GetViewport().GetVisibleRect().Size.X / 2 - vbox.Size.X / 2,
+        _vbox.Position = new Vector2(
+            GetViewport().GetVisibleRect().Size.X / 2 - _vbox.Size.X / 2,
             GetViewport().GetVisibleRect().Size.Y);
 
         // Re-center credits when window size is changed
@@ -96,12 +96,12 @@ public partial class UICredits : Node
     public override void _PhysicsProcess(double delta)
     {
         // Animate the credits
-        Vector2 pos = vbox.Position;
-        pos.Y -= speed;
-        vbox.Position = pos;
+        Vector2 pos = _vbox.Position;
+        pos.Y -= _speed;
+        _vbox.Position = pos;
 
         // Go back to the main menu when the credits are finished
-        if (pos.Y <= -vbox.Size.Y)
+        if (pos.Y <= -_vbox.Size.Y)
         {
             Game.SwitchScene(Scene.UIMainMenu);
         }
@@ -112,7 +112,7 @@ public partial class UICredits : Node
         }
     }
 
-    void AddTextWithLink(string text)
+    private void AddTextWithLink(string text)
     {
         int indexOfHttp = text.IndexOf("http");
 
@@ -130,38 +130,38 @@ public partial class UICredits : Node
         hbox.AddChild(labelText);
         hbox.AddChild(btnLink);
 
-        vbox.AddChild(hbox);
+        _vbox.AddChild(hbox);
     }
 
-    void _on_pause_pressed()
+    private void _on_pause_pressed()
     {
-        paused = !paused;
+        _paused = !_paused;
 
-        if (paused)
+        if (_paused)
         {
             SetPhysicsProcess(false);
-            btnPause.Text = "Resume";
+            _btnPause.Text = "Resume";
         }
         else
         {
             SetPhysicsProcess(true);
-            btnPause.Text = "Pause";
+            _btnPause.Text = "Pause";
         }
     }
 
-    void _on_speed_pressed()
+    private void _on_speed_pressed()
     {
-        if (curSpeedSetting < 3)
+        if (_curSpeedSetting < 3)
         {
-            curSpeedSetting++;
-            btnSpeed.Text = $"{curSpeedSetting}.0x";
-            speed += 1;
+            _curSpeedSetting++;
+            _btnSpeed.Text = $"{_curSpeedSetting}.0x";
+            _speed += 1;
         }
         else
         {
-            curSpeedSetting = 1;
-            btnSpeed.Text = $"{curSpeedSetting}.0x";
-            speed = STARTING_SPEED;
+            _curSpeedSetting = 1;
+            _btnSpeed.Text = $"{_curSpeedSetting}.0x";
+            _speed = STARTING_SPEED;
         }
     }
 }
