@@ -20,10 +20,10 @@ public partial class Setup : Node
     [Export] CheckButton checkButtonDeleteOtherGenres;
     [Export] CheckButton checkButtonMoveProjectFiles;
 
-    string prevGameName = "";
-    Genre genre;
+    private string prevGameName = string.Empty;
+    private Genre genre;
 
-    readonly Dictionary<Genre, string> folderNames = new()
+    private readonly Dictionary<Genre, string> folderNames = new()
     {
         { Genre.None, "No Genre" },
         { Genre.Platformer2D, "2D Platformer" },
@@ -31,7 +31,7 @@ public partial class Setup : Node
         { Genre.FPS3D, "3D FPS" }
     };
 
-    enum Genre
+    private enum Genre
     {
         None,
         Platformer2D,
