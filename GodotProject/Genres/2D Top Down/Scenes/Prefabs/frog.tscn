@@ -1,8 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=14 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/Frog.cs" id="1_l0c38"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Resources/FrogResource.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
+
+[sub_resource type="Resource" id="Resource_ubanq"]
+script = ExtResource("2_6qqsm")
+JumpForceInfluence = 2.0
+Color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmrw4"]
 atlas = ExtResource("2_ffw43")
@@ -75,6 +81,7 @@ gravity_scale = 0.0
 lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_l0c38")
+frogConfig = SubResource("Resource_ubanq")
 animatedSprite = NodePath("AnimatedSprite2D")
 area = NodePath("Area2D")
 

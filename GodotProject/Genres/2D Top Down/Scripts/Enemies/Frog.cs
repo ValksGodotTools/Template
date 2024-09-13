@@ -8,7 +8,7 @@ namespace Template;
 
 public partial class Frog : RigidBody
 {
-    [Export] float jumpForceInfluence = 2;
+    [Export] FrogResource frogConfig;
     [Export] AnimatedSprite2D animatedSprite;
     [Export] Area2D area;
 
@@ -18,6 +18,8 @@ public partial class Frog : RigidBody
     public override void _Ready()
     {
         base._Ready();
+
+        Modulate = frogConfig.Color;
 
         area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         area.BodyEntered += body =>
@@ -98,7 +100,7 @@ public partial class Frog : RigidBody
 
                 this.SetCollisionLayerAndMask(3);
 
-                Vector2 force = (player.Position - Position) * jumpForceInfluence;
+                Vector2 force = (player.Position - Position) * frogConfig.JumpForceInfluence;
 
                 ApplyCentralImpulse(force);
 
