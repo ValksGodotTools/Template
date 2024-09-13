@@ -297,67 +297,33 @@ public partial class Setup : Node
     /// </summary>
     private static void RenameAllNamespaces(string path, string name)
     {
-        TraverseDirectory(path, 
-            fullPathFile =>
-            {
-                // Modify all scripts
-                if (fullPathFile.EndsWith(".cs"))
-                {
-                    // Do not modify this script
-                    if (!fullPathFile.EndsWith("Setup.cs"))
-                    {
-                        string text = File.ReadAllText(fullPathFile);
-                        text = text.Replace("namespace Template", $"namespace {name}");
-                        text = text.Replace("using Template", $"using {name}");
-                        text = text.Replace("Template.", $"{name}.");
-                        File.WriteAllText(fullPathFile, text);
-                    }
-                }
-            }, 
-            fullPathDir => !fullPathDir.EndsWith(".godot") && !fullPathDir.EndsWith("GodotUtils"));
-    }
+        GDirectories.Traverse(path, RenameNamespaces);
 
-    /// <summary>
-    /// <para>Traverse a directory given by 'path'.</para>
-    /// <para>The action 'actionFile' has a full path to the file param.</para>
-    /// <para>The action 'actionDirectory' has a full path to the directory param. 
-    /// Returning true will recursively traverse this directory. Returning false 
-    /// will not traverse the directory.</para>
-    /// </summary>
-    private static void TraverseDirectory(string path, Action<string> actionFile, Func<string, bool> actionDirectory)
-    {
-        using DirAccess dir = DirAccess.Open(path);
-
-        if (dir == null)
+        void RenameNamespaces(string fullFilePath)
         {
-            GD.Print($"An error occured when trying to access the path '{path}'");
-            return;
-        }
-
-        dir.ListDirBegin();
-
-        string fileName = dir.GetNext();
-
-        while (fileName != "")
-        {
-            string fullPath = Path.Combine(path, fileName);
-
-            if (dir.CurrentIsDir())
+            // Ignore these directories
+            switch (Path.GetDirectoryName(fullFilePath))
             {
-                if (actionDirectory(fullPath))
-                {
-                    TraverseDirectory(fullPath, actionFile, actionDirectory);
-                }
-            }
-            else
-            {
-                actionFile(fullPath);
+                case ".godot":
+                case "GodotUtils":
+                case "addons":
+                    return;
             }
 
-            fileName = dir.GetNext();
+            // Modify all scripts
+            if (fullFilePath.EndsWith(".cs"))
+            {
+                // Do not modify this script
+                if (!fullFilePath.EndsWith("Setup.cs"))
+                {
+                    string text = File.ReadAllText(fullFilePath);
+                    text = text.Replace("namespace Template", $"namespace {name}");
+                    text = text.Replace("using Template", $"using {name}");
+                    text = text.Replace("Template.", $"{name}.");
+                    File.WriteAllText(fullFilePath, text);
+                }
+            }
         }
-
-        dir.ListDirEnd();
     }
 
     private static bool IsAlphaNumericAndAllowSpaces(string str)
