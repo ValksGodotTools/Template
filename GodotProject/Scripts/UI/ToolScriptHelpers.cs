@@ -31,7 +31,7 @@ public partial class ToolScriptHelpers : Node
             return;
         }
 
-        GDirectories.DeleteEmptyDirectories(ProjectSettings.GlobalizePath("res://"));
+        GDirectories.DeleteEmptyDirectories("res://");
         GD.Print("Removed all empty folders from the project");
     }
 
