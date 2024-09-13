@@ -222,24 +222,22 @@ public partial class Setup : Node
 
     private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
-        // Move all scripts to res://Scripts
-        TraverseDirectory(path,
-            fullPathFile =>
+        // Move all assets to res://
+        GDirectories.Traverse(path, fullFilePath =>
+        {
+            string newPath = GDirectories.RemovePathSegment(fullFilePath, folder);
+
+            new FileInfo(newPath).Directory.Create();
+
+            try
             {
-                string newPath = fullPathFile.Replace(folder, "");
-
-                new FileInfo(newPath).Directory.Create();
-
-                try
-                {
-                    File.Move(fullPathFile, newPath);
-                }
-                catch (IOException)
-                {
-                    GD.Print($"Failed to move {fullPathFile.GetFile()}");
-                }
-            },
-            directoryName => true);
+                File.Move(fullFilePath, newPath);
+            }
+            catch (IOException)
+            {
+                GD.Print($"Failed to move {fullFilePath.GetFile()}");
+            }
+        });
     }
 
     private static void DeleteDirectoryIfEmpty(string path)
