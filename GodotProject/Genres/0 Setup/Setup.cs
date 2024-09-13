@@ -79,12 +79,12 @@ public partial class Setup : Node
         string mainSceneName = GetMainSceneName(Path.Combine(pathFrom, folderNames[genre]));
 
         // Moves the main scene file from its original location to a new location
-        File.Move(
-            Path.Combine(pathFrom, folderNames[genre], mainSceneName), 
-            Path.Combine(pathTo, "Scenes", mainSceneName));
+        //File.Move(
+        //    Path.Combine(pathFrom, folderNames[genre], mainSceneName), 
+        //    Path.Combine(pathTo, "Scenes", mainSceneName));
 
         // Move all files relevant to this genre
-        MoveFilesAndPreserveFolderStructure(pathFrom, Path.Combine("Genres", folderNames[genre]));
+        MoveFilesAndPreserveFolderStructure(Path.Combine(pathFrom, folderNames[genre]), Path.Combine("Genres", folderNames[genre]));
 
         if (checkButtonDeleteOtherGenres.ButtonPressed)
         {
@@ -223,7 +223,9 @@ public partial class Setup : Node
     private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
         // Move all assets to res://
-        GDirectories.Traverse(path, fullFilePath =>
+        GDirectories.Traverse(path, MoveFile);
+
+        void MoveFile(string fullFilePath)
         {
             string newPath = GDirectories.RemovePathSegment(fullFilePath, folder);
 
@@ -237,7 +239,7 @@ public partial class Setup : Node
             {
                 GD.Print($"Failed to move {fullFilePath.GetFile()}");
             }
-        });
+        }
     }
 
     private static void DeleteDirectoryIfEmpty(string path)
