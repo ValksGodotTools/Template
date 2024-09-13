@@ -11,8 +11,11 @@ public partial class SetupToolScript : Node
         get => false;
         set
         {
-            GDirectories.DeleteEmptyDirectories(ProjectSettings.GlobalizePath("res://"));
-            GD.Print("Removed all empty folders from the project");
+            if (Engine.IsEditorHint()) // Do not trigger on game build
+            {
+                GDirectories.DeleteEmptyDirectories(ProjectSettings.GlobalizePath("res://"));
+                GD.Print("Removed all empty folders from the project");
+            }
         }
     }
 }
