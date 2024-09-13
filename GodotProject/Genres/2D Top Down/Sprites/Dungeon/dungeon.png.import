@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cuq4e87b4hbos"
-path="res://.godot/imported/hero.png-7e41eab35f4b6650524b8ee680acf103.ctex"
+uid="uid://cmi46negp3jqi"
+path="res://.godot/imported/dungeon.png-0db6432634edbaa311448f5f7b2becf5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Genres/2D Platformer/Sprites/hero.png"
-dest_files=["res://.godot/imported/hero.png-7e41eab35f4b6650524b8ee680acf103.ctex"]
+source_file="res://Genres/2D Top Down/Sprites/Dungeon/dungeon.png"
+dest_files=["res://.godot/imported/dungeon.png-0db6432634edbaa311448f5f7b2becf5.ctex"]
 
 [params]
 

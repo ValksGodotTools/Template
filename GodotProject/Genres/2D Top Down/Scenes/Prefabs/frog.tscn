@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/Frog.cs" id="1_l0c38"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_78og4"]
-[ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/frog.png" id="2_ffw43"]
+[ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmrw4"]
 atlas = ExtResource("2_ffw43")
