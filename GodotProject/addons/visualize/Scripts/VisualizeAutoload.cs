@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using Visualize.Utils;
 
 namespace Visualize.Core;
 
@@ -11,7 +12,7 @@ public partial class VisualizeAutoload : Node
     public override void _Ready()
     {
         Window root = GetTree().Root;
-        Godot.Collections.Array<Node> children = root.GetChildren();
+        List<Node> children = root.GetChildren<Node>();
 
         foreach (Node node in children)
         {
