@@ -48,9 +48,9 @@ public partial class Setup : Node
 
     private void SetGenreSelectedInfo(Genre genre)
     {
-        string text = $"The {Highlight(folderNames[genre])} genre has been selected. The main scene will be set to " +
-            $"{Highlight($"res://Scenes/{GetMainSceneName(genre)}")}. All other assets not specific to {Highlight(folderNames[genre])} " +
-            $"will be deleted.";
+        string text = $"The {Highlight(folderNames[genre])} genre has been selected. " +
+              $"All other assets not specific to {Highlight(folderNames[genre])} " +
+              $"will be deleted.";
 
         genreSelectedInfo.Text = text;
     }
@@ -58,10 +58,11 @@ public partial class Setup : Node
     private void DisplayGameNamePreview(string inputName)
     {
         string name = FormatGameName(inputName);
-        
-        string text = $"The name of the project will be {Highlight(name)}. The root namespace for all scripts will " +
-            $"be {Highlight(name)}. Please ensure the name is in PascalFormat.";
-        
+
+        string text = $"The name of the project will be {Highlight(name)}. " +
+              $"The root namespace for all scripts will be {Highlight(name)}. " +
+              $"Please ensure the name is in PascalFormat.";
+
         gameNamePreview.Text = text;
     }
 
@@ -75,13 +76,15 @@ public partial class Setup : Node
     private void MoveProjectFiles(string pathFrom, string pathTo)
     {
         // Gets the name of the main scene file based on the current genre
-        string mainSceneName = GetMainSceneName(genre);
+        string mainSceneName = GetMainSceneName(Path.Combine(pathFrom, folderNames[genre]));
 
         // Moves the main scene file from its original location to a new location
-        File.Move($"{pathFrom}{folderNames[genre]}/{mainSceneName}", $"{pathTo}Scenes/{mainSceneName}");
+        File.Move(
+            Path.Combine(pathFrom, folderNames[genre], mainSceneName), 
+            Path.Combine(pathTo, "Scenes", mainSceneName));
 
         // Move all files relevant to this genre
-        MoveFilesAndPreserveFolderStructure(pathFrom, "Genres//" + folderNames[genre]);
+        MoveFilesAndPreserveFolderStructure(pathFrom, Path.Combine("Genres", folderNames[genre]));
 
         if (checkButtonDeleteOtherGenres.ButtonPressed)
         {
@@ -89,7 +92,7 @@ public partial class Setup : Node
             foreach (KeyValuePair<Genre, string> folder in folderNames)
             {
                 if (folder.Key != genre)
-                    Directory.Delete($"{pathFrom}{folder.Value}", true);
+                    Directory.Delete(Path.Combine(pathFrom, folder.Value), true);
             }
         }
 
@@ -145,7 +148,7 @@ public partial class Setup : Node
 
         if (checkButtonMoveProjectFiles.ButtonPressed)
         {
-            MoveProjectFiles(path + @"Genres/", path);
+            MoveProjectFiles(Path.Combine(path, "Genres"), path);
 
             GSceneFileUtils.FixBrokenDependencies();
         }
@@ -153,7 +156,7 @@ public partial class Setup : Node
         if (checkButtonDeleteSetupScene.ButtonPressed)
         {
             // Delete the "0 Setup" directory
-            Directory.Delete(path + @"Genres/0 Setup", true);
+            Directory.Delete(Path.Combine(path, "Genres", "0 Setup"), true);
         }
 
         // Ensure all empty folders are deleted when finished
@@ -187,25 +190,34 @@ public partial class Setup : Node
 
     private static void SetMainScene(string path, string scene)
     {
-        string text = File.ReadAllText($"{path}project.godot");
+        string text = File.ReadAllText(Path.Combine(path, "project.godot"));
 
         text = text.Replace(
             "run/main_scene=\"res://Genres/0 Setup/setup.tscn\"",
            $"run/main_scene=\"res://Scenes/{scene}\"");
 
-        File.WriteAllText($"{path}project.godot", text);
+        File.WriteAllText(Path.Combine(path, "project.godot"), text);
     }
 
-    private static string GetMainSceneName(Genre genre)
+    private static string GetMainSceneName(string fullPath)
     {
-        return genre switch
+        // Get all .tscn files in the directory
+        string[] sceneFiles = Directory.GetFiles(fullPath, "*.tscn");
+
+        // Check the number of .tscn files found
+        if (sceneFiles.Length == 0)
         {
-            Genre.None => "main",
-            Genre.Platformer2D => "level_2D_platformer",
-            Genre.TopDown2D => "level_2D_top_down",
-            Genre.FPS3D => "level_3D",
-            _ => throw new NotImplementedException()
-        } + ".tscn";
+            throw new FileNotFoundException("No .tscn files found in the directory.");
+        }
+        else if (sceneFiles.Length > 1)
+        {
+            throw new InvalidOperationException("There can only be one main scene (.tscn file) in the root directory.");
+        }
+
+        // If there is exactly one .tscn file, return its name with the extension
+        string sceneName = Path.GetFileName(sceneFiles[0]);
+
+        return sceneName;
     }
 
     private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
@@ -247,23 +259,24 @@ public partial class Setup : Node
     {
         // .csproj
         {
-            string text = File.ReadAllText($"{path}Template.csproj");
+            string text = File.ReadAllText(Path.Combine(path, "Template.csproj"));
             text = text.Replace("Template", name);
-            File.Delete($"{path}Template.csproj");
-            File.WriteAllText($"{path}{name}.csproj", text);
+            File.Delete(Path.Combine(path, "Template.csproj"));
+            File.WriteAllText(Path.Combine(path, name + ".csproj"), text);
         }
 
         // .sln
         {
-            string text = File.ReadAllText($"{path}Template.sln");
+            
+            string text = File.ReadAllText(Path.Combine(path, "Template.sln"));
             text = text.Replace("Template", name);
-            File.Delete($"{path}Template.sln");
-            File.WriteAllText($"{path}{name}.sln", text);
+            File.Delete(Path.Combine(path, "Template.sln"));
+            File.WriteAllText(Path.Combine(path, name + ".sln"), text);
         }
 
         // project.godot
         {
-            string text = File.ReadAllText($"{path}project.godot");
+            string text = File.ReadAllText(Path.Combine(path, "project.godot"));
 
             text = text.Replace(
                 "project/assembly_name=\"Template\"", 
@@ -274,7 +287,7 @@ public partial class Setup : Node
                 $"config/name=\"{name}\""
                 );
 
-            File.WriteAllText($"{path}project.godot", text);
+            File.WriteAllText(Path.Combine(path, "project.godot"), text);
         }
     }
 
@@ -326,7 +339,7 @@ public partial class Setup : Node
 
         while (fileName != "")
         {
-            string fullPath = $"{path}/{fileName}";
+            string fullPath = Path.Combine(path, fileName);
 
             if (dir.CurrentIsDir())
             {
