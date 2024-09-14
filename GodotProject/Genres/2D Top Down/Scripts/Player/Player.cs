@@ -7,16 +7,7 @@ namespace Template.TopDown2D;
 [Visualize(nameof(Position), nameof(Velocity))]
 public partial class Player : Character, INetPlayer
 {
-    #region Config
-
-    private const float SPEED = 50;
-    private const float FRICTION = 0.2f;
-    private const float DASH_STRENGTH = 1500;
-    private const float LOOK_LERP_SPEED = 5;
-
-    #endregion
-
-    #region Variables
+    [Export] PlayerResource _config;
 
     private CameraShakeComponent _cameraShake;
     private Vector2 _prevPosition;
@@ -24,13 +15,11 @@ public partial class Player : Character, INetPlayer
     private GameClient _client;
     private Sprite2D _sprite;
     private Sprite2D _cursor;
-    private double _controllerLookInputsActiveBuffer;
 
+    private double _controllerLookInputsActiveBuffer;
     private bool _canDash;
     private Vector2 _targetLookDirection;
     private Vector2 _currentLookDirection;
-
-    #endregion
 
     public override void _Ready()
     {
@@ -67,8 +56,8 @@ public partial class Player : Character, INetPlayer
         Vector2 moveDirection = GetMoveDirection();
         _moveDirection = moveDirection;
 
-        Velocity += moveDirection * SPEED;
-        Velocity = Velocity.Lerp(Vector2.Zero, FRICTION);
+        Velocity += moveDirection * _config.Speed;
+        Velocity = Velocity.Lerp(Vector2.Zero, _config.Friction);
     }
 
     private Vector2 GetMoveDirection()
@@ -103,7 +92,7 @@ public partial class Player : Character, INetPlayer
     private void HandleLookDirection(double delta)
     {
         _targetLookDirection = GetLookDirection();
-        _currentLookDirection = _currentLookDirection.Slerp(_targetLookDirection, (float)(LOOK_LERP_SPEED * delta));
+        _currentLookDirection = _currentLookDirection.Slerp(_targetLookDirection, (float)(_config.LookLerpSpeed * delta));
         _cursor.LookAt(Position + _currentLookDirection.Normalized() * 100);
     }
 
@@ -157,7 +146,7 @@ public partial class Player : Character, INetPlayer
             .Loop();
 
         new GTween(this)
-            .Animate(CharacterBody2D.PropertyName.Velocity, _moveDirection * DASH_STRENGTH, 0.1)
+            .Animate(CharacterBody2D.PropertyName.Velocity, _moveDirection * _config.DashStrength, 0.1)
             .Delay(0.1)
             .Callback(() => ghosts.Stop());
     }
