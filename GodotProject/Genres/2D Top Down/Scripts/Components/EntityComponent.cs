@@ -1,9 +1,11 @@
 using CSharpUtils;
 using Godot;
+using Visualize;
 
 namespace Template;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[Visualize(nameof(curState))]
 public partial class EntityComponent : Node
 {
     State curState;

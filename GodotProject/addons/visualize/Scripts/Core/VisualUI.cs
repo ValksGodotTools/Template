@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Threading;
 using Visualize.Utils;
 using static Godot.Control;
 
@@ -13,7 +15,7 @@ public static class VisualUI
 
     public static (VBoxContainer, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
-        List<VisualSpinBox> debugExportSpinBoxes = new();
+        List<VisualSpinBox> spinBoxes = new();
         Dictionary<Node, VBoxContainer> visualNodes = new();
         List<Action> updateControls = new();
 
@@ -56,38 +58,22 @@ public static class VisualUI
                     continue;
                 }
 
-                Type memberType = property != null ? property.PropertyType : field.FieldType;
-
-                VisualControlContext context = new(debugExportSpinBoxes, initialValue, v =>
+                if (initialValue != null)
                 {
-                    // Do nothing
-                });
-
-                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(memberType, context);
-
-                visualControlInfo.VisualControl.SetEditable(false);
-
-                updateControls.Add(() =>
+                    AddVisualControl(visualMember, readonlyMembers, node, field, property, initialValue, updateControls, spinBoxes);
+                }
+                else
                 {
-                    object newValue = property != null
-                        ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
-                        : field.GetValue(field.IsStatic ? null : node);
-
-                    visualControlInfo.VisualControl.SetValue(newValue);
-                });
-
-                HBoxContainer hbox = new() { Modulate = new Color(1.0f, 0.75f, 0.8f, 1) };
-                hbox.AddChild(new Label { Text = visualMember });
-                hbox.AddChild(visualControlInfo.VisualControl.Control);
-                readonlyMembers.AddChild(hbox);
+                    _ = TryAddVisualControlAsync(visualMember, readonlyMembers, node, field, property, updateControls, spinBoxes);
+                }
             }
         }
 
-        AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, debugExportSpinBoxes);
+        AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, spinBoxes);
 
-        AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, debugExportSpinBoxes);
+        AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, spinBoxes);
 
-        VisualMethods.AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, debugExportSpinBoxes);
+        VisualMethods.AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, spinBoxes);
 
         VBoxContainer vboxLogs = new();
         vboxMembers.AddChild(vboxLogs);
@@ -129,6 +115,70 @@ public static class VisualUI
         return (vboxParent, updateControls);
     }
 
+    private static async Task TryAddVisualControlAsync(string visualMember, VBoxContainer readonlyMembers, Node node, FieldInfo field, PropertyInfo property, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
+    {
+        CancellationTokenSource cts = new();
+        CancellationToken token = cts.Token;
+
+        while (!token.IsCancellationRequested)
+        {
+            object value = null;
+
+            if (field != null)
+            {
+                value = field.GetValue(node);
+            }
+            else if (property != null)
+            {
+                value = property.GetValue(node);
+            }
+
+            if (value != null)
+            {
+                AddVisualControl(visualMember, readonlyMembers, node, field, property, value, updateControls, spinBoxes);
+                break;
+            }
+
+            try
+            {
+                await Task.Delay(1000, token);
+            }
+            catch (TaskCanceledException)
+            {
+                // Task was cancelled, exit the loop
+                break;
+            }
+        }
+    }
+
+    private static void AddVisualControl(string visualMember, VBoxContainer readonlyMembers, Node node, FieldInfo field, PropertyInfo property, object initialValue, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
+    {
+        Type memberType = property != null ? property.PropertyType : field.FieldType;
+
+        VisualControlContext context = new(spinBoxes, initialValue, v =>
+        {
+            // Do nothing
+        });
+
+        VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(memberType, context);
+
+        visualControlInfo.VisualControl.SetEditable(false);
+
+        updateControls.Add(() =>
+        {
+            object newValue = property != null
+                        ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
+                        : field.GetValue(field.IsStatic ? null : node);
+
+            visualControlInfo.VisualControl.SetValue(newValue);
+        });
+
+        HBoxContainer hbox = new() { Modulate = new Color(1.0f, 0.75f, 0.8f, 1) };
+        hbox.AddChild(new Label { Text = visualMember });
+        hbox.AddChild(visualControlInfo.VisualControl.Control);
+        readonlyMembers.AddChild(hbox);
+    }
+
     private static VBoxContainer CreateVisualContainer(string nodeName)
     {
         VBoxContainer vbox = new()
@@ -144,16 +194,16 @@ public static class VisualUI
         return vbox;
     }
 
-    private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<VisualSpinBox> debugExportSpinBoxes)
+    private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<VisualSpinBox> spinBoxes)
     {
         foreach (MemberInfo member in members)
         {
-            Control element = CreateMemberInfoElement(member, node, debugExportSpinBoxes);
+            Control element = CreateMemberInfoElement(member, node, spinBoxes);
             vbox.AddChild(element);
         }
     }
 
-    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<VisualSpinBox> debugExportSpinBoxes)
+    private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<VisualSpinBox> spinBoxes)
     {
         HBoxContainer hbox = new();
 
@@ -161,7 +211,7 @@ public static class VisualUI
 
         object initialValue = VisualHandler.GetMemberValue(member, node);
 
-        VisualControlInfo element = VisualControlTypes.CreateControlForType(type, new VisualControlContext(debugExportSpinBoxes, initialValue, v => 
+        VisualControlInfo element = VisualControlTypes.CreateControlForType(type, new VisualControlContext(spinBoxes, initialValue, v => 
         {
             VisualHandler.SetMemberValue(member, node, v);
         }));

@@ -13,26 +13,29 @@ public static partial class VisualControlTypes
     {
         VBoxContainer vbox = new();
 
-        List<IVisualControl> propertyControls = null;
-        List<IVisualControl> fieldControls = null;
-
-        if (context.InitialValue != null)
+        if (context.InitialValue == null)
         {
-            propertyControls = AddProperties(vbox, type, context);
-            fieldControls = AddFields(vbox, type, context);
-            AddMethods(vbox, type, context);
+            throw new Exception($"Contexts initial value was null for type '{type}'");
         }
 
-        return new VisualControlInfo(new ClassControl(vbox, propertyControls, fieldControls));
+
+        AddProperties(vbox, type, context, out List<IVisualControl> propertyControls, out PropertyInfo[] properties);
+        AddFields(vbox, type, context, out List<IVisualControl> fieldControls, out FieldInfo[] fields);
+        AddMethods(vbox, type, context);
+
+        return new VisualControlInfo(new ClassControl(vbox, propertyControls, fieldControls, properties, fields));
     }
 
-    private static List<IVisualControl> AddProperties(VBoxContainer vbox, Type type, VisualControlContext context)
+    private static void AddProperties(VBoxContainer vbox, Type type, VisualControlContext context, out List<IVisualControl> propertyControls, out PropertyInfo[] properties)
     {
-        List<IVisualControl> visualControls = new();
+        propertyControls = new();
 
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-        PropertyInfo[] properties = type.GetProperties(flags);
+        properties = type.GetProperties(flags)
+            // Exclude delegate types
+            .Where(p => !(typeof(Delegate).IsAssignableFrom(p.PropertyType)))
+            .ToArray();
 
         foreach (PropertyInfo property in properties)
         {
@@ -48,25 +51,26 @@ public static partial class VisualControlTypes
 
             if (control.VisualControl != null)
             {
-                visualControls.Add(control.VisualControl);
+                propertyControls.Add(control.VisualControl);
 
                 control.VisualControl.SetEditable(propertySetMethod != null);
 
                 vbox.AddChild(CreateHBoxForMember(property.Name, control.VisualControl.Control));
             }
         }
-
-        return visualControls;
     }
 
-    private static List<IVisualControl> AddFields(VBoxContainer vbox, Type type, VisualControlContext context)
+    private static void AddFields(VBoxContainer vbox, Type type, VisualControlContext context, out List<IVisualControl> fieldControls, out FieldInfo[] fields)
     {
-        List<IVisualControl> visualControls = new();
+        fieldControls = new();
 
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-        FieldInfo[] fields = type
+        fields = type
             .GetFields(flags)
+            // Exclude delegate types
+            .Where(f => !(typeof(Delegate).IsAssignableFrom(f.FieldType)))
+            // Exclude fields created by properties
             .Where(f => !f.Name.StartsWith("<") || !f.Name.EndsWith(">k__BackingField"))
             .ToArray();
 
@@ -82,15 +86,13 @@ public static partial class VisualControlTypes
 
             if (control.VisualControl != null)
             {
-                visualControls.Add(control.VisualControl);
+                fieldControls.Add(control.VisualControl);
 
                 control.VisualControl.SetEditable(!field.IsLiteral);
 
                 vbox.AddChild(CreateHBoxForMember(field.Name, control.VisualControl.Control));
             }
         }
-
-        return visualControls;
     }
 
     private static void AddMethods(VBoxContainer vbox, Type type, VisualControlContext context)
@@ -98,8 +100,10 @@ public static partial class VisualControlTypes
         BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly;
 
         // Cannot include private methods or else we will see Godots built in methods
-        MethodInfo[] methods = type
-            .GetMethods(flags)
+        MethodInfo[] methods = type.GetMethods(flags)
+            // Exclude delegates
+            .Where(m => !(typeof(Delegate).IsAssignableFrom(m.ReturnType)))
+            // Exclude auto property methods
             .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_")).ToArray();
 
         foreach (MethodInfo method in methods)
@@ -129,36 +133,31 @@ public class ClassControl : IVisualControl
     private readonly VBoxContainer _vboxContainer;
     private readonly List<IVisualControl> _visualPropertyControls;
     private readonly List<IVisualControl> _visualFieldControls;
+    private readonly PropertyInfo[] _properties;
+    private readonly FieldInfo[] _fields;
 
-    public ClassControl(VBoxContainer vboxContainer, List<IVisualControl> visualPropertyControls, List<IVisualControl> visualFieldControls)
+    public ClassControl(VBoxContainer vboxContainer, List<IVisualControl> visualPropertyControls, List<IVisualControl> visualFieldControls, PropertyInfo[] properties, FieldInfo[] fields)
     {
         _vboxContainer = vboxContainer;
         _visualPropertyControls = visualPropertyControls;
         _visualFieldControls = visualFieldControls;
+        _properties = properties;
+        _fields = fields;
     }
 
     public void SetValue(object value)
     {
         Type type = value.GetType();
 
-        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
-        PropertyInfo[] properties = type.GetProperties(flags);
-
-        for (int i = 0; i < properties.Length; i++)
+        for (int i = 0; i < _properties.Length; i++)
         {
-            object propValue = properties[i].GetValue(value);
+            object propValue = _properties[i].GetValue(value);
             _visualPropertyControls[i].SetValue(propValue);
         }
 
-        FieldInfo[] fields = type
-            .GetFields(flags)
-            .Where(f => !f.Name.StartsWith("<") || !f.Name.EndsWith(">k__BackingField"))
-            .ToArray();
-
-        for (int i = 0; i < fields.Length; i++)
+        for (int i = 0; i < _fields.Length; i++)
         {
-            object fieldValue = fields[i].GetValue(value);
+            object fieldValue = _fields[i].GetValue(value);
             _visualFieldControls[i].SetValue(fieldValue);
         }
     }
