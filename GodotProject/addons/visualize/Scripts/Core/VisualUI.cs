@@ -167,8 +167,8 @@ public static class VisualUI
         updateControls.Add(() =>
         {
             object newValue = property != null
-                        ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
-                        : field.GetValue(field.IsStatic ? null : node);
+                ? property.GetValue(property.GetGetMethod(true).IsStatic ? null : node)
+                : field.GetValue(field.IsStatic ? null : node);
 
             visualControlInfo.VisualControl.SetValue(newValue);
         });
