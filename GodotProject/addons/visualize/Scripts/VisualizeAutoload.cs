@@ -32,7 +32,9 @@ public partial class VisualizeAutoload : Node
             (VBoxContainer vbox, List<Action> actions) = VisualUI.CreateVisualPanel(GetTree(), visualNode);
             ulong instanceId = node.GetInstanceId();
 
-            nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, vbox, node));
+            Node positionalNode = GetClosestParentOfType(node, typeof(Node2D), typeof(Control));
+
+            nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, vbox, positionalNode ?? node));
         }
     }
 
@@ -71,6 +73,44 @@ public partial class VisualizeAutoload : Node
                 action();
             }
         }
+    }
+
+    private static Node GetClosestParentOfType(Node node, params Type[] typesToCheck)
+    {
+        // Check if the current node is of one of the specified types
+        if (IsNodeOfType(node, typesToCheck))
+        {
+            return node;
+        }
+
+        // Recursively get the parent and check its type
+        Node parent = node.GetParent();
+
+        while (parent != null)
+        {
+            if (IsNodeOfType(parent, typesToCheck))
+            {
+                return parent;
+            }
+
+            parent = parent.GetParent();
+        }
+
+        // If no suitable parent is found, return null
+        return null;
+    }
+
+    private static bool IsNodeOfType(Node node, Type[] typesToCheck)
+    {
+        foreach (Type type in typesToCheck)
+        {
+            if (type.IsInstanceOfType(node))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
