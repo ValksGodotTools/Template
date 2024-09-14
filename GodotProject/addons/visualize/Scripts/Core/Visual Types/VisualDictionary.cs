@@ -8,7 +8,7 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualDictionary(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<IDictionary> valueChanged)
+    private static VisualControlInfo VisualDictionary(Type type, VisualControlContext context)
     {
         VBoxContainer dictionaryVBox = new() { SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand };
         Button addButton = new() { Text = "+" };
@@ -20,20 +20,20 @@ public static partial class VisualControlTypes
         object defaultKey = VisualMethods.CreateDefaultValue(keyType);
         object defaultValue = VisualMethods.CreateDefaultValue(valueType);
 
-        IDictionary dictionary = initialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
+        IDictionary dictionary = context.InitialValue as IDictionary ?? (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
 
         foreach (DictionaryEntry entry in dictionary)
         {
             object key = entry.Key;
             object value = entry.Value;
 
-            VisualControlInfo valueControl = CreateControlForType(value, valueType, debugExportSpinBoxes, v =>
+            VisualControlInfo valueControl = CreateControlForType(valueType, new VisualControlContext(context.SpinBoxes, value, v =>
             {
                 dictionary[key] = v;
-                valueChanged(dictionary);
-            });
+                context.ValueChanged(dictionary);
+            }));
 
-            VisualControlInfo keyControl = CreateControlForType(key, keyType, debugExportSpinBoxes, v =>
+            VisualControlInfo keyControl = CreateControlForType(keyType, new VisualControlContext(context.SpinBoxes, key, v =>
             {
                 if (dictionary.Contains(v))
                     return;
@@ -43,9 +43,9 @@ public static partial class VisualControlTypes
                 dictionary.Remove(key);
                 dictionary[v] = value;
                 key = v;
-                valueChanged(dictionary);
+                context.ValueChanged(dictionary);
                 SetControlValue(valueControl.VisualControl.Control, defaultValue);
-            });
+            }));
 
             if (keyControl.VisualControl != null && valueControl.VisualControl != null)
             {
@@ -59,7 +59,7 @@ public static partial class VisualControlTypes
                 {
                     dictionaryVBox.RemoveChild(hbox);
                     dictionary.Remove(key);
-                    valueChanged(dictionary);
+                    context.ValueChanged(dictionary);
                 };
 
                 hbox.AddChild(keyControl.VisualControl.Control);
@@ -74,17 +74,17 @@ public static partial class VisualControlTypes
             if (dictionary.Contains(defaultKey))
                 return;
             dictionary[defaultKey] = defaultValue;
-            valueChanged(dictionary);
+            context.ValueChanged(dictionary);
 
             object oldKey = defaultKey;
 
-            VisualControlInfo valueControl = CreateControlForType(defaultValue, valueType, debugExportSpinBoxes, v =>
+            VisualControlInfo valueControl = CreateControlForType(valueType, new VisualControlContext(context.SpinBoxes, defaultValue, v =>
             {
                 dictionary[oldKey] = v;
-                valueChanged(dictionary);
-            });
+                context.ValueChanged(dictionary);
+            }));
 
-            VisualControlInfo keyControl = CreateControlForType(defaultKey, keyType, debugExportSpinBoxes, v =>
+            VisualControlInfo keyControl = CreateControlForType(keyType, new VisualControlContext(context.SpinBoxes, defaultKey, v =>
             {
                 if (dictionary.Contains(v))
                     return;
@@ -94,9 +94,9 @@ public static partial class VisualControlTypes
                 dictionary.Remove(oldKey);
                 dictionary[v] = defaultValue;
                 oldKey = v;
-                valueChanged(dictionary);
+                context.ValueChanged(dictionary);
                 SetControlValue(valueControl.VisualControl.Control, defaultValue);
-            });
+            }));
 
             if (keyControl.VisualControl != null && valueControl.VisualControl != null)
             {
@@ -107,7 +107,7 @@ public static partial class VisualControlTypes
                 {
                     dictionaryVBox.RemoveChild(hbox);
                     dictionary.Remove(oldKey);
-                    valueChanged(dictionary);
+                    context.ValueChanged(dictionary);
                 };
 
                 hbox.AddChild(keyControl.VisualControl.Control);

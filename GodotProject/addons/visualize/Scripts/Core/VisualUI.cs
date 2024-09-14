@@ -58,10 +58,14 @@ public static class VisualUI
 
                 Type memberType = property != null ? property.PropertyType : field.FieldType;
 
-                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(initialValue, memberType, debugExportSpinBoxes, v =>
+                VisualControlContext context = new(debugExportSpinBoxes, initialValue, v =>
                 {
                     // Do nothing
                 });
+
+                VisualControlInfo visualControlInfo = VisualControlTypes.CreateControlForType(memberType, context);
+
+                visualControlInfo.VisualControl.SetEditable(false);
 
                 updateControls.Add(() =>
                 {
@@ -157,12 +161,12 @@ public static class VisualUI
 
         object initialValue = VisualHandler.GetMemberValue(member, node);
 
-        VisualControlInfo element = VisualControlTypes.CreateControlForType(initialValue, type, debugExportSpinBoxes, v =>
+        VisualControlInfo element = VisualControlTypes.CreateControlForType(type, new VisualControlContext(debugExportSpinBoxes, initialValue, v => 
         {
             VisualHandler.SetMemberValue(member, node, v);
-        });
+        }));
 
-        if (element.VisualControl.Control != null)
+        if (element.VisualControl != null)
         {
             Label label = new()
             {

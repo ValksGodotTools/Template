@@ -24,8 +24,10 @@ public static class VisualMethods
 
             int capturedIndex = i;
 
-            VisualControlInfo control = VisualControlTypes.CreateControlForType(providedValues[i], paramType, debugExportSpinBoxes,
-                v => providedValues[capturedIndex] = v);
+            VisualControlInfo control = VisualControlTypes.CreateControlForType(paramType, new VisualControlContext(debugExportSpinBoxes, providedValues[i], v =>
+            {
+                providedValues[capturedIndex] = v;
+            }));
 
             if (control.VisualControl != null)
             {

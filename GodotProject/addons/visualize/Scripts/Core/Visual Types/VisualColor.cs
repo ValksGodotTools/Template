@@ -6,12 +6,12 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualColor(object initialValue, Action<Color> valueChanged)
+    private static VisualControlInfo VisualColor(VisualControlContext context)
     {
-        Color initialColor = (Color)initialValue;
+        Color initialColor = (Color)context.InitialValue;
 
         GColorPickerButton colorPickerButton = new(initialColor);
-        colorPickerButton.OnColorChanged += color => valueChanged(color);
+        colorPickerButton.OnColorChanged += color => context.ValueChanged(color);
 
         return new VisualControlInfo(new ColorPickerButtonControl(colorPickerButton));
     }

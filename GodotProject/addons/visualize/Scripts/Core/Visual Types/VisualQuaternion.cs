@@ -5,11 +5,11 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualQuaternion(object initialValue, Action<Quaternion> valueChanged)
+    private static VisualControlInfo VisualQuaternion(VisualControlContext context)
     {
         HBoxContainer quaternionHBox = new();
 
-        Quaternion quaternion = (Quaternion)initialValue;
+        Quaternion quaternion = (Quaternion)context.InitialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -24,25 +24,25 @@ public static partial class VisualControlTypes
         spinBoxX.ValueChanged += value =>
         {
             quaternion.X = (float)value;
-            valueChanged(quaternion);
+            context.ValueChanged(quaternion);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             quaternion.Y = (float)value;
-            valueChanged(quaternion);
+            context.ValueChanged(quaternion);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             quaternion.Z = (float)value;
-            valueChanged(quaternion);
+            context.ValueChanged(quaternion);
         };
 
         spinBoxW.ValueChanged += value =>
         {
             quaternion.W = (float)value;
-            valueChanged(quaternion);
+            context.ValueChanged(quaternion);
         };
 
         quaternionHBox.AddChild(new Label { Text = "X" });

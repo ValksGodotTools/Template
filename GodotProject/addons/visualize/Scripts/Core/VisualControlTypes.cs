@@ -7,30 +7,41 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    public static VisualControlInfo CreateControlForType(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    public static VisualControlInfo CreateControlForType(Type type, VisualControlContext context)
     {
         VisualControlInfo info = type switch
         {
-            _ when type == typeof(bool) => VisualBool(initialValue, v => valueChanged(v)),
-            _ when type == typeof(string) => VisualString(initialValue, v => valueChanged(v)),
-            _ when type == typeof(object) => VisualObject(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Color) => VisualColor(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector2) => VisualVector2(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector2I) => VisualVector2I(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector3) => VisualVector3(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector3I) => VisualVector3I(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector4) => VisualVector4(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Vector4I) => VisualVector4I(initialValue, v => valueChanged(v)),
-            _ when type == typeof(Quaternion) => VisualQuaternion(initialValue, v => valueChanged(v)),
-            _ when type == typeof(NodePath) => VisualNodePath(initialValue, v => valueChanged(v)),
-            _ when type == typeof(StringName) => VisualStringName(initialValue, v => valueChanged(v)),
-            _ when type.IsNumericType() => VisualNumeric(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsEnum => VisualEnum(initialValue, type, v => valueChanged(v)),
-            _ when type.IsArray => VisualArray(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => VisualList(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => VisualDictionary(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            //_ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => VisualClass(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
-            //_ when type.IsValueType && !type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => VisualClass(initialValue, type, debugExportSpinBoxes, v => valueChanged(v)),
+            _ when type == typeof(bool) => VisualBool(context),
+            _ when type == typeof(string) => VisualString(context),
+            _ when type == typeof(object) => VisualObject(context),
+            _ when type == typeof(Color) => VisualColor(context),
+            _ when type == typeof(Vector2) => VisualVector2(context),
+            _ when type == typeof(Vector2I) => VisualVector2I(context),
+            _ when type == typeof(Vector3) => VisualVector3(context),
+            _ when type == typeof(Vector3I) => VisualVector3I(context),
+            _ when type == typeof(Vector4) => VisualVector4(context),
+            _ when type == typeof(Vector4I) => VisualVector4I(context),
+            _ when type == typeof(Quaternion) => VisualQuaternion(context),
+            _ when type == typeof(NodePath) => VisualNodePath(context),
+            _ when type == typeof(StringName) => VisualStringName(context),
+            _ when type.IsNumericType() => VisualNumeric(type, context),
+            _ when type.IsEnum => VisualEnum(type, context),
+            
+            // Arrays
+            _ when type.IsArray => VisualArray(type, context),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) => VisualList(type, context),
+            _ when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) => VisualDictionary(type, context),
+            
+            // Godot Resource
+            _ when type.IsClass && type.IsSubclassOf(typeof(Resource)) => VisualClass(type, context),
+            
+            // Class
+            _ when type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => VisualClass(type, context),
+            
+            // Struct
+            _ when type.IsValueType && !type.IsClass && !type.IsSubclassOf(typeof(GodotObject)) => VisualClass(type, context),
+            
+            // Not defined
             _ => new VisualControlInfo(null)
         };
 

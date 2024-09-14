@@ -7,15 +7,15 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualNumeric(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<object> valueChanged)
+    private static VisualControlInfo VisualNumeric(Type type, VisualControlContext context)
     {
         SpinBox spinBox = CreateSpinBox(type);
 
-        spinBox.Value = Convert.ToDouble(initialValue);
+        spinBox.Value = Convert.ToDouble(context.InitialValue);
         spinBox.ValueChanged += value =>
         {
             object convertedValue = Convert.ChangeType(value, type);
-            valueChanged(convertedValue);
+            context.ValueChanged(convertedValue);
         };
 
         return new VisualControlInfo(new NumericControl(spinBox));

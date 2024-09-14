@@ -8,27 +8,27 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualList(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<IList> valueChanged)
+    private static VisualControlInfo VisualList(Type type, VisualControlContext context)
     {
         VBoxContainer listVBox = new() { SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand };
         Button addButton = new() { Text = "+" };
 
         Type elementType = type.GetGenericArguments()[0];
-        IList list = initialValue as IList ?? (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
+        IList list = context.InitialValue as IList ?? (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
 
         void AddNewEntryToList()
         {
             object newValue = VisualMethods.CreateDefaultValue(elementType);
             list.Add(newValue);
-            valueChanged(list);
+            context.ValueChanged(list);
 
             int newIndex = list.Count - 1;
 
-            VisualControlInfo control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
+            VisualControlInfo control = CreateControlForType(elementType, new VisualControlContext(context.SpinBoxes, newValue, v =>
             {
                 list[newIndex] = v;
-                valueChanged(list);
-            });
+                context.ValueChanged(list);
+            }));
 
             if (control.VisualControl != null)
             {
@@ -40,7 +40,7 @@ public static partial class VisualControlTypes
                     int indexToRemove = minusButton.GetParent().GetIndex();
                     listVBox.RemoveChild(hbox);
                     list.RemoveAt(indexToRemove);
-                    valueChanged(list);
+                    context.ValueChanged(list);
                 };
 
                 hbox.AddChild(control.VisualControl.Control);
@@ -53,11 +53,12 @@ public static partial class VisualControlTypes
         for (int i = 0; i < list.Count; i++)
         {
             object value = list[i];
-            VisualControlInfo control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
+
+            VisualControlInfo control = CreateControlForType(elementType, new VisualControlContext(context.SpinBoxes, value, v =>
             {
                 list[i] = v;
-                valueChanged(list);
-            });
+                context.ValueChanged(list);
+            }));
 
             if (control.VisualControl != null)
             {
@@ -71,7 +72,7 @@ public static partial class VisualControlTypes
                     int indexToRemove = minusButton.GetParent().GetIndex();
                     listVBox.RemoveChild(hbox);
                     list.RemoveAt(indexToRemove);
-                    valueChanged(list);
+                    context.ValueChanged(list);
                 };
 
                 hbox.AddChild(control.VisualControl.Control);

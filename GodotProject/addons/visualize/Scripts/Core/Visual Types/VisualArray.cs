@@ -7,30 +7,29 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualArray(object initialValue, Type type, List<VisualSpinBox> debugExportSpinBoxes, Action<Array> valueChanged)
+    private static VisualControlInfo VisualArray(Type type, VisualControlContext context)
     {
-        List<Control> controls = new();
         VBoxContainer arrayVBox = new() { SizeFlagsHorizontal = SizeFlags.ShrinkEnd | SizeFlags.Expand };
         Button addButton = new() { Text = "+" };
 
         Type elementType = type.GetElementType();
-        Array array = initialValue as Array ?? Array.CreateInstance(elementType, 0);
+        Array array = context.InitialValue as Array ?? Array.CreateInstance(elementType, 0);
 
         void AddNewEntryToArray()
         {
             Array newArray = Array.CreateInstance(elementType, array.Length + 1);
             Array.Copy(array, newArray, array.Length);
             array = newArray;
-            valueChanged(array);
+            context.ValueChanged(array);
 
             object newValue = VisualMethods.CreateDefaultValue(elementType);
             int newIndex = array.Length - 1;
 
-            VisualControlInfo control = CreateControlForType(newValue, elementType, debugExportSpinBoxes, v =>
+            VisualControlInfo control = CreateControlForType(elementType, new VisualControlContext(context.SpinBoxes, newValue, v =>
             {
                 array.SetValue(v, newIndex);
-                valueChanged(array);
-            });
+                context.ValueChanged(array);
+            }));
 
             if (control.VisualControl != null)
             {
@@ -42,7 +41,7 @@ public static partial class VisualControlTypes
                     int indexToRemove = minusButton.GetParent().GetIndex();
                     arrayVBox.RemoveChild(hbox);
                     array = array.RemoveAt(indexToRemove);
-                    valueChanged(array);
+                    context.ValueChanged(array);
                 };
 
                 hbox.AddChild(control.VisualControl.Control);
@@ -55,11 +54,12 @@ public static partial class VisualControlTypes
         for (int i = 0; i < array.Length; i++)
         {
             object value = array.GetValue(i);
-            VisualControlInfo control = CreateControlForType(value, elementType, debugExportSpinBoxes, v =>
+
+            VisualControlInfo control = CreateControlForType(elementType, new VisualControlContext(context.SpinBoxes, value, v =>
             {
                 array.SetValue(v, i);
-                valueChanged(array);
-            });
+                context.ValueChanged(array);
+            }));
 
             if (control.VisualControl != null)
             {
@@ -73,7 +73,7 @@ public static partial class VisualControlTypes
                     int indexToRemove = minusButton.GetParent().GetIndex();
                     arrayVBox.RemoveChild(hbox);
                     array = array.RemoveAt(indexToRemove);
-                    valueChanged(array);
+                    context.ValueChanged(array);
                 };
 
                 hbox.AddChild(control.VisualControl.Control);

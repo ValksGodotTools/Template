@@ -5,10 +5,10 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualBool(object initialValue, Action<bool> valueChanged)
+    private static VisualControlInfo VisualBool(VisualControlContext context)
     {
-        CheckBox checkBox = new() { ButtonPressed = (bool)initialValue };
-        checkBox.Toggled += value => valueChanged(value);
+        CheckBox checkBox = new() { ButtonPressed = (bool)context.InitialValue };
+        checkBox.Toggled += value => context.ValueChanged(value);
 
         return new VisualControlInfo(new BoolControl(checkBox));
     }

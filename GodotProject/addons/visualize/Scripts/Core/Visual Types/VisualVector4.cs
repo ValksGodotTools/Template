@@ -5,11 +5,11 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualVector4(object initialValue, Action<Vector4> valueChanged)
+    private static VisualControlInfo VisualVector4(VisualControlContext context)
     {
         HBoxContainer vector4HBox = new();
 
-        Vector4 vector4 = (Vector4)initialValue;
+        Vector4 vector4 = (Vector4)context.InitialValue;
 
         SpinBox spinBoxX = CreateSpinBox(typeof(float));
         SpinBox spinBoxY = CreateSpinBox(typeof(float));
@@ -24,25 +24,25 @@ public static partial class VisualControlTypes
         spinBoxX.ValueChanged += value =>
         {
             vector4.X = (float)value;
-            valueChanged(vector4);
+            context.ValueChanged(vector4);
         };
 
         spinBoxY.ValueChanged += value =>
         {
             vector4.Y = (float)value;
-            valueChanged(vector4);
+            context.ValueChanged(vector4);
         };
 
         spinBoxZ.ValueChanged += value =>
         {
             vector4.Z = (float)value;
-            valueChanged(vector4);
+            context.ValueChanged(vector4);
         };
 
         spinBoxW.ValueChanged += value =>
         {
             vector4.W = (float)value;
-            valueChanged(vector4);
+            context.ValueChanged(vector4);
         };
 
         vector4HBox.AddChild(new Label { Text = "X" });

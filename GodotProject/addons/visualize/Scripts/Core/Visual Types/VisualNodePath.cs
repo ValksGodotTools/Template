@@ -5,13 +5,13 @@ namespace Visualize.Core;
 
 public static partial class VisualControlTypes
 {
-    private static VisualControlInfo VisualNodePath(object initialValue, Action<NodePath> valueChanged)
+    private static VisualControlInfo VisualNodePath(VisualControlContext context)
     {
-        NodePath nodePath = (NodePath)initialValue;
+        NodePath nodePath = (NodePath)context.InitialValue;
         string initialText = nodePath != null ? nodePath.ToString() : string.Empty;
 
         LineEdit lineEdit = new() { Text = initialText };
-        lineEdit.TextChanged += text => valueChanged(new NodePath(text));
+        lineEdit.TextChanged += text => context.ValueChanged(new NodePath(text));
 
         return new VisualControlInfo(new LineEditControl(lineEdit));
     }
