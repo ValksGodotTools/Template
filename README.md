@@ -246,6 +246,31 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 
 Visualize is now a Godot plugin. Repo: https://github.com/ValksGodotTools/Visualize
 
+#### Supported Members
+
+| Member Type       | Supported  | Example Types                                 | Additional Notes                                                      |
+|-------------------|------------|-----------------------------------------------|-----------------------------------------------------------------------|
+| **Numericals**    | ✅         | `int`, `float`, `double`                      | All numerical types are supported                                     |
+| **Enums**         | ✅         | `Direction`, `Colors`                         | All enum types are supported                                          |
+| **Booleans**      | ✅         | `bool`                                        |                                                                       |
+| **Strings**       | ✅         | `string`                                      |                                                                       |
+| **Color**         | ✅         | `Color`                                       |                                                                       |
+| **Vectors**       | ✅         | `Vector2`, `Vector2I`, `Vector3`, `Vector3I`, `Vector4`, `Vector4I` |                                                 |
+| **Quaternion**    | ✅         | `Quaternion`                                  |                                                                       |
+| **NodePath**      | ✅         | `NodePath`                                    |                                                                       |
+| **StringName**    | ✅         | `StringName`                                  |                                                                       |
+| **Methods**       | ✅         |                                               | Method parameters support all listed types here                       |
+| **Static Members**| ✅         |                                               | This includes static methods, fields, and properties                  |
+| **Arrays**        | ✅         | `int[]`, `string[]`, `Vector2[]`              | Arrays support all listed types here                                  |
+| **Lists**         | ✅         | `List<string[]>`, `List<Vector2>`             | Lists support all listed types here                                   |
+| **Dictionaries**  | ✅         | `Dictionary<List<Color[]>, Vector2>`          | Dictionaries support all listed types here                            |
+| **Structs**       | ✅         | `struct`                                      |                                                                       |
+| **Classes**       | ✅         | `class`                                       |                                                                       |
+| **Resources**     | ✅         | `Resource`                                    |                                                                       |
+| **Godot Classes** | ❌         | `PointLight2D`, `CharacterBody3D`             |                                                                       |
+| **Godot Array**   | ❌         | `Godot.Collections.Array`                     |                                                                       |
+| **Godot Dictionary** | ❌      | `Godot.Collections.Dictionary`                |                                                                       |
+
 #### Example Usage
 ```cs
 [Visualize(nameof(Position), nameof(Rotation))]
