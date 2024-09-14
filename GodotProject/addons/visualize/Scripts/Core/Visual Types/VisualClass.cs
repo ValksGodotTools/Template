@@ -104,7 +104,10 @@ public static partial class VisualControlTypes
             // Exclude delegates
             .Where(m => !(typeof(Delegate).IsAssignableFrom(m.ReturnType)))
             // Exclude auto property methods
-            .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_")).ToArray();
+            .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))
+            // Exclude the override string ToString() method
+            .Where(m => m.Name != "ToString")
+            .ToArray();
 
         foreach (MethodInfo method in methods)
         {
