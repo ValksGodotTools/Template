@@ -1,7 +1,6 @@
 using CSharpUtils;
 using Godot;
 using GodotUtils;
-
 using Template.TopDown2D;
 
 namespace Template;
