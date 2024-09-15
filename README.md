@@ -271,35 +271,26 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 
 #### Example Usage
 ```cs
-[Visualize(nameof(Position), nameof(Rotation))]
+// You will be able to view realtime changes to curState, Position and Rotation
+[Visualize(nameof(curState), nameof(Position), nameof(Rotation))]
 public partial class Player : CharacterBody2D
 {
-    [Visualize] public Dictionary<int, List<Color>> Health { get; set; }
-    [Visualize] private static int TotalPlayers;
+    // You will be able to edit this in-game
+    [Visualize] private static int _totalPlayers;
 
-    [Visualize]
-    public void ApplyDamage(int damageAmount, string source) {}
+    // Visualize will check every 1000ms if currentState gets defined
+    State currentState;
 
-    [Visualize]
-    public static void IncrementPlayerCount()
+    public override void _Ready()
     {
-        // This will be displayed next to the node in the game world
-        // No [Visualize] attributes are needed for this to work
-        Game.Log($"Added a player, there are now {++TotalPlayers} players", this);
+        currentState = new State("Idle");
     }
+
+    // You will be able to execute this method in-game
+    [Visualize]
+    public void Attack(int damage)
 }
 ```
-
-#### Visualizing Info at a Specific Position
-
-You might prefer not to have the visual panel initially created at (0, 0) when visualizing members within a UI node that is always positioned at (0, 0). This can be easily adjusted by adding the `[Visualize(x, y)]` attribute at the top of the class. This attribute will set the initial position of the visual panel to the specified coordinates.
-
-```csharp
-[Visualize(200, 200)] // The visual panel will initially be positioned at (200, 200)
-public partial class SomeUINode {}
-```
-
-By annotating your members with `[Visualize]`, you can streamline the debugging process and gain real-time insights into your game's state and behavior.
 
 ### Menu UI
 
