@@ -16,24 +16,17 @@ public static partial class VisualControlTypes
     }
 }
 
-public class OptionButtonEnumControl : IVisualControl
+public class OptionButtonEnumControl(GOptionButtonEnum optionButton) : IVisualControl
 {
-    private readonly GOptionButtonEnum _optionButton;
-
-    public OptionButtonEnumControl(GOptionButtonEnum optionButton)
-    {
-        _optionButton = optionButton;
-    }
-
     public void SetValue(object value)
     {
-        _optionButton.Select(value);
+        optionButton.Select(value);
     }
 
-    public Control Control => _optionButton.Control;
+    public Control Control => optionButton.Control;
 
     public void SetEditable(bool editable)
     {
-        _optionButton.Control.Disabled = !editable;
+        optionButton.Control.Disabled = !editable;
     }
 }

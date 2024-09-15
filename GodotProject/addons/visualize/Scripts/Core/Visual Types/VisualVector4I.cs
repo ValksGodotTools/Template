@@ -58,41 +58,26 @@ public static partial class VisualControlTypes
     }
 }
 
-public class Vector4IControl : IVisualControl
+public class Vector4IControl(HBoxContainer vector4IHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ, SpinBox spinBoxW) : IVisualControl
 {
-    private readonly HBoxContainer _vector4IHBox;
-    private readonly SpinBox _spinBoxX;
-    private readonly SpinBox _spinBoxY;
-    private readonly SpinBox _spinBoxZ;
-    private readonly SpinBox _spinBoxW;
-
-    public Vector4IControl(HBoxContainer vector4IHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ, SpinBox spinBoxW)
-    {
-        _vector4IHBox = vector4IHBox;
-        _spinBoxX = spinBoxX;
-        _spinBoxY = spinBoxY;
-        _spinBoxZ = spinBoxZ;
-        _spinBoxW = spinBoxW;
-    }
-
     public void SetValue(object value)
     {
         if (value is Vector4I vector4I)
         {
-            _spinBoxX.Value = vector4I.X;
-            _spinBoxY.Value = vector4I.Y;
-            _spinBoxZ.Value = vector4I.Z;
-            _spinBoxW.Value = vector4I.W;
+            spinBoxX.Value = vector4I.X;
+            spinBoxY.Value = vector4I.Y;
+            spinBoxZ.Value = vector4I.Z;
+            spinBoxW.Value = vector4I.W;
         }
     }
 
-    public Control Control => _vector4IHBox;
+    public Control Control => vector4IHBox;
 
     public void SetEditable(bool editable)
     {
-        _spinBoxX.Editable = editable;
-        _spinBoxY.Editable = editable;
-        _spinBoxZ.Editable = editable;
-        _spinBoxW.Editable = editable;
+        spinBoxX.Editable = editable;
+        spinBoxY.Editable = editable;
+        spinBoxZ.Editable = editable;
+        spinBoxW.Editable = editable;
     }
 }

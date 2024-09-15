@@ -58,41 +58,26 @@ public static partial class VisualControlTypes
     }
 }
 
-public class QuaternionControl : IVisualControl
+public class QuaternionControl(HBoxContainer quaternionHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ, SpinBox spinBoxW) : IVisualControl
 {
-    private readonly HBoxContainer _quaternionHBox;
-    private readonly SpinBox _spinBoxX;
-    private readonly SpinBox _spinBoxY;
-    private readonly SpinBox _spinBoxZ;
-    private readonly SpinBox _spinBoxW;
-
-    public QuaternionControl(HBoxContainer quaternionHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ, SpinBox spinBoxW)
-    {
-        _quaternionHBox = quaternionHBox;
-        _spinBoxX = spinBoxX;
-        _spinBoxY = spinBoxY;
-        _spinBoxZ = spinBoxZ;
-        _spinBoxW = spinBoxW;
-    }
-
     public void SetValue(object value)
     {
         if (value is Quaternion quaternion)
         {
-            _spinBoxX.Value = quaternion.X;
-            _spinBoxY.Value = quaternion.Y;
-            _spinBoxZ.Value = quaternion.Z;
-            _spinBoxW.Value = quaternion.W;
+            spinBoxX.Value = quaternion.X;
+            spinBoxY.Value = quaternion.Y;
+            spinBoxZ.Value = quaternion.Z;
+            spinBoxW.Value = quaternion.W;
         }
     }
 
-    public Control Control => _quaternionHBox;
+    public Control Control => quaternionHBox;
 
     public void SetEditable(bool editable)
     {
-        _spinBoxX.Editable = editable;
-        _spinBoxY.Editable = editable;
-        _spinBoxZ.Editable = editable;
-        _spinBoxW.Editable = editable;
+        spinBoxX.Editable = editable;
+        spinBoxY.Editable = editable;
+        spinBoxZ.Editable = editable;
+        spinBoxW.Editable = editable;
     }
 }

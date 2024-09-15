@@ -130,50 +130,35 @@ public static partial class VisualControlTypes
     }
 }
 
-public class ClassControl : IVisualControl
+public class ClassControl(VBoxContainer vboxContainer, List<IVisualControl> visualPropertyControls, List<IVisualControl> visualFieldControls, PropertyInfo[] properties, FieldInfo[] fields) : IVisualControl
 {
-    private readonly VBoxContainer _vboxContainer;
-    private readonly List<IVisualControl> _visualPropertyControls;
-    private readonly List<IVisualControl> _visualFieldControls;
-    private readonly PropertyInfo[] _properties;
-    private readonly FieldInfo[] _fields;
-
-    public ClassControl(VBoxContainer vboxContainer, List<IVisualControl> visualPropertyControls, List<IVisualControl> visualFieldControls, PropertyInfo[] properties, FieldInfo[] fields)
-    {
-        _vboxContainer = vboxContainer;
-        _visualPropertyControls = visualPropertyControls;
-        _visualFieldControls = visualFieldControls;
-        _properties = properties;
-        _fields = fields;
-    }
-
     public void SetValue(object value)
     {
         Type type = value.GetType();
 
-        for (int i = 0; i < _properties.Length; i++)
+        for (int i = 0; i < properties.Length; i++)
         {
-            object propValue = _properties[i].GetValue(value);
-            _visualPropertyControls[i].SetValue(propValue);
+            object propValue = properties[i].GetValue(value);
+            visualPropertyControls[i].SetValue(propValue);
         }
 
-        for (int i = 0; i < _fields.Length; i++)
+        for (int i = 0; i < fields.Length; i++)
         {
-            object fieldValue = _fields[i].GetValue(value);
-            _visualFieldControls[i].SetValue(fieldValue);
+            object fieldValue = fields[i].GetValue(value);
+            visualFieldControls[i].SetValue(fieldValue);
         }
     }
 
-    public Control Control => _vboxContainer;
+    public Control Control => vboxContainer;
 
     public void SetEditable(bool editable)
     {
-        foreach (IVisualControl visualControl in _visualPropertyControls)
+        foreach (IVisualControl visualControl in visualPropertyControls)
         {
             visualControl.SetEditable(editable);
         }
 
-        foreach (IVisualControl visualControl in _visualFieldControls)
+        foreach (IVisualControl visualControl in visualFieldControls)
         {
             visualControl.SetEditable(editable);
         }

@@ -37,34 +37,23 @@ public static partial class VisualControlTypes
         return new VisualControlInfo(new Vector2Control(vector2HBox, spinBoxX, spinBoxY));
     }
 
-    public class Vector2Control : IVisualControl
+    public class Vector2Control(HBoxContainer vector2HBox, SpinBox spinBoxX, SpinBox spinBoxY) : IVisualControl
     {
-        private readonly HBoxContainer _vector2HBox;
-        private readonly SpinBox _spinBoxX;
-        private readonly SpinBox _spinBoxY;
-
-        public Vector2Control(HBoxContainer vector2HBox, SpinBox spinBoxX, SpinBox spinBoxY)
-        {
-            _vector2HBox = vector2HBox;
-            _spinBoxX = spinBoxX;
-            _spinBoxY = spinBoxY;
-        }
-
         public void SetValue(object value)
         {
             if (value is Vector2 vector2)
             {
-                _spinBoxX.Value = vector2.X;
-                _spinBoxY.Value = vector2.Y;
+                spinBoxX.Value = vector2.X;
+                spinBoxY.Value = vector2.Y;
             }
         }
 
-        public Control Control => _vector2HBox;
+        public Control Control => vector2HBox;
 
         public void SetEditable(bool editable)
         {
-            _spinBoxX.Editable = editable;
-            _spinBoxY.Editable = editable;
+            spinBoxX.Editable = editable;
+            spinBoxY.Editable = editable;
         }
     }
 }

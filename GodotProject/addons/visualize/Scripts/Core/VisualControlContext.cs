@@ -4,17 +4,10 @@ using System.Reflection;
 
 namespace Visualize.Core;
 
-public class VisualControlContext
+public class VisualControlContext(List<VisualSpinBox> spinBoxes, object initialValue, Action<object> valueChanged)
 {
-    public List<VisualSpinBox> SpinBoxes { get; set; } = [];
-    public object InitialValue { get; set; }
-    public Action<object> ValueChanged { get; set; }
-
-    public VisualControlContext(List<VisualSpinBox> spinBoxes, object initialValue, Action<object> valueChanged)
-    {
-        SpinBoxes = spinBoxes;
-        InitialValue = initialValue;
-        ValueChanged = valueChanged;
-    }
+    public List<VisualSpinBox> SpinBoxes { get; set; } = spinBoxes;
+    public object InitialValue { get; set; } = initialValue;
+    public Action<object> ValueChanged { get; set; } = valueChanged;
 }
 

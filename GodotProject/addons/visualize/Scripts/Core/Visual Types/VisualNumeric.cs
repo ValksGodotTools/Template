@@ -22,22 +22,15 @@ public static partial class VisualControlTypes
     }
 }
 
-public class NumericControl : IVisualControl
+public class NumericControl(SpinBox spinBox) : IVisualControl
 {
-    private readonly SpinBox _spinBox;
-
-    public NumericControl(SpinBox spinBox)
-    {
-        _spinBox = spinBox;
-    }
-
     public void SetValue(object value)
     {
         if (value != null)
         {
             try
             {
-                _spinBox.Value = Convert.ToDouble(value);
+                spinBox.Value = Convert.ToDouble(value);
             }
             catch (InvalidCastException)
             {
@@ -47,10 +40,10 @@ public class NumericControl : IVisualControl
         }
     }
 
-    public Control Control => _spinBox;
+    public Control Control => spinBox;
 
     public void SetEditable(bool editable)
     {
-        _spinBox.Editable = editable;
+        spinBox.Editable = editable;
     }
 }

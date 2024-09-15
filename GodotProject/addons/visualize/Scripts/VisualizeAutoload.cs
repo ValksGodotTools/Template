@@ -158,18 +158,10 @@ public partial class VisualizeAutoload : Node
     }
 }
 
-public class VisualNodeInfo
+public class VisualNodeInfo(List<Action> actions, Control visualControl, Node node, Vector2 offset)
 {
-    public List<Action> Actions { get; }
-    public Control VisualControl { get; }
-    public Vector2 Offset { get; }
-    public Node Node { get; }
-
-    public VisualNodeInfo(List<Action> actions, Control visualControl, Node node, Vector2 offset)
-    {
-        Actions = actions ?? throw new ArgumentNullException(nameof(actions));
-        VisualControl = visualControl ?? throw new ArgumentNullException(nameof(visualControl));
-        Node = node ?? throw new ArgumentNullException(nameof(node));
-        Offset = offset;
-    }
+    public List<Action> Actions { get; } = actions ?? throw new ArgumentNullException(nameof(actions));
+    public Control VisualControl { get; } = visualControl ?? throw new ArgumentNullException(nameof(visualControl));
+    public Vector2 Offset { get; } = offset;
+    public Node Node { get; } = node ?? throw new ArgumentNullException(nameof(node));
 }

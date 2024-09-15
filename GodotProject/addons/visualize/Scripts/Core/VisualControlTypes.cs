@@ -61,12 +61,7 @@ public interface IVisualControl
     void SetEditable(bool editable);
 }
 
-public class VisualControlInfo
+public class VisualControlInfo(IVisualControl visualControl)
 {
-    public IVisualControl VisualControl { get; }
-
-    public VisualControlInfo(IVisualControl visualControl)
-    {
-        VisualControl = visualControl;
-    }
+    public IVisualControl VisualControl { get; } = visualControl;
 }

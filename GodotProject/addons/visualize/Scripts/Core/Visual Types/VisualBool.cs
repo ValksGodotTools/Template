@@ -14,27 +14,20 @@ public static partial class VisualControlTypes
     }
 }
 
-public class BoolControl : IVisualControl
+public class BoolControl(CheckBox checkBox) : IVisualControl
 {
-    private readonly CheckBox _checkBox;
-
-    public BoolControl(CheckBox checkBox)
-    {
-        _checkBox = checkBox;
-    }
-
     public void SetValue(object value)
     {
         if (value is bool boolValue)
         {
-            _checkBox.ButtonPressed = boolValue;
+            checkBox.ButtonPressed = boolValue;
         }
     }
 
-    public Control Control => _checkBox;
+    public Control Control => checkBox;
 
     public void SetEditable(bool editable)
     {
-        _checkBox.Disabled = !editable;
+        checkBox.Disabled = !editable;
     }
 }

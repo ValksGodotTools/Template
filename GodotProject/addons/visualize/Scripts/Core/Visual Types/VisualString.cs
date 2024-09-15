@@ -14,27 +14,20 @@ public static partial class VisualControlTypes
     }
 }
 
-public class LineEditControl : IVisualControl
+public class LineEditControl(LineEdit lineEdit) : IVisualControl
 {
-    private readonly LineEdit _lineEdit;
-
-    public LineEditControl(LineEdit lineEdit)
-    {
-        _lineEdit = lineEdit;
-    }
-
     public void SetValue(object value)
     {
         if (value is string text)
         {
-            _lineEdit.Text = text;
+            lineEdit.Text = text;
         }
     }
 
-    public Control Control => _lineEdit;
+    public Control Control => lineEdit;
 
     public void SetEditable(bool editable)
     {
-        _lineEdit.Editable = editable;
+        lineEdit.Editable = editable;
     }
 }

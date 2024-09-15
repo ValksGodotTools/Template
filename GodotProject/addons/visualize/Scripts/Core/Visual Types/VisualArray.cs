@@ -89,21 +89,14 @@ public static partial class VisualControlTypes
     }
 }
 
-public class VBoxContainerControl : IVisualControl
+public class VBoxContainerControl(VBoxContainer vboxContainer) : IVisualControl
 {
-    private readonly VBoxContainer _vboxContainer;
-
-    public VBoxContainerControl(VBoxContainer vboxContainer)
-    {
-        _vboxContainer = vboxContainer;
-    }
-
     public void SetValue(object value)
     {
         // No specific value setting for VBoxContainer
     }
 
-    public Control Control => _vboxContainer;
+    public Control Control => vboxContainer;
 
     public void SetEditable(bool editable)
     {

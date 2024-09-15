@@ -48,37 +48,24 @@ public static partial class VisualControlTypes
     }
 }
 
-public class Vector3IControl : IVisualControl
+public class Vector3IControl(HBoxContainer vector3IHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ) : IVisualControl
 {
-    private readonly HBoxContainer _vector3IHBox;
-    private readonly SpinBox _spinBoxX;
-    private readonly SpinBox _spinBoxY;
-    private readonly SpinBox _spinBoxZ;
-
-    public Vector3IControl(HBoxContainer vector3IHBox, SpinBox spinBoxX, SpinBox spinBoxY, SpinBox spinBoxZ)
-    {
-        _vector3IHBox = vector3IHBox;
-        _spinBoxX = spinBoxX;
-        _spinBoxY = spinBoxY;
-        _spinBoxZ = spinBoxZ;
-    }
-
     public void SetValue(object value)
     {
         if (value is Vector3I vector3I)
         {
-            _spinBoxX.Value = vector3I.X;
-            _spinBoxY.Value = vector3I.Y;
-            _spinBoxZ.Value = vector3I.Z;
+            spinBoxX.Value = vector3I.X;
+            spinBoxY.Value = vector3I.Y;
+            spinBoxZ.Value = vector3I.Z;
         }
     }
 
-    public Control Control => _vector3IHBox;
+    public Control Control => vector3IHBox;
 
     public void SetEditable(bool editable)
     {
-        _spinBoxX.Editable = editable;
-        _spinBoxY.Editable = editable;
-        _spinBoxZ.Editable = editable;
+        spinBoxX.Editable = editable;
+        spinBoxY.Editable = editable;
+        spinBoxZ.Editable = editable;
     }
 }
