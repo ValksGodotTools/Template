@@ -122,6 +122,8 @@ public static class VisualUI
         CancellationTokenSource cts = new();
         CancellationToken token = cts.Token;
 
+        int elapsedSeconds = 0;
+
         while (!token.IsCancellationRequested)
         {
             object value = null;
@@ -144,6 +146,23 @@ public static class VisualUI
             try
             {
                 await Task.Delay(1000, token);
+                elapsedSeconds++;
+
+                if (elapsedSeconds == 3)
+                {
+                    string memberName = string.Empty;
+
+                    if (field != null)
+                    {
+                        memberName = field.Name;
+                    }
+                    else if (property != null)
+                    {
+                        memberName = property.Name;
+                    }
+
+                    GD.PrintRich($"[color=orange]Tracking '{node.Name}' to see if '{memberName}' value changes[/color]");
+                }
             }
             catch (TaskCanceledException)
             {

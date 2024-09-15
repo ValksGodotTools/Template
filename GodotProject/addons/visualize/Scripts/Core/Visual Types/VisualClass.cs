@@ -18,7 +18,6 @@ public static partial class VisualControlTypes
             throw new Exception($"Contexts initial value was null for type '{type}'");
         }
 
-
         AddProperties(vbox, type, context, out List<IVisualControl> propertyControls, out PropertyInfo[] properties);
         AddFields(vbox, type, context, out List<IVisualControl> fieldControls, out FieldInfo[] fields);
         AddMethods(vbox, type, context);
