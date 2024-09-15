@@ -95,7 +95,19 @@ public static class VisualUI
 
         visualNodes.Add(node, vboxLogs);
 
-        vboxParent.AddChild(new Label { Text = node.Name} );
+        vboxParent.AddChild(new Label 
+        { 
+            Text = node.Name,
+            LabelSettings = new LabelSettings
+            {
+                FontSize = 20,
+                FontColor = Colors.LightSkyBlue,
+                OutlineColor = Colors.Black,
+                OutlineSize = 6,
+            },
+            HorizontalAlignment = HorizontalAlignment.Center
+        });
+
         vboxParent.AddChild(readonlyMembers);
         vboxParent.AddChild(vboxMembers);
 
