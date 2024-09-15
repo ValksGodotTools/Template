@@ -24,6 +24,8 @@ public static class VisualUI
         PanelContainer panelContainer = new()
         {
             // Ensure this info is rendered above all game elements
+            Name = node.Name,
+            Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR,
             ZIndex = (int)RenderingServer.CanvasItemZMax
         };
 
@@ -31,9 +33,15 @@ public static class VisualUI
 
         VBoxContainer vboxParent = new();
 
-        VBoxContainer vboxMembers = new();
+        VBoxContainer vboxMembers = new()
+        {
+            Modulate = new Color(0.8f, 1, 0.8f, 1)
+        };
 
-        VBoxContainer readonlyMembers = new();
+        VBoxContainer readonlyMembers = new()
+        {
+            Modulate = new Color(1.0f, 0.75f, 0.8f, 1)
+        };
 
         string[] visualizeMembers = debugVisualNode.VisualizeMembers;
 
@@ -102,8 +110,6 @@ public static class VisualUI
             };
         }
 
-        vboxMembers.Modulate = new Color(0.8f, 1, 0.8f, 1);
-
         // Add to canvas layer so UI is not affected by lighting in game world
         CanvasLayer canvasLayer = new();
         canvasLayer.FollowViewportEnabled = true;
@@ -111,9 +117,6 @@ public static class VisualUI
         canvasLayer.AddChild(panelContainer);
 
         tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
-
-        panelContainer.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
-        panelContainer.Name = node.Name;
 
         if (debugVisualNode.InitialPosition != Vector2.Zero)
         {
@@ -203,7 +206,7 @@ public static class VisualUI
             visualControlInfo.VisualControl.SetValue(newValue);
         });
 
-        HBoxContainer hbox = new() { Modulate = new Color(1.0f, 0.75f, 0.8f, 1) };
+        HBoxContainer hbox = new();
         hbox.AddChild(new Label { Text = visualMember });
         hbox.AddChild(visualControlInfo.VisualControl.Control);
         readonlyMembers.AddChild(hbox);
