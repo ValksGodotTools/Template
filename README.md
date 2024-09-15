@@ -244,8 +244,6 @@ https://github.com/user-attachments/assets/2f44ae8e-0c99-4bd2-b15f-a72a70ffaa74
 
 Easily debug in-game by adding the `[Visualize]` attribute to any of the supported members. This feature allows you to visualize and interact with various types of data directly within the game environment.
 
-Visualize is now a Godot plugin. Repo: https://github.com/ValksGodotTools/Visualize
-
 #### Supported Members
 
 | Member Type       | Supported  | Example Types                                 | Additional Notes                                                      |
