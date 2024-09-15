@@ -232,6 +232,12 @@ public static class VisualUI
 
         object initialValue = VisualHandler.GetMemberValue(member, node);
 
+        if (initialValue == null)
+        {
+            PrintUtils.Warning($"'{member.Name}' value in '{node.Name}' is null");
+            return hbox;
+        }
+
         VisualControlInfo element = VisualControlTypes.CreateControlForType(type, new VisualControlContext(spinBoxes, initialValue, v => 
         {
             VisualHandler.SetMemberValue(member, node, v);
