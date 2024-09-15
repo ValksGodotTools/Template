@@ -1,6 +1,5 @@
 using Godot;
 
-
 namespace Template.TopDown2D;
 
 [Visualize(nameof(Position), nameof(Velocity))]
