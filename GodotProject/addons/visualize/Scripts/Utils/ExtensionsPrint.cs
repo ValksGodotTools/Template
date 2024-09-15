@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-namespace Visualize.Utils;
+namespace Template;
 
 /// <summary>
 /// Provides extension methods for printing objects and collections in a formatted manner.

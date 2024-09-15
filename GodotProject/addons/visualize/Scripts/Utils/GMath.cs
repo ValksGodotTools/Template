@@ -1,4 +1,4 @@
-﻿namespace Visualize.Utils;
+﻿namespace Template;
 
 public static class GMath
 {

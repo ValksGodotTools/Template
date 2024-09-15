@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Visualize.Core;
+namespace Template;
 
 public class VisualNode(Node node, Vector2 initialPosition, string[] visualizeMembers, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
 {

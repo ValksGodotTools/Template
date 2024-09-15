@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-namespace Visualize.Utils;
+namespace Template;
 
 /// <summary>
 /// A custom wrapper for Godot's ColorPickerButton with additional functionality.

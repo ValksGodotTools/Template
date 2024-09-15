@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Visualize.Utils;
 using static Godot.Control;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static class VisualMethods
 {

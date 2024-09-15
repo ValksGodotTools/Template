@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-namespace Visualize.Utils;
+namespace Template;
 
 /// <summary>
 /// Represents a custom OptionButton that allows adding items and handling item selection events.

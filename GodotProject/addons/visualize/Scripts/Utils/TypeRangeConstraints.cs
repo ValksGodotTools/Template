@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Visualize.Utils;
+namespace Template;
 
 public static class TypeRangeConstraints
 {

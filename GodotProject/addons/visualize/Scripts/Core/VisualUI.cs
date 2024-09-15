@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
-using Visualize.Utils;
 using static Godot.Control;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static class VisualUI
 {

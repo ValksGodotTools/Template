@@ -1,7 +1,6 @@
 using Godot;
-using Visualize.Utils;
 
-namespace Visualize.Example;
+namespace Template.Example;
 
 public partial class ExampleScene : Node
 {

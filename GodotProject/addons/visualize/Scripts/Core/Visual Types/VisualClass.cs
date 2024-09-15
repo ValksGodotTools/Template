@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Visualize.Utils;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static partial class VisualControlTypes
 {

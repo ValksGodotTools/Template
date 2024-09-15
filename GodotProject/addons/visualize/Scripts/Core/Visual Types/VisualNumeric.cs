@@ -1,9 +1,7 @@
 ﻿using Godot;
 using System;
-using System.Collections.Generic;
-using Visualize.Utils;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static partial class VisualControlTypes
 {

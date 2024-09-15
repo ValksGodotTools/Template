@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static class VisualizeAttributeHandler
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Visualize.Core;
+namespace Template;
 
 public static class ParameterConverter
 {

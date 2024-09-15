@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-namespace Visualize.Utils;
+namespace Template;
 
 public static class Extensions
 {

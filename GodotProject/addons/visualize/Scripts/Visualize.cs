@@ -1,7 +1,6 @@
 using Godot;
-using Visualize.Utils;
 
-namespace Visualize.Core;
+namespace Template;
 
 #if TOOLS
 [Tool]

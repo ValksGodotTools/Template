@@ -1,7 +1,5 @@
 using Godot;
 using GodotUtils;
-using System.Collections.Generic;
-using System.Linq;
 using static Template.SceneManager;
 
 namespace Template;

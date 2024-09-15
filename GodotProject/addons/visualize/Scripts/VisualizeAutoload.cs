@@ -2,9 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Visualize.Utils;
 
-namespace Visualize.Core;
+namespace Template;
 
 public partial class VisualizeAutoload : Node
 {
