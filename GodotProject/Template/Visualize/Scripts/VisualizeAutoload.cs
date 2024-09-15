@@ -1,4 +1,5 @@
 using Godot;
+using GodotUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ public partial class VisualizeAutoload : Node
 
             if (positionalNode == null)
             {
-                PrintUtils.Warning($"No positional parent node could be found for {node.Name} so no VisualPanel will be created for it");
+                GPrintUtils.Warning($"No positional parent node could be found for {node.Name} so no VisualPanel will be created for it");
                 return;
             }
 

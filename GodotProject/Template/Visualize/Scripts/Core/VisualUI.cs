@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
 using static Godot.Control;
+using GodotUtils;
+using CSharpUtils;
 
 namespace Template;
 
@@ -242,7 +244,7 @@ public static class VisualUI
 
         if (initialValue == null)
         {
-            PrintUtils.Warning($"'{member.Name}' value in '{node.Name}' is null");
+            GPrintUtils.Warning($"'{member.Name}' value in '{node.Name}' is null");
             return hbox;
         }
 
