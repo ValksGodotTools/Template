@@ -27,7 +27,7 @@ public static partial class VisualControlTypes
 
     private static void AddProperties(VBoxContainer vbox, Type type, VisualControlContext context, out List<IVisualControl> propertyControls, out PropertyInfo[] properties)
     {
-        propertyControls = new();
+        propertyControls = [];
 
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
@@ -61,7 +61,7 @@ public static partial class VisualControlTypes
 
     private static void AddFields(VBoxContainer vbox, Type type, VisualControlContext context, out List<IVisualControl> fieldControls, out FieldInfo[] fields)
     {
-        fieldControls = new();
+        fieldControls = [];
 
         BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 

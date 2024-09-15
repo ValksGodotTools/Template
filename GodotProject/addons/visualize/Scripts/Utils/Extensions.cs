@@ -21,7 +21,7 @@ public static class Extensions
     /// </summary>
     public static List<Node> GetNodes(this Node node, Type type)
     {
-        List<Node> nodes = new();
+        List<Node> nodes = [];
         RecursiveTypeMatchSearch(node, type, nodes);
         return nodes;
     }
@@ -44,7 +44,7 @@ public static class Extensions
     /// </summary>
     public static List<T> GetChildren<T>(this Node node) where T : Node
     {
-        List<T> children = new();
+        List<T> children = [];
         FindChildrenOfType<T>(node, children);
         return children;
     }
@@ -68,8 +68,8 @@ public static class Extensions
     /// </summary>
     public static bool IsNumericType(this Type @type)
     {
-        HashSet<Type> numericTypes = new()
-        {
+        HashSet<Type> numericTypes =
+        [
             typeof(int),
             typeof(float),
             typeof(double),
@@ -81,7 +81,7 @@ public static class Extensions
             typeof(decimal),
             typeof(byte),
             typeof(sbyte)
-        };
+        ];
 
         return numericTypes.Contains(type);
     }

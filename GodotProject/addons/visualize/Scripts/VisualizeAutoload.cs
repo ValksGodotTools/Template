@@ -8,7 +8,7 @@ namespace Visualize.Core;
 
 public partial class VisualizeAutoload : Node
 {
-    private readonly Dictionary<ulong, VisualNodeInfo> nodeTrackers = new();
+    private readonly Dictionary<ulong, VisualNodeInfo> nodeTrackers = [];
 
     public override void _Ready()
     {
