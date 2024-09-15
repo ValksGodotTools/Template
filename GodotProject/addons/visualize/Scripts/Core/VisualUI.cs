@@ -112,6 +112,8 @@ public static class VisualUI
         // This is ugly but I don't know how else to do it
         VisualLogger.VisualNodes = visualNodes;
 
+        vboxParent.Name = node.Name;
+
         return (vboxParent, updateControls);
     }
 

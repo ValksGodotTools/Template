@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Visualize.Utils;
 
 namespace Visualize.Core;
@@ -34,8 +35,51 @@ public partial class VisualizeAutoload : Node
 
             Node positionalNode = GetClosestParentOfType(node, typeof(Node2D), typeof(Control));
 
-            nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, vbox, positionalNode ?? node));
+            if (positionalNode == null)
+            {
+                PrintUtils.Warning($"No positional parent node could be found for {node.Name} so no VisualPanel will be created for it");
+                return;
+            }
+
+            // Immediately set the visual panels position to the positional nodes position
+            if (positionalNode is Node2D node2D)
+            {
+                vbox.GlobalPosition = node2D.GlobalPosition;
+            }
+            else if (positionalNode is Control control)
+            {
+                vbox.GlobalPosition = control.GlobalPosition;
+            }
+
+            // Ensure the added visual panel is not overlapping with any other visual panels
+            IEnumerable<VBoxContainer> controls = nodeTrackers.Select(x => x.Value.VisualControl);
+
+            Vector2 offset = Vector2.Zero;
+
+            foreach (VBoxContainer existingControl in controls)
+            {
+                if (existingControl == vbox)
+                    continue; // Skip checking against itself
+
+                if (ControlsOverlapping(vbox, existingControl))
+                {
+                    // Move vbox down by the existing controls height
+                    offset += new Vector2(0, existingControl.GetRect().Size.Y);
+                }
+            }
+
+            nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, vbox, positionalNode ?? node, offset));
         }
+    }
+
+    private static bool ControlsOverlapping(Control control1, Control control2)
+    {
+        // Get the bounding rectangles of the control nodes
+        Rect2 rect1 = control1.GetRect();
+        Rect2 rect2 = control2.GetRect();
+
+        // Check if the rectangles intersect
+        return rect1.Intersects(rect2);
     }
 
     private void RemoveVisualNode(Node node)
@@ -60,11 +104,11 @@ public partial class VisualizeAutoload : Node
             // Update position based on node type
             if (node is Node2D node2D)
             {
-                visualControl.GlobalPosition = node2D.GlobalPosition;
+                visualControl.GlobalPosition = node2D.GlobalPosition + info.Offset;
             }
             else if (node is Control control)
             {
-                visualControl.GlobalPosition = control.GlobalPosition;
+                visualControl.GlobalPosition = control.GlobalPosition + info.Offset;
             }
 
             // Execute actions
@@ -118,12 +162,14 @@ public class VisualNodeInfo
 {
     public List<Action> Actions { get; }
     public VBoxContainer VisualControl { get; }
+    public Vector2 Offset { get; }
     public Node Node { get; }
 
-    public VisualNodeInfo(List<Action> actions, VBoxContainer visualControl, Node node)
+    public VisualNodeInfo(List<Action> actions, VBoxContainer visualControl, Node node, Vector2 offset)
     {
         Actions = actions ?? throw new ArgumentNullException(nameof(actions));
         VisualControl = visualControl ?? throw new ArgumentNullException(nameof(visualControl));
         Node = node ?? throw new ArgumentNullException(nameof(node));
+        Offset = offset;
     }
 }
