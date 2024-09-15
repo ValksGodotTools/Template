@@ -266,8 +266,8 @@ Easily debug in-game by adding the `[Visualize]` attribute to any of the support
 | **Classes**       | ✅         | `class`                                       |                                                                       |
 | **Resources**     | ✅         | `Resource`                                    |                                                                       |
 | **Godot Classes** | ❌         | `PointLight2D`, `CharacterBody3D`             |                                                                       |
-| **Godot Array**   | ❌         | `Godot.Collections.Array`                     |                                                                       |
-| **Godot Dictionary** | ❌      | `Godot.Collections.Dictionary`                |                                                                       |
+| **Godot Array**   | ❌         | `Godot.Collections.Array`                     | Tracking in https://github.com/ValksGodotTools/Template/issues/58     |
+| **Godot Dictionary** | ❌      | `Godot.Collections.Dictionary`                | Tracking in https://github.com/ValksGodotTools/Template/issues/58     |
 
 #### Example Usage
 ```cs
