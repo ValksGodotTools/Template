@@ -52,6 +52,28 @@ public partial class Frog : RigidBody
         };
     }
 
+    State Slide()
+    {
+        State state = new(nameof(Slide))
+        {
+            Enter = () =>
+            {
+                Vector2 target = Position + GMath.RandDir() * 100;
+                Vector2 force = (target - Position);
+
+                ApplyCentralImpulse(force);
+
+                new GTween(_animatedSprite)
+                    .SetAnimatingProp(Node2D.PropertyName.Scale)
+                    .AnimateProp(_animatedSprite.Scale * new Vector2(1.3f, 0.5f), 0.2).EaseOut()
+                    .AnimateProp(_animatedSprite.Scale * new Vector2(1, 1), 0.3).EaseOut()
+                    .Callback(() => EntityComponent.SwitchState(Idle()));
+            }
+        };
+
+        return state;
+    }
+
     State PreJump()
     {
         GTween tweenShake = new(_animatedSprite);
