@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dnawp2ojmq7fy"]
 
-[ext_resource type="Texture2D" uid="uid://bta173dmvpgj3" path="res://addons/visualize/Example Scene/icon.svg" id="1_72sk8"]
-[ext_resource type="Script" path="res://addons/visualize/Example Scene/VisualizeExample.cs" id="2_ssjtg"]
+[ext_resource type="Texture2D" uid="uid://bta173dmvpgj3" path="res://Template/Visualize/Example Scene/icon.svg" id="1_72sk8"]
+[ext_resource type="Script" path="res://Template/Visualize/Example Scene/VisualizeExample.cs" id="2_ssjtg"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_v1aa2"]
 light_mode = 1

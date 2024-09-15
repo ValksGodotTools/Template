@@ -22,7 +22,7 @@ Console="*res://Template/Autoloads/console.tscn"
 Global="*res://Template/Autoloads/global.tscn"
 AudioManager="*res://Template/Autoloads/audio_manager.tscn"
 SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
-VisualizeAutoload="res://addons/visualize/Scripts/VisualizeAutoload.cs"
+VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
 
 [display]
 
@@ -32,10 +32,6 @@ window/stretch/aspect="ignore"
 [dotnet]
 
 project/assembly_name="Template"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/visualize/plugin.cfg")
 
 [file_customization]
 
