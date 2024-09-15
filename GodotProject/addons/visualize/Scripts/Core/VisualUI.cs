@@ -13,7 +13,7 @@ public static class VisualUI
 {
     public const float VISUAL_UI_SCALE_FACTOR = 0.6f;
 
-    public static (VBoxContainer, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
+    public static (Control, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
         List<VisualSpinBox> spinBoxes = new();
         Dictionary<Node, VBoxContainer> visualNodes = new();
@@ -21,9 +21,17 @@ public static class VisualUI
 
         Node node = debugVisualNode.Node;
 
+        PanelContainer panelContainer = new()
+        {
+            // Ensure this info is rendered above all game elements
+            ZIndex = (int)RenderingServer.CanvasItemZMax
+        };
+
+        panelContainer.AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
+
         VBoxContainer vboxParent = new();
 
-        VBoxContainer vboxMembers = CreateVisualContainer(node.Name);
+        VBoxContainer vboxMembers = new();
 
         VBoxContainer readonlyMembers = new();
 
@@ -80,6 +88,7 @@ public static class VisualUI
 
         visualNodes.Add(node, vboxLogs);
 
+        vboxParent.AddChild(new Label { Text = node.Name} );
         vboxParent.AddChild(readonlyMembers);
         vboxParent.AddChild(vboxMembers);
 
@@ -98,11 +107,13 @@ public static class VisualUI
         // Add to canvas layer so UI is not affected by lighting in game world
         CanvasLayer canvasLayer = new();
         canvasLayer.FollowViewportEnabled = true;
-        canvasLayer.AddChild(vboxParent);
+        panelContainer.AddChild(vboxParent);
+        canvasLayer.AddChild(panelContainer);
 
         tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
 
-        vboxParent.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
+        panelContainer.Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR;
+        panelContainer.Name = node.Name;
 
         if (debugVisualNode.InitialPosition != Vector2.Zero)
         {
@@ -112,9 +123,7 @@ public static class VisualUI
         // This is ugly but I don't know how else to do it
         VisualLogger.VisualNodes = visualNodes;
 
-        vboxParent.Name = node.Name;
-
-        return (vboxParent, updateControls);
+        return (panelContainer, updateControls);
     }
 
     private static async Task TryAddVisualControlAsync(string visualMember, VBoxContainer readonlyMembers, Node node, FieldInfo field, PropertyInfo property, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
@@ -198,21 +207,6 @@ public static class VisualUI
         hbox.AddChild(new Label { Text = visualMember });
         hbox.AddChild(visualControlInfo.VisualControl.Control);
         readonlyMembers.AddChild(hbox);
-    }
-
-    private static VBoxContainer CreateVisualContainer(string nodeName)
-    {
-        VBoxContainer vbox = new()
-        {
-            // Ensure this info is rendered above all game elements
-            ZIndex = (int)RenderingServer.CanvasItemZMax
-        };
-
-        Label label = new() { Text = nodeName };
-
-        vbox.AddChild(label);
-
-        return vbox;
     }
 
     private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<VisualSpinBox> spinBoxes)
