@@ -52,7 +52,6 @@ public partial class UIPopupMenu : Control
                 if (Visible)
                 {
                     OnOpened?.Invoke();
-                    // todo: pause the game
                 }
                 else
                 {
@@ -74,6 +73,7 @@ public partial class UIPopupMenu : Control
     void _on_resume_pressed()
     {
         Hide();
+        GetTree().Paused = false;
     }
 
     void _on_options_pressed()
