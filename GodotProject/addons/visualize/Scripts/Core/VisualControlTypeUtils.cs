@@ -38,10 +38,7 @@ public static partial class VisualControlTypes
     // Helper method to remove an element from an array
     private static Array RemoveAt(this Array source, int index)
     {
-        if (source == null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         if (index < 0 || index >= source.Length)
         {

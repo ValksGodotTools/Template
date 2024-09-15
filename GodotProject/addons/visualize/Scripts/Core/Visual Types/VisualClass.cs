@@ -70,7 +70,7 @@ public static partial class VisualControlTypes
             // Exclude delegate types
             .Where(f => !(typeof(Delegate).IsAssignableFrom(f.FieldType)))
             // Exclude fields created by properties
-            .Where(f => !f.Name.StartsWith("<") || !f.Name.EndsWith(">k__BackingField"))
+            .Where(f => !f.Name.StartsWith('<') || !f.Name.EndsWith(">k__BackingField"))
             .ToArray();
 
         foreach (FieldInfo field in fields)

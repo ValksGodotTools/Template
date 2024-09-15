@@ -9,6 +9,10 @@ dotnet_diagnostic.exclude_from_source_analysis = true
 [*.cs]
 
 # Godot Documentation says to use LF line endings
+
+# SYSLIB1045: Convert to 'GeneratedRegexAttribute'.
+dotnet_diagnostic.SYSLIB1045.severity = none
+
 [*]
 end_of_line = lf
 

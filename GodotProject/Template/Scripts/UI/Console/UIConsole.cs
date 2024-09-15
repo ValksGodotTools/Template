@@ -183,7 +183,7 @@ public partial class UIConsole : PanelContainer
             Commands.Find(cmd =>
             {
                 // Does text match the command name?
-                bool nameMatch = cmd.Name.ToLower() == text;
+                bool nameMatch = string.Equals(Name, text, StringComparison.OrdinalIgnoreCase);
 
                 if (nameMatch)
                     return true;

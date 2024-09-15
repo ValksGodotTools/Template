@@ -32,7 +32,7 @@ public partial class EntityComponent : Node
 
     public bool IsState(string state)
     {
-        return curState.ToString() == state.ToLower();
+        return string.Equals(curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
     }
 }
 

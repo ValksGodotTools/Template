@@ -123,7 +123,7 @@ public partial class UIOptionsInput : Control
         btnNewInput = null;
     }
 
-    Button CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
+    GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
     {
         string readable = "";
 
