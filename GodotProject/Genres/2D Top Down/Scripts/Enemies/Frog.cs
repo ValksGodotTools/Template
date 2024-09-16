@@ -29,7 +29,7 @@ public partial class Frog : RigidBody2D
             {
                 if (body is Player player)
                 {
-                    this._player = player;
+                    _player = player;
                     _entityComponent.SwitchState(PreJump());
                 }
             }

@@ -21,7 +21,7 @@ public partial class PlayerCamera : Camera2D
 
     public void StartFollowingPlayer(Player player)
     {
-        this._player = player;
+        _player = player;
         Position = player.Position;
         GTween.Delay(this, 0.01, () => PositionSmoothingEnabled = true);
         SetPhysicsProcess(true);

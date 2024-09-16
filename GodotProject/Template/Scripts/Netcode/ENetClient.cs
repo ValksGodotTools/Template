@@ -44,7 +44,7 @@ public abstract class ENetClient : ENetLow
     /// </summary>
     public async void Connect(string ip, ushort port, ENetOptions options = default, params Type[] ignoredPackets)
     {
-        this.Options = options;
+        Options = options;
         Log("Client is starting");
         Starting();
         InitIgnoredPackets(ignoredPackets);

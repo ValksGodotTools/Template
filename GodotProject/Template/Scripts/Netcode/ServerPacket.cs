@@ -44,7 +44,7 @@ public abstract class ServerPacket : GamePacket
 
     public void SetSendType(SendType sendType)
     {
-        this._sendType = sendType;
+        _sendType = sendType;
     }
 
     public SendType GetSendType()

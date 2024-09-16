@@ -40,7 +40,7 @@ public partial class RoomTransitions : Node
     // Initializes the room transitions with the player object
     public void Init(Player player)
     {
-        this._player = player;
+        _player = player;
         LimitCameraBoundsToRoom();
         CreateRoomBoundaries();
         CreateRoomDoorTriggers();

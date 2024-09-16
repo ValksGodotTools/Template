@@ -33,7 +33,7 @@ public abstract class ENetServer : ENetLow
             return;
         }
 
-        this.Options = options;
+        Options = options;
 
         InitIgnoredPackets(ignoredPackets);
 
