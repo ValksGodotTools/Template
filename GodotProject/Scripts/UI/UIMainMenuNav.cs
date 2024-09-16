@@ -13,7 +13,7 @@ public partial class UIMainMenuNav : Node
         GetNode<Button>("Play").GrabFocus();
     }
 
-    private void _on_play_pressed()
+    private static void _on_play_pressed()
     {
         GD.Print("The play button does not currently go to any scene.");
 
@@ -21,19 +21,19 @@ public partial class UIMainMenuNav : Node
         //Game.SwitchScene(Scene.SCENEHERE, SceneManager.TransType.Fade);
     }
 
-    private void _on_mods_pressed()
+    private static void _on_mods_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Scene.UIModLoader);
     }
 
-    private void _on_options_pressed()
+    private static void _on_options_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Prefab.UIOptions);
     }
 
-    private void _on_credits_pressed()
+    private static void _on_credits_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Scene.UICredits);
@@ -44,12 +44,12 @@ public partial class UIMainMenuNav : Node
         await GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
-    private void _on_discord_pressed()
+    private static void _on_discord_pressed()
     {
         OS.ShellOpen("https://discord.gg/j8HQZZ76r8");
     }
 
-    private void _on_github_pressed()
+    private static void _on_github_pressed()
     {
         OS.ShellOpen("https://github.com/ValksGodotTools/Template");
     }

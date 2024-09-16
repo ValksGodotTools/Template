@@ -85,7 +85,7 @@ public partial class UIModLoader : Node
         await GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
-    private void _on_open_mods_folder_pressed()
+    private static void _on_open_mods_folder_pressed()
     {
         Process.Start(new ProcessStartInfo(@$"{ProjectSettings.GlobalizePath("res://Mods")}") { UseShellExecute = true });
     }
