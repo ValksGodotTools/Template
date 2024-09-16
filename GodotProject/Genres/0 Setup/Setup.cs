@@ -20,10 +20,10 @@ public partial class Setup : Node
     [Export] CheckButton checkButtonDeleteOtherGenres;
     [Export] CheckButton checkButtonMoveProjectFiles;
 
-    private string prevGameName = string.Empty;
-    private Genre genre;
+    private string _prevGameName = string.Empty;
+    private Genre _genre;
 
-    private readonly Dictionary<Genre, string> folderNames = new()
+    private readonly Dictionary<Genre, string> _folderNames = new()
     {
         { Genre.None, "No Genre" },
         { Genre.Platformer2D, "2D Platformer" },
@@ -41,15 +41,15 @@ public partial class Setup : Node
 
     public override void _Ready()
     {
-        genre = (Genre)genreOptionBtn.Selected;
-        SetGenreSelectedInfo(genre);
+        _genre = (Genre)genreOptionBtn.Selected;
+        SetGenreSelectedInfo(_genre);
         DisplayGameNamePreview("Undefined");
     }
 
     private void SetGenreSelectedInfo(Genre genre)
     {
-        string text = $"The {Highlight(folderNames[genre])} genre has been selected. " +
-              $"All other assets not specific to {Highlight(folderNames[genre])} " +
+        string text = $"The {Highlight(_folderNames[genre])} genre has been selected. " +
+              $"All other assets not specific to {Highlight(_folderNames[genre])} " +
               $"will be deleted.";
 
         genreSelectedInfo.Text = text;
@@ -76,22 +76,22 @@ public partial class Setup : Node
     private void MoveProjectFiles(string pathFrom, string pathTo)
     {
         // Gets the name of the main scene file based on the current genre
-        string mainSceneName = GetMainSceneName(Path.Combine(pathFrom, folderNames[genre]));
+        string mainSceneName = GetMainSceneName(Path.Combine(pathFrom, _folderNames[_genre]));
 
         // Moves the main scene file from its original location to a new location
         File.Move(
-            Path.Combine(pathFrom, folderNames[genre], mainSceneName), 
+            Path.Combine(pathFrom, _folderNames[_genre], mainSceneName), 
             Path.Combine(pathTo, "Scenes", mainSceneName));
 
         // Move all files relevant to this genre
-        MoveFilesAndPreserveFolderStructure(Path.Combine(pathFrom, folderNames[genre]), Path.Combine("Genres", folderNames[genre]));
+        MoveFilesAndPreserveFolderStructure(Path.Combine(pathFrom, _folderNames[_genre]), Path.Combine("Genres", _folderNames[_genre]));
 
         if (checkButtonDeleteOtherGenres.ButtonPressed)
         {
             // If a directory is not associated with the current genre delete that folder
-            foreach (KeyValuePair<Genre, string> folder in folderNames)
+            foreach (KeyValuePair<Genre, string> folder in _folderNames)
             {
-                if (folder.Key != genre)
+                if (folder.Key != _genre)
                     Directory.Delete(Path.Combine(pathFrom, folder.Value), true);
             }
         }
@@ -105,8 +105,8 @@ public partial class Setup : Node
 
     private void _on_genre_item_selected(int index)
     {
-        genre = (Genre)index;
-        SetGenreSelectedInfo(genre);
+        _genre = (Genre)index;
+        SetGenreSelectedInfo(_genre);
     }
 
     private void _on_game_name_text_changed(string newText)
@@ -120,14 +120,14 @@ public partial class Setup : Node
         // a number and every other character must be alphanumeric
         if (!IsAlphaNumericAndAllowSpaces(newText) || char.IsNumber(newText.Trim()[0]))
         {
-            DisplayGameNamePreview(prevGameName);
-            lineEditGameName.Text = prevGameName;
-            lineEditGameName.CaretColumn = prevGameName.Length;
+            DisplayGameNamePreview(_prevGameName);
+            lineEditGameName.Text = _prevGameName;
+            lineEditGameName.CaretColumn = _prevGameName.Length;
             return;
         }
 
         DisplayGameNamePreview(newText);
-        prevGameName = newText;
+        _prevGameName = newText;
     }
 
     private void _on_no_pressed()

@@ -33,7 +33,7 @@ public abstract class ENetServer : ENetLow
             return;
         }
 
-        this.options = options;
+        this.Options = options;
 
         InitIgnoredPackets(ignoredPackets);
 
@@ -115,9 +115,9 @@ public abstract class ENetServer : ENetLow
 
         Type type = packet.GetType();
 
-        if (!IgnoredPackets.Contains(type) && options.PrintPacketSent)
+        if (!IgnoredPackets.Contains(type) && Options.PrintPacketSent)
             Log($"Sending packet {type.Name} {FormatByteSize(packet.GetSize())}to client {peer.ID}" +
-                $"{(options.PrintPacketData ? $"\n{packet.ToFormattedString()}" : "")}");
+                $"{(Options.PrintPacketData ? $"\n{packet.ToFormattedString()}" : "")}");
 
         packet.SetSendType(SendType.Peer);
         packet.SetPeer(peer);
@@ -137,11 +137,11 @@ public abstract class ENetServer : ENetLow
 
         Type type = packet.GetType();
 
-        if (!IgnoredPackets.Contains(type) && options.PrintPacketSent)
+        if (!IgnoredPackets.Contains(type) && Options.PrintPacketSent)
         {
             // This is messy but I don't know how I will clean it up right
             // now so I'm leaving it as is for now..
-            string byteSize = options.PrintPacketByteSize ?
+            string byteSize = Options.PrintPacketByteSize ?
                 $"({packet.GetSize()} bytes)" : "";
 
             string peerArr = clients.Select(x => x.ID).ToFormattedString();
@@ -149,7 +149,7 @@ public abstract class ENetServer : ENetLow
             string message = $"Broadcasting packet {type.Name} {byteSize}" + (clients.Length == 0 ?
                  "to everyone" : clients.Length == 1 ?
                 $"to everyone except peer {peerArr}" :
-                $"to peers {peerArr}") + (options.PrintPacketData ?
+                $"to peers {peerArr}") + (Options.PrintPacketData ?
                 $"\n{packet.ToFormattedString()}" : "");
 
             Log(message);
@@ -281,9 +281,9 @@ public abstract class ENetServer : ENetLow
 
             handlePacket.Handle(this, packetPeer.Item2);
 
-            if (!IgnoredPackets.Contains(type) && options.PrintPacketReceived)
+            if (!IgnoredPackets.Contains(type) && Options.PrintPacketReceived)
                 Log($"Received packet: {type.Name} from client {packetPeer.Item2.ID}" +
-                    $"{(options.PrintPacketData ? $"\n{handlePacket.ToFormattedString()}" : "")}", BBColor.LightGreen);
+                    $"{(Options.PrintPacketData ? $"\n{handlePacket.ToFormattedString()}" : "")}", BBColor.LightGreen);
         }
 
         // Outgoing

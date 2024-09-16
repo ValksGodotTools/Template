@@ -5,7 +5,7 @@ namespace Template.Platformer2D.Retro;
 
 public partial class Player
 {
-    PlayerJumpVars jumpVars { get; } = new();
+    PlayerJumpVars _jumpVars { get; } = new();
 
     State Jump()
     {
@@ -13,24 +13,24 @@ public partial class Player
 
         state.Enter = () =>
         {
-            jumpVars.HoldingKey = true;
-            jumpVars.LossBuildUp = 0;
-            Velocity -= new Vector2(0, jumpVars.Force);
+            _jumpVars.HoldingKey = true;
+            _jumpVars.LossBuildUp = 0;
+            Velocity -= new Vector2(0, _jumpVars.Force);
         };
 
         state.Update = delta =>
         {
-            if (Input.IsActionPressed("jump") && jumpVars.HoldingKey)
+            if (Input.IsActionPressed("jump") && _jumpVars.HoldingKey)
             {
-                jumpVars.LossBuildUp += jumpVars.Loss;
+                _jumpVars.LossBuildUp += _jumpVars.Loss;
                 Velocity -= new Vector2(
                     x: 0,
-                    y: Mathf.Max(0, jumpVars.Force - jumpVars.LossBuildUp));
+                    y: Mathf.Max(0, _jumpVars.Force - _jumpVars.LossBuildUp));
             }
 
             if (Input.IsActionJustReleased("jump"))
             {
-                jumpVars.HoldingKey = false;
+                _jumpVars.HoldingKey = false;
             }
         };
 

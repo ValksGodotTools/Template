@@ -13,25 +13,25 @@ public partial class Player : CharacterBody3D
 
     //bool isReloading { get => animTree.GetCondition("reload"); }
 
-    List<Item> items = [];
-    int curItemIndex;
+    List<Item> _items = [];
+    int _curItemIndex;
 
-    Camera3D camera;
-    Vector3 camOffset;
+    Camera3D _camera;
+    Vector3 _camOffset;
 
-    bool switchingGuns = false;
+    bool _switchingGuns;
 
     void OnReadyAnimation()
     {
-        camera = GetNode<Camera3D>("%Camera3D");
-        camOffset = camera.Position - Position;
+        _camera = GetNode<Camera3D>("%Camera3D");
+        _camOffset = _camera.Position - Position;
 
         foreach (Node3D node in nodeItems.GetChildren(false))
         {
-            items.Add(new Item(node));
+            _items.Add(new Item(node));
         }
 
-        RecreateCameraBone(curItemIndex);
+        RecreateCameraBone(_curItemIndex);
 
         animTree.AnimationStarted += anim =>
         {
@@ -39,7 +39,7 @@ public partial class Player : CharacterBody3D
             {
                 case "Holster":
                     AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
-                    switchingGuns = stateMachine.GetCurrentNode() == "Holster";
+                    _switchingGuns = stateMachine.GetCurrentNode() == "Holster";
                     break;
             }
         };
@@ -57,13 +57,13 @@ public partial class Player : CharacterBody3D
                     OnFinishedReload?.Invoke();
                     break;
                 case "Holster":
-                    if (switchingGuns)
+                    if (_switchingGuns)
                     {
-                        int nextItemIndex = (curItemIndex + 1) % items.Count;
+                        int nextItemIndex = (_curItemIndex + 1) % _items.Count;
 
-                        animTree.AnimPlayer = items[nextItemIndex].AnimationPlayer.GetPath();
+                        animTree.AnimPlayer = _items[nextItemIndex].AnimationPlayer.GetPath();
                         
-                        items[curItemIndex].SetVisible(false);
+                        _items[_curItemIndex].SetVisible(false);
                         
                         // If we do not wait for one frame then the wrong animation will play
                         // in the next frame creating a sort of visual glitch. This appears to
@@ -71,12 +71,12 @@ public partial class Player : CharacterBody3D
                         await this.WaitOneFrame();
 
                         RecreateCameraBone(nextItemIndex);
-                        items[nextItemIndex].SetVisible(true);
+                        _items[nextItemIndex].SetVisible(true);
 
                         AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
                         stateMachine.Start("Draw");
 
-                        curItemIndex = (curItemIndex + 1) % items.Count;
+                        _curItemIndex = (_curItemIndex + 1) % _items.Count;
                     }
                     break;
             }
@@ -86,12 +86,12 @@ public partial class Player : CharacterBody3D
     void OnPhysicsProcessAnimation()
     {
         // Mouse motion
-        Quaternion camTarget = Quaternion.FromEuler(cameraTarget);
+        Quaternion camTarget = Quaternion.FromEuler(_cameraTarget);
 
-        camera.Position = Position + camOffset;
-        camera.Quaternion = (camTarget * GetAnimationRotations()).Normalized();
+        _camera.Position = Position + _camOffset;
+        _camera.Quaternion = (camTarget * GetAnimationRotations()).Normalized();
 
-        fpsRig.Position = camera.Position;
+        fpsRig.Position = _camera.Position;
         fpsRig.Quaternion = camTarget;
 
         if (Input.IsActionJustPressed("reload"))
@@ -139,7 +139,7 @@ public partial class Player : CharacterBody3D
         fpsRig.AddChild(cameraBone);
         cameraBone.BoneName = "Camera";
 
-        cameraBone.SetExternalSkeleton(items[itemIndex].SkeletonRig.GetPath());
+        cameraBone.SetExternalSkeleton(_items[itemIndex].SkeletonRig.GetPath());
 
         // Will output an error if this is the same camera bone so that's why we re-create
         // it every time

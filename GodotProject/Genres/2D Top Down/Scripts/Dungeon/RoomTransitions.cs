@@ -11,14 +11,14 @@ public partial class RoomTransitions : Node
     [Export] TileMapLayer tileMap; // Reference to the tile map layer
     [Export] Camera2D playerCamera; // Reference to the player's camera
 
-    Player player; // Reference to the player object
+    Player _player; // Reference to the player object
 
-    Vector2I currentRoom; // Current room coordinates
-    Vector2I roomSize; // Size of each room
-    Vector2I tileSize; // Size of each tile
+    Vector2I _currentRoom; // Current room coordinates
+    Vector2I _roomSize; // Size of each room
+    Vector2I _tileSize; // Size of each tile
 
     // List to keep track of room boundary nodes
-    readonly List<Node2D> roomBoundNodes = [];
+    readonly List<Node2D> _roomBoundNodes = [];
 
     public override void _Ready()
     {
@@ -28,19 +28,19 @@ public partial class RoomTransitions : Node
     // Initializes the size of each room based on tile size and scale
     private void InitializeRoomSize()
     {
-        tileSize = tileMap.TileSet.TileSize;
+        _tileSize = tileMap.TileSet.TileSize;
         int roomTileSize = 10;
 
-        int roomWidth = (int)tileMap.Scale.X * tileSize.X * roomTileSize;
-        int roomHeight = (int)tileMap.Scale.Y * tileSize.Y * roomTileSize;
+        int roomWidth = (int)tileMap.Scale.X * _tileSize.X * roomTileSize;
+        int roomHeight = (int)tileMap.Scale.Y * _tileSize.Y * roomTileSize;
 
-        roomSize = new(roomWidth, roomHeight);
+        _roomSize = new(roomWidth, roomHeight);
     }
 
     // Initializes the room transitions with the player object
     public void Init(Player player)
     {
-        this.player = player;
+        this._player = player;
         LimitCameraBoundsToRoom();
         CreateRoomBoundaries();
         CreateRoomDoorTriggers();
@@ -49,15 +49,15 @@ public partial class RoomTransitions : Node
     // Resets the room transitions to initial state
     public void Reset()
     {
-        currentRoom = Vector2I.Zero;
+        _currentRoom = Vector2I.Zero;
         ClearRoomBoundNodes();
     }
 
     // Clears all room boundary nodes
     private void ClearRoomBoundNodes()
     {
-        roomBoundNodes.ForEach(node => node.QueueFree());
-        roomBoundNodes.Clear();
+        _roomBoundNodes.ForEach(node => node.QueueFree());
+        _roomBoundNodes.Clear();
     }
 
     // Removes camera bounds to allow free movement
@@ -85,7 +85,7 @@ public partial class RoomTransitions : Node
         AddChild(area);
         area.Position = position;
 
-        roomBoundNodes.Add(area);
+        _roomBoundNodes.Add(area);
     }
 
     // Creates an Area2D node
@@ -134,7 +134,7 @@ public partial class RoomTransitions : Node
     // Transitions to the next room based on the normal vector
     private void TransitionToNextRoom(Vector2I normal)
     {
-        currentRoom += normal * -1;
+        _currentRoom += normal * -1;
 
         ClearRoomBoundNodes();
         PrepareCameraForTransition();
@@ -162,9 +162,9 @@ public partial class RoomTransitions : Node
             .AnimateProp(playerCamera.Position + transitionOffset, duration)
             .TransExpo();
 
-        new GTween(player)
+        new GTween(_player)
             .SetAnimatingProp(Player.PropertyName.Position)
-            .AnimateProp(player.Position + new Vector2(150, 150) * (normal * -1), duration)
+            .AnimateProp(_player.Position + new Vector2(150, 150) * (normal * -1), duration)
             .EaseIn()
             .Callback(FinalizeRoomTransition);
     }
@@ -182,10 +182,10 @@ public partial class RoomTransitions : Node
     // Limits the camera bounds to the current room
     private void LimitCameraBoundsToRoom()
     {
-        playerCamera.LimitTop = roomSize.Y * currentRoom.Y;
-        playerCamera.LimitLeft = roomSize.X * currentRoom.X;
-        playerCamera.LimitBottom = roomSize.Y + (roomSize.Y * currentRoom.Y);
-        playerCamera.LimitRight = roomSize.X + (roomSize.X * currentRoom.X);
+        playerCamera.LimitTop = _roomSize.Y * _currentRoom.Y;
+        playerCamera.LimitLeft = _roomSize.X * _currentRoom.X;
+        playerCamera.LimitBottom = _roomSize.Y + (_roomSize.Y * _currentRoom.Y);
+        playerCamera.LimitRight = _roomSize.X + (_roomSize.X * _currentRoom.X);
     }
 
     // Creates triggers for room transitions at each door
@@ -193,19 +193,19 @@ public partial class RoomTransitions : Node
     {
         Vector2 offset = new(32, 32);
 
-        CreateRoomDoorTrigger(roomSize * currentRoom + offset, Vector2I.Down);
-        CreateRoomDoorTrigger(roomSize * currentRoom + offset, Vector2I.Right);
-        CreateRoomDoorTrigger(roomSize + (roomSize * currentRoom) - offset, Vector2I.Up);
-        CreateRoomDoorTrigger(roomSize + (roomSize * currentRoom) - offset, Vector2I.Left);
+        CreateRoomDoorTrigger(_roomSize * _currentRoom + offset, Vector2I.Down);
+        CreateRoomDoorTrigger(_roomSize * _currentRoom + offset, Vector2I.Right);
+        CreateRoomDoorTrigger(_roomSize + (_roomSize * _currentRoom) - offset, Vector2I.Up);
+        CreateRoomDoorTrigger(_roomSize + (_roomSize * _currentRoom) - offset, Vector2I.Left);
     }
 
     // Creates boundaries for the current room
     private void CreateRoomBoundaries()
     {
-        CreateWorldBoundary(roomSize * currentRoom, Vector2I.Down);
-        CreateWorldBoundary(roomSize * currentRoom, Vector2I.Right);
-        CreateWorldBoundary(roomSize + (roomSize * currentRoom), Vector2I.Up);
-        CreateWorldBoundary(roomSize + (roomSize * currentRoom), Vector2I.Left);
+        CreateWorldBoundary(_roomSize * _currentRoom, Vector2I.Down);
+        CreateWorldBoundary(_roomSize * _currentRoom, Vector2I.Right);
+        CreateWorldBoundary(_roomSize + (_roomSize * _currentRoom), Vector2I.Up);
+        CreateWorldBoundary(_roomSize + (_roomSize * _currentRoom), Vector2I.Left);
     }
 
     // Creates a world boundary at the specified position and normal
@@ -222,7 +222,7 @@ public partial class RoomTransitions : Node
         AddChild(body);
         body.Position = position;
 
-        roomBoundNodes.Add(body);
+        _roomBoundNodes.Add(body);
     }
 }
 

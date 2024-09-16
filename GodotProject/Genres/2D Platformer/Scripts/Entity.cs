@@ -5,24 +5,24 @@ namespace Template.Platformer2D.Retro;
 
 public abstract partial class Entity : CharacterBody2D
 {
-    protected AnimatedSprite2D sprite;
+    protected AnimatedSprite2D Sprite;
 
-    Label stateLabel;
-    State curState;
+    Label _stateLabel;
+    State _curState;
 
     public override void _Ready()
     {
-        sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        Sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
-        stateLabel = new Label();
-        AddChild(stateLabel);
+        _stateLabel = new Label();
+        AddChild(_stateLabel);
 
         Init();
 
-        curState = InitialState();
-        UpdateStateLabel(curState);
+        _curState = InitialState();
+        UpdateStateLabel(_curState);
 
-        curState.Enter();
+        _curState.Enter();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -30,17 +30,17 @@ public abstract partial class Entity : CharacterBody2D
         MoveAndSlide();
 
         Update();
-        curState.Update((float)delta);
-        curState.Transitions();
+        _curState.Update((float)delta);
+        _curState.Transitions();
     }
 
     protected abstract State InitialState();
 
     public void SwitchState(State newState)
     {
-        curState.Exit();
+        _curState.Exit();
         newState.Enter();
-        curState = newState;
+        _curState = newState;
 
         UpdateStateLabel(newState);
     }
@@ -50,9 +50,9 @@ public abstract partial class Entity : CharacterBody2D
 
     void UpdateStateLabel(State state)
     {
-        stateLabel.Text = state.ToString();
-        stateLabel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.CenterBottom);
-        stateLabel.Position -= new Vector2(0, stateLabel.Size.Y / 2);
+        _stateLabel.Text = state.ToString();
+        _stateLabel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.CenterBottom);
+        _stateLabel.Position -= new Vector2(0, _stateLabel.Size.Y / 2);
     }
 }
 

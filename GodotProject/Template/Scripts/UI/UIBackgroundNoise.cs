@@ -8,15 +8,15 @@ public partial class UIBackgroundNoise : Sprite2D
     const int AMPLITUDE_X = 200;
     const int AMPLITUDE_Y = 100;
 
-    FastNoiseLite fnlAngle1, fnlAngle2;
-    static float timeElpased;
-    Vector2 defaultPosition;
+    FastNoiseLite _fnlAngle1, _fnlAngle2;
+    static float _timeElpased;
+    Vector2 _defaultPosition;
 
     public override void _Ready()
     {
-        fnlAngle1 = InitNoise(seed: 29048);
-        fnlAngle2 = InitNoise(seed: 50000);
-        defaultPosition = Position;
+        _fnlAngle1 = InitNoise(seed: 29048);
+        _fnlAngle2 = InitNoise(seed: 50000);
+        _defaultPosition = Position;
 
         ResizeBackground();
         GetTree().Root.SizeChanged += ResizeBackground;
@@ -24,16 +24,16 @@ public partial class UIBackgroundNoise : Sprite2D
 
     public override void _Process(double delta)
     {
-        timeElpased += (float)delta * SPEED;
+        _timeElpased += (float)delta * SPEED;
 
-        float angle1 = fnlAngle1.GetNoise1D(timeElpased);
-        float angle2 = fnlAngle2.GetNoise1D(timeElpased);
+        float angle1 = _fnlAngle1.GetNoise1D(_timeElpased);
+        float angle2 = _fnlAngle2.GetNoise1D(_timeElpased);
 
         Vector2 offset = new(
             Mathf.Cos(angle1) * AMPLITUDE_X - AMPLITUDE_X, 
             Mathf.Cos(angle2) * AMPLITUDE_Y - AMPLITUDE_Y);
 
-        Position = defaultPosition + offset;
+        Position = _defaultPosition + offset;
     }
 
     void ResizeBackground()
@@ -50,7 +50,7 @@ public partial class UIBackgroundNoise : Sprite2D
         Position = winSize / 2;
         Scale = Vector2.One * ((winSize / texSize).X + zoom);
 
-        defaultPosition = Position;
+        _defaultPosition = Position;
     }
 
     FastNoiseLite InitNoise(int seed = 0)

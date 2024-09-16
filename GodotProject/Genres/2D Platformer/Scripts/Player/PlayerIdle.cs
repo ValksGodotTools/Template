@@ -11,7 +11,7 @@ public partial class Player
 
         state.Enter = () =>
         {
-            sprite.Play("idle");
+            Sprite.Play("idle");
         };
 
         state.Transitions = () =>

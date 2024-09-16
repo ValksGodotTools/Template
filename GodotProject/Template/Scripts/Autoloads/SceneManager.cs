@@ -14,12 +14,12 @@ public partial class SceneManager : Node
 
     public Node CurrentScene { get; private set; }
 
-    SceneTree tree;
+    SceneTree _tree;
 
     public override void _Ready()
     {
-        tree = GetTree();
-        Window root = tree.Root;
+        _tree = GetTree();
+        Window root = _tree.Root;
         CurrentScene = root.GetChild(root.GetChildCount() - 1);
         Global.Services.Add(this, persistent: true);
 
@@ -63,7 +63,7 @@ public partial class SceneManager : Node
     /// </summary>
     public void ResetCurrentScene()
     {
-        string sceneFilePath = tree.CurrentScene.SceneFilePath;
+        string sceneFilePath = _tree.CurrentScene.SceneFilePath;
 
         string[] words = sceneFilePath.Split("/");
         string sceneName = words[words.Length - 1].Replace(".tscn", "");
@@ -100,10 +100,10 @@ public partial class SceneManager : Node
         CurrentScene = nextScene.Instantiate();
 
         // Add it to the active scene, as child of root.
-        tree.Root.AddChild(CurrentScene);
+        _tree.Root.AddChild(CurrentScene);
 
         // Optionally, to make it compatible with the SceneTree.change_scene_to_file() API.
-        tree.CurrentScene = CurrentScene;
+        _tree.CurrentScene = CurrentScene;
 
         TransType transType = transTypeVariant.As<TransType>();
 

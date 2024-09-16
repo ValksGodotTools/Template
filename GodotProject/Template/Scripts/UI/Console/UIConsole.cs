@@ -12,13 +12,13 @@ public partial class UIConsole : PanelContainer
 {
     public event Action<bool> OnToggleVisibility;
 
-    TextEdit feed;
-    LineEdit input;
-    Button settingsBtn;
-    PopupPanel settingsPopup;
-    CheckBox settingsAutoScroll;
-    readonly ConsoleHistory history = new();
-    bool autoScroll = true;
+    TextEdit _feed;
+    LineEdit _input;
+    Button _settingsBtn;
+    PopupPanel _settingsPopup;
+    CheckBox _settingsAutoScroll;
+    readonly ConsoleHistory _history = new();
+    bool _autoScroll = true;
 
     public List<ConsoleCommandInfo> Commands { get; } = [];
 
@@ -27,18 +27,18 @@ public partial class UIConsole : PanelContainer
         Global.Services.Add(this, persistent: true);
         LoadCommands();
 
-        feed          = GetNode<TextEdit>("%Output");
-        input         = GetNode<LineEdit>("%Input");
-        settingsBtn   = GetNode<Button>  ("%Settings");
-        settingsPopup = GetNode<PopupPanel>("PopupPanel");
+        _feed          = GetNode<TextEdit>("%Output");
+        _input         = GetNode<LineEdit>("%Input");
+        _settingsBtn   = GetNode<Button>  ("%Settings");
+        _settingsPopup = GetNode<PopupPanel>("PopupPanel");
         
         Node settingsVBox = GetNode("%PopupVBox");
-        settingsAutoScroll = GetNode<CheckBox>("%PopupAutoScroll");
+        _settingsAutoScroll = GetNode<CheckBox>("%PopupAutoScroll");
 
-        input.TextSubmitted += OnConsoleInputEntered;
-        settingsBtn.Pressed += OnSettingsBtnPressed;
-        settingsAutoScroll.Toggled += v => autoScroll = v;
-        settingsAutoScroll.ButtonPressed = autoScroll;
+        _input.TextSubmitted += OnConsoleInputEntered;
+        _settingsBtn.Pressed += OnSettingsBtnPressed;
+        _settingsAutoScroll.Toggled += v => _autoScroll = v;
+        _settingsAutoScroll.ButtonPressed = _autoScroll;
 
         Hide();
     }
@@ -56,21 +56,21 @@ public partial class UIConsole : PanelContainer
 
     public void AddMessage(object message)
     {
-        double prevScroll = feed.ScrollVertical;
+        double prevScroll = _feed.ScrollVertical;
         
         // Prevent text feed from becoming too large
-        if (feed.Text.Length > 1000)
+        if (_feed.Text.Length > 1000)
             // If there are say 2353 characters then 2353 - 1000 = 1353 characters
             // which is how many characters we need to remove to get back down to
             // 1000 characters
-            feed.Text = feed.Text.Remove(0, feed.Text.Length - 1000);
+            _feed.Text = _feed.Text.Remove(0, _feed.Text.Length - 1000);
         
-        feed.Text += $"\n{message}";
+        _feed.Text += $"\n{message}";
 
         // Removing text from the feed will mess up the scroll, this is why the
         // scroll value was stored previous, we set this to that value now to fix
         // this
-        feed.ScrollVertical = prevScroll;
+        _feed.ScrollVertical = prevScroll;
 
         // Autoscroll if enabled
         ScrollDown();
@@ -83,21 +83,21 @@ public partial class UIConsole : PanelContainer
 
         if (Visible)
         {
-            input.GrabFocus();
+            _input.GrabFocus();
             CallDeferred(nameof(ScrollDown));
         }
     }
 
     void ScrollDown()
     {
-        if (autoScroll)
-            feed.ScrollVertical = (int)feed.GetVScrollBar().MaxValue;
+        if (_autoScroll)
+            _feed.ScrollVertical = (int)_feed.GetVScrollBar().MaxValue;
     }
 
     void OnSettingsBtnPressed()
     {
-        if (!settingsPopup.Visible)
-            settingsPopup.PopupCentered();
+        if (!_settingsPopup.Visible)
+            _settingsPopup.PopupCentered();
     }
 
     void LoadCommands()
@@ -213,26 +213,26 @@ public partial class UIConsole : PanelContainer
             return;
 
         // keep track of input history
-        history.Add(inputToLowerTrimmed);
+        _history.Add(inputToLowerTrimmed);
 
         // process the command
         ProcessCommand(text);
 
         // clear the input after the command is executed
-        input.Clear();
+        _input.Clear();
     }
 
     void InputNavigateHistory()
     {
         // If console is not visible or there is no history to navigate do nothing
-        if (!Visible || history.NoHistory())
+        if (!Visible || _history.NoHistory())
             return;
 
         if (Input.IsActionJustPressed("ui_up"))
         {
-            string historyText = history.MoveUpOne();
+            string historyText = _history.MoveUpOne();
 
-            input.Text = historyText;
+            _input.Text = historyText;
 
             // if deferred is not used then something else will override these settings
             SetCaretColumn(historyText.Length);
@@ -240,9 +240,9 @@ public partial class UIConsole : PanelContainer
 
         if (Input.IsActionJustPressed("ui_down"))
         {
-            string historyText = history.MoveDownOne();
+            string historyText = _history.MoveDownOne();
 
-            input.Text = historyText;
+            _input.Text = historyText;
 
             // if deferred is not used then something else will override these settings
             SetCaretColumn(historyText.Length);
@@ -252,8 +252,8 @@ public partial class UIConsole : PanelContainer
     #region Helper Functions
     void SetCaretColumn(int pos)
     {
-        input.CallDeferred(LineEdit.MethodName.GrabFocus);
-        input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
+        _input.CallDeferred(LineEdit.MethodName.GrabFocus);
+        _input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
     }
 
     object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)

@@ -5,10 +5,10 @@ namespace Template.Platformer2D.Retro;
 
 public partial class Player : Entity
 {
-    float maxSpeed = 500;
-    float acceleration = 40;
-    float friction = 20;
-    float gravity = 20;
+    float _maxSpeed = 500;
+    float _acceleration = 40;
+    float _friction = 20;
+    float _gravity = 20;
 
     public override void Update()
     {
@@ -16,11 +16,11 @@ public partial class Player : Entity
         float horzDir = Input.GetAxis("move_left", "move_right");
 
         // Horizontal movement
-        vel.X += horzDir * acceleration;
-        vel.X = Utils.ClampAndDampen(vel.X, friction, maxSpeed);
+        vel.X += horzDir * _acceleration;
+        vel.X = Utils.ClampAndDampen(vel.X, _friction, _maxSpeed);
 
         // Gravity
-        vel.Y += gravity;
+        vel.Y += _gravity;
 
         Velocity = vel;
     }

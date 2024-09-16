@@ -6,18 +6,18 @@ public partial class UIOptionsGeneral : Control
 {
     [Export] OptionsManager optionsManager;
 
-    ResourceOptions options;
+    ResourceOptions _options;
 
     public override void _Ready()
     {
-        options = optionsManager.Options;
+        _options = optionsManager.Options;
         SetupLanguage();
     }
 
     void SetupLanguage()
     {
         OptionButton optionButtonLanguage = GetNode<OptionButton>("%Language");
-        optionButtonLanguage.Select((int)options.Language);
+        optionButtonLanguage.Select((int)_options.Language);
     }
 
     void _on_language_item_selected(int index)
@@ -26,7 +26,7 @@ public partial class UIOptionsGeneral : Control
 
         TranslationServer.SetLocale(locale);
 
-        options.Language = (Language)index;
+        _options.Language = (Language)index;
     }
 }
 

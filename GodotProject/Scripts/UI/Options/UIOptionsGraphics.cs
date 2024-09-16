@@ -11,12 +11,12 @@ public partial class UIOptionsGraphics : Control
 
     [Export] OptionsManager optionsManager;
 
-    ResourceOptions options;
-    OptionButton antialiasing;
+    ResourceOptions _options;
+    OptionButton _antialiasing;
 
     public override void _Ready()
     {
-        options = optionsManager.Options;
+        _options = optionsManager.Options;
         SetupQualityPreset();
         SetupAntialiasing();
         SetupWorldEnvironmentSettings();
@@ -26,33 +26,33 @@ public partial class UIOptionsGraphics : Control
     {
         AddNewSetting("GLOW", 
             (checkbox) =>
-                checkbox.ButtonPressed = options.Glow,
+                checkbox.ButtonPressed = _options.Glow,
             (pressed) =>
-                options.Glow = pressed, 
+                _options.Glow = pressed, 
             (environment, pressed) =>
                 environment.GlowEnabled = pressed);
 
         AddNewSetting("AMBIENT_OCCLUSION",
             (checkbox) =>
-                checkbox.ButtonPressed = options.AmbientOcclusion,
+                checkbox.ButtonPressed = _options.AmbientOcclusion,
             (pressed) =>
-                options.AmbientOcclusion = pressed,
+                _options.AmbientOcclusion = pressed,
             (environment, pressed) =>
                 environment.SsaoEnabled = pressed);
 
         AddNewSetting("INDIRECT_LIGHTING",
             (checkbox) =>
-                checkbox.ButtonPressed = options.IndirectLighting,
+                checkbox.ButtonPressed = _options.IndirectLighting,
             (pressed) =>
-                options.IndirectLighting = pressed,
+                _options.IndirectLighting = pressed,
             (environment, pressed) =>
                 environment.SsilEnabled = pressed);
 
         AddNewSetting("REFLECTIONS",
             (checkbox) =>
-                checkbox.ButtonPressed = options.Reflections,
+                checkbox.ButtonPressed = _options.Reflections,
             (pressed) =>
-                options.Reflections = pressed,
+                _options.Reflections = pressed,
             (environment, pressed) =>
                 environment.SsrEnabled = pressed);
     }
@@ -95,25 +95,25 @@ public partial class UIOptionsGraphics : Control
     void SetupQualityPreset()
     {
         OptionButton optionBtnQualityPreset = GetNode<OptionButton>("%QualityMode");
-        optionBtnQualityPreset.Select((int)options.QualityPreset);
+        optionBtnQualityPreset.Select((int)_options.QualityPreset);
     }
 
     void SetupAntialiasing()
     {
-        antialiasing = GetNode<OptionButton>("%Antialiasing");
-        antialiasing.Select(options.Antialiasing);
+        _antialiasing = GetNode<OptionButton>("%Antialiasing");
+        _antialiasing.Select(_options.Antialiasing);
     }
 
     void _on_quality_mode_item_selected(int index)
     {
         // todo: setup quality preset and change other settings
 
-        options.QualityPreset = (QualityPreset)index;
+        _options.QualityPreset = (QualityPreset)index;
     }
 
     void _on_antialiasing_item_selected(int index)
     {
-        options.Antialiasing = index;
+        _options.Antialiasing = index;
         OnAntialiasingChanged?.Invoke(index);
     }
 }

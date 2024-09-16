@@ -5,7 +5,7 @@ namespace Template;
 
 public partial class UIManager : Node
 {
-    private static List<Control> rootControls = [];
+    private static List<Control> _rootControls = [];
 
     public override void _Ready()
 	{
@@ -25,7 +25,7 @@ public partial class UIManager : Node
 
     private static void SetRootControlPositions(Vector2 initialWindowSize)
     {
-        foreach (Control infoPanel in rootControls)
+        foreach (Control infoPanel in _rootControls)
         {
             float scaleFactor = initialWindowSize.X / DisplayServer.WindowGetSize().X;
             Vector2 newScale = Vector2.One * scaleFactor;
@@ -49,7 +49,7 @@ public partial class UIManager : Node
     {
         if (node is Control controlNode)
         {
-            rootControls.Add(controlNode);
+            _rootControls.Add(controlNode);
             return;
         }
 

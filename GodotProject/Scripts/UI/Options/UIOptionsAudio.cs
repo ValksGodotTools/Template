@@ -6,11 +6,11 @@ public partial class UIOptionsAudio : Control
 {
     [Export] OptionsManager optionsManager;
 
-    ResourceOptions options;
+    ResourceOptions _options;
 
     public override void _Ready()
     {
-        options = optionsManager.Options;
+        _options = optionsManager.Options;
         SetupMusic();
         SetupSounds();
     }
@@ -18,13 +18,13 @@ public partial class UIOptionsAudio : Control
     void SetupMusic()
     {
         HSlider slider = GetNode<HSlider>("%Music");
-        slider.Value = options.MusicVolume;
+        slider.Value = _options.MusicVolume;
     }
 
     void SetupSounds()
     {
         HSlider slider = GetNode<HSlider>("%Sounds");
-        slider.Value = options.SFXVolume;
+        slider.Value = _options.SFXVolume;
     }
 
     void _on_music_value_changed(float v)

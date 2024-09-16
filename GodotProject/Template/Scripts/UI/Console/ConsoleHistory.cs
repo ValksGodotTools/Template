@@ -4,17 +4,17 @@ namespace Template;
 
 public class ConsoleHistory
 {
-    readonly Dictionary<int, string> inputHistory = [];
-    int inputHistoryIndex;
-    int inputHistoryNav;
+    readonly Dictionary<int, string> _inputHistory = [];
+    int _inputHistoryIndex;
+    int _inputHistoryNav;
 
     /// <summary>
     /// Add text to history
     /// </summary>
     public void Add(string text)
     {
-        inputHistory.Add(inputHistoryIndex++, text);
-        inputHistoryNav = inputHistoryIndex;
+        _inputHistory.Add(_inputHistoryIndex++, text);
+        _inputHistoryNav = _inputHistoryIndex;
     }
 
     /// <summary>
@@ -22,12 +22,12 @@ public class ConsoleHistory
     /// </summary>
     public string MoveUpOne()
     {
-        inputHistoryNav--;
+        _inputHistoryNav--;
 
-        if (!inputHistory.ContainsKey(inputHistoryNav))
-            inputHistoryNav++;
+        if (!_inputHistory.ContainsKey(_inputHistoryNav))
+            _inputHistoryNav++;
 
-        return Get(inputHistoryNav);
+        return Get(_inputHistoryNav);
     }
 
     /// <summary>
@@ -35,22 +35,22 @@ public class ConsoleHistory
     /// </summary>
     public string MoveDownOne()
     {
-        inputHistoryNav++;
+        _inputHistoryNav++;
 
-        if (!inputHistory.ContainsKey(inputHistoryNav))
-            inputHistoryNav--;
+        if (!_inputHistory.ContainsKey(_inputHistoryNav))
+            _inputHistoryNav--;
 
-        return Get(inputHistoryNav);
+        return Get(_inputHistoryNav);
     }
 
     public bool NoHistory()
     {
-        return inputHistory.Count == 0;
+        return _inputHistory.Count == 0;
     }
 
     public string Get(int nav)
     {
-        return inputHistory[nav];
+        return _inputHistory[nav];
     }
 }
 

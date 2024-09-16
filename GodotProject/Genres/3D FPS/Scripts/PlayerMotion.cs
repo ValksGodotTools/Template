@@ -16,7 +16,7 @@ public partial class Player : CharacterBody3D
         MoveAndSlide();
 
         float delta = (float)d;
-        float h_rot = camera.Basis.GetEuler().Y;
+        float h_rot = _camera.Basis.GetEuler().Y;
 
         float f_input = -Input.GetAxis("move_down", "move_up");
         float h_input = Input.GetAxis("move_left", "move_right");

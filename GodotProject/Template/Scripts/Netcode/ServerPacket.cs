@@ -10,7 +10,7 @@ public abstract class ServerPacket : GamePacket
     public static Dictionary<Type, PacketInfo<ServerPacket>> PacketMap { get; } = NetcodeUtils.MapPackets<ServerPacket>();
     public static Dictionary<byte, Type> PacketMapBytes { get; set; } = [];
 
-    SendType sendType;
+    SendType _sendType;
 
     public static void MapOpcodes()
     {
@@ -44,12 +44,12 @@ public abstract class ServerPacket : GamePacket
 
     public void SetSendType(SendType sendType)
     {
-        this.sendType = sendType;
+        this._sendType = sendType;
     }
 
     public SendType GetSendType()
     {
-        return sendType;
+        return _sendType;
     }
 
     public override byte GetOpcode()

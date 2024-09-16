@@ -11,44 +11,44 @@ public partial class UIOptionsInput : Control
 {
     [Export] OptionsManager optionsManager;
 
-    static BtnInfo btnNewInput; // the btn waiting for new input
-    Dictionary<StringName, Array<InputEvent>> defaultActions;
-    VBoxContainer content;
+    static BtnInfo _btnNewInput; // the btn waiting for new input
+    Dictionary<StringName, Array<InputEvent>> _defaultActions;
+    VBoxContainer _content;
 
     public override void _Ready()
     {
-        content = GetNode<VBoxContainer>("Scroll/VBox");
+        _content = GetNode<VBoxContainer>("Scroll/VBox");
         CreateHotkeys();
     }
 
     public override void _Input(InputEvent @event)
     {
-        if (btnNewInput != null)
+        if (_btnNewInput != null)
         {
             if (Input.IsActionJustPressed("remove_hotkey"))
             {
-                StringName action = btnNewInput.Action;
+                StringName action = _btnNewInput.Action;
 
                 // Update input map
-                InputMap.ActionEraseEvent(action, btnNewInput.InputEvent);
+                InputMap.ActionEraseEvent(action, _btnNewInput.InputEvent);
 
                 // Update options
-                optionsManager.Hotkeys.Actions[action].Remove(btnNewInput.InputEvent);
+                optionsManager.Hotkeys.Actions[action].Remove(_btnNewInput.InputEvent);
 
                 // Update UI
-                btnNewInput.Btn.QueueFree();
-                btnNewInput = null;
+                _btnNewInput.Btn.QueueFree();
+                _btnNewInput = null;
             }
 
             if (Input.IsActionJustPressed("ui_cancel"))
             {
-                btnNewInput.Btn.Text = btnNewInput.OriginalText;
-                btnNewInput.Btn.Disabled = false;
+                _btnNewInput.Btn.Text = _btnNewInput.OriginalText;
+                _btnNewInput.Btn.Disabled = false;
 
-                if (btnNewInput.Plus)
-                    btnNewInput.Btn.QueueFree();
+                if (_btnNewInput.Plus)
+                    _btnNewInput.Btn.QueueFree();
 
-                btnNewInput = null;
+                _btnNewInput = null;
                 @event.Dispose(); // Object count was increasing a lot when this function was executed
                 return;
             }
@@ -71,7 +71,7 @@ public partial class UIOptionsInput : Control
             {
                 if (Global.Services.Get<SceneManager>().CurrentScene.Name == "Options")
                 {
-                    if (btnNewInput == null)
+                    if (_btnNewInput == null)
                     {
                         Game.SwitchScene(Scene.UIMainMenu);
                     }
@@ -84,7 +84,7 @@ public partial class UIOptionsInput : Control
 
     void HandleInput(InputEvent @event)
     {
-        StringName action = btnNewInput.Action;
+        StringName action = _btnNewInput.Action;
 
         // Prevent something very evil from happening!
         if (action == "fullscreen" && @event is InputEventMouseButton eventBtn)
@@ -93,34 +93,34 @@ public partial class UIOptionsInput : Control
         // Re-create the button
 
         // Preserve the index the button was originally at
-        int index = btnNewInput.Btn.GetIndex();
+        int index = _btnNewInput.Btn.GetIndex();
 
         // Destroy the button
-        btnNewInput.Btn.QueueFree();
+        _btnNewInput.Btn.QueueFree();
 
         // Create the button
-        Button btn = CreateButton(action, @event, btnNewInput.HBox);
+        Button btn = CreateButton(action, @event, _btnNewInput.HBox);
         btn.Disabled = false;
 
         // Move the button to where it was originally at
-        btnNewInput.HBox.MoveChild(btn, index);
+        _btnNewInput.HBox.MoveChild(btn, index);
 
         Dictionary<StringName, Array<InputEvent>> actions = optionsManager.Hotkeys.Actions;
 
         // Clear the specific action event
-        actions[action].Remove(btnNewInput.InputEvent);
+        actions[action].Remove(_btnNewInput.InputEvent);
 
         // Update the specific action event
         actions[action].Add(@event);
 
         // Update input map
-        if (btnNewInput.InputEvent != null)
-            InputMap.ActionEraseEvent(action, btnNewInput.InputEvent);
+        if (_btnNewInput.InputEvent != null)
+            InputMap.ActionEraseEvent(action, _btnNewInput.InputEvent);
 
         InputMap.ActionAddEvent(action, @event);
 
         // No longer waiting for new input
-        btnNewInput = null;
+        _btnNewInput = null;
     }
 
     GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
@@ -141,11 +141,11 @@ public partial class UIOptionsInput : Control
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
-            if (btnNewInput != null)
+            if (_btnNewInput != null)
                 return;
 
             // Listening for new hotkey to replace old with...
-            btnNewInput = new BtnInfo
+            _btnNewInput = new BtnInfo
             {
                 Action = action,
                 Btn = btn,
@@ -171,11 +171,11 @@ public partial class UIOptionsInput : Control
         btn.Pressed += () =>
         {
             // Do not do anything if listening for new input
-            if (btnNewInput != null)
+            if (_btnNewInput != null)
                 return;
 
             // Listening for new hotkey to replace old with...
-            btnNewInput = new BtnInfo
+            _btnNewInput = new BtnInfo
             {
                 Action = action,
                 Btn = btn,
@@ -245,17 +245,17 @@ public partial class UIOptionsInput : Control
             CreateButtonPlus(action, hboxEvents);
 
             hbox.AddChild(hboxEvents);
-            content.AddChild(hbox);
+            _content.AddChild(hbox);
         }
     }
 
     void _on_reset_to_defaults_pressed()
     {
-        for (int i = 0; i < content.GetChildren().Count; i++)
-            if (content.GetChild(i) != this)
-                content.GetChild(i).QueueFree();
+        for (int i = 0; i < _content.GetChildren().Count; i++)
+            if (_content.GetChild(i) != this)
+                _content.GetChild(i).QueueFree();
 
-        btnNewInput = null;
+        _btnNewInput = null;
         optionsManager.ResetHotkeys();
         CreateHotkeys();
         GC.Collect(); // Object count was increasing a lot when this function was executed

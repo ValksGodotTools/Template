@@ -8,7 +8,7 @@ namespace Template;
 
 public partial class VisualizeAutoload : Node
 {
-    private readonly Dictionary<ulong, VisualNodeInfo> nodeTrackers = [];
+    private readonly Dictionary<ulong, VisualNodeInfo> _nodeTrackers = [];
 
     public override void _Ready()
     {
@@ -52,7 +52,7 @@ public partial class VisualizeAutoload : Node
             }
 
             // Ensure the added visual panel is not overlapping with any other visual panels
-            IEnumerable<Control> controls = nodeTrackers.Select(x => x.Value.VisualControl);
+            IEnumerable<Control> controls = _nodeTrackers.Select(x => x.Value.VisualControl);
 
             Vector2 offset = Vector2.Zero;
 
@@ -68,7 +68,7 @@ public partial class VisualizeAutoload : Node
                 }
             }
 
-            nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, visualPanel, positionalNode ?? node, offset));
+            _nodeTrackers.Add(instanceId, new VisualNodeInfo(actions, visualPanel, positionalNode ?? node, offset));
         }
     }
 
@@ -86,16 +86,16 @@ public partial class VisualizeAutoload : Node
     {
         ulong instanceId = node.GetInstanceId();
 
-        if (nodeTrackers.TryGetValue(instanceId, out VisualNodeInfo info))
+        if (_nodeTrackers.TryGetValue(instanceId, out VisualNodeInfo info))
         {
             info.VisualControl.QueueFree();
-            nodeTrackers.Remove(instanceId);
+            _nodeTrackers.Remove(instanceId);
         }
     }
 
     public override void _Process(double delta)
     {
-        foreach (KeyValuePair<ulong, VisualNodeInfo> kvp in nodeTrackers)
+        foreach (KeyValuePair<ulong, VisualNodeInfo> kvp in _nodeTrackers)
         {
             VisualNodeInfo info = kvp.Value;
             Node node = info.Node;

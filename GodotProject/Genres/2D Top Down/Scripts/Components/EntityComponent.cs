@@ -4,14 +4,14 @@ using Godot;
 namespace Template;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
-[Visualize(nameof(curState))]
+[Visualize(nameof(_curState))]
 public partial class EntityComponent : Node
 {
-    State curState;
+    State _curState;
 
     public override void _Ready()
     {
-        curState = new State("Undefined");
+        _curState = new State("Undefined");
 
         PuddleReflectionUtils.CreateReflection(GetOwner());
     }
@@ -19,19 +19,19 @@ public partial class EntityComponent : Node
     public override void _PhysicsProcess(double d)
     {
         float delta = (float)d;
-        curState.Update(delta);
+        _curState.Update(delta);
     }
 
     public void SwitchState(State newState)
     {
-        curState.Exit();
+        _curState.Exit();
         newState.Enter();
-        curState = newState;
+        _curState = newState;
     }
 
     public bool IsState(string state)
     {
-        return string.Equals(curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
+        return string.Equals(_curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
     }
 }
 

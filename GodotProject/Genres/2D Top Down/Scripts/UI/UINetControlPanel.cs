@@ -6,30 +6,30 @@ namespace Template;
 
 public partial class UINetControlPanel : Control
 {
-    Net net;
-    string ip = "127.0.0.1";
-    ushort port = 25565;
-    string username = "";
-    string prevUsername;
+    Net _net;
+    string _ip = "127.0.0.1";
+    ushort _port = 25565;
+    string _username = "";
+    string _prevUsername;
 
     public override void _Ready()
     {
-        net = new();
+        _net = new();
 
         Button btnStartServer = GetNode<Button>("%Start Server");
         Button btnStopServer = GetNode<Button>("%Stop Server");
 
-        btnStartServer.Pressed += net.StartServer;
-        btnStopServer.Pressed += net.Server.Stop;
+        btnStartServer.Pressed += _net.StartServer;
+        btnStopServer.Pressed += _net.Server.Stop;
 
-        GetNode<Button>("%Start Client").Pressed += () => net.StartClient(ip, port, username);
-        GetNode<Button>("%Stop Client").Pressed += net.StopClient;
+        GetNode<Button>("%Start Client").Pressed += () => _net.StartClient(_ip, _port, _username);
+        GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
 
         GetNode<LineEdit>("%IP").TextChanged += text =>
         {
             string[] words = text.Split(":");
 
-            ip = words[0];
+            _ip = words[0];
 
             if (words.Length < 2)
                 return;
@@ -37,7 +37,7 @@ public partial class UINetControlPanel : Control
             if (ushort.TryParse(words[1], out ushort result))
             {
                 if (result.CountDigits() > 2)
-                    port = result;
+                    _port = result;
             }
         };
 
@@ -45,14 +45,14 @@ public partial class UINetControlPanel : Control
         
         lineEditUsername.TextChanged += text =>
         {
-            username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
+            _username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
         };
 
-        net.OnClientCreated += client =>
+        _net.OnClientCreated += client =>
         {
-            net.Client.OnConnected += () =>
+            _net.Client.OnConnected += () =>
             {
-                if (!net.Server.IsRunning)
+                if (!_net.Server.IsRunning)
                 {
                     // Server is not running and client connected to another server
                     // Client should not be able to start a server while connected to another server
@@ -63,7 +63,7 @@ public partial class UINetControlPanel : Control
                 GetTree().UnfocusCurrentControl();
             };
 
-            net.Client.OnDisconnected += opcode =>
+            _net.Client.OnDisconnected += opcode =>
             {
                 btnStartServer.Disabled = false;
                 btnStopServer.Disabled = false;
@@ -73,7 +73,7 @@ public partial class UINetControlPanel : Control
 
     public override void _PhysicsProcess(double delta)
     {
-        net.Client?.HandlePackets();
+        _net.Client?.HandlePackets();
     }
 }
 

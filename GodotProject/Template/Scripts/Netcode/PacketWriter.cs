@@ -12,9 +12,9 @@ public class PacketWriter : IDisposable
 {
     public MemoryStream Stream { get; } = new();
 
-    readonly BinaryWriter writer;
+    readonly BinaryWriter _writer;
 
-    public PacketWriter() => writer = new BinaryWriter(Stream);
+    public PacketWriter() => _writer = new BinaryWriter(Stream);
 
     public void Write<T>(T v)
     {
@@ -72,19 +72,19 @@ public class PacketWriter : IDisposable
     {
         switch (v)
         {
-            case byte k: writer.Write(k); break;
-            case sbyte k: writer.Write(k); break;
-            case char k: writer.Write(k); break;
-            case string k: writer.Write(k); break;
-            case bool k: writer.Write(k); break;
-            case short k: writer.Write(k); break;
-            case ushort k: writer.Write(k); break;
-            case int k: writer.Write(k); break;
-            case uint k: writer.Write(k); break;
-            case float k: writer.Write(k); break;
-            case double k: writer.Write(k); break;
-            case long k: writer.Write(k); break;
-            case ulong k: writer.Write(k); break;
+            case byte k: _writer.Write(k); break;
+            case sbyte k: _writer.Write(k); break;
+            case char k: _writer.Write(k); break;
+            case string k: _writer.Write(k); break;
+            case bool k: _writer.Write(k); break;
+            case short k: _writer.Write(k); break;
+            case ushort k: _writer.Write(k); break;
+            case int k: _writer.Write(k); break;
+            case uint k: _writer.Write(k); break;
+            case float k: _writer.Write(k); break;
+            case double k: _writer.Write(k); break;
+            case long k: _writer.Write(k); break;
+            case ulong k: _writer.Write(k); break;
             default:
                 throw new NotImplementedException("PacketWriter: " + v.GetType() + " is not a supported primitive type.");
         }
@@ -182,7 +182,7 @@ public class PacketWriter : IDisposable
     public void Dispose()
     {
         Stream.Dispose();
-        writer.Dispose();
+        _writer.Dispose();
     }
 }
 

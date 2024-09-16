@@ -6,7 +6,7 @@ public partial class OtherPlayer : Node2D
 {
     public Vector2 LastServerPosition { get; set; }
 
-    float smoothFactor;
+    float _smoothFactor;
 
     public override void _Ready()
     {
@@ -18,7 +18,7 @@ public partial class OtherPlayer : Node2D
         // If the smooth factor is too low then the player will start to lag behind
         // If the smooth factor is too high then you will start to see glitchy movements because the
         // the position is constantly being clamped the last received server position
-        smoothFactor = Net.HeartbeatPosition switch
+        _smoothFactor = Net.HeartbeatPosition switch
         {
             20 => 0.1f,
             50 => 0.075f,
@@ -37,7 +37,7 @@ public partial class OtherPlayer : Node2D
         // multiplied by a factor of the remaining distance. If the distance is too far away then instantly
         // teleport to the last received server position.
         Position = distance <= Net.HeartbeatPosition * distanceCompensationFactor ?
-            Position.MoveToward(LastServerPosition, distance * smoothFactor) : LastServerPosition;
+            Position.MoveToward(LastServerPosition, distance * _smoothFactor) : LastServerPosition;
     }
 
     public void SetLabelText(string text)

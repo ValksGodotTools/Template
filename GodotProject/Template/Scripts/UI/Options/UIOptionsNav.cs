@@ -8,25 +8,25 @@ public partial class UIOptionsNav : Control
 {
     [Export] OptionsManager optionsManager;
 
-    readonly Dictionary<string, Control> tabs = [];
-    readonly Dictionary<string, Button> buttons = [];
+    readonly Dictionary<string, Control> _tabs = [];
+    readonly Dictionary<string, Button> _buttons = [];
 
     public override void _Ready()
     {
         Node content = GetParent().GetNode("Content");
 
         foreach (Control child in content.GetChildren())
-            tabs.Add(child.Name, child);
+            _tabs.Add(child.Name, child);
 
         foreach (Button button in GetChildren())
         {
             button.FocusEntered += () => ShowTab(button.Name);
             button.Pressed += () => ShowTab(button.Name);
 
-            buttons.Add(button.Name, button);
+            _buttons.Add(button.Name, button);
         }
 
-        buttons[optionsManager.CurrentOptionsTab].GrabFocus();
+        _buttons[optionsManager.CurrentOptionsTab].GrabFocus();
 
         HideAllTabs();
         ShowTab(optionsManager.CurrentOptionsTab);
@@ -36,12 +36,12 @@ public partial class UIOptionsNav : Control
     {
         optionsManager.CurrentOptionsTab = tabName;
         HideAllTabs();
-        tabs[tabName].Show();
+        _tabs[tabName].Show();
     }
 
     void HideAllTabs()
     {
-        tabs.Values.ForEach(x => x.Hide());
+        _tabs.Values.ForEach(x => x.Hide());
     }
 }
 

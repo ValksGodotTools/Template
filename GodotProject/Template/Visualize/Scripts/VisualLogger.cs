@@ -9,7 +9,7 @@ public class VisualLogger
     // This is ugly using public static here but I don't know how else to do it
     public static Dictionary<Node, VBoxContainer> VisualNodes { get; set; }
 
-    private static readonly Dictionary<Node, VBoxContainer> visualNodesWithoutVisualAttribute = [];
+    private static readonly Dictionary<Node, VBoxContainer> _visualNodesWithoutVisualAttribute = [];
 
     private const int MAX_LABELS_VISIBLE_AT_ONE_TIME = 5;
 
@@ -35,7 +35,7 @@ public class VisualLogger
             return null;
         }
 
-        if (!visualNodesWithoutVisualAttribute.TryGetValue(node, out vbox))
+        if (!_visualNodesWithoutVisualAttribute.TryGetValue(node, out vbox))
         {
             vbox = new VBoxContainer
             {
@@ -43,7 +43,7 @@ public class VisualLogger
             };
 
             node.AddChild(vbox);
-            visualNodesWithoutVisualAttribute[node] = vbox;
+            _visualNodesWithoutVisualAttribute[node] = vbox;
         }
 
         return vbox;

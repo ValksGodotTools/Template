@@ -36,7 +36,7 @@ public abstract class ENetLow
     protected CancellationTokenSource CTS { get; set; }
     protected List<Type> IgnoredPackets { get; set; } = [];
     
-    protected ENetOptions options;
+    protected ENetOptions Options;
 
     protected virtual void DisconnectCleanup(Peer peer)
     {
@@ -100,7 +100,7 @@ public abstract class ENetLow
     /// </summary>
     protected string FormatByteSize(long bytes)
     {
-        return options.PrintPacketByteSize ? $"({bytes} byte{(bytes == 1 ? "" : "s")}) " : "";
+        return Options.PrintPacketByteSize ? $"({bytes} byte{(bytes == 1 ? "" : "s")}) " : "";
     }
 
     protected abstract void Stopped();

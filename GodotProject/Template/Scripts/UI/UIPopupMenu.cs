@@ -11,8 +11,8 @@ public partial class UIPopupMenu : Control
 
     public WorldEnvironment WorldEnvironment { get; private set; }
 
-    VBoxContainer vbox;
-    PanelContainer menu;
+    VBoxContainer _vbox;
+    PanelContainer _menu;
     public UIOptions Options;
 
     public override void _Ready()
@@ -20,8 +20,8 @@ public partial class UIPopupMenu : Control
         Global.Services.Add(this);
         TryFindWorldEnvironmentNode();
 
-        menu = GetNode<PanelContainer>("%Menu");
-        vbox = GetNode<VBoxContainer>("%Navigation");
+        _menu = GetNode<PanelContainer>("%Menu");
+        _vbox = GetNode<VBoxContainer>("%Navigation");
 
         Options = Game.LoadPrefab<UIOptions>(Prefab.UIOptions);
         AddChild(Options);
@@ -42,7 +42,7 @@ public partial class UIPopupMenu : Control
             if (Options.Visible)
             {
                 Options.Hide();
-                menu.Show();
+                _menu.Show();
             }
             else
             {
@@ -79,7 +79,7 @@ public partial class UIPopupMenu : Control
     void _on_options_pressed()
     {
         Options.Show();
-        menu.Hide();
+        _menu.Hide();
     }
 
     void _on_main_menu_pressed()

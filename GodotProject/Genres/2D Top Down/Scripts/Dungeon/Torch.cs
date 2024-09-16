@@ -13,34 +13,34 @@ public partial class Torch : Node2D
         get => _textureScale;
         set
         {
-            if (light != null)
+            if (_light != null)
             {
                 _textureScale = value;
-                light.TextureScale = _textureScale;
+                _light.TextureScale = _textureScale;
             }
         }
     }
 
     [Visualize] double energy = 1;
-    PointLight2D light;
+    PointLight2D _light;
     float _textureScale = 1;
 
-    VisualLogger visualLogger = new();
+    VisualLogger _visualLogger = new();
 
     public override void _Ready()
     {
-        light = GetNode<PointLight2D>("PointLight2D");
+        _light = GetNode<PointLight2D>("PointLight2D");
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        light.Energy = (float)(energy + GD.RandRange(0, flickerRange) - 
+        _light.Energy = (float)(energy + GD.RandRange(0, flickerRange) - 
             Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
     }
 
     [Visualize]
     public void Test(string[] myList)
     {
-        visualLogger.Log(myList.ToFormattedString(), this);
+        _visualLogger.Log(myList.ToFormattedString(), this);
     }
 }

@@ -7,20 +7,20 @@ public partial class Player : CharacterBody3D
 {
     [Export] OptionsManager options;
 
-    Vector3 cameraTarget;
-    Vector2 mouseInput;
-    float mouseSensitivity;
+    Vector3 _cameraTarget;
+    Vector2 _mouseInput;
+    float _mouseSensitivity;
 
     void OnReadyUI()
     {
-        mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
+        _mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
 
         UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
             .Options.GetNode<UIOptionsGameplay>("%Gameplay");
 
         gameplay.OnMouseSensitivityChanged += value =>
         {
-            mouseSensitivity = value * 0.0001f;
+            _mouseSensitivity = value * 0.0001f;
         };
     }
 
@@ -44,16 +44,16 @@ public partial class Player : CharacterBody3D
 
         if (@event is InputEventMouseMotion motion)
         {
-            mouseInput = motion.Relative;
+            _mouseInput = motion.Relative;
 
-            cameraTarget += new Vector3(
-                -motion.Relative.Y * mouseSensitivity,
-                -motion.Relative.X * mouseSensitivity, 0);
+            _cameraTarget += new Vector3(
+                -motion.Relative.Y * _mouseSensitivity,
+                -motion.Relative.X * _mouseSensitivity, 0);
 
             // Prevent camera from looking too far up or down
-            Vector3 rotDeg = cameraTarget;
+            Vector3 rotDeg = _cameraTarget;
             rotDeg.X = Mathf.Clamp(rotDeg.X, -89f.ToRadians(), 89f.ToRadians());
-            cameraTarget = rotDeg;
+            _cameraTarget = rotDeg;
         }
     }
 }

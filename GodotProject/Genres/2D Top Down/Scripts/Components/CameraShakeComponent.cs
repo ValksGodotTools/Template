@@ -5,36 +5,36 @@ namespace Template;
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 public partial class CameraShakeComponent : Node
 {
-    CameraShakeConfig config;
-    Camera2D camera;
+    CameraShakeConfig _config;
+    Camera2D _camera;
 
-    double remainingTime;
-    double freqCounter;
+    double _remainingTime;
+    double _freqCounter;
 
 	public override void _Ready()
 	{
-        camera = GetParent<Camera2D>();
-        config = new();
+        _camera = GetParent<Camera2D>();
+        _config = new();
         SetPhysicsProcess(false);
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
         // Constantly subtract from remaining time
-        remainingTime -= delta;
-        freqCounter += delta;
+        _remainingTime -= delta;
+        _freqCounter += delta;
 
         // Update offset at frequency
-        if (freqCounter >= config.Frequency)
+        if (_freqCounter >= _config.Frequency)
         {
-            freqCounter = 0;
-            camera.Offset = new Vector2((GD.Randf() - 0.5f), (GD.Randf() - 0.5f)) * config.Amplitude;
+            _freqCounter = 0;
+            _camera.Offset = new Vector2((GD.Randf() - 0.5f), (GD.Randf() - 0.5f)) * _config.Amplitude;
         }
 
         // Stop shaking and reset camera offset when remaining time reaches zero
-        if (remainingTime <= 0)
+        if (_remainingTime <= 0)
         {
-            camera.Offset = Vector2.Zero;
+            _camera.Offset = Vector2.Zero;
             SetPhysicsProcess(false);
         }
     }
@@ -42,14 +42,14 @@ public partial class CameraShakeComponent : Node
     public void Start(CameraShakeConfig newConfig)
     {
         // Duration is accumulative
-        remainingTime += newConfig.Duration;
+        _remainingTime += newConfig.Duration;
 
         // Only set new amplitude if it's greater than current amplitude
-        if (newConfig.Amplitude > config.Amplitude)
-            config.Amplitude = newConfig.Amplitude;
+        if (newConfig.Amplitude > _config.Amplitude)
+            _config.Amplitude = newConfig.Amplitude;
 
         // Update frequency
-        config.Frequency = newConfig.Frequency;
+        _config.Frequency = newConfig.Frequency;
 
         // Start shaking
         SetPhysicsProcess(true);

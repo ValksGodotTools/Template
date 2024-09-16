@@ -8,7 +8,7 @@ namespace Template;
 
 public static class VisualizeAttributeHandler
 {
-    private static readonly BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+    private static readonly BindingFlags _flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
     public static VisualNode RetrieveData(Node specificNode)
     {
@@ -39,7 +39,7 @@ public static class VisualizeAttributeHandler
 
     private static List<T> GetVisualMembers<T>(Func<BindingFlags, T[]> getMembers) where T : MemberInfo
     {
-        return getMembers(Flags)
+        return getMembers(_flags)
             .Where(member => member.GetCustomAttributes(typeof(VisualizeAttribute), false).Length != 0)
             .ToList();
     }

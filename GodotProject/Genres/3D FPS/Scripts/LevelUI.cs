@@ -4,16 +4,16 @@ namespace Template;
 
 public partial class LevelUI : Node
 {
-    UIPopupMenu popupMenu;
+    UIPopupMenu _popupMenu;
 
     public override void _Ready()
     {
-        popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
-        popupMenu.OnOpened += () =>
+        _popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
+        _popupMenu.OnOpened += () =>
         {
             Input.MouseMode = Input.MouseModeEnum.Visible;
         };
-        popupMenu.OnClosed += () =>
+        _popupMenu.OnClosed += () =>
         {
             Input.MouseMode = Input.MouseModeEnum.Captured;
         };
@@ -22,7 +22,7 @@ public partial class LevelUI : Node
 
         Game.Console.OnToggleVisibility += HandleConsoleToggled;
 
-        popupMenu.OnMainMenuBtnPressed += () =>
+        _popupMenu.OnMainMenuBtnPressed += () =>
         {
             // No longer need to listen for this
             Game.Console.OnToggleVisibility -= HandleConsoleToggled;
@@ -40,7 +40,7 @@ public partial class LevelUI : Node
         }
         else
         {
-            if (!popupMenu.Visible)
+            if (!_popupMenu.Visible)
             {
                 Input.MouseMode = Input.MouseModeEnum.Captured;
             }

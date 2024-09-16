@@ -7,25 +7,25 @@ namespace Template;
 
 public partial class UIModLoader : Node
 {
-    Label uiName;
-    Label uiModVersion;
-    Label uiGameVersion;
-    Label uiDependencies;
-    Label uiDescription;
-    Label uiAuthors;
-    Label uiIncompatibilities;
+    Label _uiName;
+    Label _uiModVersion;
+    Label _uiGameVersion;
+    Label _uiDependencies;
+    Label _uiDescription;
+    Label _uiAuthors;
+    Label _uiIncompatibilities;
 
     public override void _Ready()
     {
         Node uiMods = GetNode("%Mods");
         
-        uiName = GetNode<Label>("%Name");
-        uiModVersion = GetNode<Label>("%ModVersion");
-        uiGameVersion = GetNode<Label>("%GameVersion");
-        uiDependencies = GetNode<Label>("%Dependencies");
-        uiDescription = GetNode<Label>("%Description");
-        uiAuthors = GetNode<Label>("%Authors");
-        uiIncompatibilities = GetNode<Label>("%Incompatibilities");
+        _uiName = GetNode<Label>("%Name");
+        _uiModVersion = GetNode<Label>("%ModVersion");
+        _uiGameVersion = GetNode<Label>("%GameVersion");
+        _uiDependencies = GetNode<Label>("%Dependencies");
+        _uiDescription = GetNode<Label>("%Description");
+        _uiAuthors = GetNode<Label>("%Authors");
+        _uiIncompatibilities = GetNode<Label>("%Incompatibilities");
 
         Dictionary<string, ModInfo> mods = Global.Services.Get<ModLoader>().Mods;
 
@@ -62,20 +62,20 @@ public partial class UIModLoader : Node
 
     void DisplayModInfo(ModInfo modInfo)
     {
-        uiName.Text = modInfo.Name;
-        uiModVersion.Text = modInfo.ModVersion;
-        uiGameVersion.Text = modInfo.GameVersion;
+        _uiName.Text = modInfo.Name;
+        _uiModVersion.Text = modInfo.ModVersion;
+        _uiGameVersion.Text = modInfo.GameVersion;
 
-        uiDependencies.Text = modInfo.Dependencies.Count != 0 ? 
+        _uiDependencies.Text = modInfo.Dependencies.Count != 0 ? 
             modInfo.Dependencies.ToFormattedString() : "None";
 
-        uiIncompatibilities.Text = modInfo.Incompatibilities.Count != 0 ? 
+        _uiIncompatibilities.Text = modInfo.Incompatibilities.Count != 0 ? 
             modInfo.Incompatibilities.ToFormattedString() : "None";
 
-        uiDescription.Text = !string.IsNullOrWhiteSpace(modInfo.Description) ? 
+        _uiDescription.Text = !string.IsNullOrWhiteSpace(modInfo.Description) ? 
             modInfo.Description : "The author did not set a description for this mod";
 
-        uiAuthors.Text = modInfo.Author;
+        _uiAuthors.Text = modInfo.Author;
     }
 
     async void _on_restart_game_pressed()

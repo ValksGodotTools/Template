@@ -6,21 +6,21 @@ namespace Template.Example;
 [Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
 public partial class VisualizeExample : Sprite2D
 {
-	[Visualize] Vector2I position;
-    [Visualize] float rotation;
-    [Visualize] Color color = Colors.White;
-    [Visualize] float skew;
-    [Visualize] Vector2 offset;
+	[Visualize] Vector2I _position;
+    [Visualize] float _rotation;
+    [Visualize] Color _color = Colors.White;
+    [Visualize] float _skew;
+    [Visualize] Vector2 _offset;
 
-    private readonly VisualLogger logger = new();
+    private readonly VisualLogger _logger = new();
 
     public override void _PhysicsProcess(double delta)
     {
-        Position = position;
-        Rotation = rotation;
-        Modulate = color;
-        Skew = skew;
-        Offset = offset;
+        Position = _position;
+        Rotation = _rotation;
+        Modulate = _color;
+        Skew = _skew;
+        Offset = _offset;
     }
 
     [Visualize]
@@ -28,7 +28,7 @@ public partial class VisualizeExample : Sprite2D
     {
         if (dictionary == null || dictionary.Count == 0)
         {
-            logger.Log("Method dictionary param has no elements", this);
+            _logger.Log("Method dictionary param has no elements", this);
         }
         else
         {
@@ -41,14 +41,14 @@ public partial class VisualizeExample : Sprite2D
 
             logMessage = logMessage.TrimEnd('\n', ',') + "\n]";
 
-            logger.Log(logMessage, this);
+            _logger.Log(logMessage, this);
         }
     }
 
     [Visualize]
     public void PrintEnum(SomeEnum someEnum)
     {
-        logger.Log(someEnum, this);
+        _logger.Log(someEnum, this);
     }
 
     public enum SomeEnum

@@ -6,7 +6,7 @@ namespace Template;
 
 public partial class PlayerCamera : Camera2D
 {
-    Player player;
+    Player _player;
 
 	public override void _Ready()
 	{
@@ -16,12 +16,12 @@ public partial class PlayerCamera : Camera2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-        Position = player.Position;
+        Position = _player.Position;
     }
 
     public void StartFollowingPlayer(Player player)
     {
-        this.player = player;
+        this._player = player;
         Position = player.Position;
         GTween.Delay(this, 0.01, () => PositionSmoothingEnabled = true);
         SetPhysicsProcess(true);

@@ -10,32 +10,32 @@ namespace Template.Netcode;
 
 public class PacketReader : IDisposable
 {
-    readonly MemoryStream stream;
-    readonly BinaryReader reader;
-    readonly byte[] readBuffer = new byte[GamePacket.MaxSize];
+    readonly MemoryStream _stream;
+    readonly BinaryReader _reader;
+    readonly byte[] _readBuffer = new byte[GamePacket.MaxSize];
 
     public PacketReader(ENet.Packet packet)
     {
-        stream = new MemoryStream(readBuffer);
-        reader = new BinaryReader(stream);
-        packet.CopyTo(readBuffer);
+        _stream = new MemoryStream(_readBuffer);
+        _reader = new BinaryReader(_stream);
+        packet.CopyTo(_readBuffer);
         packet.Dispose();
     }
 
-    public byte ReadByte() => reader.ReadByte();
-    public sbyte ReadSByte() => reader.ReadSByte();
-    public char ReadChar() => reader.ReadChar();
-    public string ReadString() => reader.ReadString();
-    public bool ReadBool() => reader.ReadBoolean();
-    public short ReadShort() => reader.ReadInt16();
-    public ushort ReadUShort() => reader.ReadUInt16();
-    public int ReadInt() => reader.ReadInt32();
-    public uint ReadUInt() => reader.ReadUInt32();
-    public float ReadFloat() => reader.ReadSingle();
-    public double ReadDouble() => reader.ReadDouble();
-    public long ReadLong() => reader.ReadInt64();
-    public ulong ReadULong() => reader.ReadUInt64();
-    public byte[] ReadBytes(int count) => reader.ReadBytes(count);
+    public byte ReadByte() => _reader.ReadByte();
+    public sbyte ReadSByte() => _reader.ReadSByte();
+    public char ReadChar() => _reader.ReadChar();
+    public string ReadString() => _reader.ReadString();
+    public bool ReadBool() => _reader.ReadBoolean();
+    public short ReadShort() => _reader.ReadInt16();
+    public ushort ReadUShort() => _reader.ReadUInt16();
+    public int ReadInt() => _reader.ReadInt32();
+    public uint ReadUInt() => _reader.ReadUInt32();
+    public float ReadFloat() => _reader.ReadSingle();
+    public double ReadDouble() => _reader.ReadDouble();
+    public long ReadLong() => _reader.ReadInt64();
+    public ulong ReadULong() => _reader.ReadUInt64();
+    public byte[] ReadBytes(int count) => _reader.ReadBytes(count);
     public byte[] ReadBytes() => ReadBytes(ReadInt());
     public Vector2 ReadVector2() => new(ReadFloat(), ReadFloat());
     public Vector3 ReadVector3() => new(ReadFloat(), ReadFloat(), ReadFloat());
@@ -194,8 +194,8 @@ public class PacketReader : IDisposable
 
     public void Dispose()
     {
-        stream.Dispose();
-        reader.Dispose();
+        _stream.Dispose();
+        _reader.Dispose();
     }
 }
 

@@ -4,11 +4,11 @@ namespace Template;
 
 public partial class UIMainMenuNav : Node
 {
-    AudioManager audioManager;
+    AudioManager _audioManager;
 
     public override void _Ready()
     {
-        audioManager = Global.Services.Get<AudioManager>();
+        _audioManager = Global.Services.Get<AudioManager>();
 
         GetNode<Button>("Play").GrabFocus();
     }

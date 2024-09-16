@@ -14,9 +14,9 @@ public abstract class GamePacket
     protected byte ChannelId { get; }
 
     // Packets are reliable by default
-    readonly PacketFlags packetFlags = PacketFlags.Reliable;
-    long size;
-    byte[] data;
+    readonly PacketFlags _packetFlags = PacketFlags.Reliable;
+    long _size;
+    byte[] _data;
 
     public void Write()
     {
@@ -24,8 +24,8 @@ public abstract class GamePacket
         writer.Write(GetOpcode());
         this?.Write(writer);
 
-        data = writer.Stream.ToArray();
-        size = writer.Stream.Length;
+        _data = writer.Stream.ToArray();
+        _size = writer.Stream.Length;
     }
 
     public void SetPeer(Peer peer)
@@ -40,7 +40,7 @@ public abstract class GamePacket
 
     public long GetSize()
     {
-        return size;
+        return _size;
     }
 
     public abstract byte GetOpcode();
@@ -79,7 +79,7 @@ public abstract class GamePacket
     protected ENet.Packet CreateENetPacket()
     {
         ENet.Packet enetPacket = default;
-        enetPacket.Create(data, packetFlags);
+        enetPacket.Create(_data, _packetFlags);
         return enetPacket;
     }
 }
