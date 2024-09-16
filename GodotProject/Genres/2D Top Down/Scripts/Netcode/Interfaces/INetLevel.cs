@@ -1,8 +1,7 @@
 using System.Collections.Generic;
+using Template.TopDown2D;
 
 namespace Template;
-
-using Template.TopDown2D;
 
 internal interface INetLevel
 {

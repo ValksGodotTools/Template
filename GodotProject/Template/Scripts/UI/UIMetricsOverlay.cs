@@ -1,9 +1,8 @@
 using Godot;
 using GodotUtils;
+using Monitor = Godot.Performance.Monitor;
 
 namespace Template;
-
-using Monitor = Performance.Monitor;
 
 public partial class UIMetricsOverlay : Control
 {

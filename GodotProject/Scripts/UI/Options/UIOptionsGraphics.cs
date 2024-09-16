@@ -1,9 +1,8 @@
 using Godot;
 using System;
+using Environment = Godot.Environment;
 
 namespace Template;
-
-using Environment = Godot.Environment;
 
 public partial class UIOptionsGraphics : Control
 {

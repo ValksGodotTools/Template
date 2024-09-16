@@ -1,10 +1,9 @@
 using CSharpUtils;
 using Godot;
 using System.Collections.Generic;
+using Template.TopDown2D;
 
 namespace Template;
-
-using Template.TopDown2D;
 
 public partial class Level : Node, INetLevel
 {

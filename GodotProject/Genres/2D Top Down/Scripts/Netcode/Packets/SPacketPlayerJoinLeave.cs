@@ -1,9 +1,8 @@
 using Godot;
-
-namespace Template;
-
 using Template.Netcode;
 using Template.Netcode.Client;
+
+namespace Template;
 
 /// <summary>
 /// A other player has joined or left the server.

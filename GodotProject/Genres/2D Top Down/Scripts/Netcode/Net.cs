@@ -2,10 +2,9 @@ using Godot;
 using GodotUtils;
 using System;
 using System.Threading.Tasks;
+using Template.Netcode;
 
 namespace Template;
-
-using Template.Netcode;
 
 public class Net
 {

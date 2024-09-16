@@ -1,12 +1,10 @@
 using Godot;
+using Godot.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Template;
-
-using Godot.Collections;
 
 [GlobalClass]
 public partial class OptionsManager : Resource
@@ -70,7 +68,7 @@ public partial class OptionsManager : Resource
         // Deep clone default hotkeys over
         Hotkeys.Actions = [];
 
-        foreach (KeyValuePair<StringName, Array<InputEvent>> element in DefaultHotkeys)
+        foreach (System.Collections.Generic.KeyValuePair<StringName, Array<InputEvent>> element in DefaultHotkeys)
         {
             Array<InputEvent> arr = [];
 

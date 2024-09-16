@@ -1,6 +1,6 @@
-namespace Template;
-
 using Template.Netcode.Client;
+
+namespace Template;
 
 public partial class GameClient : ENetClient
 {

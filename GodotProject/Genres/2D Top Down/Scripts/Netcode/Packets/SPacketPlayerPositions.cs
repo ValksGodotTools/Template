@@ -1,10 +1,9 @@
 using Godot;
 using System.Collections.Generic;
-
-namespace Template;
-
 using Template.Netcode;
 using Template.Netcode.Client;
+
+namespace Template;
 
 public class SPacketPlayerPositions : ServerPacket
 {

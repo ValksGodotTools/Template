@@ -2,10 +2,9 @@ using Godot;
 using GodotUtils;
 using System;
 using System.Linq;
+using Godot.Collections;
 
 namespace Template;
-
-using Godot.Collections;
 
 public partial class UIOptionsInput : Control
 {

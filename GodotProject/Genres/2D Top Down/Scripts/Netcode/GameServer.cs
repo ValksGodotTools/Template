@@ -1,11 +1,10 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-
-namespace Template;
-
 using ENet;
 using Template.Netcode.Server;
+
+namespace Template;
 
 public partial class GameServer : ENetServer
 {

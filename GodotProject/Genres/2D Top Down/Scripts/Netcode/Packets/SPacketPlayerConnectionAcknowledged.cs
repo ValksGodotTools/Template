@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-
-namespace Template;
-
 using Template.Netcode;
 using Template.Netcode.Client;
+
+namespace Template;
 
 /// <summary>
 /// The server has acknowledged this players connection. The server is informing

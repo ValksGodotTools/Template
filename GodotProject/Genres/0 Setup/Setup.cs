@@ -4,10 +4,9 @@ using GodotUtils;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Template;
-
-using System.IO;
 
 public partial class Setup : Node
 {

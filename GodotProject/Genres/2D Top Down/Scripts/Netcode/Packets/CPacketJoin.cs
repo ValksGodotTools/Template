@@ -1,12 +1,11 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-
-namespace Template;
-
 using ENet;
 using Template.Netcode;
 using Template.Netcode.Server;
+
+namespace Template;
 
 public class CPacketJoin : ClientPacket
 {

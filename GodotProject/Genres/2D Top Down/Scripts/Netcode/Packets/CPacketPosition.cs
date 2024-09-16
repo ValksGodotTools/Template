@@ -1,10 +1,9 @@
 using Godot;
-
-namespace Template;
-
 using ENet;
 using Template.Netcode;
 using Template.Netcode.Server;
+
+namespace Template;
 
 public class CPacketPosition : ClientPacket
 {
