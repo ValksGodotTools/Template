@@ -45,7 +45,7 @@ public partial class UIManager : Node
         }
     }
 
-    private void GetRootControlNodes(Node node)
+    private static void GetRootControlNodes(Node node)
     {
         if (node is Control controlNode)
         {

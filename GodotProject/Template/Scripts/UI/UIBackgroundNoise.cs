@@ -52,7 +52,7 @@ public partial class UIBackgroundNoise : Sprite2D
         _defaultPosition = Position;
     }
 
-    private FastNoiseLite InitNoise(int seed = 0)
+    private static FastNoiseLite InitNoise(int seed = 0)
     {
         return new FastNoiseLite
         {

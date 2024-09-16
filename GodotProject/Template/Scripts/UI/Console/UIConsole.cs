@@ -256,7 +256,7 @@ public partial class UIConsole : PanelContainer
         _input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
     }
 
-    private object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
+    private static object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
     {
         ParameterInfo[] paramInfos = method.GetParameters();
         object[] parameters = new object[paramInfos.Length];
@@ -291,7 +291,7 @@ public partial class UIConsole : PanelContainer
         return instance;
     }
 
-    private object ConvertStringToType(string input, Type targetType)
+    private static object ConvertStringToType(string input, Type targetType)
     {
         if (targetType == typeof(string))
             return input;
@@ -334,7 +334,7 @@ public partial class UIConsole : PanelContainer
 
     // Valk: I have not tested this code to see if it works with 100%
     // no errors.
-    private Node FindNodeByType(Node root, Type targetType)
+    private static Node FindNodeByType(Node root, Type targetType)
     {
         if (root.GetType() == targetType)
             return root;

@@ -59,7 +59,7 @@ public partial class Player : Character, INetPlayer
         Velocity = Velocity.Lerp(Vector2.Zero, _config.Friction);
     }
 
-    private Vector2 GetMoveDirection()
+    private static Vector2 GetMoveDirection()
     {
         Vector2 moveDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down");
         moveDirection += new Vector2(Input.GetJoyAxis(0, JoyAxis.LeftX), Input.GetJoyAxis(0, JoyAxis.LeftY));
@@ -107,7 +107,7 @@ public partial class Player : Character, INetPlayer
         }
     }
 
-    private Vector2 GetControllerLookDirection()
+    private static Vector2 GetControllerLookDirection()
     {
         return Input.GetJoyName(0) switch
         {

@@ -89,7 +89,7 @@ public partial class RoomTransitions : Node
     }
 
     // Creates an Area2D node
-    private Area2D CreateArea2D(string name, bool monitorable)
+    private static Area2D CreateArea2D(string name, bool monitorable)
     {
         return new Area2D
         {
@@ -99,7 +99,7 @@ public partial class RoomTransitions : Node
     }
 
     // Creates a CollisionShape2D with a WorldBoundaryShape2D
-    private CollisionShape2D CreateWorldBoundaryShape(Vector2I normal, Color color)
+    private static CollisionShape2D CreateWorldBoundaryShape(Vector2I normal, Color color)
     {
         return new CollisionShape2D
         {
@@ -123,7 +123,7 @@ public partial class RoomTransitions : Node
     }
 
     // Checks if the transition normal is valid
-    private bool IsValidTransitionNormal(Vector2I normal)
+    private static bool IsValidTransitionNormal(Vector2I normal)
     {
         return normal == Vector2I.Right ||
                normal == Vector2I.Left ||

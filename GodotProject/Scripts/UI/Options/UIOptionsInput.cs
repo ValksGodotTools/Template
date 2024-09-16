@@ -121,7 +121,7 @@ public partial class UIOptionsInput : Control
         _btnNewInput = null;
     }
 
-    private GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
+    private static GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
     {
         string readable = "";
 
@@ -162,7 +162,7 @@ public partial class UIOptionsInput : Control
         return btn;
     }
 
-    private void CreateButtonPlus(string action, HBoxContainer hbox)
+    private static void CreateButtonPlus(string action, HBoxContainer hbox)
     {
         // Create the button
         GButton btn = new("+");

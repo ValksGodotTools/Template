@@ -53,7 +53,7 @@ public partial class OptionsManager : Resource
         SaveResource(Hotkeys, nameof(Hotkeys));
     }
 
-    private void SaveResource(Resource resource, string name)
+    private static void SaveResource(Resource resource, string name)
     {
         Error error = ResourceSaver.Save(
             resource: resource,
@@ -116,7 +116,7 @@ public partial class OptionsManager : Resource
         Options = GD.Load<ResourceOptions>("user://options.tres");
     }
 
-    private void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
+    private static void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
     {
         Array<StringName> actions = InputMap.GetActions();
 
@@ -172,7 +172,7 @@ public partial class OptionsManager : Resource
         }
     }
 
-    private bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
+    private static bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
                          Dictionary<StringName, Array<InputEvent>> dict2)
     {
         return dict1.Count == dict2.Count &&
