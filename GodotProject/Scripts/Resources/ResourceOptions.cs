@@ -36,7 +36,7 @@ public partial class ResourceOptions : Resource
     [Export] public int        Resolution       { get; set; } = 1;
                                                 
     // Graphics                                 
-    [Export] public QualityP   QualityPreset    { get; set; } = QualityPreset.High;
+    [Export] public QualityP   QualityPreset    { get; set; } = QualityP.High;
     // Antialiasing values can be               
     // 0 - Disabled                             
     // 1 - 2x                                   

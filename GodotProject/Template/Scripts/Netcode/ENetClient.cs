@@ -157,7 +157,7 @@ public abstract class ENetClient : ENetLow
     private const uint PEER_TIMEOUT_MAXIMUM = 5000;
 
     private readonly ConcurrentQueue<PacketData> _godotPackets = new();
-    private readonly ConcurrentQueue<ENet.Packet> _incoming = new();
+    private readonly ConcurrentQueue<Packet> _incoming = new();
     private readonly ConcurrentQueue<Cmd<ENetClientOpcode>> _enetCmds = new();
     private Peer _peer;
     private long _connected;
@@ -186,7 +186,7 @@ public abstract class ENetClient : ENetLow
         }
 
         // Incoming
-        while (_incoming.TryDequeue(out ENet.Packet packet))
+        while (_incoming.TryDequeue(out Packet packet))
         {
             PacketReader packetReader = new(packet);
             byte opcode = packetReader.ReadByte();
@@ -251,7 +251,7 @@ public abstract class ENetClient : ENetLow
 
     protected override void Receive(Event netEvent)
     {
-        ENet.Packet packet = netEvent.Packet;
+        Packet packet = netEvent.Packet;
         if (packet.Length > GamePacket.MaxSize)
         {
             Log($"Tried to read packet from server of size " +

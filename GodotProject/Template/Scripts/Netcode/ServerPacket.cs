@@ -20,13 +20,13 @@ public abstract class ServerPacket : GamePacket
 
     public void Send()
     {
-        ENet.Packet enetPacket = CreateENetPacket();
+        Packet enetPacket = CreateENetPacket();
         Peers[0].Send(ChannelId, ref enetPacket);
     }
 
     public void Broadcast(Host host)
     {
-        ENet.Packet enetPacket = CreateENetPacket();
+        Packet enetPacket = CreateENetPacket();
 
         if (Peers.Length == 0)
         {

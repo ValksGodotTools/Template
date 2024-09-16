@@ -76,9 +76,9 @@ public abstract class GamePacket
         return _cachedProperties;
     }
 
-    protected ENet.Packet CreateENetPacket()
+    protected Packet CreateENetPacket()
     {
-        ENet.Packet enetPacket = default;
+        Packet enetPacket = default;
         enetPacket.Create(_data, _packetFlags);
         return enetPacket;
     }

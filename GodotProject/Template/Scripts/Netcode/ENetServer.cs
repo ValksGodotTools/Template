@@ -255,7 +255,7 @@ public abstract class ENetServer : ENetLow
         }
 
         // Incoming
-        while (incoming.TryDequeue(out (ENet.Packet, Peer) packetPeer))
+        while (incoming.TryDequeue(out (Packet, Peer) packetPeer))
         {
             PacketReader packetReader = new(packetPeer.Item1);
             byte opcode = packetReader.ReadByte();
@@ -326,7 +326,7 @@ public abstract class ENetServer : ENetLow
 
     protected override void Receive(Event netEvent)
     {
-        ENet.Packet packet = netEvent.Packet;
+        Packet packet = netEvent.Packet;
 
         if (packet.Length > GamePacket.MaxSize)
         {
