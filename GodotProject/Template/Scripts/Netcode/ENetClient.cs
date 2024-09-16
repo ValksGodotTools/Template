@@ -81,7 +81,7 @@ public abstract class ENetClient : ENetLow
     /// Send a packet to the server. Packets are defined to be reliable by default. This
     /// function is thread safe.
     /// </summary>
-    public void Send(ClientPacket packet, PacketFlags flags = PacketFlags.Reliable)
+    public void Send(ClientPacket packet)
     {
         if (!IsConnected)
         {

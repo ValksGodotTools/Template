@@ -134,12 +134,12 @@ public partial class UIOptionsDisplay : Control
         text.ValidateNumber(_resY, 0, ScreenGetSize().Y, ref _prevNumY);
     }
 
-    private void _on_window_width_text_submitted(string t)
+    private void _on_window_width_text_submitted(string text)
     {
         ApplyWindowSize();
     }
 
-    private void _on_window_height_text_submitted(string t)
+    private void _on_window_height_text_submitted(string text)
     {
         ApplyWindowSize();
     }

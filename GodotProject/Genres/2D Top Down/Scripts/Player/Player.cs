@@ -44,13 +44,13 @@ public partial class Player : Character, INetPlayer
     {
         base._PhysicsProcess(delta);
 
-        HandleMovement(delta);
+        HandleMovement();
         HandleDash();
         HandleLookDirection(delta);
         UpdateControllerLookInputs(delta);
     }
 
-    private void HandleMovement(double delta)
+    private void HandleMovement()
     {
         Vector2 moveDirection = GetMoveDirection();
         _moveDirection = moveDirection;
