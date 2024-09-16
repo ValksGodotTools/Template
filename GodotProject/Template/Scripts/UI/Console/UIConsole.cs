@@ -321,10 +321,9 @@ public partial class UIConsole : PanelContainer
         {
             // Valk: Not entirely sure what is happening here other than
             // convert the input to a float.
-            float.TryParse(input.Replace(',', '.'),
+            float value = float.Parse(input.Replace(',', '.'),
                 style: NumberStyles.Any,
-                provider: CultureInfo.InvariantCulture,
-                result: out float value);
+                provider: CultureInfo.InvariantCulture);
 
             return value;
         }
