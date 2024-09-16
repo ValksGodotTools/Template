@@ -9,7 +9,7 @@ public partial class Torch : Node2D
     [Export] private double flickerRange = 0.05;
     [Export] private double pulseAmplitude = 0.1;
     [Export]
-    private float textureScale
+    private float TextureScale
     {
         get => _textureScale;
         set
