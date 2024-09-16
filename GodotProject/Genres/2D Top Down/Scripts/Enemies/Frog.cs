@@ -10,6 +10,7 @@ public partial class Frog : RigidBody2D
     [Export] private FrogResource _config;
     [Export] private AnimatedSprite2D _animatedSprite;
     [Export] private Area2D _area;
+
     private Player _player;
     private Vector2 _landTarget;
     private EntityComponent _entityComponent;
