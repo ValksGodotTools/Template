@@ -6,11 +6,11 @@ namespace Template.Example;
 [Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
 public partial class VisualizeExample : Sprite2D
 {
-	[Visualize] Vector2I _position;
-    [Visualize] float _rotation;
-    [Visualize] Color _color = Colors.White;
-    [Visualize] float _skew;
-    [Visualize] Vector2 _offset;
+	[Visualize] private Vector2I _position;
+    [Visualize] private float _rotation;
+    [Visualize] private Color _color = Colors.White;
+    [Visualize] private float _skew;
+    [Visualize] private Vector2 _offset;
 
     private readonly VisualLogger _logger = new();
 

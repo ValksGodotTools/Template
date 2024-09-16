@@ -7,7 +7,7 @@ namespace Template;
 [Visualize(nameof(_curState))]
 public partial class EntityComponent : Node
 {
-    State _curState;
+    private State _curState;
 
     public override void _Ready()
     {

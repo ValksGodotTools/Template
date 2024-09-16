@@ -4,7 +4,7 @@ namespace Template;
 
 public partial class UIMainMenu : Node
 {
-    [Export] GameState gameState;
+    [Export] private GameState gameState;
 
     public override void _Ready()
     {

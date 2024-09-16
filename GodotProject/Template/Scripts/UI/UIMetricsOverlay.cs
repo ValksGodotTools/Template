@@ -7,12 +7,12 @@ using Monitor = Performance.Monitor;
 
 public partial class UIMetricsOverlay : Control
 {
-    Label _labelFPS;
-    Label _labelMinRAM;
-    Label _labelMaxRAM;
-    Label _labelVidRAM;
-    Label _labelNodes;
-    Label _labelOrphanNodes;
+    private Label _labelFPS;
+    private Label _labelMinRAM;
+    private Label _labelMaxRAM;
+    private Label _labelVidRAM;
+    private Label _labelNodes;
+    private Label _labelOrphanNodes;
 
     public override void _Ready()
     {
@@ -47,7 +47,7 @@ public partial class UIMetricsOverlay : Control
         }
     }
 
-    void RenderPerformanceMetrics()
+    private void RenderPerformanceMetrics()
     {
         const int BYTES_IN_MEGABYTE = 1048576;
 

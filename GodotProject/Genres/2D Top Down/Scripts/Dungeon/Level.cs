@@ -8,9 +8,9 @@ using Template.TopDown2D;
 
 public partial class Level : Node, INetLevel
 {
-    [Export] Node entities;
-    [Export] PlayerCamera playerCamera;
-    [Export] RoomTransitions roomTransitions;
+    [Export] private Node entities;
+    [Export] private PlayerCamera playerCamera;
+    [Export] private RoomTransitions roomTransitions;
 
     public Player Player { get; set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = [];

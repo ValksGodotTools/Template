@@ -8,17 +8,17 @@ namespace Template;
 
 public partial class RoomTransitions : Node
 {
-    [Export] TileMapLayer tileMap; // Reference to the tile map layer
-    [Export] Camera2D playerCamera; // Reference to the player's camera
+    [Export] private TileMapLayer tileMap; // Reference to the tile map layer
+    [Export] private Camera2D playerCamera; // Reference to the player's camera
 
-    Player _player; // Reference to the player object
+    private Player _player; // Reference to the player object
 
-    Vector2I _currentRoom; // Current room coordinates
-    Vector2I _roomSize; // Size of each room
-    Vector2I _tileSize; // Size of each tile
+    private Vector2I _currentRoom; // Current room coordinates
+    private Vector2I _roomSize; // Size of each room
+    private Vector2I _tileSize; // Size of each tile
 
     // List to keep track of room boundary nodes
-    readonly List<Node2D> _roomBoundNodes = [];
+    private readonly List<Node2D> _roomBoundNodes = [];
 
     public override void _Ready()
     {

@@ -5,7 +5,7 @@ namespace Template;
 
 public partial class Env : WorldEnvironment
 {
-    [Export] OptionsManager options;
+    [Export] private OptionsManager options;
 
     public override void _Ready()
     {

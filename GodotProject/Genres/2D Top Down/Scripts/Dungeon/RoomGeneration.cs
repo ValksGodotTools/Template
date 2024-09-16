@@ -7,7 +7,7 @@ namespace Template;
 
 public partial class RoomGeneration : Node
 {
-    [Export] TileMapLayer tileMap;
+    [Export] private TileMapLayer tileMap;
 
     public override void _Ready()
     {

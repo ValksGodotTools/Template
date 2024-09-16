@@ -15,7 +15,7 @@ public class GameServiceProvider : ServiceProvider
         return service;
     }
 
-    void RemoveServiceOnSceneChanged(Service service)
+    private void RemoveServiceOnSceneChanged(Service service)
     {
         // Do not remove persistent services
         // Only remove services if the SceneManager service exists in services

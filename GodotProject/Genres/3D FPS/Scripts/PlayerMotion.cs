@@ -4,14 +4,14 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    float gravityForce = 10;
-    float jumpForce = 150;
-    float moveSpeed = 10;
-    float moveDampening = 20; // the higher the value, the less the player will slide
+    private float gravityForce = 10;
+    private float jumpForce = 150;
+    private float moveSpeed = 10;
+    private float moveDampening = 20; // the higher the value, the less the player will slide
 
-    Vector3 gravityVec;
+    private Vector3 gravityVec;
 
-    void OnPhysicsProcessMotion(double d)
+    private void OnPhysicsProcessMotion(double d)
     {
         MoveAndSlide();
 

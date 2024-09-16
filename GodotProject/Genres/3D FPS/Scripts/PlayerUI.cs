@@ -5,13 +5,12 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] OptionsManager options;
+    [Export] private OptionsManager options;
+    private Vector3 _cameraTarget;
+    private Vector2 _mouseInput;
+    private float _mouseSensitivity;
 
-    Vector3 _cameraTarget;
-    Vector2 _mouseInput;
-    float _mouseSensitivity;
-
-    void OnReadyUI()
+    private void OnReadyUI()
     {
         _mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
 
@@ -24,7 +23,7 @@ public partial class Player : CharacterBody3D
         };
     }
 
-    void OnPhysicsProcessUI()
+    private void OnPhysicsProcessUI()
     {
         if (Input.IsActionJustPressed("next_held_item"))
         {
@@ -37,7 +36,7 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    void OnInputUI(InputEvent @event)
+    private void OnInputUI(InputEvent @event)
     {
         if (Input.MouseMode != Input.MouseModeEnum.Captured)
             return;

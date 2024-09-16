@@ -5,7 +5,7 @@ namespace Template.Platformer2D.Retro;
 
 public partial class Player
 {
-    State Idle()
+    private State Idle()
     {
         State state = new(nameof(Idle));
 

@@ -11,8 +11,8 @@ public partial class UIPopupMenu : Control
 
     public WorldEnvironment WorldEnvironment { get; private set; }
 
-    VBoxContainer _vbox;
-    PanelContainer _menu;
+    private VBoxContainer _vbox;
+    private PanelContainer _menu;
     public UIOptions Options;
 
     public override void _Ready()
@@ -61,7 +61,7 @@ public partial class UIPopupMenu : Control
         }
     }
 
-    void TryFindWorldEnvironmentNode()
+    private void TryFindWorldEnvironmentNode()
     {
         Node node = GetTree().Root.FindChild("WorldEnvironment", 
             recursive: true, owned: false);
@@ -70,26 +70,26 @@ public partial class UIPopupMenu : Control
             WorldEnvironment = worldEnvironment;
     }
 
-    void _on_resume_pressed()
+    private void _on_resume_pressed()
     {
         Hide();
         GetTree().Paused = false;
     }
 
-    void _on_options_pressed()
+    private void _on_options_pressed()
     {
         Options.Show();
         _menu.Hide();
     }
 
-    void _on_main_menu_pressed()
+    private void _on_main_menu_pressed()
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
         Game.SwitchScene(Scene.UIMainMenu);
     }
 
-    async void _on_quit_pressed()
+    private async void _on_quit_pressed()
     {
         await GetNode<Global>("/root/Global").QuitAndCleanup();
     }

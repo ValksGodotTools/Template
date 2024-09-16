@@ -7,13 +7,13 @@ namespace Template;
 
 public partial class UIModLoader : Node
 {
-    Label _uiName;
-    Label _uiModVersion;
-    Label _uiGameVersion;
-    Label _uiDependencies;
-    Label _uiDescription;
-    Label _uiAuthors;
-    Label _uiIncompatibilities;
+    private Label _uiName;
+    private Label _uiModVersion;
+    private Label _uiGameVersion;
+    private Label _uiDependencies;
+    private Label _uiDescription;
+    private Label _uiAuthors;
+    private Label _uiIncompatibilities;
 
     public override void _Ready()
     {
@@ -60,7 +60,7 @@ public partial class UIModLoader : Node
         }
     }
 
-    void DisplayModInfo(ModInfo modInfo)
+    private void DisplayModInfo(ModInfo modInfo)
     {
         _uiName.Text = modInfo.Name;
         _uiModVersion.Text = modInfo.ModVersion;
@@ -78,14 +78,14 @@ public partial class UIModLoader : Node
         _uiAuthors.Text = modInfo.Author;
     }
 
-    async void _on_restart_game_pressed()
+    private async void _on_restart_game_pressed()
     {
         //OS.CreateProcess(OS.GetExecutablePath(), null);
         OS.CreateInstance(null);
         await GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
-    void _on_open_mods_folder_pressed()
+    private void _on_open_mods_folder_pressed()
     {
         Process.Start(new ProcessStartInfo(@$"{ProjectSettings.GlobalizePath("res://Mods")}") { UseShellExecute = true });
     }

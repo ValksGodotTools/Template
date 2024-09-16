@@ -5,7 +5,7 @@ namespace Template;
 [GlobalClass]
 public partial class GameState : Resource
 {
-    [Export] OptionsManager optionsManager;
+    [Export] private OptionsManager optionsManager;
 
     public GameState()
     {

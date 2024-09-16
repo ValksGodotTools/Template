@@ -5,10 +5,10 @@ namespace Template.Platformer2D.Retro;
 
 public partial class Player : Entity
 {
-    float _maxSpeed = 500;
-    float _acceleration = 40;
-    float _friction = 20;
-    float _gravity = 20;
+    private float _maxSpeed = 500;
+    private float _acceleration = 40;
+    private float _friction = 20;
+    private float _gravity = 20;
 
     public override void Update()
     {

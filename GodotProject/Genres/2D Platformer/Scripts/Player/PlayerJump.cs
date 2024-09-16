@@ -5,9 +5,9 @@ namespace Template.Platformer2D.Retro;
 
 public partial class Player
 {
-    PlayerJumpVars _jumpVars { get; } = new();
+    private PlayerJumpVars _jumpVars { get; } = new();
 
-    State Jump()
+    private State Jump()
     {
         State state = new(nameof(Jump));
 

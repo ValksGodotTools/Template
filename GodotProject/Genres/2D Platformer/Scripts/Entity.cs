@@ -6,9 +6,8 @@ namespace Template.Platformer2D.Retro;
 public abstract partial class Entity : CharacterBody2D
 {
     protected AnimatedSprite2D Sprite;
-
-    Label _stateLabel;
-    State _curState;
+    private Label _stateLabel;
+    private State _curState;
 
     public override void _Ready()
     {
@@ -48,7 +47,7 @@ public abstract partial class Entity : CharacterBody2D
     public virtual void Init() { }
     public virtual void Update() { }
 
-    void UpdateStateLabel(State state)
+    private void UpdateStateLabel(State state)
     {
         _stateLabel.Text = state.ToString();
         _stateLabel.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.CenterBottom);

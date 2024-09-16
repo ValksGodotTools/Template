@@ -10,9 +10,9 @@ namespace Template.Netcode;
 
 public class PacketReader : IDisposable
 {
-    readonly MemoryStream _stream;
-    readonly BinaryReader _reader;
-    readonly byte[] _readBuffer = new byte[GamePacket.MaxSize];
+    private readonly MemoryStream _stream;
+    private readonly BinaryReader _reader;
+    private readonly byte[] _readBuffer = new byte[GamePacket.MaxSize];
 
     public PacketReader(ENet.Packet packet)
     {

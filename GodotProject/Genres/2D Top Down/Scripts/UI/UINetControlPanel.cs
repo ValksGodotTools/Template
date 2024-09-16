@@ -6,11 +6,11 @@ namespace Template;
 
 public partial class UINetControlPanel : Control
 {
-    Net _net;
-    string _ip = "127.0.0.1";
-    ushort _port = 25565;
-    string _username = "";
-    string _prevUsername;
+    private Net _net;
+    private string _ip = "127.0.0.1";
+    private ushort _port = 25565;
+    private string _username = "";
+    private string _prevUsername;
 
     public override void _Ready()
     {

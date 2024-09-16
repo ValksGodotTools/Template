@@ -10,7 +10,7 @@ public abstract class ServerPacket : GamePacket
     public static Dictionary<Type, PacketInfo<ServerPacket>> PacketMap { get; } = NetcodeUtils.MapPackets<ServerPacket>();
     public static Dictionary<byte, Type> PacketMapBytes { get; set; } = [];
 
-    SendType _sendType;
+    private SendType _sendType;
 
     public static void MapOpcodes()
     {

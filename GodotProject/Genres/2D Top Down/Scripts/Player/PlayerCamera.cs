@@ -6,7 +6,7 @@ namespace Template;
 
 public partial class PlayerCamera : Camera2D
 {
-    Player _player;
+    private Player _player;
 
 	public override void _Ready()
 	{

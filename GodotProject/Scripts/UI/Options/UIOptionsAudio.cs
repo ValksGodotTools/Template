@@ -4,9 +4,8 @@ namespace Template;
 
 public partial class UIOptionsAudio : Control
 {
-    [Export] OptionsManager optionsManager;
-
-    ResourceOptions _options;
+    [Export] private OptionsManager optionsManager;
+    private ResourceOptions _options;
 
     public override void _Ready()
     {
@@ -15,24 +14,24 @@ public partial class UIOptionsAudio : Control
         SetupSounds();
     }
 
-    void SetupMusic()
+    private void SetupMusic()
     {
         HSlider slider = GetNode<HSlider>("%Music");
         slider.Value = _options.MusicVolume;
     }
 
-    void SetupSounds()
+    private void SetupSounds()
     {
         HSlider slider = GetNode<HSlider>("%Sounds");
         slider.Value = _options.SFXVolume;
     }
 
-    void _on_music_value_changed(float v)
+    private void _on_music_value_changed(float v)
     {
         Global.Services.Get<AudioManager>().SetMusicVolume(v);
     }
 
-    void _on_sounds_value_changed(float v)
+    private void _on_sounds_value_changed(float v)
     {
         Global.Services.Get<AudioManager>().SetSFXVolume(v);
     }

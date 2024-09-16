@@ -7,7 +7,7 @@ namespace Template;
 public partial class UIConsole
 {
     [ConsoleCommand("help")]
-    void Help()
+    private void Help()
     {
         IEnumerable<string> cmds = Game.Console.Commands.Select(x => x.Name);
 
@@ -15,13 +15,13 @@ public partial class UIConsole
     }
 
     [ConsoleCommand("quit", "exit")]
-    async void Quit()
+    private async void Quit()
     {
         await GetTree().Root.GetNode<Global>("/root/Global").QuitAndCleanup();
     }
 
     [ConsoleCommand("debug")]
-    void Debug(int x)
+    private void Debug(int x)
     {
         Game.Log(x);
     }

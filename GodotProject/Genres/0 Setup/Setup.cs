@@ -11,14 +11,14 @@ using System.IO;
 
 public partial class Setup : Node
 {
-    [Export] LineEdit lineEditGameName;
-    [Export] OptionButton genreOptionBtn;
-    [Export] PopupPanel popupPanel;
-    [Export] RichTextLabel gameNamePreview;
-    [Export] RichTextLabel genreSelectedInfo;
-    [Export] CheckButton checkButtonDeleteSetupScene;
-    [Export] CheckButton checkButtonDeleteOtherGenres;
-    [Export] CheckButton checkButtonMoveProjectFiles;
+    [Export] private LineEdit lineEditGameName;
+    [Export] private OptionButton genreOptionBtn;
+    [Export] private PopupPanel popupPanel;
+    [Export] private RichTextLabel gameNamePreview;
+    [Export] private RichTextLabel genreSelectedInfo;
+    [Export] private CheckButton checkButtonDeleteSetupScene;
+    [Export] private CheckButton checkButtonDeleteOtherGenres;
+    [Export] private CheckButton checkButtonMoveProjectFiles;
 
     private string _prevGameName = string.Empty;
     private Genre _genre;

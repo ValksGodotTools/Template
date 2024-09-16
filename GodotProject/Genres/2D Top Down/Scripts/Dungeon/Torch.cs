@@ -6,9 +6,10 @@ namespace Template;
 [Tool]
 public partial class Torch : Node2D
 {
-    [Export] double flickerRange = 0.05;
-    [Export] double pulseAmplitude = 0.1;
-    [Export] float textureScale
+    [Export] private double flickerRange = 0.05;
+    [Export] private double pulseAmplitude = 0.1;
+    [Export]
+    private float textureScale
     {
         get => _textureScale;
         set
@@ -21,11 +22,10 @@ public partial class Torch : Node2D
         }
     }
 
-    [Visualize] double energy = 1;
-    PointLight2D _light;
-    float _textureScale = 1;
-
-    VisualLogger _visualLogger = new();
+    [Visualize] private double energy = 1;
+    private PointLight2D _light;
+    private float _textureScale = 1;
+    private VisualLogger _visualLogger = new();
 
     public override void _Ready()
     {

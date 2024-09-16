@@ -5,11 +5,10 @@ namespace Template;
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 public partial class CameraShakeComponent : Node
 {
-    CameraShakeConfig _config;
-    Camera2D _camera;
-
-    double _remainingTime;
-    double _freqCounter;
+    private CameraShakeConfig _config;
+    private Camera2D _camera;
+    private double _remainingTime;
+    private double _freqCounter;
 
 	public override void _Ready()
 	{

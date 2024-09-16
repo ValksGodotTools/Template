@@ -12,13 +12,13 @@ public partial class UIConsole : PanelContainer
 {
     public event Action<bool> OnToggleVisibility;
 
-    TextEdit _feed;
-    LineEdit _input;
-    Button _settingsBtn;
-    PopupPanel _settingsPopup;
-    CheckBox _settingsAutoScroll;
-    readonly ConsoleHistory _history = new();
-    bool _autoScroll = true;
+    private TextEdit _feed;
+    private LineEdit _input;
+    private Button _settingsBtn;
+    private PopupPanel _settingsPopup;
+    private CheckBox _settingsAutoScroll;
+    private readonly ConsoleHistory _history = new();
+    private bool _autoScroll = true;
 
     public List<ConsoleCommandInfo> Commands { get; } = [];
 
@@ -88,19 +88,19 @@ public partial class UIConsole : PanelContainer
         }
     }
 
-    void ScrollDown()
+    private void ScrollDown()
     {
         if (_autoScroll)
             _feed.ScrollVertical = (int)_feed.GetVScrollBar().MaxValue;
     }
 
-    void OnSettingsBtnPressed()
+    private void OnSettingsBtnPressed()
     {
         if (!_settingsPopup.Visible)
             _settingsPopup.PopupCentered();
     }
 
-    void LoadCommands()
+    private void LoadCommands()
     {
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
@@ -131,7 +131,7 @@ public partial class UIConsole : PanelContainer
         }
     }
 
-    void TryLoadCommand(ConsoleCommandAttribute cmd, MethodInfo method)
+    private void TryLoadCommand(ConsoleCommandAttribute cmd, MethodInfo method)
     {
         if (Commands.FirstOrDefault(x => x.Name == cmd.Name) != null)
         {
@@ -146,7 +146,7 @@ public partial class UIConsole : PanelContainer
         });
     }
 
-    bool ProcessCommand(string text)
+    private bool ProcessCommand(string text)
     {
         ConsoleCommandInfo cmd = TryGetCommand(text.Split()[0].ToLower());
 
@@ -177,7 +177,7 @@ public partial class UIConsole : PanelContainer
         return true;
     }
 
-    ConsoleCommandInfo TryGetCommand(string text)
+    private ConsoleCommandInfo TryGetCommand(string text)
     {
         ConsoleCommandInfo cmd =
             Commands.Find(cmd =>
@@ -199,7 +199,7 @@ public partial class UIConsole : PanelContainer
         return cmd;
     }
 
-    void OnConsoleInputEntered(string text)
+    private void OnConsoleInputEntered(string text)
     {
         // case sensitivity and trailing spaces should not factor in here
         string inputToLowerTrimmed = text.Trim().ToLower();
@@ -222,7 +222,7 @@ public partial class UIConsole : PanelContainer
         _input.Clear();
     }
 
-    void InputNavigateHistory()
+    private void InputNavigateHistory()
     {
         // If console is not visible or there is no history to navigate do nothing
         if (!Visible || _history.NoHistory())
@@ -250,13 +250,13 @@ public partial class UIConsole : PanelContainer
     }
 
     #region Helper Functions
-    void SetCaretColumn(int pos)
+    private void SetCaretColumn(int pos)
     {
         _input.CallDeferred(LineEdit.MethodName.GrabFocus);
         _input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
     }
 
-    object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
+    private object[] ConvertMethodParams(MethodInfo method, string[] rawCmdSplit)
     {
         ParameterInfo[] paramInfos = method.GetParameters();
         object[] parameters = new object[paramInfos.Length];
@@ -272,7 +272,7 @@ public partial class UIConsole : PanelContainer
         return parameters;
     }
 
-    object GetMethodInstance(Type type)
+    private object GetMethodInstance(Type type)
     {
         object instance;
 
@@ -291,7 +291,7 @@ public partial class UIConsole : PanelContainer
         return instance;
     }
 
-    object ConvertStringToType(string input, Type targetType)
+    private object ConvertStringToType(string input, Type targetType)
     {
         if (targetType == typeof(string))
             return input;
@@ -334,7 +334,7 @@ public partial class UIConsole : PanelContainer
 
     // Valk: I have not tested this code to see if it works with 100%
     // no errors.
-    Node FindNodeByType(Node root, Type targetType)
+    private Node FindNodeByType(Node root, Type targetType)
     {
         if (root.GetType() == targetType)
             return root;

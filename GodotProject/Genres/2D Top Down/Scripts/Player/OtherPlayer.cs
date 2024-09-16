@@ -6,7 +6,7 @@ public partial class OtherPlayer : Node2D
 {
     public Vector2 LastServerPosition { get; set; }
 
-    float _smoothFactor;
+    private float _smoothFactor;
 
     public override void _Ready()
     {

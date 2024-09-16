@@ -7,9 +7,8 @@ public partial class UIOptionsGameplay : Control
 {
     public event Action<float> OnMouseSensitivityChanged;
 
-    [Export] OptionsManager optionsManager;
-
-    ResourceOptions _options;
+    [Export] private OptionsManager optionsManager;
+    private ResourceOptions _options;
 
     public override void _Ready()
     {
@@ -18,24 +17,24 @@ public partial class UIOptionsGameplay : Control
         SetupMouseSensitivity();
     }
 
-    void SetupDifficulty()
+    private void SetupDifficulty()
     {
         GetNode<OptionButton>("%Difficulty").Select((int)_options.Difficulty);
     }
 
-    void SetupMouseSensitivity()
+    private void SetupMouseSensitivity()
     {
         GetNode<HSlider>("%Sensitivity").Value = _options.MouseSensitivity;
     }
 
-    void _on_difficulty_item_selected(int index)
+    private void _on_difficulty_item_selected(int index)
     {
         // todo: update the difficulty in realtime
 
         _options.Difficulty = (Difficulty)index;
     }
 
-    void _on_sensitivity_value_changed(float value)
+    private void _on_sensitivity_value_changed(float value)
     {
         _options.MouseSensitivity = value;
         OnMouseSensitivityChanged?.Invoke(value);

@@ -5,7 +5,7 @@ namespace Template.Example;
 
 public partial class ExampleScene : Node
 {
-	Camera2D _camera;
+    private Camera2D _camera;
 
 	private const int CAMERA_SPEED = 5;
 

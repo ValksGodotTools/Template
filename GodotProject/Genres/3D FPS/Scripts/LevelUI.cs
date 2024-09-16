@@ -4,7 +4,7 @@ namespace Template;
 
 public partial class LevelUI : Node
 {
-    UIPopupMenu _popupMenu;
+    private UIPopupMenu _popupMenu;
 
     public override void _Ready()
     {
@@ -29,7 +29,7 @@ public partial class LevelUI : Node
         };
     }
 
-    void HandleConsoleToggled(bool visible)
+    private void HandleConsoleToggled(bool visible)
     {
         SetPhysicsProcess(!visible);
         SetProcessInput(!visible);

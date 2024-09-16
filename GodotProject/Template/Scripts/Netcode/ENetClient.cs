@@ -159,9 +159,8 @@ public abstract class ENetClient : ENetLow
     private readonly ConcurrentQueue<PacketData> _godotPackets = new();
     private readonly ConcurrentQueue<ENet.Packet> _incoming = new();
     private readonly ConcurrentQueue<Cmd<ENetClientOpcode>> _enetCmds = new();
-
-    Peer _peer;
-    long _connected;
+    private Peer _peer;
+    private long _connected;
 
     static ENetClient()
     {
@@ -266,7 +265,7 @@ public abstract class ENetClient : ENetLow
         _incoming.Enqueue(packet);
     }
 
-    void WorkerThread(string ip, ushort port)
+    private void WorkerThread(string ip, ushort port)
     {
         Host = new Host();
         Address address = new()

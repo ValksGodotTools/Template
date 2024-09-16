@@ -14,7 +14,7 @@ public partial class SceneManager : Node
 
     public Node CurrentScene { get; private set; }
 
-    SceneTree _tree;
+    private SceneTree _tree;
 
     public override void _Ready()
     {
@@ -154,7 +154,7 @@ public partial class SceneManager : Node
         Fade
     }
 
-    enum TransColor
+    private enum TransColor
     {
         Black,
         Transparent

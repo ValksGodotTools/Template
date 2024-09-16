@@ -14,9 +14,9 @@ public abstract class GamePacket
     protected byte ChannelId { get; }
 
     // Packets are reliable by default
-    readonly PacketFlags _packetFlags = PacketFlags.Reliable;
-    long _size;
-    byte[] _data;
+    private readonly PacketFlags _packetFlags = PacketFlags.Reliable;
+    private long _size;
+    private byte[] _data;
 
     public void Write()
     {

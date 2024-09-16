@@ -14,7 +14,7 @@ public partial class Global : Node
     /// </summary>
     public event Func<Task> OnQuit;
 
-    [Export] OptionsManager optionsManager;
+    [Export] private OptionsManager optionsManager;
 
 	public override void _Ready()
 	{

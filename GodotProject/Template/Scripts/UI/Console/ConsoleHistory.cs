@@ -4,9 +4,9 @@ namespace Template;
 
 public class ConsoleHistory
 {
-    readonly Dictionary<int, string> _inputHistory = [];
-    int _inputHistoryIndex;
-    int _inputHistoryNav;
+    private readonly Dictionary<int, string> _inputHistory = [];
+    private int _inputHistoryIndex;
+    private int _inputHistoryNav;
 
     /// <summary>
     /// Add text to history

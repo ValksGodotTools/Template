@@ -55,7 +55,7 @@ public partial class OptionsManager : Resource
         SaveResource(Hotkeys, nameof(Hotkeys));
     }
 
-    void SaveResource(Resource resource, string name)
+    private void SaveResource(Resource resource, string name)
     {
         Error error = ResourceSaver.Save(
             resource: resource,
@@ -86,7 +86,7 @@ public partial class OptionsManager : Resource
         LoadInputMap(DefaultHotkeys);
     }
 
-    void LoadOptions()
+    private void LoadOptions()
     {
         bool fileExists = FileAccess.FileExists("user://options.tres");
 
@@ -118,7 +118,7 @@ public partial class OptionsManager : Resource
         Options = GD.Load<ResourceOptions>("user://options.tres");
     }
 
-    void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
+    private void LoadInputMap(Dictionary<StringName, Array<InputEvent>> hotkeys)
     {
         Array<StringName> actions = InputMap.GetActions();
 
@@ -134,7 +134,7 @@ public partial class OptionsManager : Resource
         }
     }
 
-    void GetDefaultHotkeys()
+    private void GetDefaultHotkeys()
     {
         // Get all the default actions defined in the input map
         Dictionary<StringName, Array<InputEvent>> actions = [];
@@ -150,7 +150,7 @@ public partial class OptionsManager : Resource
         DefaultHotkeys = actions;
     }
 
-    void LoadHotkeys()
+    private void LoadHotkeys()
     {
         bool fileExists = FileAccess.FileExists("user://hotkeys.tres");
 
@@ -174,14 +174,14 @@ public partial class OptionsManager : Resource
         }
     }
 
-    bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
+    private bool ActionsAreEqual(Dictionary<StringName, Array<InputEvent>> dict1,
                          Dictionary<StringName, Array<InputEvent>> dict2)
     {
         return dict1.Count == dict2.Count &&
         dict1.All(pair => dict2.ContainsKey(pair.Key));
     }
 
-    void SetWindowMode()
+    private void SetWindowMode()
     {
         switch (Options.WindowMode)
         {
@@ -197,26 +197,26 @@ public partial class OptionsManager : Resource
         }
     }
 
-    void SwitchToFullscreen()
+    private void SwitchToFullscreen()
     {
         DisplayServer.WindowSetMode(DisplayServer.WindowMode.ExclusiveFullscreen);
         Options.WindowMode = WindowMode.Fullscreen;
         WindowModeChanged?.Invoke(WindowMode.Fullscreen);
     }
 
-    void SwitchToWindow()
+    private void SwitchToWindow()
     {
         DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
         Options.WindowMode = WindowMode.Windowed;
         WindowModeChanged?.Invoke(WindowMode.Windowed);
     }
 
-    void SetVSyncMode()
+    private void SetVSyncMode()
     {
         DisplayServer.WindowSetVsyncMode(Options.VSyncMode);
     }
 
-    void SetWinSize()
+    private void SetWinSize()
     {
         if (Options.WindowSize != Vector2I.Zero)
         {
@@ -229,7 +229,7 @@ public partial class OptionsManager : Resource
         }
     }
 
-    void SetMaxFPS()
+    private void SetMaxFPS()
     {
         if (DisplayServer.WindowGetVsyncMode() == DisplayServer.VSyncMode.Disabled)
         {
@@ -237,13 +237,13 @@ public partial class OptionsManager : Resource
         }
     }
 
-    void SetLanguage()
+    private void SetLanguage()
     {
         TranslationServer.SetLocale(
         Options.Language.ToString().Substring(0, 2).ToLower());
     }
 
-    void SetAntialiasing()
+    private void SetAntialiasing()
     {
         // Set both 2D and 3D settings to the same value
         ProjectSettings.SetSetting(

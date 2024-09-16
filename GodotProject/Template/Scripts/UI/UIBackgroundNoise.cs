@@ -4,13 +4,12 @@ namespace Template;
 
 public partial class UIBackgroundNoise : Sprite2D
 {
-    const int SPEED = 20;
-    const int AMPLITUDE_X = 200;
-    const int AMPLITUDE_Y = 100;
-
-    FastNoiseLite _fnlAngle1, _fnlAngle2;
-    static float _timeElpased;
-    Vector2 _defaultPosition;
+    private const int SPEED = 20;
+    private const int AMPLITUDE_X = 200;
+    private const int AMPLITUDE_Y = 100;
+    private FastNoiseLite _fnlAngle1, _fnlAngle2;
+    private static float _timeElpased;
+    private Vector2 _defaultPosition;
 
     public override void _Ready()
     {
@@ -36,7 +35,7 @@ public partial class UIBackgroundNoise : Sprite2D
         Position = _defaultPosition + offset;
     }
 
-    void ResizeBackground()
+    private void ResizeBackground()
     {
         Vector2I winSize = DisplayServer.WindowGetSize();
         Vector2 texSize = Texture.GetSize();
@@ -53,7 +52,7 @@ public partial class UIBackgroundNoise : Sprite2D
         _defaultPosition = Position;
     }
 
-    FastNoiseLite InitNoise(int seed = 0)
+    private FastNoiseLite InitNoise(int seed = 0)
     {
         return new FastNoiseLite
         {

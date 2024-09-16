@@ -12,7 +12,7 @@ public class PacketWriter : IDisposable
 {
     public MemoryStream Stream { get; } = new();
 
-    readonly BinaryWriter _writer;
+    private readonly BinaryWriter _writer;
 
     public PacketWriter() => _writer = new BinaryWriter(Stream);
 

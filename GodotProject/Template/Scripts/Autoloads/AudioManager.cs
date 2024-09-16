@@ -5,12 +5,11 @@ namespace Template;
 
 public partial class AudioManager : Node
 {
-    [Export] OptionsManager optionsManager;
-
-    GAudioPlayer _musicPlayer;
-    Node _sfxPlayersParent;
-    float _lastPitch;
-    ResourceOptions _options;
+    [Export] private OptionsManager optionsManager;
+    private GAudioPlayer _musicPlayer;
+    private Node _sfxPlayersParent;
+    private float _lastPitch;
+    private ResourceOptions _options;
 
     public override void _Ready()
     {

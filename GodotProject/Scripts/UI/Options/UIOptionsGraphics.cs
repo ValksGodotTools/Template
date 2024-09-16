@@ -9,10 +9,9 @@ public partial class UIOptionsGraphics : Control
 {
     public event Action<int> OnAntialiasingChanged;
 
-    [Export] OptionsManager optionsManager;
-
-    ResourceOptions _options;
-    OptionButton _antialiasing;
+    [Export] private OptionsManager optionsManager;
+    private ResourceOptions _options;
+    private OptionButton _antialiasing;
 
     public override void _Ready()
     {
@@ -22,7 +21,7 @@ public partial class UIOptionsGraphics : Control
         SetupWorldEnvironmentSettings();
     }
 
-    void SetupWorldEnvironmentSettings()
+    private void SetupWorldEnvironmentSettings()
     {
         AddNewSetting("GLOW", 
             (checkbox) =>
@@ -57,7 +56,7 @@ public partial class UIOptionsGraphics : Control
                 environment.SsrEnabled = pressed);
     }
 
-    void AddNewSetting(string name, Action<CheckBox> setPressed, Action<bool> saveOption, Action<Environment, bool> applyInGame)
+    private void AddNewSetting(string name, Action<CheckBox> setPressed, Action<bool> saveOption, Action<Environment, bool> applyInGame)
     {
         HBoxContainer hbox = new();
 
@@ -92,26 +91,26 @@ public partial class UIOptionsGraphics : Control
         AddChild(hbox);
     }
 
-    void SetupQualityPreset()
+    private void SetupQualityPreset()
     {
         OptionButton optionBtnQualityPreset = GetNode<OptionButton>("%QualityMode");
         optionBtnQualityPreset.Select((int)_options.QualityPreset);
     }
 
-    void SetupAntialiasing()
+    private void SetupAntialiasing()
     {
         _antialiasing = GetNode<OptionButton>("%Antialiasing");
         _antialiasing.Select(_options.Antialiasing);
     }
 
-    void _on_quality_mode_item_selected(int index)
+    private void _on_quality_mode_item_selected(int index)
     {
         // todo: setup quality preset and change other settings
 
         _options.QualityPreset = (QualityPreset)index;
     }
 
-    void _on_antialiasing_item_selected(int index)
+    private void _on_antialiasing_item_selected(int index)
     {
         _options.Antialiasing = index;
         OnAntialiasingChanged?.Invoke(index);

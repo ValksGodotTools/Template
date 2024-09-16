@@ -4,9 +4,8 @@ namespace Template;
 
 public partial class UIOptionsGeneral : Control
 {
-    [Export] OptionsManager optionsManager;
-
-    ResourceOptions _options;
+    [Export] private OptionsManager optionsManager;
+    private ResourceOptions _options;
 
     public override void _Ready()
     {
@@ -14,13 +13,13 @@ public partial class UIOptionsGeneral : Control
         SetupLanguage();
     }
 
-    void SetupLanguage()
+    private void SetupLanguage()
     {
         OptionButton optionButtonLanguage = GetNode<OptionButton>("%Language");
         optionButtonLanguage.Select((int)_options.Language);
     }
 
-    void _on_language_item_selected(int index)
+    private void _on_language_item_selected(int index)
     {
         string locale = ((Language)index).ToString().Substring(0, 2).ToLower();
 

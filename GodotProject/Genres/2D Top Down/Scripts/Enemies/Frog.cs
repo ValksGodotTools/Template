@@ -7,12 +7,11 @@ namespace Template;
 
 public partial class Frog : RigidBody
 {
-    [Export] FrogResource _config;
-    [Export] AnimatedSprite2D _animatedSprite;
-    [Export] Area2D _area;
-
-    Player _player;
-    Vector2 _landTarget;
+    [Export] private FrogResource _config;
+    [Export] private AnimatedSprite2D _animatedSprite;
+    [Export] private Area2D _area;
+    private Player _player;
+    private Vector2 _landTarget;
 
     public override void _Ready()
     {
@@ -52,7 +51,7 @@ public partial class Frog : RigidBody
         };
     }
 
-    State Slide()
+    private State Slide()
     {
         State state = new(nameof(Slide))
         {
@@ -74,7 +73,7 @@ public partial class Frog : RigidBody
         return state;
     }
 
-    State PreJump()
+    private State PreJump()
     {
         GTween tweenShake = new(_animatedSprite);
         Vector2 prevSpritePos = Vector2.Zero;
@@ -111,7 +110,7 @@ public partial class Frog : RigidBody
         return state;
     }
 
-    State Jump()
+    private State Jump()
     {
         State state = new(nameof(Jump))
         {

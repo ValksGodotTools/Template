@@ -9,11 +9,10 @@ using Godot.Collections;
 
 public partial class UIOptionsInput : Control
 {
-    [Export] OptionsManager optionsManager;
-
-    static BtnInfo _btnNewInput; // the btn waiting for new input
-    Dictionary<StringName, Array<InputEvent>> _defaultActions;
-    VBoxContainer _content;
+    [Export] private OptionsManager optionsManager;
+    private static BtnInfo _btnNewInput; // the btn waiting for new input
+    private Dictionary<StringName, Array<InputEvent>> _defaultActions;
+    private VBoxContainer _content;
 
     public override void _Ready()
     {
@@ -82,7 +81,7 @@ public partial class UIOptionsInput : Control
         @event.Dispose(); // Object count was increasing a lot when this function was executed
     }
 
-    void HandleInput(InputEvent @event)
+    private void HandleInput(InputEvent @event)
     {
         StringName action = _btnNewInput.Action;
 
@@ -123,7 +122,7 @@ public partial class UIOptionsInput : Control
         _btnNewInput = null;
     }
 
-    GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
+    private GButton CreateButton(string action, InputEvent inputEvent, HBoxContainer hbox)
     {
         string readable = "";
 
@@ -164,7 +163,7 @@ public partial class UIOptionsInput : Control
         return btn;
     }
 
-    void CreateButtonPlus(string action, HBoxContainer hbox)
+    private void CreateButtonPlus(string action, HBoxContainer hbox)
     {
         // Create the button
         GButton btn = new("+");
@@ -195,7 +194,7 @@ public partial class UIOptionsInput : Control
         hbox.AddChild(btn);
     }
 
-    void CreateHotkeys()
+    private void CreateHotkeys()
     {
         // Loop through the actions in alphabetical order
         foreach (StringName action in optionsManager.Hotkeys.Actions.Keys.OrderBy(x => x.ToString()))
@@ -249,7 +248,7 @@ public partial class UIOptionsInput : Control
         }
     }
 
-    void _on_reset_to_defaults_pressed()
+    private void _on_reset_to_defaults_pressed()
     {
         for (int i = 0; i < _content.GetChildren().Count; i++)
             if (_content.GetChild(i) != this)

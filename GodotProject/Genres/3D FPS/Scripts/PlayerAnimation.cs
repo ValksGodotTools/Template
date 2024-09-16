@@ -6,22 +6,20 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] BoneAttachment3D cameraBone;
-    [Export] AnimationTree animTree;
-    [Export] Node3D fpsRig;
-    [Export] Node3D nodeItems;
+    [Export] private BoneAttachment3D cameraBone;
+    [Export] private AnimationTree animTree;
+    [Export] private Node3D fpsRig;
+    [Export] private Node3D nodeItems;
 
     //bool isReloading { get => animTree.GetCondition("reload"); }
 
-    List<Item> _items = [];
-    int _curItemIndex;
+    private List<Item> _items = [];
+    private int _curItemIndex;
+    private Camera3D _camera;
+    private Vector3 _camOffset;
+    private bool _switchingGuns;
 
-    Camera3D _camera;
-    Vector3 _camOffset;
-
-    bool _switchingGuns;
-
-    void OnReadyAnimation()
+    private void OnReadyAnimation()
     {
         _camera = GetNode<Camera3D>("%Camera3D");
         _camOffset = _camera.Position - Position;
@@ -83,7 +81,7 @@ public partial class Player : CharacterBody3D
         };
     }
 
-    void OnPhysicsProcessAnimation()
+    private void OnPhysicsProcessAnimation()
     {
         // Mouse motion
         Quaternion camTarget = Quaternion.FromEuler(_cameraTarget);
@@ -115,7 +113,7 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    Quaternion GetAnimationRotations()
+    private Quaternion GetAnimationRotations()
     {
         // The camera bone
         Quaternion camBoneQuat = new(cameraBone.Basis);
@@ -130,7 +128,7 @@ public partial class Player : CharacterBody3D
     // We have to re-create the camera bone everytime because if we do not, for some reason
     // Godot has decided to output an error if we try to set the external skeleton to
     // another skeleton
-    void RecreateCameraBone(int itemIndex)
+    private void RecreateCameraBone(int itemIndex)
     {
         if (GodotObject.IsInstanceValid(cameraBone))
             cameraBone.QueueFree();

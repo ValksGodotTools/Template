@@ -4,8 +4,8 @@ using System;
 namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
-{   
-    event Action OnFinishedReload;
+{
+    private event Action OnFinishedReload;
 
     public override void _Ready()
     {
