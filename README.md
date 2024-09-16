@@ -563,14 +563,32 @@ A: Feel free to search for your issue in the repository's [issues section](https
 
 ## Contributing
 
-Before you jump into contributing, take a moment to review the [Coding Style Guidelines](https://github.com/ValksGodotTools/Template/wiki/Code-Style-Document). If you have any questions you can talk to me on Discord, my username is `valky5`.
+### 🛠️ Development Guidelines
+
+- **Coding Standards**: Follow the existing coding style and conventions used in the project. Refer to the [Coding Standards](https://github.com/ValksGodotTools/Template/wiki/Code-Style-Document) document if unsure.
+  
+- **Testing**: Ensure your changes do not break existing functionality.
+
+### 📚 Resources
+
+- [Godot C# Documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/index.html)
+- [ENet-CSharp Documentation](https://github.com/nxrighthere/ENet-CSharp?tab=readme-ov-file#api-reference)
+- [Microsoft Learn - C#](https://learn.microsoft.com/en-us/dotnet/csharp/)
+
+### 🗣️ Communication
+
+- Open an issue on the [Issues](https://github.com/ValksGodotTools/Template/issues) page if you find a bug or have a feature request
+- If you have any questions you can contact me over Discord, my username is `valky5`
 
 [![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues)
-[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/help%20wanted?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp%20wanted)
-[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/good%20first%20issue?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3Agood%20first%20issue)
-[![GitHub open pull requests count](https://img.shields.io/github/issues-pr/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/pulls)
 
 ## Credits
-For all credit to in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt).
 
-Huge thank you to the people in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
+### Special Thanks
+
+- Thank you to everyone in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
+- Thank you [Brian Shao](https://github.com/cydq) for helping with cross-platform compatibility, fixing the source generator and helping with the Visualize tool.
+
+### Game Assets
+
+For all in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt). Not all assets will be listed here but there should be a `credit.txt` file next to each asset in the project.
