@@ -4,7 +4,7 @@ using GodotUtils;
 namespace Template.TopDown2D;
 
 [Visualize(nameof(Position), nameof(Velocity))]
-public partial class Player : Character, INetPlayer
+public partial class Player : CharacterBody2D, INetPlayer
 {
     [Visualize] [Export] private PlayerResource _config;
 
@@ -19,16 +19,17 @@ public partial class Player : Character, INetPlayer
     private bool _canDash;
     private Vector2 _targetLookDirection;
     private Vector2 _currentLookDirection;
+    private EntityComponent _entityComponent;
 
     public override void _Ready()
     {
-        base._Ready();
         InitializeComponents();
         ResetDashState();
     }
 
     private void InitializeComponents()
     {
+        _entityComponent = this.GetNode<EntityComponent>();
         _client = Game.Net.Client;
         _sprite = GetNode<Sprite2D>("Sprite2D");
         _cursor = GetNode<Sprite2D>("Cursor");
@@ -42,8 +43,7 @@ public partial class Player : Character, INetPlayer
 
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
-
+        MoveAndSlide();
         HandleMovement();
         HandleDash();
         HandleLookDirection(delta);

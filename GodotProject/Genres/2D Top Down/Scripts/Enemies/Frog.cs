@@ -5,50 +5,56 @@ using Template.TopDown2D;
 
 namespace Template;
 
-public partial class Frog : RigidBody
+public partial class Frog : RigidBody2D
 {
     [Export] private FrogResource _config;
     [Export] private AnimatedSprite2D _animatedSprite;
     [Export] private Area2D _area;
     private Player _player;
     private Vector2 _landTarget;
+    private EntityComponent _entityComponent;
 
     public override void _Ready()
     {
-        base._Ready();
+        _entityComponent = this.GetNode<EntityComponent>();
+        _entityComponent.SwitchState(Idle());
 
         Modulate = _config.Color;
 
         _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
         _area.BodyEntered += body =>
         {
-            if (EntityComponent.IsState("idle"))
+            if (_entityComponent.IsState("idle"))
             {
                 if (body is Player player)
                 {
                     this._player = player;
-                    EntityComponent.SwitchState(PreJump());
+                    _entityComponent.SwitchState(PreJump());
                 }
             }
         };
     }
 
-    public override void IdleState(State state)
+    public State Idle()
     {
-        state.Enter = () =>
+        State state = new(nameof(Idle))
         {
-            _animatedSprite.PlayRandom("idle");
-
-            GTween.Delay(this, 1, () =>
+            Enter = () =>
             {
-                _area.SetDeferred(Area2D.PropertyName.Monitoring, true);
-            });
+                _animatedSprite.PlayRandom("idle");
+
+                GTween.Delay(this, 1, () =>
+                {
+                    _area.SetDeferred(Area2D.PropertyName.Monitoring, true);
+                });
+            },
+            Exit = () =>
+            {
+                _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
+            }
         };
 
-        state.Exit = () =>
-        {
-            _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
-        };
+        return state;
     }
 
     private State Slide()
@@ -66,7 +72,7 @@ public partial class Frog : RigidBody
                     .SetAnimatingProp(Node2D.PropertyName.Scale)
                     .AnimateProp(_animatedSprite.Scale * new Vector2(1.3f, 0.5f), 0.2).EaseOut()
                     .AnimateProp(_animatedSprite.Scale * new Vector2(1, 1), 0.3).EaseOut()
-                    .Callback(() => EntityComponent.SwitchState(Idle()));
+                    .Callback(() => _entityComponent.SwitchState(Idle()));
             }
         };
 
@@ -95,7 +101,7 @@ public partial class Frog : RigidBody
 
                 GTween.Delay(this, 1, () =>
                 {
-                    EntityComponent.SwitchState(Jump());
+                    _entityComponent.SwitchState(Jump());
                 });
             },
 
@@ -138,7 +144,7 @@ public partial class Frog : RigidBody
                         this.SetCollisionLayerAndMask(2);
                     })
                     .AnimateProp(_animatedSprite.Scale * Vector2.One, jump_time * 0.5)
-                    .Callback(() => EntityComponent.SwitchState(Idle()));
+                    .Callback(() => _entityComponent.SwitchState(Idle()));
             }
         };
 
