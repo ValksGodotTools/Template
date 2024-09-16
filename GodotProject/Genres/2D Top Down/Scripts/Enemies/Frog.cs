@@ -21,23 +21,24 @@ public partial class Frog : RigidBody2D
         _entityComponent.SwitchState(Idle());
 
         Modulate = _config.Color;
+    }
 
-        _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
-        _area.BodyEntered += body =>
+    private void BodyEnteredCallback(Node2D body)
+    {
+        if (_entityComponent.IsState(nameof(Idle)))
         {
-            if (_entityComponent.IsState("idle"))
+            if (body is Player player)
             {
-                if (body is Player player)
-                {
-                    _player = player;
-                    _entityComponent.SwitchState(PreJump());
-                }
+                _player = player;
+                _entityComponent.SwitchState(PreJump());
             }
-        };
+        }
     }
 
     public State Idle()
     {
+        GTween delayUntilSlide = null;
+
         State state = new(nameof(Idle))
         {
             Enter = () =>
@@ -46,11 +47,19 @@ public partial class Frog : RigidBody2D
 
                 GTween.Delay(this, 1, () =>
                 {
+                    _area.BodyEntered += BodyEnteredCallback;
                     _area.SetDeferred(Area2D.PropertyName.Monitoring, true);
+
+                    delayUntilSlide = GTween.Delay(this, 1, () =>
+                    {
+                        _entityComponent.SwitchState(Slide());
+                    });
                 });
             },
             Exit = () =>
             {
+                delayUntilSlide?.Stop();
+                _area.BodyEntered -= BodyEnteredCallback;
                 _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
             }
         };
@@ -65,7 +74,7 @@ public partial class Frog : RigidBody2D
             Enter = () =>
             {
                 Vector2 target = Position + GMath.RandDir() * 100;
-                Vector2 force = (target - Position);
+                Vector2 force = (target - Position) * 3;
 
                 ApplyCentralImpulse(force);
 
