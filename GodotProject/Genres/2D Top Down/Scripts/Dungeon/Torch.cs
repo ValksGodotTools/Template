@@ -25,7 +25,7 @@ public partial class Torch : Node2D
     [Visualize] private double energy = 1;
     private PointLight2D _light;
     private float _textureScale = 1;
-    private VisualLogger _visualLogger = new();
+    private readonly VisualLogger _visualLogger = new();
 
     public override void _Ready()
     {

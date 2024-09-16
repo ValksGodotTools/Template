@@ -5,7 +5,7 @@ namespace Template;
 
 public partial class UIManager : Node
 {
-    private static List<Control> _rootControls = [];
+    private static readonly List<Control> _rootControls = [];
 
     public override void _Ready()
 	{

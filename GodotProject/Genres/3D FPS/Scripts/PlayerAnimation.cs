@@ -13,7 +13,7 @@ public partial class Player : CharacterBody3D
 
     //bool isReloading { get => animTree.GetCondition("reload"); }
 
-    private List<Item> _items = [];
+    private readonly List<Item> _items = [];
     private int _curItemIndex;
     private Camera3D _camera;
     private Vector3 _camOffset;
