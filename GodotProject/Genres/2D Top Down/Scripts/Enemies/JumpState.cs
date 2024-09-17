@@ -10,7 +10,7 @@ public partial class JumpState : NodeState
 {
     [Export] private AnimatedSprite2D _animatedSprite;
     [Export] private NodeState _idleState;
-    [Export] private Area2D _area;
+    [Export] private Area2D _playerDetectArea;
 
     public override Player Player { get; set; }
 

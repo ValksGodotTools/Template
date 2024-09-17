@@ -93,18 +93,18 @@ _area = NodePath("Area2D")
 [node name="EntityComponent" type="Node2D" parent="Components"]
 script = ExtResource("2_78og4")
 
-[node name="IdleState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_slideState", "_preJumpState", "_area")]
+[node name="IdleState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
 script = ExtResource("4_3fjc5")
 _animatedSprite = NodePath("../../../AnimatedSprite2D")
-_slideState = NodePath("../SlideState")
-_preJumpState = NodePath("../JumpState")
-_area = NodePath("../../../Area2D")
+_idleActionState = NodePath("../SlideState")
+_detectPlayerState = NodePath("../JumpState")
+_playerDetectArea = NodePath("../../../Area2D")
 
-[node name="JumpState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState", "_area")]
+[node name="JumpState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState", "_playerDetectArea")]
 script = ExtResource("5_c8xv3")
 _animatedSprite = NodePath("../../../AnimatedSprite2D")
 _idleState = NodePath("../IdleState")
-_area = NodePath("../../../Area2D")
+_playerDetectArea = NodePath("../../../Area2D")
 
 [node name="SlideState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState")]
 script = ExtResource("6_2fr83")

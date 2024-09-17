@@ -9,9 +9,9 @@ namespace Template;
 public partial class IdleState : NodeState
 {
     [Export] private AnimatedSprite2D _animatedSprite;
-    [Export] private NodeState _slideState;
-    [Export] private NodeState _preJumpState;
-    [Export] private Area2D _area;
+    [Export] private NodeState _idleActionState;
+    [Export] private NodeState _detectPlayerState;
+    [Export] private Area2D _playerDetectArea;
 
     private EntityComponent _entityComponent;
     private RigidBody2D _entity;
@@ -36,12 +36,12 @@ public partial class IdleState : NodeState
                 GTween.Delay(this, 1, () =>
                 {
                     _isBodyEnteredSubscribed = true;
-                    _area.BodyEntered += BodyEnteredCallback;
-                    _area.SetDeferred(Area2D.PropertyName.Monitoring, true);
+                    _playerDetectArea.BodyEntered += BodyEnteredCallback;
+                    _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, true);
 
                     delayUntilSlide = GTween.Delay(this, 1, () =>
                     {
-                        _entityComponent.SwitchState(_slideState);
+                        _entityComponent.SwitchState(_idleActionState);
                     });
                 });
             },
@@ -52,10 +52,10 @@ public partial class IdleState : NodeState
                 if (_isBodyEnteredSubscribed)
                 {
                     _isBodyEnteredSubscribed = false;
-                    _area.BodyEntered -= BodyEnteredCallback;
+                    _playerDetectArea.BodyEntered -= BodyEnteredCallback;
                 }
 
-                _area.SetDeferred(Area2D.PropertyName.Monitoring, false);
+                _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, false);
             }
         };
 
@@ -68,8 +68,8 @@ public partial class IdleState : NodeState
         {
             if (body is Player player)
             {
-                _preJumpState.Player = player;
-                _entityComponent.SwitchState(_preJumpState);
+                _detectPlayerState.Player = player;
+                _entityComponent.SwitchState(_detectPlayerState);
             }
         }
     }
