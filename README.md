@@ -56,6 +56,8 @@ and the `.so` or `.dylib` in the `GodotProject` directory.
 
 ## Setup Guide
 
+If you encounter any issues during the setup, please refer to the [FAQ](#faq) before creating a new issue.
+
 ### 🔧 Configuring your project
 
 Once you have opened `project.godot` located in `Template/GodotProject/project.godot`, make sure all scene tabs are closed. This is very important.
@@ -80,12 +82,9 @@ Fill in the required fields and click `Apply`. This will close the game.
 
 ### 🧪 Unit Tests (Optional)
 
-Set the `GODOT_BIN` variable in `GodotProject/.runsettings` to the path to your Godot executable.
+Set the `GODOT_BIN` variable in `GodotProject/.runsettings` to the path of your Godot executable.
 
 See `res://Scripts/Tests` for example tests.
-
-> [!IMPORTANT]
-> If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
 
 ## Scenes
 
