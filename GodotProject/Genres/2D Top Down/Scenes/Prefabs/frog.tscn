@@ -1,9 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=17 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/Frog.cs" id="1_l0c38"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/FrogResource.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/IdleState.cs" id="4_3fjc5"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
 
 [sub_resource type="Resource" id="Resource_k15ge"]
 script = ExtResource("2_6qqsm")
@@ -87,8 +90,26 @@ _area = NodePath("Area2D")
 
 [node name="Components" type="Node2D" parent="."]
 
-[node name="Entity" type="Node2D" parent="Components"]
+[node name="EntityComponent" type="Node2D" parent="Components"]
 script = ExtResource("2_78og4")
+
+[node name="IdleState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_slideState", "_preJumpState", "_area")]
+script = ExtResource("4_3fjc5")
+_animatedSprite = NodePath("../../../AnimatedSprite2D")
+_slideState = NodePath("../SlideState")
+_preJumpState = NodePath("../JumpState")
+_area = NodePath("../../../Area2D")
+
+[node name="JumpState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState", "_area")]
+script = ExtResource("5_c8xv3")
+_animatedSprite = NodePath("../../../AnimatedSprite2D")
+_idleState = NodePath("../IdleState")
+_area = NodePath("../../../Area2D")
+
+[node name="SlideState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState")]
+script = ExtResource("6_2fr83")
+_animatedSprite = NodePath("../../../AnimatedSprite2D")
+_idleState = NodePath("../IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1

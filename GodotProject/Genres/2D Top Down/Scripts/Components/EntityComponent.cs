@@ -13,6 +13,14 @@ public partial class EntityComponent : Node
     {
         _curState = new State("Undefined");
 
+        IdleState idleState = GetNodeOrNull<IdleState>("IdleState");
+        
+        if (idleState != null)
+        {
+            _curState = idleState.GetState();
+            _curState.Enter();
+        }
+
         PuddleReflectionUtils.CreateReflection(GetOwner());
     }
 
@@ -25,8 +33,15 @@ public partial class EntityComponent : Node
     public void SwitchState(State newState)
     {
         _curState.Exit();
-        newState.Enter();
         _curState = newState;
+        _curState.Enter();
+    }
+
+    public void SwitchState(NodeState newState)
+    {
+        _curState.Exit();
+        _curState = newState.GetState();
+        _curState.Enter();
     }
 
     public bool IsState(string state)
