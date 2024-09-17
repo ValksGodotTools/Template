@@ -19,17 +19,16 @@ public partial class Player : CharacterBody2D, INetPlayer
     private bool _canDash;
     private Vector2 _targetLookDirection;
     private Vector2 _currentLookDirection;
-    private EntityComponent _entityComponent;
 
     public override void _Ready()
     {
+        PuddleReflectionUtils.CreateReflection(this);
         InitializeComponents();
         ResetDashState();
     }
 
     private void InitializeComponents()
     {
-        _entityComponent = this.GetNode<EntityComponent>();
         _client = Game.Net.Client;
         _sprite = GetNode<Sprite2D>("Sprite2D");
         _cursor = GetNode<Sprite2D>("Cursor");

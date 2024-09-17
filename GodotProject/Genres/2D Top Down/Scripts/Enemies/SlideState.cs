@@ -7,9 +7,6 @@ namespace Template.TopDown2D;
 [GlobalClass]
 public partial class SlideState : NodeState
 {
-    [Export] private AnimatedSprite2D _animatedSprite;
-    [Export] private NodeState _idleState;
-
     public override State GetState()
     {
         State state = new("Slide")
@@ -21,11 +18,11 @@ public partial class SlideState : NodeState
 
                 Entity.ApplyCentralImpulse(force);
 
-                new GTween(_animatedSprite)
+                new GTween(Sprite)
                     .SetAnimatingProp(Node2D.PropertyName.Scale)
-                    .AnimateProp(_animatedSprite.Scale * new Vector2(1.3f, 0.5f), 0.2).EaseOut()
-                    .AnimateProp(_animatedSprite.Scale * new Vector2(1, 1), 0.3).EaseOut()
-                    .Callback(() => SwitchState(_idleState));
+                    .AnimateProp(Sprite.Scale * new Vector2(1.3f, 0.5f), 0.2).EaseOut()
+                    .AnimateProp(Sprite.Scale * new Vector2(1, 1), 0.3).EaseOut()
+                    .Callback(() => SwitchState(IdleState));
             }
         };
 

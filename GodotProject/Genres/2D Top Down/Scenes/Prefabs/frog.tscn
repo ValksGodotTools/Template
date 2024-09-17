@@ -1,10 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=16 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/Frog.cs" id="1_l0c38"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/FrogResource.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/IdleState.cs" id="4_3fjc5"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
 
@@ -77,7 +76,7 @@ size = Vector2(72, 54)
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v5ul"]
 radius = 400.125
 
-[node name="Frog" type="RigidBody2D" node_paths=PackedStringArray("_animatedSprite", "_area")]
+[node name="Frog" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 2
 gravity_scale = 0.0
@@ -85,31 +84,22 @@ lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_l0c38")
 _config = SubResource("Resource_k15ge")
-_animatedSprite = NodePath("AnimatedSprite2D")
-_area = NodePath("Area2D")
 
 [node name="Components" type="Node2D" parent="."]
 
-[node name="EntityComponent" type="Node2D" parent="Components"]
+[node name="EntityComponent" type="Node2D" parent="Components" node_paths=PackedStringArray("AnimatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
 script = ExtResource("2_78og4")
+AnimatedSprite = NodePath("../../AnimatedSprite2D")
+_idleActionState = NodePath("SlideState")
+_detectPlayerState = NodePath("JumpState")
+_playerDetectArea = NodePath("../../Area2D")
 
-[node name="IdleState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
-script = ExtResource("4_3fjc5")
-_animatedSprite = NodePath("../../../AnimatedSprite2D")
-_idleActionState = NodePath("../SlideState")
-_detectPlayerState = NodePath("../JumpState")
-_playerDetectArea = NodePath("../../../Area2D")
-
-[node name="JumpState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState", "_playerDetectArea")]
+[node name="JumpState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_playerDetectArea")]
 script = ExtResource("5_c8xv3")
-_animatedSprite = NodePath("../../../AnimatedSprite2D")
-_idleState = NodePath("../IdleState")
 _playerDetectArea = NodePath("../../../Area2D")
 
-[node name="SlideState" type="Node" parent="Components/EntityComponent" node_paths=PackedStringArray("_animatedSprite", "_idleState")]
+[node name="SlideState" type="Node" parent="Components/EntityComponent"]
 script = ExtResource("6_2fr83")
-_animatedSprite = NodePath("../../../AnimatedSprite2D")
-_idleState = NodePath("../IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1

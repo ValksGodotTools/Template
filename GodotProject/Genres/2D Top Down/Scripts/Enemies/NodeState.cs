@@ -10,6 +10,8 @@ public abstract partial class NodeState : Node
     public abstract State GetState();
 
     protected RigidBody2D Entity { get; private set; }
+    protected AnimatedSprite2D Sprite { get => _entityComponent.AnimatedSprite; }
+    protected State IdleState { get => _entityComponent.Idle(); }
 
     private EntityComponent _entityComponent;
 
