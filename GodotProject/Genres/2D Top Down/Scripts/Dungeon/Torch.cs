@@ -1,7 +1,7 @@
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 [Tool]
 public partial class Torch : Node2D

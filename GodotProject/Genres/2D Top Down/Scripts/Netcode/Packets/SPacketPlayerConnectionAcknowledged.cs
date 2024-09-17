@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Template.Netcode;
 using Template.Netcode.Client;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 /// <summary>
 /// The server has acknowledged this players connection. The server is informing

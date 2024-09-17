@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Template;
+namespace Template.TopDown2D;
 public partial class OtherPlayer : Node2D
 {
     public Vector2 LastServerPosition { get; set; }

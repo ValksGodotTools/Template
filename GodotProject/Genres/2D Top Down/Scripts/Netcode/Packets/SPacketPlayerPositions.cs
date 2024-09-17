@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Template.Netcode;
 using Template.Netcode.Client;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public class SPacketPlayerPositions : ServerPacket
 {

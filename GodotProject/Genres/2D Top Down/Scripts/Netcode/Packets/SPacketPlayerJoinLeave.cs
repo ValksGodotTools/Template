@@ -2,7 +2,7 @@ using Godot;
 using Template.Netcode;
 using Template.Netcode.Client;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 /// <summary>
 /// A other player has joined or left the server.

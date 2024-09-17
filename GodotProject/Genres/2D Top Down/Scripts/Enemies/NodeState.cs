@@ -1,8 +1,7 @@
 ﻿using CSharpUtils;
 using Godot;
-using Template.TopDown2D;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public abstract partial class NodeState : Node
 {

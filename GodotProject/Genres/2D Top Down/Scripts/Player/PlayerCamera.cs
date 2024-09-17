@@ -1,8 +1,7 @@
 using Godot;
 using GodotUtils;
-using Template.TopDown2D;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public partial class PlayerCamera : Camera2D
 {

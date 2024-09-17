@@ -1,7 +1,7 @@
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public partial class PlayerDashGhost : Node2D
 {

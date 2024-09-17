@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Template;
+namespace Template.FPS3D;
 
 public partial class LevelUI : Node
 {

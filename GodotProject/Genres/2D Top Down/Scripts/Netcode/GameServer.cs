@@ -4,7 +4,7 @@ using System.Linq;
 using ENet;
 using Template.Netcode.Server;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public partial class GameServer : ENetServer
 {

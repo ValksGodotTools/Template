@@ -1,6 +1,6 @@
 using Template.Netcode.Client;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public partial class GameClient : ENetClient
 {

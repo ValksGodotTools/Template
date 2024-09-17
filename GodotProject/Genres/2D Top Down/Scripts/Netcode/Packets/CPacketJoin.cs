@@ -5,7 +5,7 @@ using ENet;
 using Template.Netcode;
 using Template.Netcode.Server;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public class CPacketJoin : ClientPacket
 {

@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Template.Netcode;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public class Net
 {

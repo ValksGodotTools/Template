@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Template;
+namespace Template.FPS3D;
 
 public partial class Env : WorldEnvironment
 {

@@ -1,7 +1,7 @@
 using CSharpUtils;
 using Godot;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 [Visualize(nameof(_curState))]

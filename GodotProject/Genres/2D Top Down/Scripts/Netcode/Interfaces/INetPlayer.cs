@@ -1,7 +1,7 @@
-namespace Template;
+namespace Template.TopDown2D;
 
 internal interface INetPlayer
 {
-    public void NetSendPosition();
+    void NetSendPosition();
 }
 

@@ -3,7 +3,7 @@ using GodotUtils;
 using System;
 using System.Collections.Generic;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 public partial class RoomGeneration : Node
 {

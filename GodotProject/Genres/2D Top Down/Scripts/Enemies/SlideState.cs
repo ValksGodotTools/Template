@@ -2,7 +2,7 @@
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 [GlobalClass]
 public partial class SlideState : NodeState

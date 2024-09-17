@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Template;
+namespace Template.TopDown2D;
 
 [GlobalClass]
 public partial class FrogResource : Resource
