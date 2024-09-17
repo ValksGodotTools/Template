@@ -13,11 +13,11 @@ public abstract partial class NodeState : Node
     protected AnimatedSprite2D Sprite { get => _entityComponent.AnimatedSprite; }
     protected State IdleState { get => _entityComponent.Idle(); }
 
-    private EntityComponent _entityComponent;
+    private EnemyComponent _entityComponent;
 
     public override void _Ready()
     {
-        _entityComponent = GetParent<EntityComponent>();
+        _entityComponent = GetParent<EnemyComponent>();
         Entity = GetOwner() as RigidBody2D;
     }
 

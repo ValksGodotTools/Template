@@ -6,7 +6,7 @@ namespace Template.TopDown2D;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 [Visualize(nameof(_curState))]
-public partial class EntityComponent : Node
+public partial class EnemyComponent : Node
 {
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 
