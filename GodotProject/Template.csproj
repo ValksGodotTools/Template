@@ -3,9 +3,12 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies> <!--Required for GdUnit4-->
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <ImplicitUsings>false</ImplicitUsings> <!--Prevent use of the global usings feature-->
         <RootNamespace>Template</RootNamespace>
+		<NoWarn>NU1605</NoWarn> <!--Suppress NuGet package downgrade warnings-->
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <!-- NuGet Packages -->
@@ -13,6 +16,11 @@
         <!-- Condition="!Exists('ENet-CSharp.dll')" is required for other platforms -->
         <PackageReference Include="ENet-CSharp" Version="2.4.8" Condition="!Exists('ENet-CSharp.dll')" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        
+        <!--Required for GdUnit4-->
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+        <PackageReference Include="gdUnit4.api" Version="4.3.*" />
+        <PackageReference Include="gdUnit4.test.adapter" Version="2.*" />
     </ItemGroup>
 
     <!-- Local Packages -->

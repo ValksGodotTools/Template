@@ -1,12 +1,20 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Template.csproj", "{80E1DCD6-9543-40FD-AA69-E3B68379E430}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template", "Template.csproj", "{80E1DCD6-9543-40FD-AA69-E3B68379E430}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E069BA60-86C2-4613-A834-5B2040A2BCFC}"
+	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{80E1DCD6-9543-40FD-AA69-E3B68379E430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +23,8 @@ Global
 		{80E1DCD6-9543-40FD-AA69-E3B68379E430}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{80E1DCD6-9543-40FD-AA69-E3B68379E430}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{80E1DCD6-9543-40FD-AA69-E3B68379E430}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

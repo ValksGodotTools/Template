@@ -13,6 +13,9 @@ dotnet_diagnostic.exclude_from_source_analysis = true
 # SYSLIB1045: Convert to 'GeneratedRegexAttribute'.
 dotnet_diagnostic.SYSLIB1045.severity = none
 
+# CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+dotnet_diagnostic.CS8632.severity = silent
+
 [*]
 end_of_line = lf
 
