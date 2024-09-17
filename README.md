@@ -582,7 +582,8 @@ A: Feel free to search for your issue in the repository's [issues section](https
 - Open an issue on the [Issues](https://github.com/ValksGodotTools/Template/issues) page if you find a bug or have a feature request
 - If you have any questions you can contact me over Discord, my username is `valky5`
 
-[![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/issues)
+[![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff&label=Issues)](https://github.com/ValksGodotTools/Template/issues) 
+[![GitHub issues good first issue count](https://img.shields.io/github/issues-raw/ValksGodotTools/Template/good%20first%20issue?style=flat&labelColor=1a1a1a&color=0099ff&label=Good%20First%20Issues)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Credits
 
