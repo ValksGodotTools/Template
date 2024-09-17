@@ -6,6 +6,9 @@ export.cfg
 export_presets.cfg
 *.translation
 
+# GdUnit4
+TestResults/
+
 # Mono-specific
 .mono/
 data_*/
@@ -20,3 +23,5 @@ Properties/*
 
 # Include these files
 !Properties/.gdignore
+!TestResults/.gdignore
+!gdunit4_testadapter/.gdignore
