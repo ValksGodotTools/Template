@@ -455,30 +455,34 @@ Create another file named `PlayerIdle.cs` and add the following.
 ```cs
 public partial class Player
 {
-    State Idle()
+    private State Idle()
     {
-        var state = new State(this, nameof(Idle));
-
-        state.Enter = () =>
+        State state = new(nameof(Idle))
         {
-            // What happens on entering the idle state?
+            Enter = () =>
+            {
+                // What happens on entering the idle state?
+            },
+
+            Update = delta =>
+            {
+                // What happens on every frame in the idle state?
+            },
+
+            Exit = () =>
+            {
+                // What happens on exiting the idle state?
+            }
         };
-
-        state.Update = delta =>
-        {
-            // What happens on every frame in the idle state?
-        };
-
-        state.Exit = () =>
-        {
-            // What happens on exiting the idle state?
-        }
 
         return state;
     }
 }
 ```
 Do a similar process when adding new states.
+
+> [!NOTE]
+> States have been greatly simplified with the new `EnemyComponent` script. Check out `res://Genres/2D Top Down/Scenes/Prefabs/frog.tscn` to see it in action.
 
 ### Extensions
 
