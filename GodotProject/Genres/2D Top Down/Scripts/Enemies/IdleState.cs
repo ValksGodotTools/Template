@@ -13,15 +13,7 @@ public partial class IdleState : NodeState
     [Export] private NodeState _detectPlayerState;
     [Export] private Area2D _playerDetectArea;
 
-    private EntityComponent _entityComponent;
-    private RigidBody2D _entity;
     private bool _isBodyEnteredSubscribed;
-
-    public override void _Ready()
-    {
-        _entityComponent = GetParent<EntityComponent>();
-        _entity = GetOwner() as RigidBody2D;
-    }
 
     public override State GetState()
     {
@@ -41,7 +33,7 @@ public partial class IdleState : NodeState
 
                     delayUntilSlide = GTween.Delay(this, 1, () =>
                     {
-                        _entityComponent.SwitchState(_idleActionState);
+                        SwitchState(_idleActionState);
                     });
                 });
             },
@@ -64,12 +56,12 @@ public partial class IdleState : NodeState
 
     private void BodyEnteredCallback(Node2D body)
     {
-        if (_entityComponent.IsState("Idle"))
+        if (IsState("Idle"))
         {
             if (body is Player player)
             {
                 _detectPlayerState.Player = player;
-                _entityComponent.SwitchState(_detectPlayerState);
+                SwitchState(_detectPlayerState);
             }
         }
     }

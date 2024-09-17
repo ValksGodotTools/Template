@@ -12,17 +12,6 @@ public partial class JumpState : NodeState
     [Export] private NodeState _idleState;
     [Export] private Area2D _playerDetectArea;
 
-    public override Player Player { get; set; }
-
-    private EntityComponent _entityComponent;
-    private RigidBody2D _entity;
-
-    public override void _Ready()
-    {
-        _entityComponent = GetParent<EntityComponent>();
-        _entity = GetOwner() as RigidBody2D;
-    }
-
     public override State GetState()
     {
         GTween tweenShake = new(_animatedSprite);
@@ -45,7 +34,7 @@ public partial class JumpState : NodeState
 
                 GTween.Delay(this, 1, () =>
                 {
-                    _entityComponent.SwitchState(Jump());
+                    SwitchState(Jump());
                 });
             },
 
@@ -67,11 +56,11 @@ public partial class JumpState : NodeState
             {
                 _animatedSprite.Play("jump");
 
-                _entity.SetCollisionLayerAndMask(3);
+                Entity.SetCollisionLayerAndMask(3);
 
-                Vector2 force = (Player.Position - _entity.Position) * 2;
+                Vector2 force = (Player.Position - Entity.Position) * 2;
 
-                _entity.ApplyCentralImpulse(force);
+                Entity.ApplyCentralImpulse(force);
 
                 double jump_time = 1.0;
 
@@ -82,12 +71,12 @@ public partial class JumpState : NodeState
                     .AnimateProp(_animatedSprite.Scale * new Vector2(1.5f, 0.5f), jump_time * 0.5).EaseIn()
                     .Callback(() =>
                     {
-                        _entity.LinearVelocity = Vector2.Zero;
+                        Entity.LinearVelocity = Vector2.Zero;
                         _animatedSprite.Play("idle");
-                        _entity.SetCollisionLayerAndMask(2);
+                        Entity.SetCollisionLayerAndMask(2);
                     })
                     .AnimateProp(_animatedSprite.Scale * Vector2.One, jump_time * 0.5)
-                    .Callback(() => _entityComponent.SwitchState(_idleState));
+                    .Callback(() => SwitchState(_idleState));
             }
         };
 
