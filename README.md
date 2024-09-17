@@ -72,11 +72,17 @@ Fill in the required fields and click `Apply`. This will close the game.
 
 ![setup-scene](https://github.com/user-attachments/assets/ee2adf8a-56dc-4a6f-9db6-ddb7f74f1e56)
 
-### 🚀 Almost there!
+### 🚀 And you're done!
 
 1. Do not save anything if prompted, close the Godot editor entirely
 2. Reopen the project and run the new main scene by pressing `F5`
 3. If you chose the 3D FPS genre then the 3D FPS scene will load!
+
+### 🧪 Unit Tests (Optional)
+
+Set the `GODOT_BIN` variable in `GodotProject/.runsettings` to the path to your Godot executable.
+
+See `res://Scripts/Tests` for example tests.
 
 > [!IMPORTANT]
 > If you encounter any issues, please refer to the [FAQ](#faq) before creating a new issue
