@@ -569,6 +569,8 @@ A: Feel free to search for your issue in the repository's [issues section](https
   
 - **Testing**: Ensure your changes do not break existing functionality.
 
+- **Assets**: All contributed assets should be under the CC0 license.
+
 ### 📚 Resources
 
 - [Godot C# Documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/index.html)
