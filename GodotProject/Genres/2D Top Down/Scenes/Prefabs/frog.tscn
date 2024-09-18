@@ -93,23 +93,23 @@ _config = SubResource("Resource_luq2s")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 IdleState = NodePath("IdleState")
 
-[node name="IdleState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_detectPlayerState", "_idleActionState", "_playerDetectArea")]
+[node name="IdleState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("_detectPlayerState", "_idleActionState", "_playerDetectArea")]
 script = ExtResource("3_eyjfj")
 _detectPlayerState = NodePath("../ShakeState")
 _idleActionState = NodePath("../SlideState")
 _playerDetectArea = NodePath("../../Area2D")
 
-[node name="ShakeState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
+[node name="JumpState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea", "NextState")]
+script = ExtResource("5_c8xv3")
+_playerDetectArea = NodePath("../../Area2D")
+NextState = NodePath("../IdleState")
+
+[node name="ShakeState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("3_svtqd")
 NextState = NodePath("../JumpState")
 
-[node name="SlideState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
+[node name="SlideState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("6_2fr83")
-NextState = NodePath("../IdleState")
-
-[node name="JumpState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea", "NextState")]
-script = ExtResource("5_c8xv3")
-_playerDetectArea = NodePath("../../Area2D")
 NextState = NodePath("../IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
