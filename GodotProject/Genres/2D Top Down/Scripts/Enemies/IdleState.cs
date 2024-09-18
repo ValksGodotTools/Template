@@ -10,7 +10,7 @@ public partial class IdleState : NodeState
     [Export] private NodeState _idleActionState;
     [Export] private Area2D _playerDetectArea;
 
-    GTween delayUntilSlide = null;
+    private GTween _delayUntilSlide;
     private bool _isBodyEnteredSubscribed;
 
     protected override void Enter()
@@ -23,7 +23,7 @@ public partial class IdleState : NodeState
             _playerDetectArea.BodyEntered += BodyEnteredCallback;
             _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, true);
 
-            delayUntilSlide = GTween.Delay(this, 1, () =>
+            _delayUntilSlide = GTween.Delay(this, 1, () =>
             {
                 SwitchState(_idleActionState);
             });
@@ -32,7 +32,7 @@ public partial class IdleState : NodeState
 
     protected override void Exit()
     {
-        delayUntilSlide?.Stop();
+        _delayUntilSlide?.Stop();
 
         if (_isBodyEnteredSubscribed)
         {
