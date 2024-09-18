@@ -1,16 +1,18 @@
 [gd_scene load_steps=16 format=3 uid="uid://tgxu81l5ee34"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/Frog.cs" id="1_l0c38"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/FrogResource.cs" id="2_6qqsm"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EnemyConfig.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EnemyComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
 
-[sub_resource type="Resource" id="Resource_k15ge"]
+[sub_resource type="Resource" id="Resource_luq2s"]
 script = ExtResource("2_6qqsm")
-JumpForceInfluence = 2.0
 Color = Color(1, 1, 1, 1)
+BlendMode = 0
+LightMode = 0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fg2x8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmrw4"]
 atlas = ExtResource("2_ffw43")
@@ -82,27 +84,25 @@ collision_mask = 2
 gravity_scale = 0.0
 lock_rotation = true
 linear_damp = 1.5
-script = ExtResource("1_l0c38")
-_config = SubResource("Resource_k15ge")
 
-[node name="Components" type="Node2D" parent="."]
-
-[node name="EnemyComponent" type="Node2D" parent="Components" node_paths=PackedStringArray("AnimatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
+[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
 script = ExtResource("2_78og4")
-AnimatedSprite = NodePath("../../AnimatedSprite2D")
+_config = SubResource("Resource_luq2s")
+AnimatedSprite = NodePath("../AnimatedSprite2D")
 _idleActionState = NodePath("SlideState")
 _detectPlayerState = NodePath("JumpState")
+_playerDetectArea = NodePath("../Area2D")
+
+[node name="JumpState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea")]
+script = ExtResource("5_c8xv3")
 _playerDetectArea = NodePath("../../Area2D")
 
-[node name="JumpState" type="Node" parent="Components/EnemyComponent" node_paths=PackedStringArray("_playerDetectArea")]
-script = ExtResource("5_c8xv3")
-_playerDetectArea = NodePath("../../../Area2D")
-
-[node name="SlideState" type="Node" parent="Components/EnemyComponent"]
+[node name="SlideState" type="Node" parent="EnemyComponent"]
 script = ExtResource("6_2fr83")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
+material = SubResource("CanvasItemMaterial_fg2x8")
 position = Vector2(0, 15)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_er05e")

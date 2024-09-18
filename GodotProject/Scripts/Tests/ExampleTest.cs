@@ -1,6 +1,5 @@
 using GdUnit4;
 using Godot;
-using Template.TopDown2D;
 using static GdUnit4.Assertions;
 
 namespace Template.Tests;
@@ -8,12 +7,12 @@ namespace Template.Tests;
 [TestSuite]
 public partial class ExampleTest
 {
-    private Frog _frog;
+    private RigidBody2D _frog;
 
     [BeforeTest]
     public void Setup()
     {
-        _frog = Game.LoadPrefab<Frog>(Prefab.Frog);
+        _frog = Game.LoadPrefab<RigidBody2D>(Prefab.Frog);
     }
 
     [TestCase]

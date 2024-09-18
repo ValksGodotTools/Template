@@ -6,7 +6,7 @@ namespace Template.TopDown2D;
 [Visualize(nameof(Position), nameof(Velocity))]
 public partial class Player : CharacterBody2D, INetPlayer
 {
-    [Visualize] [Export] private PlayerResource _config;
+    [Visualize] [Export] private PlayerConfig _config;
 
     private CameraShakeComponent _cameraShake;
     private Vector2 _prevPosition;

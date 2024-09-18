@@ -3,7 +3,7 @@ using Godot;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class PlayerResource : Resource
+public partial class PlayerConfig : Resource
 {
     [Export] public float Speed { get; set; } = 50;
     [Export] public float Friction { get; set; } = 0.2f;

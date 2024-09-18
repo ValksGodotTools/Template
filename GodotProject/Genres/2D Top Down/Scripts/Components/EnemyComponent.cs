@@ -4,10 +4,14 @@ using GodotUtils;
 
 namespace Template.TopDown2D;
 
+/// <summary>
+/// This script assumes all enemies are of type Node2D and have animated sprite nodes.
+/// </summary>
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 [Visualize(nameof(_curState))]
 public partial class EnemyComponent : Node
 {
+    [Export] private EnemyConfig _config;
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
 
     [Export] private NodeState _idleActionState;
@@ -16,13 +20,15 @@ public partial class EnemyComponent : Node
 
     private State _curState;
     private bool _isBodyEnteredSubscribed;
+    private Node2D _enemy;
 
     public override void _Ready()
     {
-        _curState = Idle();
-        _curState.Enter();
+        _enemy = GetOwner<Node2D>();
 
-        PuddleReflectionUtils.CreateReflection(GetOwner());
+        SetupState();
+        SetMaterial();
+        CreateReflection();
     }
 
     public override void _PhysicsProcess(double d)
@@ -99,6 +105,28 @@ public partial class EnemyComponent : Node
                 SwitchState(_detectPlayerState);
             }
         }
+    }
+
+    private void SetupState()
+    {
+        _curState = Idle();
+        _curState.Enter();
+    }
+
+    private void SetMaterial()
+    {
+        AnimatedSprite.SelfModulate = _config.Color;
+
+        AnimatedSprite.Material ??= new CanvasItemMaterial()
+        {
+            BlendMode = _config.BlendMode,
+            LightMode = _config.LightMode
+        };
+    }
+
+    private void CreateReflection()
+    {
+        PuddleReflectionUtils.CreateReflection(_enemy);
     }
 }
 
