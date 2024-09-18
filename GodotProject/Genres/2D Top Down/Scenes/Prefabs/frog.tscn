@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=18 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EnemyConfig.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EnemyComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/IdleState.cs" id="3_eyjfj"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/ShakeState.cs" id="3_svtqd"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
 
@@ -85,20 +87,30 @@ gravity_scale = 0.0
 lock_rotation = true
 linear_damp = 1.5
 
-[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite", "_idleActionState", "_detectPlayerState", "_playerDetectArea")]
+[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite", "IdleState")]
 script = ExtResource("2_78og4")
 _config = SubResource("Resource_luq2s")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
-_idleActionState = NodePath("SlideState")
-_detectPlayerState = NodePath("JumpState")
-_playerDetectArea = NodePath("../Area2D")
+IdleState = NodePath("IdleState")
 
-[node name="JumpState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea")]
-script = ExtResource("5_c8xv3")
+[node name="IdleState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_detectPlayerState", "_idleActionState", "_playerDetectArea")]
+script = ExtResource("3_eyjfj")
+_detectPlayerState = NodePath("../ShakeState")
+_idleActionState = NodePath("../SlideState")
 _playerDetectArea = NodePath("../../Area2D")
 
-[node name="SlideState" type="Node" parent="EnemyComponent"]
+[node name="ShakeState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
+script = ExtResource("3_svtqd")
+NextState = NodePath("../JumpState")
+
+[node name="SlideState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("6_2fr83")
+NextState = NodePath("../IdleState")
+
+[node name="JumpState" type="Node" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea", "NextState")]
+script = ExtResource("5_c8xv3")
+_playerDetectArea = NodePath("../../Area2D")
+NextState = NodePath("../IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1

@@ -13,13 +13,11 @@ public partial class EnemyComponent : Node
 {
     [Export] private EnemyConfig _config;
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
+    [Export] public NodeState IdleState { get; private set; }
 
-    [Export] private NodeState _idleActionState;
-    [Export] private NodeState _detectPlayerState;
-    [Export] private Area2D _playerDetectArea;
+    public Player Player { get; set; }
 
     private State _curState;
-    private bool _isBodyEnteredSubscribed;
     private Node2D _enemy;
 
     public override void _Ready()
@@ -47,7 +45,7 @@ public partial class EnemyComponent : Node
     public void SwitchState(NodeState newState)
     {
         _curState.Exit();
-        _curState = newState.GetState();
+        _curState = newState.State;
         _curState.Enter();
     }
 
@@ -56,61 +54,13 @@ public partial class EnemyComponent : Node
         return string.Equals(_curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
     }
 
-    public State Idle()
-    {
-        GTween delayUntilSlide = null;
-
-        State state = new("Idle")
-        {
-            Enter = () =>
-            {
-                AnimatedSprite.PlayRandom("idle");
-
-                GTween.Delay(this, 1, () =>
-                {
-                    _isBodyEnteredSubscribed = true;
-                    _playerDetectArea.BodyEntered += BodyEnteredCallback;
-                    _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, true);
-
-                    delayUntilSlide = GTween.Delay(this, 1, () =>
-                    {
-                        SwitchState(_idleActionState);
-                    });
-                });
-            },
-            Exit = () =>
-            {
-                delayUntilSlide?.Stop();
-
-                if (_isBodyEnteredSubscribed)
-                {
-                    _isBodyEnteredSubscribed = false;
-                    _playerDetectArea.BodyEntered -= BodyEnteredCallback;
-                }
-
-                _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, false);
-            }
-        };
-
-        return state;
-    }
-
-    private void BodyEnteredCallback(Node2D body)
-    {
-        if (IsState("Idle"))
-        {
-            if (body is Player player)
-            {
-                _detectPlayerState.Player = player;
-                SwitchState(_detectPlayerState);
-            }
-        }
-    }
-
     private void SetupState()
     {
-        _curState = Idle();
-        _curState.Enter();
+        if (IdleState != null)
+        {
+            _curState = IdleState.State;
+            _curState.Enter();
+        }
     }
 
     private void SetMaterial()
