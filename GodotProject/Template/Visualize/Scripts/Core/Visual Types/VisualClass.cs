@@ -15,7 +15,7 @@ public static partial class VisualControlTypes
 
         if (context.InitialValue == null)
         {
-            throw new Exception($"Contexts initial value was null for type '{type}'");
+            throw new Exception($"[Visualize] Contexts initial value was null for type '{type}'");
         }
 
         AddProperties(vbox, type, context, out List<IVisualControl> propertyControls, out PropertyInfo[] properties);

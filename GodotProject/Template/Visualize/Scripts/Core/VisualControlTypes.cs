@@ -48,7 +48,7 @@ public static partial class VisualControlTypes
 
         if (info.VisualControl == null)
         {
-            GPrintUtils.Warning($"The type '{type.Namespace}.{type.Name}' is not supported for the {nameof(VisualizeAttribute)}");
+            GPrintUtils.Warning($"[Visualize] The type '{type.Namespace}.{type.Name}' is not supported for the {nameof(VisualizeAttribute)}");
         }
 
         return info;

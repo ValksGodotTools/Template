@@ -42,7 +42,7 @@ public static partial class VisualControlTypes
 
         if (index < 0 || index >= source.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), index, $"Index was out of range");
+            throw new ArgumentOutOfRangeException(nameof(index), index, $"[Visualize] Index was out of range");
         }
 
         Array dest = Array.CreateInstance(source.GetType().GetElementType(), source.Length - 1);
@@ -76,7 +76,7 @@ public static partial class VisualControlTypes
             }
             else
             {
-                string errorMessage = $"The provided value '{value}' is not assignable to the parameter type '{paramType}'.";
+                string errorMessage = $"[Visualize] The provided value '{value}' is not assignable to the parameter type '{paramType}'.";
                 throw new InvalidOperationException(errorMessage);
             }
         }

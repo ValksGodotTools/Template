@@ -21,7 +21,7 @@ public static class VisualHandler
         }
         catch (Exception ex)
         {
-            GD.Print($"Failed to set value for {member.Name}: {ex.Message}");
+            GD.Print($"[Visualize] Failed to set value for {member.Name}: {ex.Message}");
         }
     }
 
@@ -42,7 +42,7 @@ public static class VisualHandler
         }
         else
         {
-            GD.Print($"Property {property.Name} is read-only.");
+            GD.Print($"[Visualize] Property {property.Name} is read-only.");
         }
     }
 
@@ -75,7 +75,7 @@ public static class VisualHandler
             PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
             PropertyInfo propertyInfo => propertyInfo.GetValue(node),
 
-            _ => throw new ArgumentException("Member is not a FieldInfo or PropertyInfo")
+            _ => throw new ArgumentException("[Visualize] Member is not a FieldInfo or PropertyInfo")
         };
 
         if (value == null)
@@ -101,7 +101,7 @@ public static class VisualHandler
             PropertyInfo propertyInfo when propertyInfo.GetMethod.IsStatic => propertyInfo.GetValue(null),
             PropertyInfo propertyInfo => propertyInfo.GetValue(obj),
 
-            _ => throw new ArgumentException("Member must be a field or property.")
+            _ => throw new ArgumentException("[Visualize] Member must be a field or property.")
         };
     }
 
@@ -111,7 +111,7 @@ public static class VisualHandler
         {
             FieldInfo fieldInfo => fieldInfo.FieldType,
             PropertyInfo propertyInfo => propertyInfo.PropertyType,
-            _ => throw new ArgumentException("Member must be a field or property.")
+            _ => throw new ArgumentException("[Visualize] Member must be a field or property.")
         };
     }
 }

@@ -186,7 +186,7 @@ public static class VisualUI
                         memberName = property.Name;
                     }
 
-                    GD.PrintRich($"[color=orange]Tracking '{node.Name}' to see if '{memberName}' value changes[/color]");
+                    GD.PrintRich($"[color=orange][Visualize] Tracking '{node.Name}' to see if '{memberName}' value changes[/color]");
                 }
             }
             catch (TaskCanceledException)
@@ -244,7 +244,7 @@ public static class VisualUI
 
         if (initialValue == null)
         {
-            GPrintUtils.Warning($"'{member.Name}' value in '{node.Name}' is null");
+            GPrintUtils.Warning($"[Visualize] '{member.Name}' value in '{node.Name}' is null");
             return hbox;
         }
 

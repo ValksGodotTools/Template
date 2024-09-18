@@ -38,7 +38,7 @@ public static partial class VisualControlTypes
                 if (dictionary.Contains(v))
                     return;
                 if (v.GetType() != keyType)
-                    throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    throw new ArgumentException($"[Visualize] Type mismatch: Expected {keyType}, got {v.GetType()}");
 
                 dictionary.Remove(key);
                 dictionary[v] = value;
@@ -89,7 +89,7 @@ public static partial class VisualControlTypes
                 if (dictionary.Contains(v))
                     return;
                 if (v.GetType() != keyType)
-                    throw new ArgumentException($"Type mismatch: Expected {keyType}, got {v.GetType()}");
+                    throw new ArgumentException($"[Visualize] Type mismatch: Expected {keyType}, got {v.GetType()}");
 
                 dictionary.Remove(oldKey);
                 dictionary[v] = defaultValue;
