@@ -3,7 +3,7 @@ using GodotUtils;
 
 namespace Template.TopDown2D;
 
-public class PlayerDashManager(PlayerConfig config, Sprite2D dashSprite)
+public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
 {
     private bool _canDash;
 

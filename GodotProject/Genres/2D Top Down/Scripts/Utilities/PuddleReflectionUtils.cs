@@ -5,13 +5,8 @@ namespace Template.TopDown2D;
 
 public static class PuddleReflectionUtils
 {
-    public static void CreateReflection(Node entity)
+    public static void CreateReflection(Node entity, Node2D sprite)
     {
-        Node2D sprite = FindSprite(entity);
-
-        if (sprite == null)
-            return;
-
         // Create reflection
         Node2D reflection = (Node2D)sprite.Duplicate();
         reflection.Name = "Reflection";
@@ -23,7 +18,13 @@ public static class PuddleReflectionUtils
         else if (reflection is AnimatedSprite2D reflectionAnimated)
         {
             AnimatedSprite2D originalAnimatedSprite = sprite as AnimatedSprite2D;
-            originalAnimatedSprite.Play("idle");
+
+            string[] animations = originalAnimatedSprite.SpriteFrames.GetAnimationNames();
+            
+            if (animations.Length > 0)
+            {
+                originalAnimatedSprite.Play(animations[0]);
+            }
 
             reflection.Position = new Vector2(0, originalAnimatedSprite.GetPixelHeight());
 
@@ -43,18 +44,6 @@ public static class PuddleReflectionUtils
         };
 
         entity.AddChildDeferred(reflection);
-    }
-
-    private static Node2D FindSprite(Node entity)
-    {
-        Sprite2D sprite = entity.GetNode<Sprite2D>();
-
-        if (sprite != null)
-            return sprite;
-
-        AnimatedSprite2D spriteAnimated = entity.GetNode<AnimatedSprite2D>();
-
-        return spriteAnimated ?? null;
     }
 }
 

@@ -15,12 +15,12 @@ public partial class Player : CharacterBody2D, INetPlayer
     private Vector2 _prevPosition;
     private Vector2 _moveDirection;
     private GameClient _client;
-    private Sprite2D _sprite;
+    private AnimatedSprite2D _sprite;
     private Sprite2D _cursor;
 
     public override void _Ready()
     {
-        _sprite = GetNode<Sprite2D>("Sprite2D");
+        _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _cursor = GetNode<Sprite2D>("Cursor");
         _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
         _client = Game.Net.Client;
@@ -30,8 +30,6 @@ public partial class Player : CharacterBody2D, INetPlayer
         _lookManager = new PlayerLookManager();
 
         _dashManager.ResetDashState();
-
-        PuddleReflectionUtils.CreateReflection(this);
     }
 
     public override void _PhysicsProcess(double delta)

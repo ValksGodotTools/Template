@@ -5,7 +5,7 @@ using LightMode = Godot.CanvasItemMaterial.LightModeEnum;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class EnemyConfig : Resource
+public partial class EntityConfig : Resource
 {
     [Export] public Color Color { get; set; } = Colors.White;
     [Export] public BlendMode BlendMode { get; set; } = BlendMode.Mix;

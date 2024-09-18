@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://tgxu81l5ee34"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EnemyConfig.cs" id="2_6qqsm"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EnemyComponent.cs" id="2_78og4"]
 [ext_resource type="Texture2D" uid="uid://d0uyj5viynaam" path="res://Genres/2D Top Down/Sprites/Frog/frog.png" id="2_ffw43"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/IdleState.cs" id="3_eyjfj"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
 
-[sub_resource type="Resource" id="Resource_luq2s"]
+[sub_resource type="Resource" id="Resource_sj26y"]
 script = ExtResource("2_6qqsm")
 Color = Color(1, 1, 1, 1)
 BlendMode = 0
@@ -89,7 +89,7 @@ linear_damp = 1.5
 
 [node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite", "IdleState")]
 script = ExtResource("2_78og4")
-_config = SubResource("Resource_luq2s")
+_config = SubResource("Resource_sj26y")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 IdleState = NodePath("IdleState")
 
