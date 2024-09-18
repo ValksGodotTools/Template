@@ -6,6 +6,7 @@ namespace Template.TopDown2D;
 /// <summary>
 /// This script assumes all enemies extend from RigidBody2D
 /// </summary>
+[GlobalClass]
 public abstract partial class NodeState : Node
 {
     [Export] protected NodeState NextState { get; private set; }
