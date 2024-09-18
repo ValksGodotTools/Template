@@ -592,7 +592,15 @@ A: Feel free to search for your issue in the repository's [issues section](https
 - If you have any questions you can contact me over Discord, my username is `valky5`
 
 [![GitHub issues open count](https://img.shields.io/github/issues/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff&label=Issues)](https://github.com/ValksGodotTools/Template/issues) 
-[![GitHub issues good first issue count](https://img.shields.io/github/issues-raw/ValksGodotTools/Template/good%20first%20issue?style=flat&labelColor=1a1a1a&color=0099ff&label=Good%20First%20Issues)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![GitHub issues good first issue count](https://img.shields.io/github/issues-raw/ValksGodotTools/Template/good%20first%20issue?style=flat&labelColor=1a1a1a&color=0099ff&label=Good%20First%20Issues)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20topdown?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20Topdown)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20topdown%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20platformer?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20Platformer)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20platformer%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20fps?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20FPS)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20fps%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20mod%20loader?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20Mod%20Loader)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20mod%20loader%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20setup?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20Setup)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20setup%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/topic%3A%20visualize?style=flat&labelColor=1a1a1a&color=0099ff&label=Topic%3A%20Visualize)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A%20visualize%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/high%20priority?style=flat&labelColor=1a1a1a&color=0099ff&label=High%20Priority)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22high%20priority%22) 
+[![GitHub issues by-label](https://img.shields.io/github/issues/ValksGodotTools/Template/bug?style=flat&labelColor=1a1a1a&color=0099ff&label=Bug)](https://github.com/ValksGodotTools/Template/issues?q=is%3Aissue+is%3Aopen+label%3A%22bug%22) 
 
 ## Credits
 
