@@ -33,24 +33,18 @@ public class Net
         _serverFactory = serverFactory;
         _clientFactory = clientFactory;
 
-        //Server = serverFactory.CreateServer();
-        //Client = clientFactory.CreateClient();
+        Server = serverFactory.CreateServer();
+        Client = clientFactory.CreateClient();
     }
 
     public void StopServer()
     {
-        if (Server == null)
-        {
-            GD.Print("Server was never started");
-            return;
-        }
-
         Server.Stop();
     }
 
     public void StartServer()
     {
-        if (Server != null && Server.IsRunning)
+        if (Server.IsRunning)
         {
             Server.Log("Server is running already");
             return;
@@ -69,7 +63,7 @@ public class Net
 
     public void StartClient(string ip, ushort port, string username)
     {
-        if (Client != null && Client.IsRunning)
+        if (Client.IsRunning)
         {
             Client.Log("Client is running already");
             return;
@@ -97,12 +91,6 @@ public class Net
 
     public void StopClient()
     {
-        if (Client == null)
-        {
-            GD.Print("Client was never started");
-            return;
-        }
-
         if (!Client.IsRunning)
         {
             Client.Log("Client was stopped already");
@@ -117,7 +105,7 @@ public class Net
         // Stop the server and client
         if (ENetLow.ENetInitialized)
         {
-            if (Server != null && Server.IsRunning)
+            if (Server.IsRunning)
             {
                 Server.Stop();
 
@@ -125,7 +113,7 @@ public class Net
                     await Task.Delay(1);
             }
 
-            if (Client != null && Client.IsRunning)
+            if (Client.IsRunning)
             {
                 Client.Stop();
 
