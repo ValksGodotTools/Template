@@ -15,12 +15,13 @@ public partial class UINetControlPanel : Control
     public override void _Ready()
     {
         _net = new();
+        _net.Initialize(new GameServerFactory(), new GameClientFactory());
 
         Button btnStartServer = GetNode<Button>("%Start Server");
         Button btnStopServer = GetNode<Button>("%Stop Server");
 
         btnStartServer.Pressed += _net.StartServer;
-        btnStopServer.Pressed += _net.Server.Stop;
+        btnStopServer.Pressed += _net.StopServer;
 
         GetNode<Button>("%Start Client").Pressed += () => _net.StartClient(_ip, _port, _username);
         GetNode<Button>("%Stop Client").Pressed += _net.StopClient;

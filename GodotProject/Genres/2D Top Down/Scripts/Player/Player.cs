@@ -1,4 +1,5 @@
 using Godot;
+using Template.Netcode.Client;
 
 namespace Template.TopDown2D;
 
@@ -14,7 +15,7 @@ public partial class Player : CharacterBody2D, INetPlayer
     private CameraShakeComponent _cameraShake;
     private Vector2 _prevPosition;
     private Vector2 _moveDirection;
-    private GameClient _client;
+    private ENetClient _client;
     private AnimatedSprite2D _sprite;
     private Sprite2D _cursor;
 

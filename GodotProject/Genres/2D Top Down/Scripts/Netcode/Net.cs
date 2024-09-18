@@ -3,19 +3,24 @@ using GodotUtils;
 using System;
 using System.Threading.Tasks;
 using Template.Netcode;
+using Template.Netcode.Client;
+using Template.Netcode.Server;
 
 namespace Template.TopDown2D;
 
 public class Net
 {
-    public event Action<GameClient> OnClientCreated;
-    public event Action<GameServer> OnServerCreated;
+    public event Action<ENetServer> OnServerCreated;
+    public event Action<ENetClient> OnClientCreated;
 
     public static int HeartbeatPosition { get; } = 20;
     public static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
-    public GameClient Client { get; private set; } = new();
-    public GameServer Server { get; private set; } = new();
+    public ENetServer Server { get; private set; }
+    public ENetClient Client { get; private set; }
+
+    private IGameServerFactory _serverFactory;
+    private IGameClientFactory _clientFactory;
 
     public Net()
     {
@@ -23,15 +28,35 @@ public class Net
         Global.Services.Get<Global>().OnQuit += StopThreads;
     }
 
+    public void Initialize(IGameServerFactory serverFactory, IGameClientFactory clientFactory)
+    {
+        _serverFactory = serverFactory;
+        _clientFactory = clientFactory;
+
+        //Server = serverFactory.CreateServer();
+        //Client = clientFactory.CreateClient();
+    }
+
+    public void StopServer()
+    {
+        if (Server == null)
+        {
+            GD.Print("Server was never started");
+            return;
+        }
+
+        Server.Stop();
+    }
+
     public void StartServer()
     {
-        if (Server.IsRunning)
+        if (Server != null && Server.IsRunning)
         {
             Server.Log("Server is running already");
             return;
         }
 
-        Server = new();
+        Server = _serverFactory.CreateServer();
         OnServerCreated?.Invoke(Server);
         Server.Start(25565, 100, new ENetOptions
         {
@@ -44,13 +69,13 @@ public class Net
 
     public void StartClient(string ip, ushort port, string username)
     {
-        if (Client.IsRunning)
+        if (Client != null && Client.IsRunning)
         {
             Client.Log("Client is running already");
             return;
         }
 
-        Client = new();
+        Client = _clientFactory.CreateClient();
         OnClientCreated?.Invoke(Client);
         Client.Connect(ip, port, new ENetOptions
         {
@@ -72,6 +97,12 @@ public class Net
 
     public void StopClient()
     {
+        if (Client == null)
+        {
+            GD.Print("Client was never started");
+            return;
+        }
+
         if (!Client.IsRunning)
         {
             Client.Log("Client was stopped already");

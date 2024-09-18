@@ -283,7 +283,7 @@ public abstract class ENetClient : ENetLow
         WorkerLoop();
 
         Host.Dispose();
-        Log("Client is no longer running");
+        Log("Client has stopped");
     }
 
     protected override void DisconnectCleanup(Peer peer)

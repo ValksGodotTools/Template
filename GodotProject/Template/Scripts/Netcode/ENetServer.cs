@@ -357,7 +357,7 @@ public abstract class ENetServer : ENetLow
         WorkerLoop();
 
         Host.Dispose();
-        Log("Server is no longer running");
+        Log("Server has stopped");
     }
 
     protected override void DisconnectCleanup(Peer peer)
