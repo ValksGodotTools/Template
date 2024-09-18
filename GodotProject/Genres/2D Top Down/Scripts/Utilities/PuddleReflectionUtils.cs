@@ -7,8 +7,8 @@ public static class PuddleReflectionUtils
 {
     public static void CreateReflection(Node entity, Node2D sprite)
     {
-        // Create reflection
         Node2D reflection = (Node2D)sprite.Duplicate();
+
         reflection.Name = "Reflection";
 
         if (reflection is Sprite2D sprite2D)
@@ -17,20 +17,20 @@ public static class PuddleReflectionUtils
         }
         else if (reflection is AnimatedSprite2D reflectionAnimated)
         {
-            AnimatedSprite2D originalAnimatedSprite = sprite as AnimatedSprite2D;
+            AnimatedSprite2D original = sprite as AnimatedSprite2D;
 
-            string[] animations = originalAnimatedSprite.SpriteFrames.GetAnimationNames();
+            string[] animations = original.SpriteFrames.GetAnimationNames();
             
             if (animations.Length > 0)
             {
-                originalAnimatedSprite.Play(animations[0]);
+                original.Play(animations[0]);
             }
 
-            reflection.Position = new Vector2(0, originalAnimatedSprite.GetPixelHeight());
+            reflection.Position = new Vector2(0, original.GetPixelHeight());
 
-            originalAnimatedSprite.AnimationChanged += () =>
+            original.AnimationChanged += () =>
             {
-                reflectionAnimated.Play(originalAnimatedSprite.Animation);
+                reflectionAnimated.Play(original.Animation);
             };
         }
 
