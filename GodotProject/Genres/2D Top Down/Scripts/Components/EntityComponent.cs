@@ -11,7 +11,7 @@ public partial class EntityComponent : Node2D
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
     [Export] public NodeState IdleState { get; private set; }
 
-    private State _curState;
+    protected State _curState; // temporarily made protected for Visualize in EnemyComponent
     private Node2D _entity;
 
     public override void _Ready()
