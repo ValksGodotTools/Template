@@ -37,18 +37,24 @@ public partial class VisualizeAutoload : Node
 
             if (positionalNode == null)
             {
-                GPrintUtils.Warning($"[Visualize] No positional parent node could be found for {node.Name} so no VisualPanel will be created for it");
-                return;
+                GPrintUtils.Warning($"[Visualize] No positional parent node could be found for {node.Name} so its visual panel will be created at position (100, 100)");
             }
 
-            // Immediately set the visual panels position to the positional nodes position
-            if (positionalNode is Node2D node2D)
+            if (positionalNode != null)
             {
-                visualPanel.GlobalPosition = node2D.GlobalPosition;
+                // Immediately set the visual panels position to the positional nodes position
+                if (positionalNode is Node2D node2D)
+                {
+                    visualPanel.GlobalPosition = node2D.GlobalPosition;
+                }
+                else if (positionalNode is Control control)
+                {
+                    visualPanel.GlobalPosition = control.GlobalPosition;
+                }
             }
-            else if (positionalNode is Control control)
+            else
             {
-                visualPanel.GlobalPosition = control.GlobalPosition;
+                visualPanel.GlobalPosition = new Vector2(100, 100);
             }
 
             // Ensure the added visual panel is not overlapping with any other visual panels
@@ -105,13 +111,16 @@ public partial class VisualizeAutoload : Node
             Control visualControl = info.VisualControl;
 
             // Update position based on node type
-            if (node is Node2D node2D)
+            if (node != null) // Checking null here every frame is costly. No need to update the position if the position never changes!
             {
-                visualControl.GlobalPosition = node2D.GlobalPosition + info.Offset;
-            }
-            else if (node is Control control)
-            {
-                visualControl.GlobalPosition = control.GlobalPosition + info.Offset;
+                if (node is Node2D node2D)
+                {
+                    visualControl.GlobalPosition = node2D.GlobalPosition + info.Offset;
+                }
+                else if (node is Control control)
+                {
+                    visualControl.GlobalPosition = control.GlobalPosition + info.Offset;
+                }
             }
 
             // Execute actions
