@@ -49,7 +49,10 @@ public partial class Player : CharacterBody3D
                 case "Rest to ADS":
                 case "ADS":
                     if (!Input.IsActionPressed("ads"))
+                    {
                         animTree.SetCondition("rest", true);
+                    }
+
                     break;
                 case "Reload":
                     OnFinishedReload?.Invoke();
@@ -131,7 +134,9 @@ public partial class Player : CharacterBody3D
     private void RecreateCameraBone(int itemIndex)
     {
         if (GodotObject.IsInstanceValid(cameraBone))
+        {
             cameraBone.QueueFree();
+        }
 
         cameraBone = new();
         fpsRig.AddChild(cameraBone);

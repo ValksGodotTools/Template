@@ -12,7 +12,9 @@ public abstract class ClientPacket : GamePacket
     public static void MapOpcodes()
     {
         foreach (KeyValuePair<Type, PacketInfo<ClientPacket>> packet in PacketMap)
+        {
             PacketMapBytes.Add(packet.Value.Opcode, packet.Key);
+        }
     }
 
     public void Send()

@@ -25,7 +25,9 @@ public partial class GameServer : ENetServer
         // If there are less than 2 players on the server there is no point in sending
         // position packets to the only player on the server
         if (Players.Count < 2)
+        {
             return;
+        }
 
         // Send all the other players positions to each player
         foreach (uint id in Players.Keys)
@@ -50,7 +52,9 @@ public partial class GameServer : ENetServer
         // This must not be in the previous foreach loop above or weird things will happen
         // This has to execute AFTER the previous foreach loop has completed
         foreach (PlayerData player in Players.Values)
+        {
             player.PrevPosition = player.Position;
+        }
     }
 
     protected override void Disconnected(Event netEvent)
@@ -61,7 +65,9 @@ public partial class GameServer : ENetServer
         foreach (uint id in Players.Keys)
         {
             if (id == netEvent.Peer.ID)
+            {
                 continue;
+            }
 
             Send(new SPacketPlayerJoinLeave
             {

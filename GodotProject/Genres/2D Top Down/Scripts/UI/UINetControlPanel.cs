@@ -30,12 +30,16 @@ public partial class UINetControlPanel : Control
             _ip = words[0];
 
             if (words.Length < 2)
+            {
                 return;
+            }
 
             if (ushort.TryParse(words[1], out ushort result))
             {
                 if (result.CountDigits() > 2)
+                {
                     _port = result;
+                }
             }
         };
 

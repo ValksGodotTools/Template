@@ -19,7 +19,9 @@ public class PacketWriter : IDisposable
     public void Write<T>(T v)
     {
         if (v == null)
+        {
             throw new ArgumentNullException(nameof(v));
+        }
 
         Type t = v.GetType();
 
@@ -116,7 +118,9 @@ public class PacketWriter : IDisposable
 
         // Write each item in the array
         foreach (object item in array)
+        {
             Write(item);
+        }
     }
 
     private void WriteGeneric(object v, Type t)
@@ -133,7 +137,9 @@ public class PacketWriter : IDisposable
 
             // Write each item in the list
             foreach (object item in list)
+            {
                 Write(item);
+            }
         }
         // Check if type is dictionary
         else if (g == typeof(IDictionary<,>) || g == typeof(Dictionary<,>))

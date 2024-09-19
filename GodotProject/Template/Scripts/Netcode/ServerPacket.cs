@@ -15,7 +15,9 @@ public abstract class ServerPacket : GamePacket
     public static void MapOpcodes()
     {
         foreach (KeyValuePair<Type, PacketInfo<ServerPacket>> packet in PacketMap)
+        {
             PacketMapBytes.Add(packet.Value.Opcode, packet.Key);
+        }
     }
 
     public void Send()

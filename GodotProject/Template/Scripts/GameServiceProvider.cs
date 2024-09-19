@@ -21,7 +21,9 @@ public class GameServiceProvider : ServiceProvider
         // Do not remove persistent services
         // Only remove services if the SceneManager service exists in services
         if (service.Persistent || !services.ContainsKey(typeof(SceneManager)))
+        {
             return;
+        }
 
         // The scene has changed, remove all non-persistent services
         SceneManager sceneManager = (SceneManager)services[typeof(SceneManager)].Instance;

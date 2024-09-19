@@ -65,7 +65,9 @@ public partial class UIOptionsDisplay : Control
         optionsManager.WindowModeChanged += windowMode =>
         {
             if (!GodotObject.IsInstanceValid(optionBtnWindowMode))
+            {
                 return;
+            }
 
             // Window mode select button could be null. If there was no null check
             // here then we would be assuming that the user can only change fullscreen
@@ -174,7 +176,9 @@ public partial class UIOptionsDisplay : Control
     private void _on_max_fps_drag_ended(bool valueChanged)
     {
         if (!valueChanged)
+        {
             return;
+        }
 
         Engine.MaxFps = _options.MaxFPS;
     }

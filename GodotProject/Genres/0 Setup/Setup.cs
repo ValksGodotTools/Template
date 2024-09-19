@@ -91,7 +91,9 @@ public partial class Setup : Node
             foreach (KeyValuePair<Genre, string> folder in _folderNames)
             {
                 if (folder.Key != _genre)
+                {
                     Directory.Delete(Path.Combine(pathFrom, folder.Value), true);
+                }
             }
         }
 

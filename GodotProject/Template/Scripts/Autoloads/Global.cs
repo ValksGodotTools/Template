@@ -29,8 +29,10 @@ public partial class Global : Node
 	public override void _PhysicsProcess(double delta)
 	{
         if (Input.IsActionJustPressed("fullscreen"))
+        {
             optionsManager.ToggleFullscreen();
-        
+        }
+
         Services.Get<Logger>().Update();
 	}
 
@@ -51,7 +53,9 @@ public partial class Global : Node
         optionsManager.SaveHotkeys();
 
         if (OnQuit != null)
+        {
             await OnQuit?.Invoke();
+        }
 
         // This must be here because buttons call Global::Quit()
         GetTree().Quit();

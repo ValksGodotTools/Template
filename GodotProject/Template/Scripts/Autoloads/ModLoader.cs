@@ -42,7 +42,9 @@ public partial class ModLoader
         while (filename != "")
         {
             if (!dir.CurrentIsDir())
+            {
                 goto Next;
+            }
 
             string modRoot = $@"{modsPath}/{filename}";
             string modJson = $@"{modRoot}/mod.json";

@@ -61,7 +61,9 @@ public abstract class ENetLow
                 if (Host.CheckEvents(out Event netEvent) <= 0)
                 {
                     if (Host.Service(15, out netEvent) <= 0)
+                    {
                         break;
+                    }
 
                     polled = true;
                 }

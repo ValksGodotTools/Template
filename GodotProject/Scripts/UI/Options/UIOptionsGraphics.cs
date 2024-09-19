@@ -75,12 +75,16 @@ public partial class UIOptionsGraphics : Control
             UIPopupMenu popupMenu = Global.Services.Get<UIPopupMenu>();
 
             if (popupMenu == null)
+            {
                 return;
+            }
 
             WorldEnvironment worldEnvironment = popupMenu.WorldEnvironment;
 
             if (worldEnvironment == null)
+            {
                 return;
+            }
 
             applyInGame(worldEnvironment.Environment, checkBox.ButtonPressed);
         };

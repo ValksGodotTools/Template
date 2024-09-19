@@ -116,8 +116,10 @@ public abstract class ENetServer : ENetLow
         Type type = packet.GetType();
 
         if (!IgnoredPackets.Contains(type) && Options.PrintPacketSent)
+        {
             Log($"Sending packet {type.Name} {FormatByteSize(packet.GetSize())}to client {peer.ID}" +
                 $"{(Options.PrintPacketData ? $"\n{packet.ToFormattedString()}" : "")}");
+        }
 
         packet.SetSendType(SendType.Peer);
         packet.SetPeer(peer);
@@ -282,8 +284,10 @@ public abstract class ENetServer : ENetLow
             handlePacket.Handle(this, packetPeer.Item2);
 
             if (!IgnoredPackets.Contains(type) && Options.PrintPacketReceived)
+            {
                 Log($"Received packet: {type.Name} from client {packetPeer.Item2.ID}" +
                     $"{(Options.PrintPacketData ? $"\n{handlePacket.ToFormattedString()}" : "")}", BBColor.LightGreen);
+            }
         }
 
         // Outgoing

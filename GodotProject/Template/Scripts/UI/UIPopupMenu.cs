@@ -67,7 +67,9 @@ public partial class UIPopupMenu : Control
             recursive: true, owned: false);
 
         if (node is not null and WorldEnvironment worldEnvironment)
+        {
             WorldEnvironment = worldEnvironment;
+        }
     }
 
     private void _on_resume_pressed()

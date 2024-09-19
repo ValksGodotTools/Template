@@ -37,7 +37,9 @@ public partial class Player
         state.Transitions = () =>
         {
             if (IsOnFloor())
+            {
                 SwitchState(Idle());
+            }
         };
 
         return state;

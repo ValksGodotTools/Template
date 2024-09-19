@@ -44,7 +44,9 @@ public partial class UIOptionsInput : Control
                 _btnNewInput.Btn.Disabled = false;
 
                 if (_btnNewInput.Plus)
+                {
                     _btnNewInput.Btn.QueueFree();
+                }
 
                 _btnNewInput = null;
                 @event.Dispose(); // Object count was increasing a lot when this function was executed
@@ -54,13 +56,17 @@ public partial class UIOptionsInput : Control
             if (@event is InputEventMouseButton eventMouseBtn)
             {
                 if (!eventMouseBtn.Pressed)
+                {
                     HandleInput(eventMouseBtn);
+                }
             }
             else if (@event is InputEventKey eventKey && !eventKey.Echo)
             {
                 // Only check when the last key was released from the keyboard
                 if (!eventKey.Pressed)
+                {
                     HandleInput(eventKey);
+                }
             }   
         }
         else
@@ -86,7 +92,9 @@ public partial class UIOptionsInput : Control
 
         // Prevent something very evil from happening!
         if (action == "fullscreen" && @event is InputEventMouseButton eventBtn)
+        {
             return;
+        }
 
         // Re-create the button
 
@@ -113,7 +121,9 @@ public partial class UIOptionsInput : Control
 
         // Update input map
         if (_btnNewInput.InputEvent != null)
+        {
             InputMap.ActionEraseEvent(action, _btnNewInput.InputEvent);
+        }
 
         InputMap.ActionAddEvent(action, @event);
 
@@ -140,7 +150,9 @@ public partial class UIOptionsInput : Control
         {
             // Do not do anything if listening for new input
             if (_btnNewInput != null)
+            {
                 return;
+            }
 
             // Listening for new hotkey to replace old with...
             _btnNewInput = new BtnInfo
@@ -170,7 +182,9 @@ public partial class UIOptionsInput : Control
         {
             // Do not do anything if listening for new input
             if (_btnNewInput != null)
+            {
                 return;
+            }
 
             // Listening for new hotkey to replace old with...
             _btnNewInput = new BtnInfo
@@ -202,11 +216,15 @@ public partial class UIOptionsInput : Control
 
             // Exlucde "remove_hotkey" action
             if (actionStr == "remove_hotkey")
+            {
                 continue;
+            }
 
             // Exclude all built-in actions
             if (actionStr.StartsWith("ui"))
+            {
                 continue;
+            }
 
             HBoxContainer hbox = new();
 
@@ -250,8 +268,12 @@ public partial class UIOptionsInput : Control
     private void _on_reset_to_defaults_pressed()
     {
         for (int i = 0; i < _content.GetChildren().Count; i++)
+        {
             if (_content.GetChild(i) != this)
+            {
                 _content.GetChild(i).QueueFree();
+            }
+        }
 
         _btnNewInput = null;
         optionsManager.ResetHotkeys();

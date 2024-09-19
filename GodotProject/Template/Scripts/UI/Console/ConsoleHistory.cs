@@ -25,7 +25,9 @@ public class ConsoleHistory
         _inputHistoryNav--;
 
         if (!_inputHistory.ContainsKey(_inputHistoryNav))
+        {
             _inputHistoryNav++;
+        }
 
         return Get(_inputHistoryNav);
     }
@@ -38,7 +40,9 @@ public class ConsoleHistory
         _inputHistoryNav++;
 
         if (!_inputHistory.ContainsKey(_inputHistoryNav))
+        {
             _inputHistoryNav--;
+        }
 
         return Get(_inputHistoryNav);
     }

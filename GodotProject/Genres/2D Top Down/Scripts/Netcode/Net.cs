@@ -135,7 +135,9 @@ public partial class Net : Node
                 Server.Stop();
 
                 while (Server.IsRunning)
+                {
                     await Task.Delay(1);
+                }
             }
 
             if (Client.IsRunning)
@@ -143,7 +145,9 @@ public partial class Net : Node
                 Client.Stop();
 
                 while (Client.IsRunning)
+                {
                     await Task.Delay(1);
+                }
             }
 
             ENet.Library.Deinitialize();
@@ -151,7 +155,9 @@ public partial class Net : Node
 
         // Wait for the logger to finish enqueing the remaining logs
         while (Global.Services.Get<Logger>().StillWorking())
+        {
             await Task.Delay(1);
+        }
     }
 }
 

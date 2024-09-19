@@ -111,8 +111,10 @@ public abstract class ENetClient : ENetLow
             handlePacket.Handle(this);
 
             if (!IgnoredPackets.Contains(type) && Options.PrintPacketReceived)
+            {
                 Log($"Received packet: {type.Name}" +
                     $"{(Options.PrintPacketData ? $"\n{handlePacket.ToFormattedString()}" : "")}", BBColor.Deepskyblue);
+            }
         }
 
         while (_godotCmdsInternal.TryDequeue(out Cmd<GodotOpcode> cmd))
@@ -214,8 +216,10 @@ public abstract class ENetClient : ENetLow
             Type type = clientPacket.GetType();
 
             if (!IgnoredPackets.Contains(type) && Options.PrintPacketSent)
+            {
                 Log($"Sent packet: {type.Name} {FormatByteSize(clientPacket.GetSize())}" +
                     $"{(Options.PrintPacketData ? $"\n{clientPacket.ToFormattedString()}" : "")}");
+            }
 
             clientPacket.Send();
         }

@@ -39,7 +39,9 @@ public partial class Player : CharacterBody3D
     private void OnInputUI(InputEvent @event)
     {
         if (Input.MouseMode != Input.MouseModeEnum.Captured)
+        {
             return;
+        }
 
         if (@event is InputEventMouseMotion motion)
         {

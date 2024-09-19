@@ -60,11 +60,13 @@ public partial class UIConsole : PanelContainer
         
         // Prevent text feed from becoming too large
         if (_feed.Text.Length > 1000)
+        {
             // If there are say 2353 characters then 2353 - 1000 = 1353 characters
             // which is how many characters we need to remove to get back down to
             // 1000 characters
             _feed.Text = _feed.Text.Remove(0, _feed.Text.Length - 1000);
-        
+        }
+
         _feed.Text += $"\n{message}";
 
         // Removing text from the feed will mess up the scroll, this is why the
@@ -91,13 +93,17 @@ public partial class UIConsole : PanelContainer
     private void ScrollDown()
     {
         if (_autoScroll)
+        {
             _feed.ScrollVertical = (int)_feed.GetVScrollBar().MaxValue;
+        }
     }
 
     private void OnSettingsBtnPressed()
     {
         if (!_settingsPopup.Visible)
+        {
             _settingsPopup.PopupCentered();
+        }
     }
 
     private void LoadCommands()
@@ -123,7 +129,9 @@ public partial class UIConsole : PanelContainer
                 foreach (object attribute in attributes)
                 {
                     if (attribute is not ConsoleCommandAttribute cmd)
+                    {
                         continue;
+                    }
 
                     TryLoadCommand(cmd, method);
                 }
@@ -186,7 +194,9 @@ public partial class UIConsole : PanelContainer
                 bool nameMatch = string.Equals(Name, text, StringComparison.OrdinalIgnoreCase);
 
                 if (nameMatch)
+                {
                     return true;
+                }
 
                 // Does text match an alias in this command?
                 bool aliasMatch = cmd.Aliases
@@ -210,7 +220,9 @@ public partial class UIConsole : PanelContainer
 
         // do not do anything if cmd is just whitespace
         if (string.IsNullOrWhiteSpace(cmd))
+        {
             return;
+        }
 
         // keep track of input history
         _history.Add(inputToLowerTrimmed);
@@ -226,7 +238,9 @@ public partial class UIConsole : PanelContainer
     {
         // If console is not visible or there is no history to navigate do nothing
         if (!Visible || _history.NoHistory())
+        {
             return;
+        }
 
         if (Input.IsActionJustPressed("ui_up"))
         {
@@ -294,12 +308,16 @@ public partial class UIConsole : PanelContainer
     private static object ConvertStringToType(string input, Type targetType)
     {
         if (targetType == typeof(string))
+        {
             return input;
+        }
 
         try
         {
             if (targetType == typeof(int))
+            {
                 return int.Parse(input);
+            }
         } catch (FormatException e)
         {
             Game.Log(e.Message);
@@ -309,7 +327,9 @@ public partial class UIConsole : PanelContainer
         try
         {
             if (targetType == typeof(bool))
+            {
                 return bool.Parse(input);
+            }
         }
         catch (FormatException e)
         {
@@ -336,14 +356,18 @@ public partial class UIConsole : PanelContainer
     private static Node FindNodeByType(Node root, Type targetType)
     {
         if (root.GetType() == targetType)
+        {
             return root;
+        }
 
         foreach (Node child in root.GetChildren())
         {
             Node foundNode = FindNodeByType(child, targetType);
 
             if (foundNode != null)
+            {
                 return foundNode;
+            }
         }
 
         return null;

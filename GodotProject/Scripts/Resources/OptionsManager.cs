@@ -60,7 +60,9 @@ public partial class OptionsManager : Resource
             path: $"user://{name.ToLower()}.tres");
 
         if (error != Error.Ok)
+        {
             GD.Print(error);
+        }
     }
 
     public void ResetHotkeys()
@@ -121,14 +123,18 @@ public partial class OptionsManager : Resource
         Array<StringName> actions = InputMap.GetActions();
 
         foreach (StringName action in actions)
+        {
             InputMap.EraseAction(action);
+        }
 
         foreach (StringName action in hotkeys.Keys)
         {
             InputMap.AddAction(action);
 
             foreach (InputEvent @event in hotkeys[action])
+            {
                 InputMap.ActionAddEvent(action, @event);
+            }
         }
     }
 
@@ -142,7 +148,9 @@ public partial class OptionsManager : Resource
             actions.Add(action, []);
 
             foreach (InputEvent actionEvent in InputMap.ActionGetEvents(action))
+            {
                 actions[action].Add(actionEvent);
+            }
         }
 
         DefaultHotkeys = actions;

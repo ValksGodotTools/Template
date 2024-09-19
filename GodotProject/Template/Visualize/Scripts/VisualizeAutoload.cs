@@ -59,7 +59,9 @@ public partial class VisualizeAutoload : Node
             foreach (Control existingControl in controls)
             {
                 if (existingControl == visualPanel)
+                {
                     continue; // Skip checking against itself
+                }
 
                 if (ControlsOverlapping(visualPanel, existingControl))
                 {

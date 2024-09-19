@@ -76,7 +76,9 @@ public partial class RoomTransitions : Node
         area.BodyEntered += body =>
         {
             if (body is Player)
+            {
                 HandleRoomTransition(normal);
+            }
         };
 
         area.AddChild(collision);

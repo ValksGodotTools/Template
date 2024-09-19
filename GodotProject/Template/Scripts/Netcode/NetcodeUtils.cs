@@ -18,11 +18,13 @@ public static class NetcodeUtils
         Dictionary<Type, PacketInfo<T>> dict = [];
 
         for (byte i = 0; i < types.Count; i++)
+        {
             dict.Add(types[i], new PacketInfo<T>
             {
                 Opcode = i,
                 Instance = (T)Activator.CreateInstance(types[i])
             });
+        }
 
         return dict;
     }

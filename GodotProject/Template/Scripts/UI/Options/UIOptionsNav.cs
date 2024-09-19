@@ -15,7 +15,9 @@ public partial class UIOptionsNav : Control
         Node content = GetParent().GetNode("Content");
 
         foreach (Control child in content.GetChildren())
+        {
             _tabs.Add(child.Name, child);
+        }
 
         foreach (Button button in GetChildren())
         {

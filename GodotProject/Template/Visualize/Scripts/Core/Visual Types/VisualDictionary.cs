@@ -36,9 +36,14 @@ public static partial class VisualControlTypes
             VisualControlInfo keyControl = CreateControlForType(keyType, new VisualControlContext(context.SpinBoxes, key, v =>
             {
                 if (dictionary.Contains(v))
+                {
                     return;
+                }
+
                 if (v.GetType() != keyType)
+                {
                     throw new ArgumentException($"[Visualize] Type mismatch: Expected {keyType}, got {v.GetType()}");
+                }
 
                 dictionary.Remove(key);
                 dictionary[v] = value;
@@ -72,7 +77,10 @@ public static partial class VisualControlTypes
         void AddNewEntryToDictionary()
         {
             if (dictionary.Contains(defaultKey))
+            {
                 return;
+            }
+
             dictionary[defaultKey] = defaultValue;
             context.ValueChanged(dictionary);
 
@@ -87,9 +95,14 @@ public static partial class VisualControlTypes
             VisualControlInfo keyControl = CreateControlForType(keyType, new VisualControlContext(context.SpinBoxes, defaultKey, v =>
             {
                 if (dictionary.Contains(v))
+                {
                     return;
+                }
+
                 if (v.GetType() != keyType)
+                {
                     throw new ArgumentException($"[Visualize] Type mismatch: Expected {keyType}, got {v.GetType()}");
+                }
 
                 dictionary.Remove(oldKey);
                 dictionary[v] = defaultValue;

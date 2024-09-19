@@ -121,7 +121,9 @@ public class PacketReader : IDisposable
 
             // Populate list
             for (int i = 0; i < count; i++)
+            {
                 list.Add(Read(vt));
+            }
 
             // Return list as T
             return (T)(object)list;
@@ -142,7 +144,9 @@ public class PacketReader : IDisposable
 
             // Populate dictionary
             for (int i = 0; i < count; i++)
+            {
                 dict.Add(Read(kt), Read(vt));
+            }
 
             // Return dictionary as T
             return (T)(object)dict;
@@ -164,7 +168,9 @@ public class PacketReader : IDisposable
 
         // Set field values
         foreach (FieldInfo f in fields)
+        {
             f.SetValue(v, Read(f.FieldType));
+        }
 
         // Get and order public instance properties with setters
         IOrderedEnumerable<PropertyInfo> properties = t
@@ -174,7 +180,9 @@ public class PacketReader : IDisposable
 
         // Set property values
         foreach (PropertyInfo p in properties)
+        {
             p.SetValue(v, Read(p.PropertyType));
+        }
 
         // Return populated instance
         return v;

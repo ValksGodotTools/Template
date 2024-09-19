@@ -45,7 +45,9 @@ public partial class CameraShakeComponent : Node
 
         // Only set new amplitude if it's greater than current amplitude
         if (newConfig.Amplitude > _config.Amplitude)
+        {
             _config.Amplitude = newConfig.Amplitude;
+        }
 
         // Update frequency
         _config.Frequency = newConfig.Frequency;

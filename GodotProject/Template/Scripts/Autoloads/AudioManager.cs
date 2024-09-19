@@ -111,7 +111,9 @@ public partial class AudioManager : Node
 
         // Set volume of all SFX players currently in the scene
         foreach (AudioStreamPlayer audioPlayer in _sfxPlayersParent.GetChildren())
+        {
             audioPlayer.VolumeDb = v;
+        }
     }
 }
 
