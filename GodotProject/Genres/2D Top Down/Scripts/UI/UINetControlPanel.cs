@@ -23,7 +23,12 @@ public partial class UINetControlPanel : Control
         btnStartServer.Pressed += _net.StartServer;
         btnStopServer.Pressed += _net.StopServer;
 
-        GetNode<Button>("%Start Client").Pressed += () => _net.StartClient(_ip, _port, _username);
+        GetNode<Button>("%Start Client").Pressed += () =>
+        {
+            Global.Services.Get<Level>().PlayerUsername = _username;
+            _net.StartClient(_ip, _port);
+        };
+
         GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
 
         GetNode<LineEdit>("%IP").TextChanged += text =>

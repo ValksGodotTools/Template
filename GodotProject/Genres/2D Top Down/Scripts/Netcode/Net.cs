@@ -1,4 +1,3 @@
-using Godot;
 using GodotUtils;
 using System;
 using System.Threading.Tasks;
@@ -6,7 +5,7 @@ using Template.Netcode;
 using Template.Netcode.Client;
 using Template.Netcode.Server;
 
-namespace Template.TopDown2D;
+namespace Template;
 
 public class Net
 {
@@ -14,7 +13,6 @@ public class Net
     public event Action<ENetClient> OnClientCreated;
 
     public static int HeartbeatPosition { get; } = 20;
-    public static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
     public ENetServer Server { get; private set; }
     public ENetClient Client { get; private set; }
@@ -61,7 +59,7 @@ public class Net
         });
     }
 
-    public void StartClient(string ip, ushort port, string username)
+    public void StartClient(string ip, ushort port)
     {
         if (Client.IsRunning)
         {
@@ -70,7 +68,9 @@ public class Net
         }
 
         Client = _clientFactory.CreateClient();
+
         OnClientCreated?.Invoke(Client);
+
         Client.Connect(ip, port, new ENetOptions
         {
             PrintPacketByteSize = false,
@@ -78,15 +78,6 @@ public class Net
             PrintPacketReceived = false,
             PrintPacketSent = false
         });
-
-        Client.OnConnected += () =>
-        {
-            Client.Send(new CPacketJoin
-            {
-                Username = username,
-                Position = PlayerSpawnPosition
-            });
-        };
     }
 
     public void StopClient()

@@ -13,12 +13,24 @@ public partial class Level : Node, INetLevel
     public Player Player { get; set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = [];
 
+    public string PlayerUsername { get; set; }
+    private static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
+
     public override void _Ready()
     {
         Global.Services.Add(this);
 
         Global.Services.Get<Net>().OnClientCreated += client =>
         {
+            client.OnConnected += () =>
+            {
+                client.Send(new CPacketJoin
+                {
+                    Username = PlayerUsername,
+                    Position = PlayerSpawnPosition
+                });
+            };
+
             client.OnDisconnected += opcode =>
             {
                 // WARNING:
@@ -50,7 +62,7 @@ public partial class Level : Node, INetLevel
     public void AddLocalPlayer()
     {
         Player = Game.LoadPrefab<Player>(Prefab.PlayerMain);
-        Player.Position = Net.PlayerSpawnPosition;
+        Player.Position = PlayerSpawnPosition;
         entities.AddChild(Player);
 
         playerCamera.StartFollowingPlayer(Player);
