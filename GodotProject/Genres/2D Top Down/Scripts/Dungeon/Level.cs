@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Template.TopDown2D;
 
-public partial class Level : Node, INetLevel
+public partial class Level : Node
 {
     [Export] private Node entities;
     [Export] private PlayerCamera playerCamera;

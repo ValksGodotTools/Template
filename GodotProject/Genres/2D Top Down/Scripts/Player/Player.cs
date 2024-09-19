@@ -3,10 +3,9 @@ using Template.Netcode.Client;
 
 namespace Template.TopDown2D;
 
-[Visualize(nameof(Position), nameof(Velocity))]
-public partial class Player : CharacterBody2D, INetPlayer
+public partial class Player : CharacterBody2D
 {
-    [Visualize] [Export] private PlayerConfig _config;
+    [Export] private PlayerConfig _config;
 
     private PlayerMoveManager _moveManager;
     private PlayerLookManager _lookManager;

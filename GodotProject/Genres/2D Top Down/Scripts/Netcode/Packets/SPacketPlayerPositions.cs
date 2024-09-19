@@ -12,7 +12,7 @@ public class SPacketPlayerPositions : ServerPacket
 
     public override void Handle(ENetClient client)
     {
-        INetLevel level = Global.Services.Get<Level>();
+        Level level = Global.Services.Get<Level>();
 
         foreach (KeyValuePair <uint, Vector2> pair in Positions)
         {

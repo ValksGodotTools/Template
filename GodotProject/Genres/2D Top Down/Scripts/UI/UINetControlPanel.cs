@@ -1,93 +1,21 @@
-using CSharpUtils;
-using Godot;
-using GodotUtils;
+using Template.Netcode;
 
 namespace Template.TopDown2D;
 
-public partial class UINetControlPanel : Control
+public partial class UINetControlPanel : UINetControlPanelLow
 {
-    private Net _net;
-    private string _ip = "127.0.0.1";
-    private ushort _port = 25565;
-    private string _username = "";
-    private string _prevUsername;
-
-    public override void _Ready()
+    public override void StartClientButtonPressed(string username)
     {
-        _net = new();
-        _net.Initialize(new GameServerFactory(), new GameClientFactory());
-
-        Button btnStartServer = GetNode<Button>("%Start Server");
-        Button btnStopServer = GetNode<Button>("%Stop Server");
-
-        btnStartServer.Pressed += _net.StartServer;
-        btnStopServer.Pressed += _net.StopServer;
-
-        GetNode<Button>("%Start Client").Pressed += () =>
-        {
-            Global.Services.Get<Level>().PlayerUsername = _username;
-            _net.StartClient(_ip, _port);
-        };
-
-        GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
-
-        GetNode<LineEdit>("%IP").TextChanged += text =>
-        {
-            string[] words = text.Split(":");
-
-            _ip = words[0];
-
-            if (words.Length < 2)
-            {
-                return;
-            }
-
-            if (ushort.TryParse(words[1], out ushort result))
-            {
-                if (result.CountDigits() > 2)
-                {
-                    _port = result;
-                }
-            }
-        };
-
-        LineEdit lineEditUsername = GetNode<LineEdit>("%Username");
-        
-        lineEditUsername.TextChanged += text =>
-        {
-            _username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
-        };
-
-        // Future note to self: Working with this event has been proven extremely difficult
-        // Try to avoid using if at all possible or figure out why it's so annoying to work with
-        // Maybe try to do whatever you need to do outside the event somehow. Perhaps directly inside
-        // Net.cs
-        _net.OnClientCreated += client =>
-        {
-            _net.Client.OnConnected += () =>
-            {
-                if (!_net.Server.IsRunning)
-                {
-                    // Server is not running and client connected to another server
-                    // Client should not be able to start a server while connected to another server
-                    btnStartServer.Disabled = true;
-                    btnStopServer.Disabled = true;
-                }
-
-                GetTree().UnfocusCurrentControl();
-            };
-
-            _net.Client.OnDisconnected += opcode =>
-            {
-                btnStartServer.Disabled = false;
-                btnStopServer.Disabled = false;
-            };
-        };
+        Global.Services.Get<Level>().PlayerUsername = username;
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override IGameServerFactory GameServerFactory()
     {
-        _net.Client?.HandlePackets();
+        return new GameServerFactory();
+    }
+
+    public override IGameClientFactory GameClientFactory()
+    {
+        return new GameClientFactory();
     }
 }
-

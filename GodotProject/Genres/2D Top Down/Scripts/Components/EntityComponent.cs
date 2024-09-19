@@ -4,7 +4,6 @@ using Godot;
 namespace Template.TopDown2D;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
-[Visualize(nameof(_curState))]
 public partial class EntityComponent : Node2D
 {
     [Export] private EntityConfig _config;
