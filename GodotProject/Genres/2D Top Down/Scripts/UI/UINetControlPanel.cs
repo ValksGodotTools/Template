@@ -1,4 +1,6 @@
 using Template.Netcode;
+using Template.Netcode.Client;
+using Template.Netcode.Server;
 
 namespace Template.TopDown2D;
 
@@ -9,13 +11,16 @@ public partial class UINetControlPanel : UINetControlPanelLow
         Global.Services.Get<Level>().PlayerUsername = username;
     }
 
-    public override IGameServerFactory GameServerFactory()
-    {
-        return new GameServerFactory();
-    }
+    public override IGameServerFactory GameServerFactory() => new GameServerFactory();
+    public override IGameClientFactory GameClientFactory() => new GameClientFactory();
+}
 
-    public override IGameClientFactory GameClientFactory()
-    {
-        return new GameClientFactory();
-    }
+public class GameServerFactory : IGameServerFactory
+{
+    public ENetServer CreateServer() => new GameServer();
+}
+
+public class GameClientFactory : IGameClientFactory
+{
+    public ENetClient CreateClient() => new GameClient();
 }
