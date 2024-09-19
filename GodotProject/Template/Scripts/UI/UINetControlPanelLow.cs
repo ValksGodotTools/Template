@@ -67,6 +67,7 @@ public abstract partial class UINetControlPanelLow : Control
                     GetNode<Button>("%Start Server").Disabled = true;
                     GetNode<Button>("%Stop Server").Disabled = true;
                 }
+
                 GetTree().UnfocusCurrentControl();
             };
 

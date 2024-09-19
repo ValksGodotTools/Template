@@ -279,6 +279,7 @@ public abstract class ENetServer : ENetLow
                 Log($"Received malformed packet: {opcode} {e.Message} (Ignoring)");
                 return;
             }
+
             packetReader.Dispose();
 
             handlePacket.Handle(this, packetPeer.Item2);

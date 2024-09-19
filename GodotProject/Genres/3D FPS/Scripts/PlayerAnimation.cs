@@ -79,6 +79,7 @@ public partial class Player : CharacterBody3D
 
                         _curItemIndex = (_curItemIndex + 1) % _items.Count;
                     }
+
                     break;
             }
         };
