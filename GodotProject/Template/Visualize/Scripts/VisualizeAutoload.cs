@@ -88,7 +88,8 @@ public partial class VisualizeAutoload : Node
 
         if (_nodeTrackers.TryGetValue(instanceId, out VisualNodeInfo info))
         {
-            info.VisualControl.QueueFree();
+            // GetParent to queue free the CanvasLayer this VisualControl is a child of
+            info.VisualControl.GetParent().QueueFree();
             _nodeTrackers.Remove(instanceId);
         }
     }
