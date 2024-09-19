@@ -189,6 +189,7 @@ public class PacketWriter : IDisposable
     {
         Stream.Dispose();
         _writer.Dispose();
+
+        GC.SuppressFinalize(this); // Not sure why this is needed
     }
 }
-

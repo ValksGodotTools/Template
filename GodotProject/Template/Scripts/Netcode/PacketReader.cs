@@ -204,6 +204,7 @@ public class PacketReader : IDisposable
     {
         _stream.Dispose();
         _reader.Dispose();
+
+        GC.SuppressFinalize(this); // Not sure why this is needed
     }
 }
-
