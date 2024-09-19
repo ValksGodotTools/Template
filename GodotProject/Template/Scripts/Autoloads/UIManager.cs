@@ -9,16 +9,16 @@ public partial class UIManager : Node
 
     public override void _Ready()
 	{
-        GetRootControlNodes(GetTree().Root);
-
         // This should not initially be set to DisplayServer.WindowGetSize() because then UI sizes
         // will be inconsistent if the player starts the game in fullscreen vs in windowed mode
         Vector2 referenceWindowSize = new(1280, 720);
 
+        GetRootControlNodes(GetTree().Root);
         SetRootControlPositions(referenceWindowSize);
 
         GetTree().Root.GetViewport().SizeChanged += () =>
         {
+            GetRootControlNodes(GetTree().Root);
             SetRootControlPositions(referenceWindowSize);
         };
     }
@@ -47,6 +47,8 @@ public partial class UIManager : Node
 
     private static void GetRootControlNodes(Node node)
     {
+        _rootControls.Clear();
+
         if (node is Control controlNode)
         {
             _rootControls.Add(controlNode);
