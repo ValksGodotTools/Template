@@ -21,13 +21,20 @@ public partial class Level : Node, INetLevel
         {
             client.OnDisconnected += opcode =>
             {
-                // The entire scene cannot be reset here because this will also reset the
-                // instance stored for both GameServer and GameClient. These run on separate
-                // threads, so resetting them here won't stop them on the other threads. Not
-                // to mention they shouldn't be reset in the first place! So this is why the
-                // entire scene is no longer reset when the client disconnects.
-                // See https://github.com/ValksGodotTools/Template/issues/20 for more info
-                // about this.
+                // WARNING:
+                // Do not reset world here with Global.Servers.Get<SceneManager>().ResetCurrentScene()
+                //
+                // REASON:
+                // Resetting the world will reset the contents of Net.cs and Level.cs which will result
+                // in numerous problems. Attempts have been made to turn Net into a persistent autoload
+                // however doing so will require Player and OtherPlayers to be defined in Net.cs and
+                // doing stuff like playerCamera.StartFollowingPlayer(Player); and entities.AddChild(otherPlayer);
+                // will need to be done in Net.cs because Level.cs will get reset. Getting the playerCamera
+                // and a path to the entities node from Net.cs is miserable. Imagine doing
+                // GetTree().Root.GetNode<PlayerCamera>("/root/Level/Camera2D")...
+                // Another reason to avoid resetting the entire world is to avoid seeing the lag created
+                // from the world reset.
+
                 Player.QueueFree();
                 Player = null;
 
