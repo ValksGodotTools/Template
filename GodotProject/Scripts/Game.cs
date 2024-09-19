@@ -7,7 +7,6 @@ namespace Template;
 
 public partial class Game
 {
-    public static Net Net { get => Global.Services.Get<Net>(); }
     public static UIConsole Console { get => Global.Services.Get<UIConsole>(); }
 
     public static void SwitchScene(Scene scene, TransType transType = TransType.None)

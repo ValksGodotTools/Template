@@ -14,14 +14,11 @@ public partial class UINetControlPanel : Control
 
     public override void _Ready()
     {
-        _net = new();
+        _net = GetTree().GetAutoload<Net>("Net");
         _net.Initialize(new GameServerFactory(), new GameClientFactory());
 
-        Button btnStartServer = GetNode<Button>("%Start Server");
-        Button btnStopServer = GetNode<Button>("%Stop Server");
-
-        btnStartServer.Pressed += _net.StartServer;
-        btnStopServer.Pressed += _net.StopServer;
+        GetNode<Button>("%Start Server").Pressed += _net.StartServer;
+        GetNode<Button>("%Stop Server").Pressed += _net.StopServer;
 
         GetNode<Button>("%Start Client").Pressed += () => _net.StartClient(_ip, _port, _username);
         GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
@@ -49,25 +46,37 @@ public partial class UINetControlPanel : Control
             _username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
         };
 
+        // Future note to self: Working with this event has been proven extremely difficult
+        // Try to avoid using if at all possible or figure out why it's so annoying to work with
+        // Maybe try to do whatever you need to do outside the event somehow. Perhaps directly inside
+        // Net.cs
         _net.OnClientCreated += client =>
         {
             _net.Client.OnConnected += () =>
             {
+                if (!IsInstanceValid(this))
+                {
+                    return;
+                }
+
                 if (!_net.Server.IsRunning)
                 {
                     // Server is not running and client connected to another server
                     // Client should not be able to start a server while connected to another server
-                    btnStartServer.Disabled = true;
-                    btnStopServer.Disabled = true;
+                    GetNode<Button>("%Start Server").Disabled = true;
+                    GetNode<Button>("%Stop Server").Disabled = true;
                 }
-
-                GetTree().UnfocusCurrentControl();
             };
 
             _net.Client.OnDisconnected += opcode =>
             {
-                btnStartServer.Disabled = false;
-                btnStopServer.Disabled = false;
+                if (!IsInstanceValid(this))
+                {
+                    return;
+                }
+
+                GetNode<Button>("%Start Server").Disabled = false;
+                GetNode<Button>("%Stop Server").Disabled = false;
             };
         };
     }
