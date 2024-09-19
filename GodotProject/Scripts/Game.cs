@@ -1,6 +1,5 @@
 using Godot;
 using GodotUtils;
-using Template.TopDown2D;
 using static Template.SceneManager;
 
 namespace Template;
