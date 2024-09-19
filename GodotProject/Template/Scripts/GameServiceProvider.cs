@@ -1,3 +1,4 @@
+using Godot;
 using GodotUtils;
 
 namespace Template;
@@ -32,9 +33,12 @@ public class GameServiceProvider : ServiceProvider
             sceneManager.PreSceneChanged -= Cleanup;
 
             // Remove the service
-            //GD.Print($"Cleaned up service '{service.Instance.GetType().Name}'");
-            services.Remove(service.Instance.GetType());
+            bool success = services.Remove(service.Instance.GetType());
+
+            if (success)
+            {
+                //GD.Print($"Cleaned up service '{service.Instance.GetType().Name}'");
+            }
         }
     }
 }
-
