@@ -174,8 +174,7 @@ public partial class UIConsole : PanelContainer
         // Valk (Year 2024): What in the world
 
         // Split by spaces, unless in quotes
-        string[] rawCommandSplit = Regex.Matches(text,
-            @"[^\s""']+|""([^""]*)""|'([^']*)'").Select(m => m.Value)
+        string[] rawCommandSplit = CommandParamsRegex().Matches(text).Select(m => m.Value)
             .ToArray();
 
         object[] parameters = ConvertMethodParams(method, rawCommandSplit);
@@ -372,6 +371,8 @@ public partial class UIConsole : PanelContainer
 
         return null;
     }
+
+    [GeneratedRegex(@"[^\s""']+|""([^""]*)""|'([^']*)'")]
+    private static partial Regex CommandParamsRegex();
     #endregion Utils
 }
-

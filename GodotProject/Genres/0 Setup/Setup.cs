@@ -327,10 +327,11 @@ public partial class Setup : Node
         }
     }
 
+    [GeneratedRegex(@"^[a-zA-Z0-9\s,]*$")]
+    private static partial Regex AlphaNumericAndSpacesRegex();
+
     private static bool IsAlphaNumericAndAllowSpaces(string str)
     {
-        Regex rg = new(@"^[a-zA-Z0-9\s,]*$");
-        return rg.IsMatch(str);
+        return AlphaNumericAndSpacesRegex().IsMatch(str);
     }
 }
-

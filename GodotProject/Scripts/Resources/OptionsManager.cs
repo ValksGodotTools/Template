@@ -102,7 +102,7 @@ public partial class OptionsManager : Resource
         // Lets verify that the file is not corrupt by checking the path to the script is valid.
         string text = System.IO.File.ReadAllText(ProjectSettings.GlobalizePath("user://options.tres"));
 
-        Regex regex = new("path=\"(?<path>.*?)\"");
+        Regex regex = GetResourcePathRegex();
         Match match = regex.Match(text);
         string path = match.Groups["path"].Value;
 
@@ -260,5 +260,8 @@ public partial class OptionsManager : Resource
             name: "rendering/anti_aliasing/quality/msaa_3d",
             value: Options.Antialiasing);
     }
+
+    [GeneratedRegex("path=\"(?<path>.*?)\"")]
+    private static partial Regex GetResourcePathRegex();
 }
 
