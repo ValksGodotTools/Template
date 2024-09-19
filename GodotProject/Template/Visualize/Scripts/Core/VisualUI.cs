@@ -128,6 +128,7 @@ public static class VisualUI
         canvasLayer.FollowViewportEnabled = true;
         panelContainer.AddChild(vboxParent);
         canvasLayer.AddChild(panelContainer);
+        canvasLayer.Name = $"Visualizing {node.Name} {node.GetInstanceId()}";
 
         tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
 
