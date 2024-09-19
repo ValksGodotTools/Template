@@ -27,7 +27,6 @@ VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="ignore"
 
 [dotnet]
 
