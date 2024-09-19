@@ -1,5 +1,4 @@
 using Godot;
-using GodotUtils;
 using Template.Netcode.Client;
 
 namespace Template.TopDown2D;
@@ -25,7 +24,7 @@ public partial class Player : CharacterBody2D, INetPlayer
         _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _cursor = GetNode<Sprite2D>("Cursor");
         _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
-        _client = GetTree().GetAutoload<Net>("Net").Client;
+        _client = Global.Services.Get<Net>().Client;
 
         _dashManager = new PlayerDashManager(_config, _sprite);
         _moveManager = new PlayerMoveManager(_config);

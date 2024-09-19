@@ -14,11 +14,14 @@ public partial class UINetControlPanel : Control
 
     public override void _Ready()
     {
-        _net = GetTree().GetAutoload<Net>("Net");
+        _net = new();
         _net.Initialize(new GameServerFactory(), new GameClientFactory());
 
-        GetNode<Button>("%Start Server").Pressed += _net.StartServer;
-        GetNode<Button>("%Stop Server").Pressed += _net.StopServer;
+        Button btnStartServer = GetNode<Button>("%Start Server");
+        Button btnStopServer = GetNode<Button>("%Stop Server");
+
+        btnStartServer.Pressed += _net.StartServer;
+        btnStopServer.Pressed += _net.StopServer;
 
         GetNode<Button>("%Start Client").Pressed += () => _net.StartClient(_ip, _port, _username);
         GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
@@ -58,29 +61,21 @@ public partial class UINetControlPanel : Control
         {
             _net.Client.OnConnected += () =>
             {
-                if (!IsInstanceValid(this))
-                {
-                    return;
-                }
-
                 if (!_net.Server.IsRunning)
                 {
                     // Server is not running and client connected to another server
                     // Client should not be able to start a server while connected to another server
-                    GetNode<Button>("%Start Server").Disabled = true;
-                    GetNode<Button>("%Stop Server").Disabled = true;
+                    btnStartServer.Disabled = true;
+                    btnStopServer.Disabled = true;
                 }
+
+                GetTree().UnfocusCurrentControl();
             };
 
             _net.Client.OnDisconnected += opcode =>
             {
-                if (!IsInstanceValid(this))
-                {
-                    return;
-                }
-
-                GetNode<Button>("%Start Server").Disabled = false;
-                GetNode<Button>("%Stop Server").Disabled = false;
+                btnStartServer.Disabled = false;
+                btnStopServer.Disabled = false;
             };
         };
     }

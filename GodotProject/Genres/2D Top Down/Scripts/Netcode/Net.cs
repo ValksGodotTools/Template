@@ -8,8 +8,9 @@ using Template.Netcode.Server;
 
 namespace Template.TopDown2D;
 
-public partial class Net : Node
+public class Net
 {
+    public event Action<ENetServer> OnServerCreated;
     public event Action<ENetClient> OnClientCreated;
 
     public static int HeartbeatPosition { get; } = 20;
@@ -21,49 +22,28 @@ public partial class Net : Node
     private IGameServerFactory _serverFactory;
     private IGameClientFactory _clientFactory;
 
-    public override void _Ready()
+    public Net()
     {
+        Global.Services.Add(this);
         Global.Services.Get<Global>().OnQuit += StopThreads;
     }
 
     public void Initialize(IGameServerFactory serverFactory, IGameClientFactory clientFactory)
     {
-        if (_serverFactory == null)
-        {
-            _serverFactory = serverFactory;
-            Server = serverFactory.CreateServer();
-        }
+        _serverFactory = serverFactory;
+        _clientFactory = clientFactory;
 
-        if (_clientFactory == null)
-        {
-            _clientFactory = clientFactory;
-            Client = clientFactory.CreateClient();
-        }
+        Server = serverFactory.CreateServer();
+        Client = clientFactory.CreateClient();
     }
 
     public void StopServer()
     {
-        GetTree().UnfocusCurrentControl();
-
-        if (!Server.IsRunning)
-        {
-            Server.Log("Server was stopped already");
-            return;
-        }
-
         Server.Stop();
-        OnClientCreated = null; // I don't know why but I feel it is important to reset OnClientCreated to null here
-        
-        if (Client.IsRunning)
-        {
-            Global.Services.Get<SceneManager>().ResetCurrentScene();
-        }
     }
 
     public void StartServer()
     {
-        GetTree().UnfocusCurrentControl();
-
         if (Server.IsRunning)
         {
             Server.Log("Server is running already");
@@ -71,6 +51,7 @@ public partial class Net : Node
         }
 
         Server = _serverFactory.CreateServer();
+        OnServerCreated?.Invoke(Server);
         Server.Start(25565, 100, new ENetOptions
         {
             PrintPacketByteSize = false,
@@ -82,8 +63,6 @@ public partial class Net : Node
 
     public void StartClient(string ip, ushort port, string username)
     {
-        GetTree().UnfocusCurrentControl();
-
         if (Client.IsRunning)
         {
             Client.Log("Client is running already");
@@ -112,8 +91,6 @@ public partial class Net : Node
 
     public void StopClient()
     {
-        GetTree().UnfocusCurrentControl();
-
         if (!Client.IsRunning)
         {
             Client.Log("Client was stopped already");
@@ -121,8 +98,6 @@ public partial class Net : Node
         }
 
         Client.Stop();
-        OnClientCreated = null;
-        Global.Services.Get<SceneManager>().ResetCurrentScene();
     }
 
     private async Task StopThreads()

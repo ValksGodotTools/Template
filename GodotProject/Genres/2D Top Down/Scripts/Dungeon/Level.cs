@@ -1,5 +1,5 @@
+using CSharpUtils;
 using Godot;
-using GodotUtils;
 using System.Collections.Generic;
 
 namespace Template.TopDown2D;
@@ -16,6 +16,28 @@ public partial class Level : Node, INetLevel
     public override void _Ready()
     {
         Global.Services.Add(this);
+
+        Global.Services.Get<Net>().OnClientCreated += client =>
+        {
+            client.OnDisconnected += opcode =>
+            {
+                // The entire scene cannot be reset here because this will also reset the
+                // instance stored for both GameServer and GameClient. These run on separate
+                // threads, so resetting them here won't stop them on the other threads. Not
+                // to mention they shouldn't be reset in the first place! So this is why the
+                // entire scene is no longer reset when the client disconnects.
+                // See https://github.com/ValksGodotTools/Template/issues/20 for more info
+                // about this.
+                Player.QueueFree();
+                Player = null;
+
+                OtherPlayers.Values.ForEach(x => x.QueueFree());
+                OtherPlayers.Clear();
+
+                playerCamera.StopFollowingPlayer();
+                roomTransitions.Reset();
+            };
+        };
     }
 
     public void AddLocalPlayer()
