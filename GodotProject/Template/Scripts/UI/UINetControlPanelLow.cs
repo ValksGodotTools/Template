@@ -11,7 +11,6 @@ public abstract partial class UINetControlPanelLow : Control
     private string _ip = "127.0.0.1";
     private ushort _port = 25565;
     private string _username = "";
-    private string _prevUsername;
 
     public abstract IGameServerFactory GameServerFactory();
     public abstract IGameClientFactory GameClientFactory();
@@ -19,73 +18,62 @@ public abstract partial class UINetControlPanelLow : Control
 
     public override void _Ready()
     {
-        _net = new();
+        _net = new Net();
         _net.Initialize(GameServerFactory(), GameClientFactory());
 
-        Button btnStartServer = GetNode<Button>("%Start Server");
-        Button btnStopServer = GetNode<Button>("%Stop Server");
+        SetupButtons();
+        SetupInputFields();
+        SetupClientEvents();
+    }
 
-        btnStartServer.Pressed += _net.StartServer;
-        btnStopServer.Pressed += _net.StopServer;
-
+    private void SetupButtons()
+    {
+        GetNode<Button>("%Start Server").Pressed += _net.StartServer;
+        GetNode<Button>("%Stop Server").Pressed += _net.StopServer;
         GetNode<Button>("%Start Client").Pressed += () =>
         {
             StartClientButtonPressed(_username);
             _net.StartClient(_ip, _port);
         };
-
         GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
+    }
 
+    private void SetupInputFields()
+    {
         GetNode<LineEdit>("%IP").TextChanged += text =>
         {
-            string[] words = text.Split(":");
-
-            _ip = words[0];
-
-            if (words.Length < 2)
+            string[] parts = text.Split(":");
+            _ip = parts[0];
+            if (parts.Length > 1 && ushort.TryParse(parts[1], out ushort port))
             {
-                return;
-            }
-
-            if (ushort.TryParse(words[1], out ushort result))
-            {
-                if (result.CountDigits() > 2)
-                {
-                    _port = result;
-                }
+                _port = port;
             }
         };
 
-        LineEdit lineEditUsername = GetNode<LineEdit>("%Username");
-        
-        lineEditUsername.TextChanged += text =>
+        GetNode<LineEdit>("%Username").TextChanged += text =>
         {
-            _username = lineEditUsername.Filter(text => text.IsAlphaNumeric());
+            _username = text.IsAlphaNumeric() ? text : _username;
         };
+    }
 
-        // Future note to self: Working with this event has been proven extremely difficult
-        // Try to avoid using if at all possible or figure out why it's so annoying to work with
-        // Maybe try to do whatever you need to do outside the event somehow. Perhaps directly inside
-        // Net.cs
+    private void SetupClientEvents()
+    {
         _net.OnClientCreated += client =>
         {
-            _net.Client.OnConnected += () =>
+            client.OnConnected += () =>
             {
                 if (!_net.Server.IsRunning)
                 {
-                    // Server is not running and client connected to another server
-                    // Client should not be able to start a server while connected to another server
-                    btnStartServer.Disabled = true;
-                    btnStopServer.Disabled = true;
+                    GetNode<Button>("%Start Server").Disabled = true;
+                    GetNode<Button>("%Stop Server").Disabled = true;
                 }
-
                 GetTree().UnfocusCurrentControl();
             };
 
-            _net.Client.OnDisconnected += opcode =>
+            client.OnDisconnected += _ =>
             {
-                btnStartServer.Disabled = false;
-                btnStopServer.Disabled = false;
+                GetNode<Button>("%Start Server").Disabled = false;
+                GetNode<Button>("%Stop Server").Disabled = false;
             };
         };
     }
@@ -95,4 +83,3 @@ public abstract partial class UINetControlPanelLow : Control
         _net.Client?.HandlePackets();
     }
 }
-
