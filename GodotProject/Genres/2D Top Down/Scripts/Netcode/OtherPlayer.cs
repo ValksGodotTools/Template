@@ -2,6 +2,7 @@ using Godot;
 using System;
 
 namespace Template.TopDown2D;
+
 public partial class OtherPlayer : Node2D
 {
     public Vector2 LastServerPosition { get; set; }
@@ -31,13 +32,13 @@ public partial class OtherPlayer : Node2D
     public override void _PhysicsProcess(double delta)
     {
         float distance = Position.DistanceTo(LastServerPosition);
-        int distanceCompensationFactor = 5;
 
-        // If the distance to the last received server position is close enough then move towards it at a speed
-        // multiplied by a factor of the remaining distance. If the distance is too far away then instantly
-        // teleport to the last received server position.
-        Position = distance <= Net.HeartbeatPosition * distanceCompensationFactor ?
-            Position.MoveToward(LastServerPosition, distance * _smoothFactor) : LastServerPosition;
+        // Move the current position towards the last known server position by a fraction of the distance.
+        // The _smoothFactor determines how much of the distance to cover in this step. A _smoothFactor of
+        // 1 would mean the position is instantly moved to the last known server position, while a
+        // _smoothFactor of 0.5 would mean the position is moved halfway towards the last known server
+        // position.
+        Position = Position.MoveToward(LastServerPosition, distance * _smoothFactor);
     }
 
     public void SetLabelText(string text)
@@ -45,4 +46,3 @@ public partial class OtherPlayer : Node2D
         GetNode<Label>("Label").Text = text;
     }
 }
-
