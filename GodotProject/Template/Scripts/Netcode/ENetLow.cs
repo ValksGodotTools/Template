@@ -1,5 +1,4 @@
 using ENet;
-using GodotUtils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +22,7 @@ public abstract class ENetLow
         }
         catch (DllNotFoundException e)
         {
-            ServiceProvider.Services.Get<Logger>().LogErr(e);
+            Game.LogErr(e);
             ENetInitialized = false;
         }
     }

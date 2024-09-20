@@ -8,6 +8,7 @@ using System;
 
 namespace Template;
 
+[Service(true)]
 public partial class UIConsole : PanelContainer
 {
     public event Action<bool> OnToggleVisibility;
@@ -24,7 +25,6 @@ public partial class UIConsole : PanelContainer
 
     public override void _Ready()
     {
-        Global.Services.Add(this, persistent: true);
         LoadCommands();
 
         _feed          = GetNode<TextEdit>("%Output");

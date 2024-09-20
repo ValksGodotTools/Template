@@ -1,21 +1,21 @@
 using Godot;
-using GodotUtils;
+using System;
 using static Template.SceneManager;
 
 namespace Template;
 
 public partial class Game
 {
-    public static UIConsole Console { get => Global.Services.Get<UIConsole>(); }
+    public static UIConsole Console { get => ServiceProvider.Services.Get<UIConsole>(); }
 
     public static void SwitchScene(Scene scene, TransType transType = TransType.None)
     {
-        Global.Services.Get<SceneManager>().SwitchScene(scene, transType);
+        ServiceProvider.Services.Get<SceneManager>().SwitchScene(scene, transType);
     }
 
     public static void SwitchScene(Prefab scene, TransType transType = TransType.None)
     {
-        Global.Services.Get<SceneManager>().SwitchScene(scene, transType);
+        ServiceProvider.Services.Get<SceneManager>().SwitchScene(scene, transType);
     }
 
     public static T LoadPrefab<T>(Prefab prefab) where T : Node
@@ -25,16 +25,21 @@ public partial class Game
 
     public static void Log(object message, BBColor color = BBColor.Gray)
     {
-        Global.Services.Get<Logger>().Log(message, color);
+        ServiceProvider.Services.Get<Global>().Logger.Log(message, color);
     }
 
     public static void Log(params object[] objects)
     {
-        Global.Services.Get<Logger>().Log(objects);
+        ServiceProvider.Services.Get<Global>().Logger.Log(objects);
     }
 
     public static void LogWarning(object message, BBColor color = BBColor.Orange)
     {
-        Global.Services.Get<Logger>().LogWarning(message, color);
+        ServiceProvider.Services.Get<Global>().Logger.LogWarning(message, color);
+    }
+
+    public static void LogErr(Exception e, string hint = null)
+    {
+        ServiceProvider.Services.Get<Global>().Logger.LogErr(e, hint);
     }
 }

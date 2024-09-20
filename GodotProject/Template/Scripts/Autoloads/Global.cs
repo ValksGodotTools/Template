@@ -1,14 +1,12 @@
 using Godot;
-using GodotUtils;
 using System.Threading.Tasks;
 using System;
 
 namespace Template;
 
+[Service]
 public partial class Global : Node
 {
-    public static GameServiceProvider Services { get; } = new();
-
     /// <summary>
     /// If no await calls are needed, add "return await Task.FromResult(1);"
     /// </summary>
@@ -16,12 +14,11 @@ public partial class Global : Node
 
     [Export] private OptionsManager optionsManager;
 
+    public Logger Logger { get; private set; } = new();
+
 	public override void _Ready()
 	{
-        ServiceProvider.Init(Services);
-        Services.Add(this);
-
-        Global.Services.Get<Logger>().MessageLogged += Game.Console.AddMessage;
+        Logger.MessageLogged += Game.Console.AddMessage;
 
         new ModLoader().LoadMods(this);
     }
@@ -33,7 +30,7 @@ public partial class Global : Node
             optionsManager.ToggleFullscreen();
         }
 
-        Services.Get<Logger>().Update();
+        Logger.Update();
 	}
 
     public override async void _Notification(int what)

@@ -3,6 +3,7 @@ using System;
 
 namespace Template;
 
+[Service]
 public partial class UIPopupMenu : Control
 {
     public event Action OnOpened;
@@ -17,7 +18,6 @@ public partial class UIPopupMenu : Control
 
     public override void _Ready()
     {
-        Global.Services.Add(this);
         TryFindWorldEnvironmentNode();
 
         _menu = GetNode<PanelContainer>("%Menu");

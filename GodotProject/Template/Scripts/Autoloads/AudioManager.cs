@@ -3,6 +3,7 @@ using GodotUtils;
 
 namespace Template;
 
+[Service(true)]
 public partial class AudioManager : Node
 {
     [Export] private OptionsManager optionsManager;
@@ -13,8 +14,6 @@ public partial class AudioManager : Node
 
     public override void _Ready()
     {
-        Global.Services.Add(this, persistent: true);
-
         _options = optionsManager.Options;
         _musicPlayer = new GAudioPlayer(this);
 

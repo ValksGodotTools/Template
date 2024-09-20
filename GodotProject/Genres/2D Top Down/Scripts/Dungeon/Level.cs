@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Template.TopDown2D;
 
+[Service]
 public partial class Level : Node
 {
     [Export] private Node entities;
@@ -17,14 +18,9 @@ public partial class Level : Node
     public string PlayerUsername { get; set; }
     private static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
-    public override void _EnterTree()
-    {
-        Global.Services.Add(this);
-    }
-
     public override void _Ready()
     {
-        Global.Services.Get<Net>().OnClientCreated += client =>
+        ServiceProvider.Services.Get<UINetControlPanel>().Net.OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {

@@ -13,12 +13,7 @@ public partial class EnemyComponent : EntityComponent
     public override void _Ready()
     {
         base._Ready();
-        Global.Services.Get<Level>().EnemyComponents.Add(this);
-    }
-
-    public override void _ExitTree()
-    {
-        Global.Services.Get<Level>().EnemyComponents.Remove(this);
+        ServiceProvider.Services.Get<Level>().EnemyComponents.Add(this);
     }
 
     public override void SwitchState(NodeState newState)

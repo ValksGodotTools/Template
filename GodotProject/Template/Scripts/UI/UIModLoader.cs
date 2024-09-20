@@ -27,7 +27,7 @@ public partial class UIModLoader : Node
         _uiAuthors = GetNode<Label>("%Authors");
         _uiIncompatibilities = GetNode<Label>("%Incompatibilities");
 
-        Dictionary<string, ModInfo> mods = Global.Services.Get<ModLoader>().Mods;
+        Dictionary<string, ModInfo> mods = ServiceProvider.Services.Get<ModLoader>().Mods;
 
         bool first = true;
 

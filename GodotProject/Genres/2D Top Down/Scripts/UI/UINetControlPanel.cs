@@ -4,11 +4,12 @@ using Template.Netcode.Server;
 
 namespace Template.TopDown2D;
 
+[Service]
 public partial class UINetControlPanel : UINetControlPanelLow
 {
     public override void StartClientButtonPressed(string username)
     {
-        Global.Services.Get<Level>().PlayerUsername = username;
+        ServiceProvider.Services.Get<Level>().PlayerUsername = username;
     }
 
     public override IGameServerFactory GameServerFactory() => new GameServerFactory();

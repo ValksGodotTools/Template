@@ -7,7 +7,8 @@ namespace Template;
 
 public abstract partial class UINetControlPanelLow : Control
 {
-    private Net _net;
+    public Net Net { get; private set; } = new();
+
     private string _ip = "127.0.0.1";
     private ushort _port = 25565;
     private string _username = "";
@@ -18,8 +19,7 @@ public abstract partial class UINetControlPanelLow : Control
 
     public override void _Ready()
     {
-        _net = new Net();
-        _net.Initialize(GameServerFactory(), GameClientFactory());
+        Net.Initialize(GameServerFactory(), GameClientFactory());
 
         SetupButtons();
         SetupInputFields();
@@ -28,14 +28,14 @@ public abstract partial class UINetControlPanelLow : Control
 
     private void SetupButtons()
     {
-        GetNode<Button>("%Start Server").Pressed += _net.StartServer;
-        GetNode<Button>("%Stop Server").Pressed += _net.StopServer;
+        GetNode<Button>("%Start Server").Pressed += Net.StartServer;
+        GetNode<Button>("%Stop Server").Pressed += Net.StopServer;
         GetNode<Button>("%Start Client").Pressed += () =>
         {
             StartClientButtonPressed(_username);
-            _net.StartClient(_ip, _port);
+            Net.StartClient(_ip, _port);
         };
-        GetNode<Button>("%Stop Client").Pressed += _net.StopClient;
+        GetNode<Button>("%Stop Client").Pressed += Net.StopClient;
     }
 
     private void SetupInputFields()
@@ -58,11 +58,11 @@ public abstract partial class UINetControlPanelLow : Control
 
     private void SetupClientEvents()
     {
-        _net.OnClientCreated += client =>
+        Net.OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {
-                if (!_net.Server.IsRunning)
+                if (!Net.Server.IsRunning)
                 {
                     GetNode<Button>("%Start Server").Disabled = true;
                     GetNode<Button>("%Stop Server").Disabled = true;
@@ -81,6 +81,6 @@ public abstract partial class UINetControlPanelLow : Control
 
     public override void _PhysicsProcess(double delta)
     {
-        _net.Client?.HandlePackets();
+        Net.Client?.HandlePackets();
     }
 }

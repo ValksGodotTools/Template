@@ -1,5 +1,4 @@
 using Godot;
-using GodotUtils;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -8,15 +7,13 @@ using System.Text.Json;
 
 namespace Template;
 
+[Service(true)]
 public partial class ModLoader
 {
     public Dictionary<string, ModInfo> Mods { get; } = [];
 
     public void LoadMods(Node node)
     {
-        Global.Services.Add(this, persistent: true);
-        Logger logger = Global.Services.Get<Logger>();
-
         string modsPath = ProjectSettings.GlobalizePath("res://Mods");
 
         // Ensure "Mods" directory always exists
@@ -26,7 +23,7 @@ public partial class ModLoader
 
         if (dir == null)
         {
-            logger.LogWarning("Failed to open Mods directory has it does not exist");
+            Game.LogWarning("Failed to open Mods directory has it does not exist");
             return;
         }
 
@@ -51,7 +48,7 @@ public partial class ModLoader
 
             if (!File.Exists(modJson))
             {
-                logger.LogWarning($"The mod folder '{filename}' does not have a mod.json so it will not be loaded");
+                Game.LogWarning($"The mod folder '{filename}' does not have a mod.json so it will not be loaded");
                 goto Next;
             }
 
@@ -63,7 +60,7 @@ public partial class ModLoader
 
             if (Mods.ContainsKey(modInfo.Id))
             {
-                logger.LogWarning($"Duplicate mod id '{modInfo.Id}' was skipped");
+                Game.LogWarning($"Duplicate mod id '{modInfo.Id}' was skipped");
                 goto Next;
             }
 
@@ -88,7 +85,7 @@ public partial class ModLoader
 
                 if (!success)
                 {
-                    logger.LogWarning($"Failed to load pck file for mod '{modInfo.Name}'");
+                    Game.LogWarning($"Failed to load pck file for mod '{modInfo.Name}'");
                     goto Next;
                 }
 
@@ -98,7 +95,7 @@ public partial class ModLoader
 
                 if (importedScene == null)
                 {
-                    logger.LogWarning($"Failed to load mod.tscn for mod '{modInfo.Name}'");
+                    Game.LogWarning($"Failed to load mod.tscn for mod '{modInfo.Name}'");
                     goto Next;
                 }
 

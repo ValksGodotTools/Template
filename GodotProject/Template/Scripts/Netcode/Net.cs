@@ -1,4 +1,4 @@
-using GodotUtils;
+using Godot;
 using System;
 using System.Threading.Tasks;
 using Template.Netcode;
@@ -20,19 +20,20 @@ public class Net
     private IGameServerFactory _serverFactory;
     private IGameClientFactory _clientFactory;
 
-    public Net()
-    {
-        Global.Services.Add(this);
-        Global.Services.Get<Global>().OnQuit += StopThreads;
-    }
-
     public void Initialize(IGameServerFactory serverFactory, IGameClientFactory clientFactory)
     {
+        ServiceProvider.Services.Get<Global>().OnQuit += StopThreads;
+
         _serverFactory = serverFactory;
         _clientFactory = clientFactory;
 
         Server = serverFactory.CreateServer();
         Client = clientFactory.CreateClient();
+    }
+
+    ~Net()
+    {
+        GD.Print("Net deconstructor");
     }
 
     public void StopServer()
@@ -120,7 +121,7 @@ public class Net
         }
 
         // Wait for the logger to finish enqueing the remaining logs
-        while (Global.Services.Get<Logger>().StillWorking())
+        while (ServiceProvider.Services.Get<Global>().Logger.StillWorking())
         {
             await Task.Delay(1);
         }
