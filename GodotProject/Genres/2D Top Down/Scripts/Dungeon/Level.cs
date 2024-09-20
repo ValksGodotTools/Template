@@ -7,9 +7,9 @@ namespace Template.TopDown2D;
 [Service]
 public partial class Level : Node
 {
-    [Export] private Node entities;
-    [Export] private PlayerCamera playerCamera;
-    [Export] private RoomTransitions roomTransitions;
+    [Export] private Node _entities;
+    [Export] private PlayerCamera _playerCamera;
+    [Export] private RoomTransitions _roomTransitions;
 
     public Player Player { get; private set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; } = [];
@@ -53,8 +53,8 @@ public partial class Level : Node
                 OtherPlayers.Values.ForEach(x => x.QueueFree());
                 OtherPlayers.Clear();
 
-                playerCamera.StopFollowingPlayer();
-                roomTransitions.Reset();
+                _playerCamera.StopFollowingPlayer();
+                _roomTransitions.Reset();
 
                 foreach (EnemyComponent enemyComponent in EnemyComponents)
                 {
@@ -69,10 +69,10 @@ public partial class Level : Node
     {
         Player = Game.LoadPrefab<Player>(Prefab.PlayerMain);
         Player.Position = PlayerSpawnPosition;
-        entities.AddChild(Player);
+        _entities.AddChild(Player);
 
-        playerCamera.StartFollowingPlayer(Player);
-        roomTransitions.Init(Player);
+        _playerCamera.StartFollowingPlayer(Player);
+        _roomTransitions.Init(Player);
 
         foreach (EnemyComponent enemyComponent in EnemyComponents)
         {
@@ -85,7 +85,7 @@ public partial class Level : Node
         OtherPlayer otherPlayer = Game.LoadPrefab<OtherPlayer>(Prefab.PlayerOther);
 
         otherPlayer.LastServerPosition = playerData.Position;
-        entities.AddChild(otherPlayer);
+        _entities.AddChild(otherPlayer);
         otherPlayer.Position = playerData.Position;
         otherPlayer.SetLabelText($"{playerData.Username} ({id})");
 
