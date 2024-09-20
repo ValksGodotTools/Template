@@ -23,7 +23,7 @@ public partial class Player : CharacterBody2D
         _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         _cursor = GetNode<Sprite2D>("Cursor");
         _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
-        _client = Global.Services.Get<Net>().Client;
+        _client = ServiceProvider.Services.Get<Net>().Client;
 
         _dashManager = new PlayerDashManager(_config, _sprite);
         _moveManager = new PlayerMoveManager(_config);

@@ -13,7 +13,7 @@ public partial class AudioManager : Node
 
     public override void _Ready()
     {
-        Global.Services.Add(this, persistent: true);
+        ServiceProvider.Services.Add(this, persistent: true);
 
         _options = optionsManager.Options;
         _musicPlayer = new GAudioPlayer(this);

@@ -72,7 +72,7 @@ public partial class UIOptionsGraphics : Control
         {
             saveOption(checkBox.ButtonPressed);
 
-            UIPopupMenu popupMenu = Global.Services.Get<UIPopupMenu>();
+            UIPopupMenu popupMenu = ServiceProvider.Services.Get<UIPopupMenu>();
 
             if (popupMenu == null)
             {

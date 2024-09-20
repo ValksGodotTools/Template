@@ -8,7 +8,7 @@ public partial class UIMainMenuNav : Node
 
     public override void _Ready()
     {
-        _audioManager = Global.Services.Get<AudioManager>();
+        _audioManager = ServiceProvider.Services.Get<AudioManager>();
 
         GetNode<Button>("Play").GrabFocus();
     }

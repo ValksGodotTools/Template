@@ -1,9 +1,11 @@
 using CSharpUtils;
 using Godot;
+using GodotUtils;
 using System.Collections.Generic;
 
 namespace Template.TopDown2D;
 
+[Service]
 public partial class Level : Node
 {
     [Export] private Node entities;
@@ -19,12 +21,12 @@ public partial class Level : Node
 
     public override void _EnterTree()
     {
-        Global.Services.Add(this);
+        ServiceProvider.Services.Add(this);
     }
 
     public override void _Ready()
     {
-        Global.Services.Get<Net>().OnClientCreated += client =>
+        ServiceProvider.Services.Get<Net>().OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {

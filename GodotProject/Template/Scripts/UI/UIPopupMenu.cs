@@ -17,7 +17,7 @@ public partial class UIPopupMenu : Control
 
     public override void _Ready()
     {
-        Global.Services.Add(this);
+        ServiceProvider.Services.Add(this);
         TryFindWorldEnvironmentNode();
 
         _menu = GetNode<PanelContainer>("%Menu");

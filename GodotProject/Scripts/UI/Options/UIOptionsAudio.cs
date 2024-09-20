@@ -28,12 +28,12 @@ public partial class UIOptionsAudio : Control
 
     private static void _on_music_value_changed(float v)
     {
-        Global.Services.Get<AudioManager>().SetMusicVolume(v);
+        ServiceProvider.Services.Get<AudioManager>().SetMusicVolume(v);
     }
 
     private static void _on_sounds_value_changed(float v)
     {
-        Global.Services.Get<AudioManager>().SetSFXVolume(v);
+        ServiceProvider.Services.Get<AudioManager>().SetSFXVolume(v);
     }
 }
 

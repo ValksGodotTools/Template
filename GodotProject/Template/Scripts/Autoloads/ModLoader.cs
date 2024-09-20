@@ -14,8 +14,8 @@ public partial class ModLoader
 
     public void LoadMods(Node node)
     {
-        Global.Services.Add(this, persistent: true);
-        Logger logger = Global.Services.Get<Logger>();
+        ServiceProvider.Services.Add(this, persistent: true);
+        Logger logger = ServiceProvider.Services.Get<Logger>();
 
         string modsPath = ProjectSettings.GlobalizePath("res://Mods");
 
