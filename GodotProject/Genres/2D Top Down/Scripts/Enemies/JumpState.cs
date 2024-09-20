@@ -16,8 +16,6 @@ public partial class JumpState : NodeState
 
         Sprite.Play("jump");
 
-        Entity.SetCollisionLayerAndMask(3);
-
         Vector2 force = (EnemyComponent.Target.Position - Entity.Position) * 2;
 
         Entity.ApplyCentralImpulse(force);
@@ -33,7 +31,6 @@ public partial class JumpState : NodeState
             {
                 Entity.LinearVelocity = Vector2.Zero;
                 Sprite.Play("idle");
-                Entity.SetCollisionLayerAndMask(2);
             })
             .AnimateProp(Sprite.Scale * Vector2.One, jump_time * 0.5)
             .Callback(() => SwitchState(NextState));

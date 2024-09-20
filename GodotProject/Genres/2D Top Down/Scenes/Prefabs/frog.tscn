@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=19 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EnemyComponent.cs" id="2_78og4"]
@@ -80,6 +80,9 @@ size = Vector2(72, 54)
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v5ul"]
 radius = 400.125
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66sh0"]
+size = Vector2(72, 54)
+
 [node name="Frog" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 2
@@ -87,8 +90,9 @@ gravity_scale = 0.0
 lock_rotation = true
 linear_damp = 1.5
 
-[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite", "IdleState")]
+[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("_hitbox", "AnimatedSprite", "IdleState")]
 script = ExtResource("2_78og4")
+_hitbox = NodePath("../Hitbox")
 _config = SubResource("Resource_sj26y")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 IdleState = NodePath("IdleState")
@@ -97,7 +101,7 @@ IdleState = NodePath("IdleState")
 script = ExtResource("3_eyjfj")
 _detectPlayerState = NodePath("../ShakeState")
 _idleActionState = NodePath("../SlideState")
-_playerDetectArea = NodePath("../../Area2D")
+_playerDetectArea = NodePath("../../Detect")
 
 [node name="JumpState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("5_c8xv3")
@@ -123,8 +127,15 @@ animation = &"idle"
 position = Vector2(0, 15)
 shape = SubResource("RectangleShape2D_un0oi")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Detect" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detect"]
 shape = SubResource("CircleShape2D_5v5ul")
 debug_color = Color(0, 0.6, 0.7, 0)
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_66sh0")
+debug_color = Color(0.701961, 0, 0.697618, 0)
