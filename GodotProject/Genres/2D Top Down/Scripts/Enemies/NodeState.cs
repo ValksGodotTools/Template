@@ -44,11 +44,6 @@ public abstract partial class NodeState : Node2D
         return _entityComponent.IsState(state);
     }
 
-    protected void SwitchState(State state)
-    {
-        _entityComponent.SwitchState(state);
-    }
-
     protected void SwitchState(NodeState state)
     {
         _entityComponent.SwitchState(state);

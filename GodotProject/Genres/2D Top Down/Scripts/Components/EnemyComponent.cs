@@ -9,4 +9,31 @@ namespace Template.TopDown2D;
 public partial class EnemyComponent : EntityComponent
 {
     public Player Player { get; set; }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        Global.Services.Get<Level>().EnemyComponents.Add(this);
+    }
+
+    public override void _ExitTree()
+    {
+        Global.Services.Get<Level>().EnemyComponents.Remove(this);
+    }
+
+    public override void SwitchState(NodeState newState)
+    {
+        // Enemies will always stay in the idle state when no player is present
+        if (!IsInstanceValid(Player))
+        {
+            // Do not call SwitchState() to prevent infinite loop
+            _curState.Exit();
+            _curState = IdleState.State;
+            _curState.Enter();
+
+            return;
+        }
+
+        base.SwitchState(newState);
+    }
 }
