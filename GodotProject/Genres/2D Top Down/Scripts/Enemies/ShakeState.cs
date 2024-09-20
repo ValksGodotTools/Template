@@ -4,7 +4,7 @@ using GodotUtils;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class ShakeState : NodeState
+public partial class ShakeState : EnemyState
 {
     protected override void Enter()
     {

@@ -1,14 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://uiqfgmj1e1x7"]
+[gd_scene load_steps=8 format=3 uid="uid://uiqfgmj1e1x7"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Netcode/OtherPlayer.cs" id="1_4r8fl"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_0jav4"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EntityComponent.cs" id="2_r2bc1"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="3_ttv65"]
+
+[sub_resource type="Resource" id="Resource_ha7nq"]
+script = ExtResource("3_ttv65")
+Color = Color(1, 1, 1, 1)
+BlendMode = 0
+LightMode = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t86ow"]
+atlas = ExtResource("2_0jav4")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iofnj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t86ow")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Other Player" type="Node2D" groups=["Player"]]
 script = ExtResource("1_4r8fl")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="EntityComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite")]
+script = ExtResource("2_r2bc1")
+_config = SubResource("Resource_ha7nq")
+AnimatedSprite = NodePath("../AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_0jav4")
+sprite_frames = SubResource("SpriteFrames_iofnj")
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 5

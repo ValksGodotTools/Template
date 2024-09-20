@@ -4,7 +4,7 @@ using GodotUtils;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class JumpState : NodeState
+public partial class JumpState : EnemyState
 {
     protected override void Enter()
     {

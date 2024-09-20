@@ -1,4 +1,5 @@
 using Godot;
+using System;
 
 namespace Template.TopDown2D;
 
@@ -8,6 +9,7 @@ namespace Template.TopDown2D;
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 public partial class EnemyComponent : EntityComponent
 {
+    [Export] public StateMachineComponent StateMachine { get; private set; }
     [Export] private Area2D _hitbox;
 
     public Node2D Target { get; set; }
@@ -26,10 +28,5 @@ public partial class EnemyComponent : EntityComponent
                 
             }
         };
-    }
-
-    public override void SwitchState(NodeState newState, bool callExit = true)
-    {
-        base.SwitchState(newState, callExit);
     }
 }

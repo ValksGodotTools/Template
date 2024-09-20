@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class SlideState : NodeState
+public partial class SlideState : EnemyState
 {
     // 4  - Main
     // 8  - Main + Diagonal Directions

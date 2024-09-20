@@ -4,10 +4,10 @@ using GodotUtils;
 namespace Template.TopDown2D;
 
 [GlobalClass]
-public partial class IdleState : NodeState
+public partial class IdleState : EnemyState
 {
-    [Export] private NodeState _detectPlayerState;
-    [Export] private NodeState _idleActionState;
+    [Export] private EnemyState _detectPlayerState;
+    [Export] private EnemyState _idleActionState;
     [Export] private Area2D _playerDetectArea;
 
     private GTween _delayUntilSlide;

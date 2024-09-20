@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://tgxu81l5ee34"]
+[gd_scene load_steps=20 format=3 uid="uid://tgxu81l5ee34"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="2_6qqsm"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/EnemyComponent.cs" id="2_78og4"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/ShakeState.cs" id="3_svtqd"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/JumpState.cs" id="5_c8xv3"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/SlideState.cs" id="6_2fr83"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/StateMachineComponent.cs" id="7_mfhc3"]
 
 [sub_resource type="Resource" id="Resource_sj26y"]
 script = ExtResource("2_6qqsm")
@@ -90,12 +91,12 @@ gravity_scale = 0.0
 lock_rotation = true
 linear_damp = 1.5
 
-[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("_hitbox", "AnimatedSprite", "IdleState")]
+[node name="EnemyComponent" type="Node2D" parent="." node_paths=PackedStringArray("StateMachine", "_hitbox", "AnimatedSprite")]
 script = ExtResource("2_78og4")
+StateMachine = NodePath("../StateMachineComponent")
 _hitbox = NodePath("../Hitbox")
 _config = SubResource("Resource_sj26y")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
-IdleState = NodePath("IdleState")
 
 [node name="IdleState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("_detectPlayerState", "_idleActionState", "_playerDetectArea")]
 script = ExtResource("3_eyjfj")
@@ -114,6 +115,10 @@ NextState = NodePath("../JumpState")
 [node name="SlideState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("6_2fr83")
 NextState = NodePath("../IdleState")
+
+[node name="StateMachineComponent" type="Node2D" parent="." node_paths=PackedStringArray("IdleState")]
+script = ExtResource("7_mfhc3")
+IdleState = NodePath("../EnemyComponent/IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1

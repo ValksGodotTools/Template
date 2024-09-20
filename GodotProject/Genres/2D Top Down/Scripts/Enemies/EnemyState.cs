@@ -7,9 +7,9 @@ namespace Template.TopDown2D;
 /// This script assumes all enemies extend from RigidBody2D
 /// </summary>
 [GlobalClass]
-public abstract partial class NodeState : Node2D
+public abstract partial class EnemyState : Node2D
 {
-    [Export] protected NodeState NextState { get; private set; }
+    [Export] protected EnemyState NextState { get; private set; }
 
     public State State { get; private set; }
 
@@ -30,7 +30,7 @@ public abstract partial class NodeState : Node2D
             Exit = Exit
         };
 
-        NextState ??= EnemyComponent.IdleState;
+        NextState ??= EnemyComponent.StateMachine.IdleState;
     }
     
     protected virtual void Enter() { }
@@ -39,11 +39,11 @@ public abstract partial class NodeState : Node2D
 
     protected bool IsState(string state)
     {
-        return EnemyComponent.IsState(state);
+        return EnemyComponent.StateMachine.IsState(state);
     }
 
-    protected void SwitchState(NodeState state, bool callExit = true)
+    protected void SwitchState(EnemyState state, bool callExit = true)
     {
-        EnemyComponent.SwitchState(state, callExit);
+        EnemyComponent.StateMachine.SwitchState(state, callExit);
     }
 }
