@@ -46,6 +46,30 @@ public partial class InstanceIdentifier : Node
                 windowSize = new Vector2I((int)(screenSize.X / 2), (int)((screenSize.Y - windowBarHeight) / 2));
                 break;
             }
+            else if (arg == "middle_left")
+            {
+                windowPosition = new Vector2I(0, windowBarHeight);
+                windowSize = new Vector2I((int)(screenSize.X / 2), (int)(screenSize.Y - windowBarHeight));
+                break;
+            }
+            else if (arg == "middle_right")
+            {
+                windowPosition = new Vector2I((int)(screenSize.X / 2), windowBarHeight);
+                windowSize = new Vector2I((int)(screenSize.X / 2), (int)(screenSize.Y - windowBarHeight));
+                break;
+            }
+            else if (arg == "middle_top")
+            {
+                windowPosition = new Vector2I(0, windowBarHeight);
+                windowSize = new Vector2I((int)screenSize.X, (int)((screenSize.Y - windowBarHeight) / 2));
+                break;
+            }
+            else if (arg == "middle_bottom")
+            {
+                windowPosition = new Vector2I(0, (int)(screenSize.Y / 2) + windowBarHeight);
+                windowSize = new Vector2I((int)screenSize.X, (int)((screenSize.Y - windowBarHeight) / 2));
+                break;
+            }
         }
 
         // Set the window size
