@@ -25,7 +25,15 @@ public partial class OtherPlayer : Node2D
         // 1 would mean the position is instantly moved to the last known server position, while a
         // _smoothFactor of 0.5 would mean the position is moved halfway towards the last known server
         // position.
-        Position = Position.MoveToward(LastServerPosition, distance * _smoothFactor);
+
+        if (distance > 1000)
+        {
+            Position = LastServerPosition;
+        }
+        else
+        {
+            Position = Position.MoveToward(LastServerPosition, distance * _smoothFactor);
+        }
     }
 
     public void SetLabelText(string text)
