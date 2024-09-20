@@ -16,51 +16,7 @@ public partial class ServiceProvider : Node
     public override void _EnterTree()
     {
         Services = this;
-
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-
-        IEnumerable<Node> scriptNodes = GetTree().Root.GetChildren<Node>().Where(x => x.GetScript().VariantType != Variant.Type.Nil);
-
-        Dictionary<Type, ServiceAttribute> cachedAttributes = [];
-
-        foreach (Type type in types)
-        {
-            ServiceAttribute serviceAttribute = (ServiceAttribute)type.GetCustomAttribute(typeof(ServiceAttribute));
-
-            if (serviceAttribute != null)
-            {
-                if (type.IsAssignableTo(typeof(Node)))
-                {
-                    cachedAttributes[type] = serviceAttribute;
-                }
-            }
-        }
-
-        foreach (Node node in scriptNodes)
-        {
-            foreach (KeyValuePair<Type, ServiceAttribute> kvp in cachedAttributes)
-            {
-                Type type = kvp.Key;
-                ServiceAttribute serviceAttribute = kvp.Value;
-
-                if (type.IsAssignableTo(node.GetType()))
-                {
-                    GD.Print("Added " + node.Name);
-
-                    Service service = new()
-                    {
-                        Instance = node,
-                        Persistent = serviceAttribute.Persistent
-                    };
-
-                    _services.Add(node.GetType(), service);
-
-                    RemoveServiceOnSceneChanged(service);
-
-                    break;
-                }
-            }
-        }
+        RegisterServices();
     }
 
     public T Get<T>()
@@ -73,9 +29,62 @@ public partial class ServiceProvider : Node
         return (T)_services[typeof(T)].Instance;
     }
 
-    public override string ToString()
+    private void RegisterServices()
     {
-        return _services.ToFormattedString();
+        IEnumerable<Node> scriptNodes = GetScriptNodes();
+        Dictionary<Type, ServiceAttribute> cachedAttributes = CacheServiceAttributes();
+
+        foreach (Node node in scriptNodes)
+        {
+            foreach (KeyValuePair<Type, ServiceAttribute> kvp in cachedAttributes)
+            {
+                Type type = kvp.Key;
+                ServiceAttribute serviceAttribute = kvp.Value;
+
+                if (type.IsAssignableTo(node.GetType()))
+                {
+                    AddService(node, serviceAttribute);
+                    break;
+                }
+            }
+        }
+    }
+
+    private IEnumerable<Node> GetScriptNodes()
+    {
+        return GetTree().Root.GetChildren<Node>().Where(x => x.GetScript().VariantType != Variant.Type.Nil);
+    }
+
+    private Dictionary<Type, ServiceAttribute> CacheServiceAttributes()
+    {
+        Dictionary<Type, ServiceAttribute> cachedAttributes = [];
+
+        foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+        {
+            ServiceAttribute serviceAttribute = (ServiceAttribute)type.GetCustomAttribute(typeof(ServiceAttribute));
+
+            if (serviceAttribute != null && type.IsAssignableTo(typeof(Node)))
+            {
+                cachedAttributes[type] = serviceAttribute;
+            }
+        }
+
+        return cachedAttributes;
+    }
+
+    private void AddService(Node node, ServiceAttribute serviceAttribute)
+    {
+        GD.Print("Added " + node.Name);
+
+        Service service = new()
+        {
+            Instance = node,
+            Persistent = serviceAttribute.Persistent
+        };
+
+        _services.Add(node.GetType(), service);
+
+        RemoveServiceOnSceneChanged(service);
     }
 
     private void RemoveServiceOnSceneChanged(Service service)
@@ -104,6 +113,11 @@ public partial class ServiceProvider : Node
                 throw new Exception($"Failed to remove the service '{service.Instance.GetType().Name}'");
             }
         }
+    }
+
+    public override string ToString()
+    {
+        return _services.ToFormattedString();
     }
 
     public class Service
