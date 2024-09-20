@@ -10,16 +10,20 @@ public partial class Level : Node
     [Export] private PlayerCamera playerCamera;
     [Export] private RoomTransitions roomTransitions;
 
-    public Player Player { get; set; }
-    public Dictionary<uint, OtherPlayer> OtherPlayers { get; set; } = [];
+    public Player Player { get; private set; }
+    public Dictionary<uint, OtherPlayer> OtherPlayers { get; } = [];
+    public List<EnemyComponent> EnemyComponents { get; } = [];
 
     public string PlayerUsername { get; set; }
     private static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
         Global.Services.Add(this);
+    }
 
+    public override void _Ready()
+    {
         Global.Services.Get<Net>().OnClientCreated += client =>
         {
             client.OnConnected += () =>
@@ -55,10 +59,16 @@ public partial class Level : Node
 
                 playerCamera.StopFollowingPlayer();
                 roomTransitions.Reset();
+
+                foreach (EnemyComponent enemyComponent in EnemyComponents)
+                {
+                    enemyComponent.Player = null;
+                }
             };
         };
     }
 
+    // This is called when the client receives a SPacketPlayerConnectionAcknowleged
     public void AddLocalPlayer()
     {
         Player = Game.LoadPrefab<Player>(Prefab.PlayerMain);
@@ -67,6 +77,11 @@ public partial class Level : Node
 
         playerCamera.StartFollowingPlayer(Player);
         roomTransitions.Init(Player);
+
+        foreach (EnemyComponent enemyComponent in EnemyComponents)
+        {
+            enemyComponent.Player = Player;
+        }
     }
 
     public void AddOtherPlayer(uint id, PlayerData playerData)

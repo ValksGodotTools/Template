@@ -10,7 +10,7 @@ public partial class EntityComponent : Node2D
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
     [Export] public NodeState IdleState { get; private set; }
 
-    protected State _curState; // temporarily made protected for Visualize in EnemyComponent
+    protected State _curState;
     private Node2D _entity;
 
     public override void _Ready()
@@ -27,23 +27,21 @@ public partial class EntityComponent : Node2D
         _curState.Update((float)delta);
     }
 
-    public void SwitchState(State newState)
+    public virtual void SwitchState(NodeState newState)
     {
-        _curState.Exit();
-        _curState = newState;
-        _curState.Enter();
-    }
-
-    public void SwitchState(NodeState newState)
-    {
-        _curState.Exit();
-        _curState = newState.State;
-        _curState.Enter();
+        SwitchState(newState.State);
     }
 
     public bool IsState(string state)
     {
         return string.Equals(_curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void SwitchState(State newState)
+    {
+        _curState.Exit();
+        _curState = newState;
+        _curState.Enter();
     }
 
     private void SetupState()
