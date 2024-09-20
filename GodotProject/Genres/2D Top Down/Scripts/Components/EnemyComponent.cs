@@ -1,4 +1,5 @@
 using Godot;
+using GodotUtils;
 using System;
 
 namespace Template.TopDown2D;
@@ -21,11 +22,9 @@ public partial class EnemyComponent : EntityComponent
 
         _hitbox.BodyEntered += body =>
         {
-            if (body.IsInGroup("Player"))
+            if (body.HasNode<PlayerComponent>())
             {
-                //Vector2 difference = body.Position - Position;
-
-                
+                GD.Print("We are a player!");
             }
         };
     }
