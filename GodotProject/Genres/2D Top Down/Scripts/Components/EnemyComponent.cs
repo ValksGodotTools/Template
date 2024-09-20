@@ -16,11 +16,6 @@ public partial class EnemyComponent : EntityComponent
         ServiceProvider.Services.Get<Level>().EnemyComponents.Add(this);
     }
 
-    public override void _ExitTree()
-    {
-        ServiceProvider.Services.Get<Level>().EnemyComponents.Remove(this);
-    }
-
     public override void SwitchState(NodeState newState)
     {
         // Enemies will always stay in the idle state when no player is present
