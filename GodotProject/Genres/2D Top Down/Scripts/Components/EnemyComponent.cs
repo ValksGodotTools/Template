@@ -1,6 +1,5 @@
 using Godot;
 using GodotUtils;
-using System;
 
 namespace Template.TopDown2D;
 
@@ -22,9 +21,9 @@ public partial class EnemyComponent : EntityComponent
 
         _hitbox.BodyEntered += body =>
         {
-            if (body.HasNode<PlayerComponent>())
+            if (body.TryGetNode(out PlayerComponent playerComponent))
             {
-                GD.Print("We are a player!");
+                playerComponent.TakeDamage();
             }
         };
     }

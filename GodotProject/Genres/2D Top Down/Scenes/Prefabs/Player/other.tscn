@@ -1,15 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://uiqfgmj1e1x7"]
+[gd_scene load_steps=10 format=3 uid="uid://uiqfgmj1e1x7"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Netcode/OtherPlayer.cs" id="1_4r8fl"]
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_0jav4"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="2_ducrg"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="3_ttv65"]
+[ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="4_hfdk5"]
 
 [sub_resource type="Resource" id="Resource_sgi3p"]
 script = ExtResource("3_ttv65")
 Color = Color(1, 1, 1, 1)
 BlendMode = 0
 LightMode = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urbwu"]
+shader = ExtResource("4_hfdk5")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/blend_intensity = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t86ow"]
 atlas = ExtResource("2_0jav4")
@@ -35,6 +41,7 @@ _config = SubResource("Resource_sgi3p")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_urbwu")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_iofnj")
 
