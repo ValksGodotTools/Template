@@ -24,7 +24,7 @@ Global="*res://Template/Autoloads/global.tscn"
 AudioManager="*res://Template/Autoloads/audio_manager.tscn"
 SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
-InstanceIdentifier="*res://Template/Scripts/Autoloads/InstanceIdentifier.cs"
+CommandLineArgs="*res://Template/Scripts/Autoloads/CommandLineArgs.cs"
 
 [display]
 

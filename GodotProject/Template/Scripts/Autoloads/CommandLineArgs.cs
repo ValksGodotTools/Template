@@ -2,7 +2,7 @@ using Godot;
 
 namespace Template;
 
-public partial class InstanceIdentifier : Node
+public partial class CommandLineArgs : Node
 {
     public override void _Ready()
     {
