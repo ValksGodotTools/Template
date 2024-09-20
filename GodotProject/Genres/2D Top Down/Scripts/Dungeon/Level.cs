@@ -1,6 +1,5 @@
 using CSharpUtils;
 using Godot;
-using GodotUtils;
 using System.Collections.Generic;
 
 namespace Template.TopDown2D;
@@ -19,14 +18,9 @@ public partial class Level : Node
     public string PlayerUsername { get; set; }
     private static Vector2 PlayerSpawnPosition { get; } = new Vector2(100, 100);
 
-    public override void _EnterTree()
-    {
-        ServiceProvider.Services.Add(this);
-    }
-
     public override void _Ready()
     {
-        ServiceProvider.Services.Get<Net>().OnClientCreated += client =>
+        ServiceProvider.Services.Get<UINetControlPanel>().Net.OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {

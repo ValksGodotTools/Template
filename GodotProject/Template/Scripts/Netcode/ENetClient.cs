@@ -59,7 +59,7 @@ public abstract class ENetClient : ENetLow
         }
         catch (Exception e)
         {
-            ServiceProvider.Services.Get<Logger>().LogErr(e, "Client");
+            Game.LogErr(e, "Client");
         }
     }
 
@@ -142,7 +142,7 @@ public abstract class ENetClient : ENetLow
     /// </summary>
     public override void Log(object message, BBColor color = BBColor.Aqua)
     {
-        ServiceProvider.Services.Get<Logger>().Log($"[Client] {message}", color);
+        Game.Log($"[Client] {message}", color);
     }
 
     #endregion

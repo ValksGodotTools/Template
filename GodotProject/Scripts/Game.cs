@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using System;
 using static Template.SceneManager;
 
 namespace Template;
@@ -25,16 +25,21 @@ public partial class Game
 
     public static void Log(object message, BBColor color = BBColor.Gray)
     {
-        ServiceProvider.Services.Get<Logger>().Log(message, color);
+        ServiceProvider.Services.Get<Global>().Logger.Log(message, color);
     }
 
     public static void Log(params object[] objects)
     {
-        ServiceProvider.Services.Get<Logger>().Log(objects);
+        ServiceProvider.Services.Get<Global>().Logger.Log(objects);
     }
 
     public static void LogWarning(object message, BBColor color = BBColor.Orange)
     {
-        ServiceProvider.Services.Get<Logger>().LogWarning(message, color);
+        ServiceProvider.Services.Get<Global>().Logger.LogWarning(message, color);
+    }
+
+    public static void LogErr(Exception e, string hint = null)
+    {
+        ServiceProvider.Services.Get<Global>().Logger.LogErr(e, hint);
     }
 }

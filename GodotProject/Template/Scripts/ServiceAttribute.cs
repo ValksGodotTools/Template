@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace GodotUtils;
+namespace Template;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ServiceAttribute : Attribute
+public class ServiceAttribute(bool persistent = false) : Attribute
 {
-
+    public bool Persistent { get; private set; } = persistent;
 }

@@ -1,7 +1,9 @@
 using Godot;
 using GodotUtils;
 using System;
+using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Template;
 
@@ -14,46 +16,51 @@ public partial class ServiceProvider : Node
     public override void _EnterTree()
     {
         Services = this;
-        Services.Add<Logger>();
-    }
 
-    /// <summary>
-    /// Add a instance to be tracked as a service. If the service is marked
-    /// as persistent it will not get cleaned up on scene change.
-    /// </summary>
-    public virtual Service Add(object instance, bool persistent = false)
-    {
-        Service service = new()
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+
+        IEnumerable<Node> scriptNodes = GetTree().Root.GetChildren<Node>().Where(x => x.GetScript().VariantType != Variant.Type.Nil);
+
+        Dictionary<Type, ServiceAttribute> cachedAttributes = [];
+
+        foreach (Type type in types)
         {
-            Instance = instance, 
-            Persistent = persistent 
-        };
+            ServiceAttribute serviceAttribute = (ServiceAttribute)type.GetCustomAttribute(typeof(ServiceAttribute));
 
-        _services.Add(instance.GetType(), service);
+            if (serviceAttribute != null)
+            {
+                if (type.IsAssignableTo(typeof(Node)))
+                {
+                    cachedAttributes[type] = serviceAttribute;
+                }
+            }
+        }
 
-        RemoveServiceOnSceneChanged(service);
+        foreach (Node node in scriptNodes)
+        {
+            foreach (KeyValuePair<Type, ServiceAttribute> kvp in cachedAttributes)
+            {
+                Type type = kvp.Key;
+                ServiceAttribute serviceAttribute = kvp.Value;
 
-        return service;
-    }
+                if (type.IsAssignableTo(node.GetType()))
+                {
+                    GD.Print("Added " + node.Name);
 
-    /// <summary>
-    /// Add a object that does not exist within the game tree. For example
-    /// the Logger class does not extend from Node.
-    /// </summary>
-    public Service Add<T>() where T : new()
-    {
-        T instance = new();
+                    Service service = new()
+                    {
+                        Instance = node,
+                        Persistent = serviceAttribute.Persistent
+                    };
 
-        Service service = new()
-        { 
-            Instance = instance, 
-            Persistent = true // all instances that do not exist in the game tree
-            // should be persistent
-        };
+                    _services.Add(node.GetType(), service);
 
-        _services.Add(instance.GetType(), service);
+                    RemoveServiceOnSceneChanged(service);
 
-        return service;
+                    break;
+                }
+            }
+        }
     }
 
     public T Get<T>()
