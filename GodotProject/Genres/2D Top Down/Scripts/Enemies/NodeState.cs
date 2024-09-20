@@ -13,15 +13,13 @@ public abstract partial class NodeState : Node2D
 
     public State State { get; private set; }
 
-    protected Player Player { get => _entityComponent.Player; set => _entityComponent.Player = value; }
     protected RigidBody2D Entity { get; private set; }
-    protected AnimatedSprite2D Sprite { get => _entityComponent.AnimatedSprite; }
-
-    private EnemyComponent _entityComponent;
+    protected AnimatedSprite2D Sprite { get => EnemyComponent.AnimatedSprite; }
+    protected EnemyComponent EnemyComponent { get; private set; }
 
     public override void _Ready()
     {
-        _entityComponent = GetParent<EnemyComponent>();
+        EnemyComponent = GetParent<EnemyComponent>();
 
         Entity = GetOwner() as RigidBody2D;
 
@@ -32,7 +30,7 @@ public abstract partial class NodeState : Node2D
             Exit = Exit
         };
 
-        NextState ??= _entityComponent.IdleState;
+        NextState ??= EnemyComponent.IdleState;
     }
     
     protected virtual void Enter() { }
@@ -41,11 +39,11 @@ public abstract partial class NodeState : Node2D
 
     protected bool IsState(string state)
     {
-        return _entityComponent.IsState(state);
+        return EnemyComponent.IsState(state);
     }
 
-    protected void SwitchState(NodeState state)
+    protected void SwitchState(NodeState state, bool callExit = true)
     {
-        _entityComponent.SwitchState(state);
+        EnemyComponent.SwitchState(state, callExit);
     }
 }

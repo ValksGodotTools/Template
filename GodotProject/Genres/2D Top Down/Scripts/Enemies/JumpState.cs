@@ -6,15 +6,19 @@ namespace Template.TopDown2D;
 [GlobalClass]
 public partial class JumpState : NodeState
 {
-    [Export] private Area2D _playerDetectArea;
-
     protected override void Enter()
     {
+        if (!IsInstanceValid(EnemyComponent.Target))
+        {
+            SwitchState(NextState, false);
+            return;
+        }
+
         Sprite.Play("jump");
 
         Entity.SetCollisionLayerAndMask(3);
 
-        Vector2 force = (Player.Position - Entity.Position) * 2;
+        Vector2 force = (EnemyComponent.Target.Position - Entity.Position) * 2;
 
         Entity.ApplyCentralImpulse(force);
 

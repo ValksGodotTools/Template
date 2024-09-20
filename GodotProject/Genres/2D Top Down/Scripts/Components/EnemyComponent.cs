@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 namespace Template.TopDown2D;
 
@@ -8,7 +9,7 @@ namespace Template.TopDown2D;
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
 public partial class EnemyComponent : EntityComponent
 {
-    public Player Player { get; set; }
+    public Node2D Target { get; set; }
 
     public override void _Ready()
     {
@@ -16,19 +17,8 @@ public partial class EnemyComponent : EntityComponent
         ServiceProvider.Services.Get<Level>().EnemyComponents.Add(this);
     }
 
-    public override void SwitchState(NodeState newState)
+    public override void SwitchState(NodeState newState, bool callExit = true)
     {
-        // Enemies will always stay in the idle state when no player is present
-        if (!IsInstanceValid(Player))
-        {
-            // Do not call SwitchState() to prevent infinite loop
-            _curState.Exit();
-            _curState = IdleState.State;
-            _curState.Enter();
-
-            return;
-        }
-
-        base.SwitchState(newState);
+        base.SwitchState(newState, callExit);
     }
 }

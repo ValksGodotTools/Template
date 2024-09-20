@@ -27,9 +27,9 @@ public partial class EntityComponent : Node2D
         _curState.Update((float)delta);
     }
 
-    public virtual void SwitchState(NodeState newState)
+    public virtual void SwitchState(NodeState newState, bool callExit = true)
     {
-        SwitchState(newState.State);
+        SwitchState(newState.State, callExit);
     }
 
     public bool IsState(string state)
@@ -37,9 +37,18 @@ public partial class EntityComponent : Node2D
         return string.Equals(_curState.ToString(), state, System.StringComparison.OrdinalIgnoreCase);
     }
 
-    private void SwitchState(State newState)
+    /// <summary>
+    /// Switches the current state of the object to a new state.
+    /// </summary>
+    /// <param name="newState">The new state to switch to.</param>
+    /// <param name="callExit">A boolean indicating whether to call the Exit method on the current state before switching. Default is true.</param>
+    private void SwitchState(State newState, bool callExit = true)
     {
-        _curState.Exit();
+        if (callExit)
+        {
+            _curState.Exit();
+        }
+        
         _curState = newState;
         _curState.Enter();
     }

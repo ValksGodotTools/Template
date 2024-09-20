@@ -55,11 +55,6 @@ public partial class Level : Node
 
                 _playerCamera.StopFollowingPlayer();
                 _roomTransitions.Reset();
-
-                foreach (EnemyComponent enemyComponent in EnemyComponents)
-                {
-                    enemyComponent.Player = null;
-                }
             };
         };
     }
@@ -73,11 +68,6 @@ public partial class Level : Node
 
         _playerCamera.StartFollowingPlayer(Player);
         _roomTransitions.Init(Player);
-
-        foreach (EnemyComponent enemyComponent in EnemyComponents)
-        {
-            enemyComponent.Player = Player;
-        }
     }
 
     public void AddOtherPlayer(uint id, PlayerData playerData)
@@ -98,4 +88,3 @@ public partial class Level : Node
         OtherPlayers.Remove(id);
     }
 }
-

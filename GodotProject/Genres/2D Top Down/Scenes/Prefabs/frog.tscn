@@ -99,9 +99,8 @@ _detectPlayerState = NodePath("../ShakeState")
 _idleActionState = NodePath("../SlideState")
 _playerDetectArea = NodePath("../../Area2D")
 
-[node name="JumpState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("_playerDetectArea", "NextState")]
+[node name="JumpState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]
 script = ExtResource("5_c8xv3")
-_playerDetectArea = NodePath("../../Area2D")
 NextState = NodePath("../IdleState")
 
 [node name="ShakeState" type="Node2D" parent="EnemyComponent" node_paths=PackedStringArray("NextState")]

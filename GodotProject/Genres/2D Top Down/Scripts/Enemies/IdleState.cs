@@ -47,9 +47,9 @@ public partial class IdleState : NodeState
     {
         if (IsState("Idle"))
         {
-            if (body is Player player)
+            if (body.IsInGroup("Player"))
             {
-                Player = player;
+                EnemyComponent.Target = body;
                 SwitchState(_detectPlayerState);
             }
         }
