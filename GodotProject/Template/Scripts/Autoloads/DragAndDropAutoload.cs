@@ -55,7 +55,10 @@ public partial class DragAndDropAutoload : Node2D
     {
         if (_currentlyDraggedNode != null)
         {
-            _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition() - _dragControlOffset;
+            float distance = _currentlyDraggedNode.GlobalPosition.DistanceTo(GetGlobalMousePosition());
+
+            _currentlyDraggedNode.GlobalPosition = _currentlyDraggedNode.GlobalPosition
+                .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * 0.1f);
         }
     }
 
