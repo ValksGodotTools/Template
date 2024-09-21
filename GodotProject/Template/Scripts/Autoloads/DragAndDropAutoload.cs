@@ -122,11 +122,11 @@ public partial class DragAndDropAutoload : Node2D
 
         foreach (Type type in types)
         {
-            DraggableAttribute draggableAttribute = (DraggableAttribute)type.GetCustomAttribute(typeof(DraggableAttribute));
+            DraggableAttribute attribute = type.GetCustomAttribute<DraggableAttribute>();
 
-            if (draggableAttribute != null)
+            if (attribute != null)
             {
-                cache.Add(type, draggableAttribute);
+                cache.Add(type, attribute);
             }
         }
 
