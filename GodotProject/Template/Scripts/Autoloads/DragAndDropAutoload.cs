@@ -9,6 +9,8 @@ namespace Template;
 
 public partial class DragAndDropAutoload : Node2D
 {
+    private const float LERP_FACTOR = 0.2f;
+
     private DraggableWrapper _selectedNode;
     private IDraggableNode _previousParent;
     private Vector2 _previousPosition;
@@ -87,7 +89,7 @@ public partial class DragAndDropAutoload : Node2D
             float distance = _currentlyDraggedNode.GlobalPosition.DistanceTo(GetGlobalMousePosition());
 
             _currentlyDraggedNode.GlobalPosition = _currentlyDraggedNode.GlobalPosition
-                .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * 0.1f);
+                .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * LERP_FACTOR);
         }
     }
 
