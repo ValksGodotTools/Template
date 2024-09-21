@@ -7,8 +7,16 @@ using System.Reflection;
 
 namespace Template.DragAndDrop;
 
+public interface IDraggableNode
+{
+    public Vector2 Position { get; set; }
+}
+
 public partial class DragTestScene : Node
 {
+    private Node2D _selectedNode;
+    private Node2D _currentlyDraggedNode;
+
     public override void _Ready()
     {
         Dictionary<Type, DraggableAttribute> cache = CacheDraggableAttributes();
@@ -27,7 +35,29 @@ public partial class DragTestScene : Node
         }
     }
 
-    private static void MakeNodeDraggable(Node node)
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton btn)
+        {
+            if (btn.IsLeftClickPressed())
+            {
+                if (_selectedNode != null)
+                {
+                    // Reparent to viewport root
+                    _selectedNode.Reparent(GetTree().Root);
+
+                    _currentlyDraggedNode = _selectedNode;
+                }
+            }
+        }
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        
+    }
+
+    private void MakeNodeDraggable(Node node)
     {
         Vector2 size = GetNodeSize(node);
 
@@ -42,6 +72,11 @@ public partial class DragTestScene : Node
 
         area.AddChild(collision);
         node.AddChild(area);
+
+        area.MouseEntered += () =>
+        {
+            _selectedNode = node as Node2D;
+        };
     }
 
     private Dictionary<Type, DraggableAttribute> CacheDraggableAttributes()
