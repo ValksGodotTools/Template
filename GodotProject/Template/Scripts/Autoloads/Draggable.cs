@@ -10,13 +10,16 @@ namespace Template;
 // Autoload
 public partial class Draggable : Node2D
 {
-    private const float LERP_FACTOR = 0.2f;
+    public static event Action<Node> DragReleased;
+
+    private const float LERP_FACTOR = 0.3f;
 
     private DraggableWrapper _selectedNode;
-    private IDraggableNode _previousParent;
+    private Node _previousParent;
     private Vector2 _previousPosition;
     private Vector2 _dragControlOffset;
     private IDraggableNode _currentlyDraggedNode;
+    private HashSet<Node> _draggableNodes = [];
 
     public override void _Ready()
     {
@@ -62,11 +65,11 @@ public partial class Draggable : Node2D
                 if (_selectedNode != null)
                 {
                     _dragControlOffset = _selectedNode.DragControlOffset;
-                    _previousParent = _selectedNode.GetParent<IDraggableNode>();
+                    _previousParent = _selectedNode.GetParent();
                     _previousPosition = _selectedNode.GlobalPosition;
 
                     // Reparent to viewport root
-                    _selectedNode.Reparent(GetTree().Root as IDraggableNode);
+                    _selectedNode.Node.Reparent(GetTree().Root);
 
                     _currentlyDraggedNode = _selectedNode;
                 }
@@ -74,10 +77,23 @@ public partial class Draggable : Node2D
 
             if (btn.IsLeftClickReleased() && _currentlyDraggedNode != null)
             {
-                _currentlyDraggedNode = null;
+                // Expose event to developers to let them do things with node
+                DragReleased?.Invoke(_selectedNode.Node);
 
-                _selectedNode.Reparent(_previousParent);
-                _selectedNode.GlobalPosition = _previousPosition;
+                // Developer has not queue freed the node
+                bool valid = IsInstanceValid(_selectedNode.Node);
+                
+                // Developer has not reparented the node
+                bool sameParent = _selectedNode.GetParent() == GetTree().Root;
+
+                // Since node was not queue freed or reparented, snap it back to its previous parent
+                if (valid && sameParent)
+                {
+                    _selectedNode.Reparent(_previousParent);
+                    _selectedNode.GlobalPosition = _previousPosition;
+                }
+
+                _currentlyDraggedNode = null;
                 _selectedNode = null;
             }
         }
@@ -106,6 +122,12 @@ public partial class Draggable : Node2D
 
     private void TryMakeNodeDraggable(Node node)
     {
+        // An Area2D has been created for this node already
+        if (_draggableNodes.Contains(node))
+        {
+            return;
+        }
+
         DraggableAttribute attribute = node.GetType().GetCustomAttribute<DraggableAttribute>();
 
         if (attribute == null)
@@ -116,6 +138,8 @@ public partial class Draggable : Node2D
         Area2D area = CreateDraggableArea(node);
 
         node.AddChild(area);
+
+        _draggableNodes.Add(node);
     }
 
     private Area2D CreateDraggableArea(Node node)
@@ -220,12 +244,14 @@ public partial class Draggable : Node2D
 public class DraggableWrapper : IDraggableNode
 {
     public Vector2 DragControlOffset { get; private set; }
+    public Node Node { get; set; }
 
     private Node2D _node2D;
     private Control _control;
 
     public DraggableWrapper(Node node, Vector2 dragControlOffset)
     {
+        Node = node;
         DragControlOffset = dragControlOffset;
 
         if (node is Node2D node2D)
@@ -276,31 +302,29 @@ public class DraggableWrapper : IDraggableNode
         }
     }
 
-    public T GetParent<T>() where T : class
+    public Node GetParent()
     {
-        return _node2D?.GetParent() as T ?? _control?.GetParent() as T;
+        return _node2D?.GetParent() ?? _control?.GetParent();
     }
 
-    public void Reparent(IDraggableNode newParent)
+    public void Reparent(Node newParent)
     {
-        if (newParent is Node parentNode)
+        if (_node2D != null)
         {
-            if (_node2D != null)
-            {
-                _node2D.Reparent(parentNode);
-            }
-            else
-            {
-                _control?.Reparent(parentNode);
-            }
+            _node2D.Reparent(newParent);
+        }
+        else
+        {
+            _control?.Reparent(newParent);
         }
     }
 }
 
 public interface IDraggableNode
 {
+    Node Node { get; set; }
     Vector2 GlobalPosition { get; set; }
 
-    T GetParent<T>() where T : class;
-    void Reparent(IDraggableNode node);
+    Node GetParent();
+    void Reparent(Node node);
 }
