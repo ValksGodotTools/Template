@@ -17,22 +17,8 @@ public partial class DragAndDropAutoload : Node2D
 
     public override void _Ready()
     {
-        Dictionary<Type, DraggableAttribute> cache = CacheDraggableAttributes();
-        IEnumerable<Node> nodes = GetDraggableNodes(GetTree().Root);
-
-        foreach (Node node in nodes)
-        {
-            foreach (KeyValuePair<Type, DraggableAttribute> kvp in cache)
-            {
-                if (kvp.Key.IsAssignableTo(node.GetType()))
-                {
-                    MakeNodeDraggable(node);
-                    break;
-                }
-            }
-        }
-
-        GetTree().NodeAdded += OnNodeAdded;
+        MakeNodesDraggable();
+        GetTree().NodeAdded += TryMakeNodeDraggable;
     }
 
     public override void _Input(InputEvent @event)
@@ -73,18 +59,25 @@ public partial class DragAndDropAutoload : Node2D
         }
     }
 
-    private void OnNodeAdded(Node node)
+    private void MakeNodesDraggable()
     {
-        DraggableAttribute attribute = node.GetType().GetCustomAttribute<DraggableAttribute>();
+        IEnumerable<Node> nodes = GetTree().Root.GetChildren<Node>().Where(n => n is Node2D or Control);
 
-        if (attribute != null)
+        foreach (Node node in nodes)
         {
-            MakeNodeDraggable(node);
+            TryMakeNodeDraggable(node);
         }
     }
 
-    private void MakeNodeDraggable(Node node)
+    private void TryMakeNodeDraggable(Node node)
     {
+        DraggableAttribute attribute = node.GetType().GetCustomAttribute<DraggableAttribute>();
+
+        if (attribute == null)
+        {
+            return;
+        }
+
         Vector2 size = GetNodeSize(node);
 
         Area2D area = new();
@@ -125,29 +118,6 @@ public partial class DragAndDropAutoload : Node2D
                 _selectedNode = null;
             }
         };
-    }
-
-    private Dictionary<Type, DraggableAttribute> CacheDraggableAttributes()
-    {
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-        Dictionary<Type, DraggableAttribute> cache = [];
-
-        foreach (Type type in types)
-        {
-            DraggableAttribute attribute = type.GetCustomAttribute<DraggableAttribute>();
-
-            if (attribute != null)
-            {
-                cache.Add(type, attribute);
-            }
-        }
-
-        return cache;
-    }
-
-    private static IEnumerable<Node> GetDraggableNodes(Node root)
-    {
-        return root.GetChildren<Node>().Where(n => n is Node2D or Control);
     }
 
     private static Vector2 GetNodeSize(Node node)
