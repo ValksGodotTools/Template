@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvi7wkr7emrsr"]
+[gd_scene load_steps=5 format=3 uid="uid://cvi7wkr7emrsr"]
 
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="1_07ygb"]
-[ext_resource type="Script" path="res://Sandbox/DragAndDrop/Scripts/DragTestScene.cs" id="1_nidfh"]
 [ext_resource type="Script" path="res://Sandbox/DragAndDrop/Scripts/DraggableSprite.cs" id="3_d4y8x"]
 [ext_resource type="Script" path="res://Sandbox/DragAndDrop/Scripts/DraggableControl.cs" id="4_a41qc"]
 
@@ -9,7 +8,6 @@
 bg_color = Color(0.204364, 0.849369, 0.917969, 1)
 
 [node name="DragAndDrop" type="Node2D"]
-script = ExtResource("1_nidfh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(269, 225)

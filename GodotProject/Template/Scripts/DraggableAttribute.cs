@@ -1,6 +1,6 @@
 using System;
 
-namespace Template.DragAndDrop;
+namespace Template;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class DraggableAttribute : Attribute

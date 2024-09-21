@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Template.DragAndDrop;
+namespace Template;
 
-public partial class DragTestScene : Node2D
+public partial class DragAndDropAutoload : Node2D
 {
     private DraggableWrapper _selectedNode;
     private IDraggableNode _previousParent;
@@ -18,7 +18,7 @@ public partial class DragTestScene : Node2D
     public override void _Ready()
     {
         Dictionary<Type, DraggableAttribute> cache = CacheDraggableAttributes();
-        IEnumerable<Node> nodes = GetDraggableNodes(this);
+        IEnumerable<Node> nodes = GetDraggableNodes(GetTree().Root);
 
         foreach (Node node in nodes)
         {
