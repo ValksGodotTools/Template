@@ -9,6 +9,7 @@ public partial class JumpState : EnemyState
     [Export] private double _jumpTime = 1.0;
     [Export] private string _jumpAnimationName = "jump";
     [Export] private string _idleAnimationName = "idle";
+    [Export] private Area2D _hitbox;
 
     protected override void Enter()
     {
@@ -24,6 +25,8 @@ public partial class JumpState : EnemyState
 
         Entity.ApplyCentralImpulse(force);
 
+        _hitbox.SetCollisionLayerAndMask(2);
+
         float size = 1.5f;
 
         new GTween(Sprite)
@@ -33,6 +36,7 @@ public partial class JumpState : EnemyState
             .AnimateProp(Sprite.Scale * new Vector2(1.5f, 0.5f), _jumpTime * 0.5).EaseIn()
             .Callback(() =>
             {
+                _hitbox.SetCollisionLayerAndMask(1);
                 Entity.LinearVelocity = Vector2.Zero;
                 Sprite.Play(_idleAnimationName);
             })
