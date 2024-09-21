@@ -108,7 +108,10 @@ public partial class DragAndDropAutoload : Node2D
 
         area.MouseExited += () =>
         {
-            _selectedNode = null;
+            if (_currentlyDraggedNode == null)
+            {
+                _selectedNode = null;
+            }
         };
     }
 
