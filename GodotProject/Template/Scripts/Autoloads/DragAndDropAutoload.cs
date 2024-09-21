@@ -167,11 +167,15 @@ public partial class DragAndDropAutoload : Node2D
 
         if (node is Sprite2D sprite)
         {
-            size = sprite.GetSize();
+            size = sprite.GetScaledSize();
+        }
+        else if (node is AnimatedSprite2D animatedSprite)
+        {
+            size = animatedSprite.GetScaledSize();
         }
         else if (node is Control control)
         {
-            size = control.Size;
+            size = control.Size * control.Scale;
         }
 
         return size;
