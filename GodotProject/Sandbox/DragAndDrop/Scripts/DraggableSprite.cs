@@ -3,7 +3,7 @@ using Godot;
 namespace Template.DragAndDrop;
 
 [Draggable]
-public partial class DraggableSprite : Node
+public partial class DraggableSprite : Sprite2D
 {
 	
 }
