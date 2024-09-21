@@ -27,6 +27,10 @@ public partial class DragAndDropAutoload : Node2D
         {
             if (btn.IsLeftClickPressed())
             {
+                // Consider the scenario where the cursor does not leave the Area2D area when
+                // letting go of a draggable. The area.MouseEntered event will never get fired
+                // because the cursor is already in the area. So below is the code to handle this,
+                // that is when _selectedNode is null.
                 if (_selectedNode == null)
                 {
                     Node node = GetNodeUnderCursor(GetWorld2D(), GetGlobalMousePosition());
@@ -50,6 +54,8 @@ public partial class DragAndDropAutoload : Node2D
                     }
                 }
 
+                // The area.MouseEntered event has populated the selected node, lets prepare
+                // the node for dragging
                 if (_selectedNode != null)
                 {
                     _dragControlOffset = _selectedNode.DragControlOffset;
