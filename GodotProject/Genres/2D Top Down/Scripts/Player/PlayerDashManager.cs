@@ -51,7 +51,9 @@ public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
     {
         PlayerDashGhost ghost = Game.LoadPrefab<PlayerDashGhost>(Prefab.PlayerDashGhost);
         ghost.Position = node.Position;
-        ghost.AddChild(dashSprite.Duplicate());
+        AnimatedSprite2D sprite = (AnimatedSprite2D)dashSprite.Duplicate();
+        sprite.Material = null;
+        ghost.AddChild(sprite);
         node.GetTree().CurrentScene.AddChild(ghost);
     }
 }
