@@ -11,8 +11,42 @@ public partial class DragTestScene : Node
 {
     public override void _Ready()
     {
-        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        Dictionary<Type, DraggableAttribute> cache = CacheDraggableAttributes();
+        IEnumerable<Node> nodes = GetDraggableNodes(this);
 
+        foreach (Node node in nodes)
+        {
+            foreach (KeyValuePair<Type, DraggableAttribute> kvp in cache)
+            {
+                if (kvp.Key.IsAssignableTo(node.GetType()))
+                {
+                    MakeNodeDraggable(node);
+                    break;
+                }
+            }
+        }
+    }
+
+    private static void MakeNodeDraggable(Node node)
+    {
+        Vector2 size = GetNodeSize(node);
+
+        Area2D area = new();
+        CollisionShape2D collision = new()
+        {
+            Shape = new RectangleShape2D
+            {
+                Size = size
+            }
+        };
+
+        area.AddChild(collision);
+        node.AddChild(area);
+    }
+
+    private Dictionary<Type, DraggableAttribute> CacheDraggableAttributes()
+    {
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
         Dictionary<Type, DraggableAttribute> cache = [];
 
         foreach (Type type in types)
@@ -25,18 +59,27 @@ public partial class DragTestScene : Node
             }
         }
 
-        IEnumerable<Node> nodes = this.GetChildren<Node>().Where(n => n is Node2D or Control);
+        return cache;
+    }
 
-        foreach (Node node in nodes)
+    private static IEnumerable<Node> GetDraggableNodes(Node root)
+    {
+        return root.GetChildren<Node>().Where(n => n is Node2D or Control);
+    }
+
+    private static Vector2 GetNodeSize(Node node)
+    {
+        Vector2 size = Vector2.Zero;
+
+        if (node is Sprite2D sprite)
         {
-            foreach (KeyValuePair<Type, DraggableAttribute> kvp in cache)
-            {
-                if (kvp.Key.IsAssignableTo(node.GetType()))
-                {
-                    GD.Print(node.Name);
-                    break;
-                }
-            }
+            size = sprite.GetSize();
         }
+        else if (node is Control control)
+        {
+            size = control.Size;
+        }
+
+        return size;
     }
 }
