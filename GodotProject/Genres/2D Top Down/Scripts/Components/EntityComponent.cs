@@ -23,10 +23,42 @@ public partial class EntityComponent : Node2D
 
     public void TakeDamage()
     {
-        new GTween(this)
-            .SetAnimatingShaderMaterial(_shaderMaterial)
-            .AnimateShader("blend_intensity", 1.0f, 0.1f)
-            .AnimateShader("blend_intensity", 0.0f, 0.3f).EaseOut();
+        if (_shaderMaterial != null)
+        {
+            StrobeFlash(this, _shaderMaterial);
+        }
+    }
+
+    private static void StrobeFlash(Node node, ShaderMaterial shaderMaterial)
+    {
+        float initialDuration = 0.04f; // Initial duration for the first flash
+        float durationIncrement = 0.01f; // Increment for each subsequent flash
+        float intensityDecrement = 0.3f; // Decrement for each subsequent flash
+
+        float currentDuration = initialDuration;
+        float currentIntensity = 1.0f;
+
+        // Create a sequence of tweens to simulate the strobe light effect
+        GTween tween = new GTween(node).SetAnimatingShaderMaterial(shaderMaterial);
+
+        for (int i = 0; i < 4; i++) // Adjust the number of flashes as needed
+        {
+            // Flash on
+            tween.AnimateShader("blend_intensity", currentIntensity, currentDuration).EaseIn();
+
+            // Flash off
+            tween.AnimateShader("blend_intensity", 0.0f, currentDuration).EaseOut();
+
+            // Update the duration and intensity for the next flash
+            currentDuration += durationIncrement;
+            currentIntensity -= intensityDecrement;
+
+            // Ensure the intensity doesn't go below 0.0
+            if (currentIntensity < 0.0f)
+            {
+                currentIntensity = 0.0f;
+            }
+        }
     }
 
     private void SetMaterial()
