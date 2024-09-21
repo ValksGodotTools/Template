@@ -7,7 +7,8 @@ using System.Reflection;
 
 namespace Template;
 
-public partial class DragAndDropAutoload : Node2D
+// Autoload
+public partial class Draggable : Node2D
 {
     private const float LERP_FACTOR = 0.2f;
 

@@ -25,7 +25,7 @@ AudioManager="*res://Template/Autoloads/audio_manager.tscn"
 SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
 CommandLineArgs="*res://Template/Scripts/Autoloads/CommandLineArgs.cs"
-DragAndDropAutoload="*res://Template/Scripts/Autoloads/DragAndDropAutoload.cs"
+Draggable="*res://Template/Scripts/Autoloads/Draggable.cs"
 
 [display]
 
