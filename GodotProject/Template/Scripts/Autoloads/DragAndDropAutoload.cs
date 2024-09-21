@@ -31,6 +31,8 @@ public partial class DragAndDropAutoload : Node2D
                 }
             }
         }
+
+        GetTree().NodeAdded += OnNodeAdded;
     }
 
     public override void _Input(InputEvent @event)
@@ -68,6 +70,16 @@ public partial class DragAndDropAutoload : Node2D
         if (_currentlyDraggedNode != null)
         {
             _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition() - _dragControlOffset;
+        }
+    }
+
+    private void OnNodeAdded(Node node)
+    {
+        DraggableAttribute attribute = node.GetType().GetCustomAttribute<DraggableAttribute>();
+
+        if (attribute != null)
+        {
+            MakeNodeDraggable(node);
         }
     }
 

@@ -10,7 +10,7 @@ bg_color = Color(0.204364, 0.849369, 0.917969, 1)
 [node name="DragAndDrop" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(269, 225)
+position = Vector2(303, 363)
 texture = ExtResource("1_07ygb")
 script = ExtResource("3_d4y8x")
 
