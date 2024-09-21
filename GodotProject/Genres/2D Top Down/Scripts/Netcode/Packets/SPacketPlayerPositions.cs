@@ -24,7 +24,11 @@ public class SPacketPlayerPositions : ServerPacket
 
         // Send a client position packet to the server immediately right after
         // a server positions packet is received
-        level.Player.NetSendPosition();
+
+        // Player could be invalid here if they disconnected or died
+        if (GodotObject.IsInstanceValid(level.Player))
+        {
+            level.Player.NetSendPosition();
+        }
     }
 }
-
