@@ -78,11 +78,17 @@ public partial class DragAndDropAutoload : Node2D
             return;
         }
 
-        Vector2 size = GetNodeSize(node);
+        Area2D area = CreateDraggableArea(node);
 
+        node.AddChild(area);
+    }
+
+    private Area2D CreateDraggableArea(Node node)
+    {
         Area2D area = new();
 
         Vector2 dragControlOffset = Vector2.Zero;
+        Vector2 size = GetNodeSize(node);
 
         if (node is Control control)
         {
@@ -101,7 +107,6 @@ public partial class DragAndDropAutoload : Node2D
         };
 
         area.AddChild(collision);
-        node.AddChild(area);
 
         area.MouseEntered += () =>
         {
@@ -118,6 +123,8 @@ public partial class DragAndDropAutoload : Node2D
                 _selectedNode = null;
             }
         };
+
+        return area;
     }
 
     private static Vector2 GetNodeSize(Node node)
