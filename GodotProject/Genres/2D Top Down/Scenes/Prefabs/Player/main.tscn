@@ -14,6 +14,7 @@ Speed = 50.0
 Friction = 0.2
 DashStrength = 1500.0
 LookLerpSpeed = 5.0
+ExternalForceDecay = 0.2
 
 [sub_resource type="Resource" id="Resource_3u2av"]
 script = ExtResource("4_hrnjx")

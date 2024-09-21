@@ -12,7 +12,7 @@ public partial class EnemyComponent : EntityComponent
 {
     [Export] public StateMachineComponent StateMachine { get; private set; }
     [Export] private Area2D _hitbox;
-    [Export] private float _damageInterval = 1.0f; // Time interval between damage ticks
+    [Export] private float _damageInterval = 0.5f; // Time interval between damage ticks
 
     private Timer _damageTimer;
     private HashSet<PlayerComponent> _playersInHitbox = [];
@@ -41,7 +41,9 @@ public partial class EnemyComponent : EntityComponent
         {
             _playersInHitbox.Add(playerComponent);
 
-            playerComponent.TakeDamage(); // Apply damage immediately
+            Vector2 direction = (playerComponent.GlobalPosition - GlobalPosition).Normalized();
+
+            playerComponent.TakeDamage(direction); // Apply damage immediately
 
             if (_playersInHitbox.Count == 1)
             {
@@ -67,7 +69,9 @@ public partial class EnemyComponent : EntityComponent
     {
         foreach (PlayerComponent player in _playersInHitbox)
         {
-            player.TakeDamage(); // Apply periodic damage
+            Vector2 direction = (player.GlobalPosition - GlobalPosition).Normalized();
+
+            player.TakeDamage(direction); // Apply periodic damage
         }
     }
 }

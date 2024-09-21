@@ -24,10 +24,12 @@ public partial class JumpState : EnemyState
 
         Entity.ApplyCentralImpulse(force);
 
+        float size = 1.5f;
+
         new GTween(Sprite)
             .SetAnimatingProp(Node2D.PropertyName.Scale)
-            .AnimateProp(Sprite.Scale * new Vector2(4, 2), 0.2).EaseOut()
-            .AnimateProp(Sprite.Scale * new Vector2(2, 4), _jumpTime * 0.5).EaseOut()
+            .AnimateProp(Sprite.Scale * new Vector2(size * 2, size), 0.2).EaseOut()
+            .AnimateProp(Sprite.Scale * new Vector2(size, size * 2), _jumpTime * 0.5).EaseOut()
             .AnimateProp(Sprite.Scale * new Vector2(1.5f, 0.5f), _jumpTime * 0.5).EaseIn()
             .Callback(() =>
             {

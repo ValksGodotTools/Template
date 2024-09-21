@@ -14,6 +14,7 @@ public partial class Player : CharacterBody2D
     private CameraShakeComponent _cameraShake;
     private Vector2 _prevPosition;
     private Vector2 _moveDirection;
+    private Vector2 _externalForce;
     private ENetClient _client;
     private AnimatedSprite2D _sprite;
     private Sprite2D _cursor;
@@ -42,6 +43,17 @@ public partial class Player : CharacterBody2D
         _dashManager.HandleDash(this, _moveDirection);
         _lookManager.HandleLookDirection(_cursor, this, _config, delta);
         _lookManager.UpdateControllerLookInputs(delta);
+
+        // Apply external force to the player's velocity
+        Velocity += _externalForce;
+
+        // Gradually reduce the external force over time
+        _externalForce = _externalForce.Lerp(Vector2.Zero, _config.ExternalForceDecay);
+    }
+
+    public void ApplyExternalForce(Vector2 force)
+    {
+        _externalForce += force;
     }
 
     public void NetSendPosition()

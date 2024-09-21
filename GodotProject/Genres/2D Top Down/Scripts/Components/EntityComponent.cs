@@ -9,7 +9,7 @@ public partial class EntityComponent : Node2D
     [Export] private EntityConfig _config;
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
     
-    private Node2D _entity;
+    protected Node2D _entity;
     private ShaderMaterial _shaderMaterial;
 
     public override void _Ready()
@@ -21,7 +21,7 @@ public partial class EntityComponent : Node2D
         CreateReflection();
     }
 
-    public void TakeDamage()
+    public virtual void TakeDamage(Vector2 direction = default)
     {
         if (_shaderMaterial != null)
         {
