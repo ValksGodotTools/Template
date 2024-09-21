@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://cvi7wkr7emrsr"]
+[gd_scene load_steps=4 format=3 uid="uid://cvi7wkr7emrsr"]
 
 [ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="1_07ygb"]
+[ext_resource type="Script" path="res://Sandbox/DragAndDrop/Scripts/DragTestScene.cs" id="1_nidfh"]
+[ext_resource type="Script" path="res://Sandbox/DragAndDrop/Scripts/DraggableSprite.cs" id="3_d4y8x"]
 
 [node name="DragAndDrop" type="Node2D"]
+script = ExtResource("1_nidfh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(269, 225)
 texture = ExtResource("1_07ygb")
+script = ExtResource("3_d4y8x")
