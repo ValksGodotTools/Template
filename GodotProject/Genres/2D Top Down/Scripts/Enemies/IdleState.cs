@@ -9,21 +9,24 @@ public partial class IdleState : EnemyState
     [Export] private EnemyState _detectPlayerState;
     [Export] private EnemyState _idleActionState;
     [Export] private Area2D _playerDetectArea;
+    [Export] private double _idleTime = 1;
+    [Export] private double _delayUntilIdleActionState = 1;
+    [Export] private string _animationName = "idle";
 
     private GTween _delayUntilSlide;
     private bool _isBodyEnteredSubscribed;
 
     protected override void Enter()
     {
-        Sprite.PlayRandom("idle");
+        Sprite.PlayRandom(_animationName);
 
-        GTween.Delay(this, 1, () =>
+        GTween.Delay(this, _idleTime, () =>
         {
             _isBodyEnteredSubscribed = true;
             _playerDetectArea.BodyEntered += BodyEnteredCallback;
             _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, true);
 
-            _delayUntilSlide = GTween.Delay(this, 1, () =>
+            _delayUntilSlide = GTween.Delay(this, _delayUntilIdleActionState, () =>
             {
                 SwitchState(_idleActionState);
             });
@@ -47,7 +50,7 @@ public partial class IdleState : EnemyState
     {
         if (IsState("Idle"))
         {
-            if (body.IsInGroup("Player"))
+            if (body.HasNode<PlayerComponent>())
             {
                 EnemyComponent.Target = body;
                 SwitchState(_detectPlayerState);

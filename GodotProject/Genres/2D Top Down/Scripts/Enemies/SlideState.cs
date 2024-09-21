@@ -10,12 +10,13 @@ public partial class SlideState : EnemyState
     // 4  - Main
     // 8  - Main + Diagonal Directions
     // 16 - Looks the most natural
-    private const int NUM_RAYCASTS = 16;
-    private const int RAYCAST_LENGTH = 300;
+    [Export] private int _numRaycasts = 16;
+
+    [Export] private int _raycastLength = 300;
 
     protected override void Enter()
     {
-        Vector2 target = Entity.Position + GetRandomDirection() * RAYCAST_LENGTH;
+        Vector2 target = Entity.Position + GetRandomDirection() * _raycastLength;
         Vector2 force = (target - Entity.Position);
 
         Entity.ApplyCentralImpulse(force);
@@ -40,18 +41,18 @@ public partial class SlideState : EnemyState
         bool foundNonCollidingDirection = false;
 
         // Start at a random raycast angle
-        int startIndex = GD.RandRange(0, NUM_RAYCASTS);
+        int startIndex = GD.RandRange(0, _numRaycasts);
 
-        for (int i = 0; i < NUM_RAYCASTS; i++)
+        for (int i = 0; i < _numRaycasts; i++)
         {
             // The current raycast we are on
-            int currentIndex = (startIndex + i) % NUM_RAYCASTS;
+            int currentIndex = (startIndex + i) % _numRaycasts;
 
-            float angle = currentIndex * (Mathf.Pi * 2) / NUM_RAYCASTS;
+            float angle = currentIndex * (Mathf.Pi * 2) / _numRaycasts;
             direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
             RayCast2D raycast = new();
-            raycast.TargetPosition = direction * RAYCAST_LENGTH;
+            raycast.TargetPosition = direction * _raycastLength;
             raycasts.Add(raycast);
             AddChild(raycast);
 
