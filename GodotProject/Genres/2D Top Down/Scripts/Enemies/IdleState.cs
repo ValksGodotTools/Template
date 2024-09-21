@@ -9,7 +9,8 @@ public partial class IdleState : EnemyState
     [Export] private EnemyState _detectPlayerState;
     [Export] private EnemyState _idleActionState;
     [Export] private Area2D _playerDetectArea;
-    [Export] private double _idleTime = 1;
+    [Export] private double _minIdleTime = 0.5;
+    [Export] private double _maxIdleTime = 1.5;
     [Export] private double _delayUntilIdleActionState = 1;
     [Export] private string _animationName = "idle";
 
@@ -20,7 +21,7 @@ public partial class IdleState : EnemyState
     {
         Sprite.PlayRandom(_animationName);
 
-        GTween.Delay(this, _idleTime, () =>
+        GTween.Delay(this, GD.RandRange(_minIdleTime, _maxIdleTime), () =>
         {
             _isBodyEnteredSubscribed = true;
             _playerDetectArea.BodyEntered += BodyEnteredCallback;
