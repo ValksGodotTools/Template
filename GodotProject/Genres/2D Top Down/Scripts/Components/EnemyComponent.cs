@@ -1,5 +1,6 @@
 using Godot;
 using GodotUtils;
+using System.Collections.Generic;
 
 namespace Template.TopDown2D;
 
@@ -11,6 +12,10 @@ public partial class EnemyComponent : EntityComponent
 {
     [Export] public StateMachineComponent StateMachine { get; private set; }
     [Export] private Area2D _hitbox;
+    [Export] private float _damageInterval = 1.0f; // Time interval between damage ticks
+
+    private Timer _damageTimer;
+    private HashSet<PlayerComponent> _playersInHitbox = [];
 
     public Node2D Target { get; set; }
 
@@ -19,12 +24,50 @@ public partial class EnemyComponent : EntityComponent
         base._Ready();
         ServiceProvider.Services.Get<Level>().EnemyComponents.Add(this);
 
-        _hitbox.BodyEntered += body =>
+        _hitbox.BodyEntered += OnBodyEntered;
+        _hitbox.BodyExited += OnBodyExited;
+
+        // Initialize the timer
+        _damageTimer = new Timer();
+        _damageTimer.WaitTime = _damageInterval;
+        _damageTimer.OneShot = false;
+        _damageTimer.Timeout += OnDamageTimerTimeout;
+        AddChild(_damageTimer);
+    }
+
+    private void OnBodyEntered(Node2D body)
+    {
+        if (body.TryGetNode(out PlayerComponent playerComponent))
         {
-            if (body.TryGetNode(out PlayerComponent playerComponent))
+            _playersInHitbox.Add(playerComponent);
+
+            playerComponent.TakeDamage(); // Apply damage immediately
+
+            if (_playersInHitbox.Count == 1)
             {
-                playerComponent.TakeDamage();
+                _damageTimer.Start();
             }
-        };
+        }
+    }
+
+    private void OnBodyExited(Node2D body)
+    {
+        if (body.TryGetNode(out PlayerComponent playerComponent))
+        {
+            _playersInHitbox.Remove(playerComponent);
+
+            if (_playersInHitbox.Count == 0)
+            {
+                _damageTimer.Stop();
+            }
+        }
+    }
+
+    private void OnDamageTimerTimeout()
+    {
+        foreach (PlayerComponent player in _playersInHitbox)
+        {
+            player.TakeDamage(); // Apply periodic damage
+        }
     }
 }
