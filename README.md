@@ -6,7 +6,9 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/commits/main)
 [![Contributors](https://img.shields.io/github/contributors/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/graphs/contributors)
 
-## Setup
+### [All features have been moved to the Wiki](https://github.com/ValksGodotTools/Template/wiki)
+
+### Setup
 1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
 2. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
 3. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
@@ -14,7 +16,7 @@
 
 If you are not using Windows you may need to get a [Custom ENet build](https://github.com/ValksGodotTools/Template/wiki/Custom-ENet-Builds)
 
-### [All features have been moved to the Wiki](https://github.com/ValksGodotTools/Template/wiki)
+### [How to Contribute](https://github.com/ValksGodotTools/Template/wiki/Contributing)
 
 ### Special Thanks
 
@@ -22,5 +24,3 @@ If you are not using Windows you may need to get a [Custom ENet build](https://g
 - Thank you to everyone in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
 
 For all in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt). Not all assets will be listed here but there should be a `credit.txt` file next to each asset in the project.
-
-### [How to Contribute](https://github.com/ValksGodotTools/Template/wiki/Contributing)
