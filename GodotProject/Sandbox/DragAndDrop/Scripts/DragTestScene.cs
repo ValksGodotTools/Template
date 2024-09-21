@@ -12,7 +12,7 @@ public interface IDraggableNode
     public Vector2 Position { get; set; }
 }
 
-public partial class DragTestScene : Node
+public partial class DragTestScene : Node2D
 {
     private Node2D _selectedNode;
     private Node2D _currentlyDraggedNode;
@@ -54,7 +54,10 @@ public partial class DragTestScene : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        
+        if (_currentlyDraggedNode != null)
+        {
+            _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition();
+        }
     }
 
     private void MakeNodeDraggable(Node node)
