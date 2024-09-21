@@ -58,6 +58,7 @@ public partial class DragTestScene : Node2D
 
                 _selectedNode.Reparent(_previousParent);
                 _selectedNode.GlobalPosition = _previousPosition;
+                _selectedNode = null;
             }
         }
     }
@@ -103,6 +104,11 @@ public partial class DragTestScene : Node2D
             {
                 _selectedNode = new DraggableWrapper(node, dragControlOffset);
             }
+        };
+
+        area.MouseExited += () =>
+        {
+            _selectedNode = null;
         };
     }
 
