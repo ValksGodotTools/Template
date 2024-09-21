@@ -10,7 +10,6 @@ public partial class EntityComponent : Node2D
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
     
     private Node2D _entity;
-    private GTween _flashWhite;
     private ShaderMaterial _shaderMaterial;
 
     public override void _Ready()
@@ -24,17 +23,10 @@ public partial class EntityComponent : Node2D
 
     public void TakeDamage()
     {
-        Tween tween = CreateTween();
-
-        string shaderParam = "shader_parameter/blend_intensity";
-
-        tween.TweenProperty(_shaderMaterial, shaderParam, 1.0f, 0.1f)
-            .SetTrans(Tween.TransitionType.Sine)
-            .SetEase(Tween.EaseType.In);
-
-        tween.TweenProperty(_shaderMaterial, shaderParam, 0.0f, 0.3f)
-            .SetTrans(Tween.TransitionType.Sine)
-            .SetEase(Tween.EaseType.Out);
+        new GTween(this)
+            .SetAnimatingShaderMaterial(_shaderMaterial)
+            .AnimateShader("blend_intensity", 1.0f, 0.1f)
+            .AnimateShader("blend_intensity", 0.0f, 0.3f).EaseOut();
     }
 
     private void SetMaterial()
