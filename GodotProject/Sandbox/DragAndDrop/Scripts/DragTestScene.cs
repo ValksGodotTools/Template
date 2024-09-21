@@ -99,7 +99,10 @@ public partial class DragTestScene : Node2D
 
         area.MouseEntered += () =>
         {
-            _selectedNode = new DraggableWrapper(node, dragControlOffset);
+            if (_currentlyDraggedNode == null)
+            {
+                _selectedNode = new DraggableWrapper(node, dragControlOffset);
+            }
         };
     }
 
