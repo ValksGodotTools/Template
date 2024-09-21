@@ -7,17 +7,13 @@ using System.Reflection;
 
 namespace Template.DragAndDrop;
 
-public interface IDraggableNode
-{
-    public Vector2 Position { get; set; }
-}
-
 public partial class DragTestScene : Node2D
 {
-    private Node2D _selectedNode;
-    private Node2D _previousParent;
+    private DraggableWrapper _selectedNode;
+    private IDraggableNode _previousParent;
     private Vector2 _previousPosition;
-    private Node2D _currentlyDraggedNode;
+    private Vector2 _dragControlOffset;
+    private IDraggableNode _currentlyDraggedNode;
 
     public override void _Ready()
     {
@@ -45,19 +41,21 @@ public partial class DragTestScene : Node2D
             {
                 if (_selectedNode != null)
                 {
-                    _previousParent = _selectedNode.GetParent<Node2D>();
+                    _dragControlOffset = _selectedNode.DragControlOffset;
+                    _previousParent = _selectedNode.GetParent<IDraggableNode>();
                     _previousPosition = _selectedNode.GlobalPosition;
 
                     // Reparent to viewport root
-                    _selectedNode.Reparent(GetTree().Root);
+                    _selectedNode.Reparent(GetTree().Root as IDraggableNode);
 
                     _currentlyDraggedNode = _selectedNode;
                 }
             }
 
-            if (btn.IsLeftClickReleased())
+            if (btn.IsLeftClickReleased() && _currentlyDraggedNode != null)
             {
                 _currentlyDraggedNode = null;
+
                 _selectedNode.Reparent(_previousParent);
                 _selectedNode.GlobalPosition = _previousPosition;
             }
@@ -68,7 +66,7 @@ public partial class DragTestScene : Node2D
     {
         if (_currentlyDraggedNode != null)
         {
-            _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition();
+            _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition() - _dragControlOffset;
         }
     }
 
@@ -77,6 +75,17 @@ public partial class DragTestScene : Node2D
         Vector2 size = GetNodeSize(node);
 
         Area2D area = new();
+
+        Vector2 dragControlOffset = Vector2.Zero;
+
+        if (node is Control control)
+        {
+            dragControlOffset = size * 0.5f;
+
+            area.Position += dragControlOffset;
+            control.MouseFilter = Control.MouseFilterEnum.Ignore;
+        }
+
         CollisionShape2D collision = new()
         {
             Shape = new RectangleShape2D
@@ -90,7 +99,7 @@ public partial class DragTestScene : Node2D
 
         area.MouseEntered += () =>
         {
-            _selectedNode = node as Node2D;
+            _selectedNode = new DraggableWrapper(node, dragControlOffset);
         };
     }
 
@@ -132,4 +141,94 @@ public partial class DragTestScene : Node2D
 
         return size;
     }
+}
+
+// Needed to prevent needing the user to implement IDraggableNode on the node they want to drag
+// User should only have to add [Draggable] attribute and everything else should be handled internally.
+public class DraggableWrapper : IDraggableNode
+{
+    public Vector2 DragControlOffset { get; private set; }
+
+    private Node2D _node2D;
+    private Control _control;
+
+    public DraggableWrapper(Node node, Vector2 dragControlOffset)
+    {
+        DragControlOffset = dragControlOffset;
+
+        if (node is Node2D node2D)
+        {
+            _node2D = node2D;
+        }
+        else if (node is Control control)
+        {
+            _control = control;
+        }
+        else
+        {
+            throw new ArgumentException("Node must be either Node2D or Control");
+        }
+    }
+
+    public Vector2 GlobalPosition
+    {
+        get
+        {
+            if (_node2D != null)
+            {
+                return _node2D.GlobalPosition;
+            }
+            else if (_control != null)
+            {
+                return _control.GlobalPosition;
+            }
+            else
+            {
+                throw new InvalidOperationException("Node is not initialized correctly");
+            }
+        }
+        set
+        {
+            if (_node2D != null)
+            {
+                _node2D.GlobalPosition = value;
+            }
+            else if (_control != null)
+            {
+                _control.GlobalPosition = value;
+            }
+            else
+            {
+                throw new InvalidOperationException("Node is not initialized correctly");
+            }
+        }
+    }
+
+    public T GetParent<T>() where T : class
+    {
+        return _node2D?.GetParent() as T ?? _control?.GetParent() as T;
+    }
+
+    public void Reparent(IDraggableNode newParent)
+    {
+        if (newParent is Node parentNode)
+        {
+            if (_node2D != null)
+            {
+                _node2D.Reparent(parentNode);
+            }
+            else
+            {
+                _control?.Reparent(parentNode);
+            }
+        }
+    }
+}
+
+public interface IDraggableNode
+{
+    Vector2 GlobalPosition { get; set; }
+
+    T GetParent<T>() where T : class;
+    void Reparent(IDraggableNode node);
 }
