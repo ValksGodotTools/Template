@@ -15,6 +15,8 @@ public interface IDraggableNode
 public partial class DragTestScene : Node2D
 {
     private Node2D _selectedNode;
+    private Node2D _previousParent;
+    private Vector2 _previousPosition;
     private Node2D _currentlyDraggedNode;
 
     public override void _Ready()
@@ -43,11 +45,21 @@ public partial class DragTestScene : Node2D
             {
                 if (_selectedNode != null)
                 {
+                    _previousParent = _selectedNode.GetParent<Node2D>();
+                    _previousPosition = _selectedNode.GlobalPosition;
+
                     // Reparent to viewport root
                     _selectedNode.Reparent(GetTree().Root);
 
                     _currentlyDraggedNode = _selectedNode;
                 }
+            }
+
+            if (btn.IsLeftClickReleased())
+            {
+                _currentlyDraggedNode = null;
+                _selectedNode.Reparent(_previousParent);
+                _selectedNode.GlobalPosition = _previousPosition;
             }
         }
     }
