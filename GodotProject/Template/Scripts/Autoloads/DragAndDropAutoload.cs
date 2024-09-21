@@ -27,6 +27,29 @@ public partial class DragAndDropAutoload : Node2D
         {
             if (btn.IsLeftClickPressed())
             {
+                if (_selectedNode == null)
+                {
+                    Node node = GetNodeUnderCursor(GetWorld2D(), GetGlobalMousePosition());
+
+                    if (node is Area2D)
+                    {
+                        Node parent = node.GetParent();
+
+                        if (parent.GetType().GetCustomAttribute<DraggableAttribute>() != null)
+                        {
+                            Vector2 dragControlOffset = Vector2.Zero;
+                            Vector2 size = GetNodeSize(parent);
+
+                            if (parent is Control)
+                            {
+                                dragControlOffset = size * 0.5f;
+                            }
+
+                            _selectedNode = new DraggableWrapper(parent, dragControlOffset);
+                        }
+                    }
+                }
+
                 if (_selectedNode != null)
                 {
                     _dragControlOffset = _selectedNode.DragControlOffset;
@@ -144,6 +167,38 @@ public partial class DragAndDropAutoload : Node2D
         }
 
         return size;
+    }
+
+    private static Node GetNodeUnderCursor(World2D world, Vector2 cursorPosition)
+    {
+        // Create a shape query parameters object
+        PhysicsShapeQueryParameters2D queryParams = new();
+        queryParams.Transform = new Transform2D(0, cursorPosition);
+        queryParams.CollideWithAreas = true;
+
+        // Use a small circle shape to simulate a point intersection
+        CircleShape2D circleShape = new();
+        circleShape.Radius = 1.0f;
+        queryParams.Shape = circleShape;
+
+        // Perform the query
+        PhysicsDirectSpaceState2D spaceState =
+            PhysicsServer2D.SpaceGetDirectState(world.GetSpace());
+
+        Godot.Collections.Array<Godot.Collections.Dictionary> results =
+            spaceState.IntersectShape(queryParams, 1);
+
+        if (results.Count > 0)
+        {
+            Godot.Collections.Dictionary result = results[0];
+
+            if (result != null && result.ContainsKey("collider"))
+            {
+                return result["collider"].As<Node>();
+            }
+        }
+
+        return null;
     }
 }
 
