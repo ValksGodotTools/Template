@@ -45,3 +45,7 @@ If you are not using Windows you may need to get a [Custom ENet build](https://g
 - Thank you to everyone in the [Godot Café Discord](https://discord.com/invite/zH7NUgz) for answering all my questions.
 
 For all in-game assets used, see [credits.txt](https://github.com/ValksGodotTools/Template/blob/main/credits.txt). Not all assets will be listed here but there should be a `credit.txt` file next to each asset in the project.
+
+<a href="https://github.com/ValksGodotTools/Template/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=ValksGodotTools/Template" />
+</a>
