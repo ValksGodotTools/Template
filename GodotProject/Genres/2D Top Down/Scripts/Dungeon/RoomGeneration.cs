@@ -49,11 +49,10 @@ public partial class RoomGeneration : Node
             Vector2I randomFloorTile = floorTiles[random.Next(floorTiles.Count)];
             Vector2 randomFloorPosition = tileMap.MapToLocal(randomFloorTile) * tileMap.Scale;
 
-            RigidBody2D frog = Game.LoadPrefab<RigidBody2D>(Prefab.Frog);
+            Frog frog = Frog.Instantiate();
             frog.Position = randomFloorPosition;
 
             AddChild(frog);
         }
     }
 }
-

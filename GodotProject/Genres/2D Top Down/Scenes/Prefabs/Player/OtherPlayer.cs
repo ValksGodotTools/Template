@@ -11,6 +11,12 @@ public partial class OtherPlayer : Node2D
 
     private float _smoothFactor;
 
+    [OnInstantiate]
+    private void Init()
+    {
+
+    }
+
     public override void _Ready()
     {
         _smoothFactor = CalculateSmoothFactor(Net.HeartbeatPosition);

@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://7tfets4irkba"]
 
-[ext_resource type="Script" path="res://Template/Scripts/UI/Options/UIOptions.cs" id="1_xjg3i"]
+[ext_resource type="Script" path="res://Scenes/Prefabs/UI/UIOptions.cs" id="1_xjg3i"]
 [ext_resource type="Texture2D" uid="uid://dp28a3uv7irs7" path="res://Template/Sprites/Concept Art/monkey-mountain.JPG" id="2_65pdd"]
 [ext_resource type="Script" path="res://Template/Scripts/UI/Options/UIOptionsNav.cs" id="2_w30yg"]
 [ext_resource type="Theme" uid="uid://8f4q252ns4xm" path="res://Template/Themes/nav_btns.tres" id="3_mvq8n"]
@@ -102,10 +102,9 @@ text = "LANGUAGE"
 [node name="Language" type="OptionButton" parent="Margin/HBox/Content/General/Language"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "English"
-popup/item_0/id = 0
 popup/item_1/text = "French"
 popup/item_1/id = 1
 popup/item_2/text = "Japanese"
@@ -129,10 +128,9 @@ text = "DIFFICULTY"
 [node name="Difficulty" type="OptionButton" parent="Margin/HBox/Content/Gameplay/Difficulty"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "EASY"
-popup/item_0/id = 0
 popup/item_1/text = "NORMAL"
 popup/item_1/id = 1
 popup/item_2/text = "HARD"
@@ -173,10 +171,9 @@ text = "WINDOW_MODE"
 [node name="WindowMode" type="OptionButton" parent="Margin/HBox/Content/Display/WindowMode"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "WINDOWED"
-popup/item_0/id = 0
 popup/item_1/text = "BORDERLESS"
 popup/item_1/id = 1
 popup/item_2/text = "FULLSCREEN"
@@ -243,10 +240,9 @@ text = "VSYNC_MODE"
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "VSync synchronizes the frame rate of the game with the monitor's refresh rate. Enable this to get rid of screen tearing. Disable this if stuttering is experienced."
-item_count = 3
 selected = 1
+item_count = 3
 popup/item_0/text = "DISABLED"
-popup/item_0/id = 0
 popup/item_1/text = "ENABLED"
 popup/item_1/id = 1
 popup/item_2/text = "ADAPTIVE"
@@ -305,10 +301,9 @@ text = "QUALITY_PRESET"
 [node name="QualityMode" type="OptionButton" parent="Margin/HBox/Content/Graphics/QualityMode"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 3
 selected = 0
+item_count = 3
 popup/item_0/text = "LOW"
-popup/item_0/id = 0
 popup/item_1/text = "MEDIUM"
 popup/item_1/id = 1
 popup/item_2/text = "HIGH"
@@ -325,10 +320,9 @@ text = "ANTIALIASING"
 [node name="Antialiasing" type="OptionButton" parent="Margin/HBox/Content/Graphics/Anti-Aliasing"]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 4
 selected = 0
+item_count = 4
 popup/item_0/text = "DISABLED"
-popup/item_0/id = 0
 popup/item_1/text = "2x"
 popup/item_1/id = 1
 popup/item_2/text = "4x"

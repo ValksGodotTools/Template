@@ -1,15 +1,15 @@
 [gd_scene load_steps=14 format=3 uid="uid://bp0sflr3sgvif"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/Player.cs" id="1_hhq86"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerConfig.cs" id="2_4fu00"]
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_s0wn2"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="3_bq70u"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="4_hrnjx"]
-[ext_resource type="Texture2D" uid="uid://e5nc1kcq5ns" path="res://Genres/2D Top Down/Sprites/light.png" id="4_y4jhi"]
-[ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="5_6gg3h"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/Player/Player.cs" id="1_p86na"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerConfig.cs" id="2_dhp8j"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="3_xmnsw"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="4_8dnua"]
+[ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="5_fp4qj"]
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="6_txatc"]
+[ext_resource type="Texture2D" uid="uid://e5nc1kcq5ns" path="res://Genres/2D Top Down/Sprites/light.png" id="7_6hb2u"]
 
 [sub_resource type="Resource" id="Resource_yn7yi"]
-script = ExtResource("2_4fu00")
+script = ExtResource("2_dhp8j")
 Speed = 50.0
 Friction = 0.2
 DashStrength = 1500.0
@@ -17,7 +17,7 @@ LookLerpSpeed = 5.0
 ExternalForceDecay = 0.2
 
 [sub_resource type="Resource" id="Resource_3u2av"]
-script = ExtResource("4_hrnjx")
+script = ExtResource("4_8dnua")
 Color = Color(1, 1, 1, 1)
 BlendMode = 0
 LightMode = 0
@@ -26,12 +26,12 @@ LightMode = 0
 size = Vector2(60, 60)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_he5ml"]
-shader = ExtResource("5_6gg3h")
+shader = ExtResource("5_fp4qj")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/blend_intensity = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t86ow"]
-atlas = ExtResource("2_s0wn2")
+atlas = ExtResource("6_txatc")
 region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_88cys"]
@@ -47,11 +47,11 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 motion_mode = 1
-script = ExtResource("1_hhq86")
+script = ExtResource("1_p86na")
 _config = SubResource("Resource_yn7yi")
 
 [node name="PlayerComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite")]
-script = ExtResource("3_bq70u")
+script = ExtResource("3_xmnsw")
 _config = SubResource("Resource_3u2av")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 
@@ -68,10 +68,10 @@ color = Color(0.580392, 0.615686, 1, 1)
 shadow_enabled = true
 shadow_filter = 2
 shadow_filter_smooth = 1.0
-texture = ExtResource("4_y4jhi")
+texture = ExtResource("7_6hb2u")
 texture_scale = 1.5
 
 [node name="Cursor" type="Sprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_s0wn2")
+texture = ExtResource("6_txatc")
 offset = Vector2(500, 0)

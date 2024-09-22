@@ -23,7 +23,7 @@ public partial class UIPopupMenu : Control
         _menu = GetNode<PanelContainer>("%Menu");
         _vbox = GetNode<VBoxContainer>("%Navigation");
 
-        Options = Game.LoadPrefab<UIOptions>(Prefab.UIOptions);
+        Options = UIOptions.Instantiate();
         AddChild(Options);
         Options.Hide();
         Hide();
@@ -88,7 +88,7 @@ public partial class UIPopupMenu : Control
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
-        Game.SwitchScene(Scene.UIMainMenu);
+        Game.SwitchScene(Scene.UIUimainmenu);
     }
 
     private async void _on_quit_pressed()

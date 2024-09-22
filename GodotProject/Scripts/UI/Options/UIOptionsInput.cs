@@ -77,7 +77,7 @@ public partial class UIOptionsInput : Control
                 {
                     if (_btnNewInput == null)
                     {
-                        Game.SwitchScene(Scene.UIMainMenu);
+                        Game.SwitchScene(Scene.UIUimainmenu);
                     }
                 }
             }

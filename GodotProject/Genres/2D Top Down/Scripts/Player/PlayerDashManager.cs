@@ -49,7 +49,7 @@ public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
 
     private void AddDashGhost(Node2D node)
     {
-        PlayerDashGhost ghost = Game.LoadPrefab<PlayerDashGhost>(Prefab.PlayerDashGhost);
+        PlayerDashGhost ghost = PlayerDashGhost.Instantiate();
         ghost.Position = node.Position;
         AnimatedSprite2D sprite = (AnimatedSprite2D)dashSprite.Duplicate();
         sprite.Material = null;

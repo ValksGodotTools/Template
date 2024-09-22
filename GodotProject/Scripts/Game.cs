@@ -18,6 +18,7 @@ public partial class Game
         ServiceProvider.Services.Get<SceneManager>().SwitchScene(scene, transType);
     }
 
+    [Obsolete("Please use the [OnInstantiate] attribute instead")]
     public static T LoadPrefab<T>(Prefab prefab) where T : Node
     {
         return (T)GD.Load<PackedScene>(MapPrefabsToPaths.GetPath(prefab)).Instantiate();

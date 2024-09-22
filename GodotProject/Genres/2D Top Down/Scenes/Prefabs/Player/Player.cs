@@ -19,6 +19,12 @@ public partial class Player : CharacterBody2D
     private AnimatedSprite2D _sprite;
     private Sprite2D _cursor;
 
+    [OnInstantiate]
+    private void Init()
+    {
+
+    }
+
     public override void _Ready()
     {
         _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");

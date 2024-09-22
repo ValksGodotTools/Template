@@ -5,6 +5,12 @@ namespace Template.TopDown2D;
 
 public partial class PlayerDashGhost : Node2D
 {
+    [OnInstantiate]
+    private void Init()
+    {
+
+    }
+
     public override void _Ready()
     {
         Name = nameof(PlayerDashGhost);

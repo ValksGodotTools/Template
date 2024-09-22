@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://ca2xb7tvce5xj"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/UI/UINetControlPanel.cs" id="1_pj2ql"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/UINetControlPanel.cs" id="1_gtrss"]
 
 [node name="MultiplayerControlPanel" type="PanelContainer"]
 offset_right = 347.0
 offset_bottom = 121.0
-script = ExtResource("1_pj2ql")
+script = ExtResource("1_gtrss")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 2

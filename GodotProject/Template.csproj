@@ -14,6 +14,7 @@
         <!-- Condition="!Exists('ENet-CSharp.dll')" is required for other platforms -->
         <PackageReference Include="ENet-CSharp" Version="2.4.8" Condition="!Exists('ENet-CSharp.dll')" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="GodotSharp.SourceGenerators" Version="2.4.0" /> <!-- https://github.com/Cat-Lips/GodotSharp.SourceGenerators -->
     </ItemGroup>
 
     <!-- Local Packages -->

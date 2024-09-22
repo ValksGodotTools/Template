@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1augjui20eux"]
 
-[ext_resource type="Script" path="res://Template/Scripts/UI/UIMetricsOverlay.cs" id="1_bhocc"]
+[ext_resource type="Script" path="res://Scenes/Prefabs/UI/UIMetricsOverlay.cs" id="1_bhocc"]
 
 [node name="Debug Overlay" type="MarginContainer"]
 anchors_preset = 1

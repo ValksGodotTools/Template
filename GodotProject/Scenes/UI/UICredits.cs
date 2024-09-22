@@ -103,12 +103,12 @@ public partial class UICredits : Node
         // Go back to the main menu when the credits are finished
         if (pos.Y <= -_vbox.Size.Y)
         {
-            Game.SwitchScene(Scene.UIMainMenu);
+            Game.SwitchScene(Scene.UIUimainmenu);
         }
 
         if (Input.IsActionJustPressed("ui_cancel"))
         {
-            Game.SwitchScene(Scene.UIMainMenu);
+            Game.SwitchScene(Scene.UIUimainmenu);
         }
     }
 

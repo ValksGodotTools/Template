@@ -62,7 +62,7 @@ public partial class Level : Node
     // This is called when the client receives a SPacketPlayerConnectionAcknowleged
     public void AddLocalPlayer()
     {
-        Player = Game.LoadPrefab<Player>(Prefab.PlayerMain);
+        Player = Player.Instantiate();
         Player.Position = PlayerSpawnPosition;
         _entities.AddChild(Player);
 
@@ -72,7 +72,7 @@ public partial class Level : Node
 
     public void AddOtherPlayer(uint id, PlayerData playerData)
     {
-        OtherPlayer otherPlayer = Game.LoadPrefab<OtherPlayer>(Prefab.PlayerOther);
+        OtherPlayer otherPlayer = OtherPlayer.Instantiate();
 
         otherPlayer.LastServerPosition = playerData.Position;
         _entities.AddChild(otherPlayer);

@@ -1,24 +1,24 @@
 [gd_scene load_steps=10 format=3 uid="uid://uiqfgmj1e1x7"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Netcode/OtherPlayer.cs" id="1_4r8fl"]
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="2_0jav4"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="2_ducrg"]
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="3_ttv65"]
-[ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="4_hfdk5"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/Player/OtherPlayer.cs" id="1_cvgms"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="2_ipg8l"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="3_3i678"]
+[ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="4_5jmw7"]
+[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="5_alush"]
 
 [sub_resource type="Resource" id="Resource_sgi3p"]
-script = ExtResource("3_ttv65")
+script = ExtResource("3_3i678")
 Color = Color(1, 1, 1, 1)
 BlendMode = 0
 LightMode = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_urbwu"]
-shader = ExtResource("4_hfdk5")
+shader = ExtResource("4_5jmw7")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/blend_intensity = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t86ow"]
-atlas = ExtResource("2_0jav4")
+atlas = ExtResource("5_alush")
 region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iofnj"]
@@ -33,10 +33,10 @@ animations = [{
 }]
 
 [node name="Other Player" type="Node2D" groups=["Player"]]
-script = ExtResource("1_4r8fl")
+script = ExtResource("1_cvgms")
 
 [node name="PlayerComponent" type="Node2D" parent="." node_paths=PackedStringArray("AnimatedSprite")]
-script = ExtResource("2_ducrg")
+script = ExtResource("2_ipg8l")
 _config = SubResource("Resource_sgi3p")
 AnimatedSprite = NodePath("../AnimatedSprite2D")
 
