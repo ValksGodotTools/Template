@@ -4,6 +4,7 @@ using System;
 namespace Template;
 
 [Service]
+[SceneTree]
 public partial class UIPopupMenu : Control
 {
     public event Action OnOpened;
@@ -20,8 +21,8 @@ public partial class UIPopupMenu : Control
     {
         TryFindWorldEnvironmentNode();
 
-        _menu = GetNode<PanelContainer>("%Menu");
-        _vbox = GetNode<VBoxContainer>("%Navigation");
+        _menu = Menu;
+        _vbox = Navigation;
 
         Options = UIOptions.Instantiate();
         AddChild(Options);

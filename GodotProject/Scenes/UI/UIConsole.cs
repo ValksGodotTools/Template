@@ -9,6 +9,7 @@ using System;
 namespace Template;
 
 [Service(true)]
+[SceneTree]
 public partial class UIConsole : PanelContainer
 {
     public event Action<bool> OnToggleVisibility;
@@ -27,13 +28,13 @@ public partial class UIConsole : PanelContainer
     {
         LoadCommands();
 
-        _feed          = GetNode<TextEdit>("%Output");
-        _input         = GetNode<LineEdit>("%Input");
-        _settingsBtn   = GetNode<Button>  ("%Settings");
-        _settingsPopup = GetNode<PopupPanel>("PopupPanel");
+        _feed          = Output;
+        _input         = CmdsInput;
+        _settingsBtn   = Settings;
+        _settingsPopup = _.PopupPanel;
         
-        Node settingsVBox = GetNode("%PopupVBox");
-        _settingsAutoScroll = GetNode<CheckBox>("%PopupAutoScroll");
+        Node settingsVBox = PopupVBox;
+        _settingsAutoScroll = PopupAutoScroll;
 
         _input.TextSubmitted += OnConsoleInputEntered;
         _settingsBtn.Pressed += OnSettingsBtnPressed;

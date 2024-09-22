@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace Template;
 
+[SceneTree]
 public partial class UIModLoader : Node
 {
     private Label _uiName;
@@ -17,15 +18,15 @@ public partial class UIModLoader : Node
 
     public override void _Ready()
     {
-        Node uiMods = GetNode("%Mods");
+        Node uiMods = Mods;
         
-        _uiName = GetNode<Label>("%Name");
-        _uiModVersion = GetNode<Label>("%ModVersion");
-        _uiGameVersion = GetNode<Label>("%GameVersion");
-        _uiDependencies = GetNode<Label>("%Dependencies");
-        _uiDescription = GetNode<Label>("%Description");
-        _uiAuthors = GetNode<Label>("%Authors");
-        _uiIncompatibilities = GetNode<Label>("%Incompatibilities");
+        _uiName = ModName;
+        _uiModVersion = ModVersion;
+        _uiGameVersion = GameVersion;
+        _uiDependencies = Dependencies;
+        _uiDescription = Description;
+        _uiAuthors = Authors;
+        _uiIncompatibilities = Incompatibilities;
 
         Dictionary<string, ModInfo> mods = ServiceProvider.Services.Get<ModLoader>().Mods;
 

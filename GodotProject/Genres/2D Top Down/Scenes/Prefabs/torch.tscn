@@ -10,7 +10,7 @@ flickerRange = 0.1
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.666667, 0.729412, 1, 1)
-energy = 1.11105
+energy = 1.12488
 shadow_enabled = true
 texture = ExtResource("2_kdhpf")
 

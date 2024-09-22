@@ -99,7 +99,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "LANGUAGE"
 
-[node name="Language" type="OptionButton" parent="Margin/HBox/Content/General/Language"]
+[node name="LanguageButton" type="OptionButton" parent="Margin/HBox/Content/General/Language"]
 unique_name_in_owner = true
 layout_mode = 2
 selected = 0
@@ -386,7 +386,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "RESET_TO_DEFAULTS"
 
-[connection signal="item_selected" from="Margin/HBox/Content/General/Language/Language" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
+[connection signal="item_selected" from="Margin/HBox/Content/General/Language/LanguageButton" to="Margin/HBox/Content/General" method="_on_language_item_selected"]
 [connection signal="item_selected" from="Margin/HBox/Content/Gameplay/Difficulty/Difficulty" to="Margin/HBox/Content/Gameplay" method="_on_difficulty_item_selected"]
 [connection signal="value_changed" from="Margin/HBox/Content/Gameplay/Sensitivity/Sensitivity" to="Margin/HBox/Content/Gameplay" method="_on_sensitivity_value_changed"]
 [connection signal="item_selected" from="Margin/HBox/Content/Display/WindowMode/WindowMode" to="Margin/HBox/Content/Display" method="_on_window_mode_item_selected"]

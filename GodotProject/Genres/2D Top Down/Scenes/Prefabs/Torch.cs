@@ -4,6 +4,7 @@ using GodotUtils;
 namespace Template.TopDown2D;
 
 [Tool]
+[SceneTree]
 public partial class Torch : Node2D
 {
     [Export] private double flickerRange = 0.05;
@@ -29,7 +30,7 @@ public partial class Torch : Node2D
 
     public override void _Ready()
     {
-        _light = GetNode<PointLight2D>("PointLight2D");
+        _light = _.PointLight2D;
     }
 
     public override void _PhysicsProcess(double delta)

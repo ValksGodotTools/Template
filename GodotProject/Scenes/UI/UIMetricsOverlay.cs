@@ -4,6 +4,7 @@ using Monitor = Godot.Performance.Monitor;
 
 namespace Template;
 
+[SceneTree]
 public partial class UIMetricsOverlay : Control
 {
     private Label _labelFPS;
@@ -15,12 +16,12 @@ public partial class UIMetricsOverlay : Control
 
     public override void _Ready()
     {
-        _labelFPS = GetNode<Label>("%FPS");
-        _labelMinRAM = GetNode<Label>("%RAM Min");
-        _labelMaxRAM = GetNode<Label>("%RAM Max");
-        _labelVidRAM = GetNode<Label>("%Vid RAM");
-        _labelNodes = GetNode<Label>("%Nodes");
-        _labelOrphanNodes = GetNode<Label>("%Orphan Nodes");
+        _labelFPS = FPS;
+        _labelMinRAM = RAMMin;
+        _labelMaxRAM = RAMMax;
+        _labelVidRAM = VidRAM;
+        _labelNodes = Nodes;
+        _labelOrphanNodes = OrphanNodes;
 
         if (GOS.IsExportedRelease())
         {

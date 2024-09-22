@@ -3,6 +3,7 @@ using GodotUtils;
 
 namespace Template;
 
+[SceneTree]
 public partial class UICredits : Node
 {
     private const float STARTING_SPEED = 0.75f;
@@ -16,8 +17,8 @@ public partial class UICredits : Node
 
     public override void _Ready()
     {
-        _btnPause = GetNode<Button>("%Pause");
-        _btnSpeed = GetNode<Button>("%Speed");
+        _btnPause = Pause;
+        _btnSpeed = Speed;
 
         _vbox = new VBoxContainer
         {

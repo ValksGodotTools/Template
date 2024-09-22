@@ -2,6 +2,7 @@ using Godot;
 
 namespace Template;
 
+[SceneTree]
 public partial class UIOptions : PanelContainer
 {
     [OnInstantiate]
@@ -14,8 +15,7 @@ public partial class UIOptions : PanelContainer
     {
         if (ServiceProvider.Services.Get<SceneManager>().CurrentScene.Name != "Options")
         {
-            GetNode<TextureRect>("BackgroundArt").Hide();
+            _.BackgroundArt.Hide();
         }
     }
 }
-

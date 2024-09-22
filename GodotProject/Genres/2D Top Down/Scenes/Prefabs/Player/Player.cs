@@ -3,6 +3,7 @@ using Template.Netcode.Client;
 
 namespace Template.TopDown2D;
 
+[SceneTree]
 public partial class Player : CharacterBody2D
 {
     [Export] private PlayerConfig _config;
@@ -27,8 +28,8 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
-        _sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _cursor = GetNode<Sprite2D>("Cursor");
+        _sprite = _.AnimatedSprite2D;
+        _cursor = _.Cursor;
         _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
         _client = ServiceProvider.Services.Get<UINetControlPanel>().Net.Client;
 
