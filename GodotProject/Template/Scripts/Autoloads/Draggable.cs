@@ -111,17 +111,31 @@ public partial class Draggable : Node2D
     {
         if (_currentlyDraggedNode != null)
         {
+            Vector2 targetPosition = GetGlobalMousePosition() - _dragControlOffset;
+            DragConstraints dragConstraints = _nodeDragConstraints[_currentlyDraggedNode.Node];
+
+            // Apply drag constraints
+            if (dragConstraints == DragConstraints.Horizontal)
+            {
+                targetPosition.Y = _currentlyDraggedNode.GlobalPosition.Y;
+            }
+            else if (dragConstraints == DragConstraints.Vertical)
+            {
+                targetPosition.X = _currentlyDraggedNode.GlobalPosition.X;
+            }
+
             // Only use MoveTowards for Node2D's as using on Control's looks and feels weird
             if (_currentlyDraggedNode.Node is Node2D)
             {
                 float distance = _currentlyDraggedNode.GlobalPosition.DistanceTo(GetGlobalMousePosition());
 
                 _currentlyDraggedNode.GlobalPosition = _currentlyDraggedNode.GlobalPosition
-                    .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * LERP_FACTOR);
+                    .MoveToward(targetPosition, distance * LERP_FACTOR);
             }
             else
             {
-                _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition() - _dragControlOffset;
+                // This is a Control node, just set its position directly
+                _currentlyDraggedNode.GlobalPosition = targetPosition;
             }
         }
     }
