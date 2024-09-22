@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Player.cs" id="1_3aas6"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Env.cs" id="1_7hkd7"]
-[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/Prefabs/UI/UIPopupMenu.tscn" id="1_bhqx1"]
+[ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/UI/UIPopupMenu.tscn" id="1_bhqx1"]
 [ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Genres/3D FPS/Materials/material.tres" id="1_wx8rx"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/SubView.cs" id="3_k7q3h"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scripts/LevelUI.cs" id="3_u6p7k"]

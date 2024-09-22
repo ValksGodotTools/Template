@@ -30,7 +30,7 @@ public partial class UIMainMenuNav : Node
     private static void _on_options_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        Game.SwitchScene(Prefab.UIUioptions);
+        Game.SwitchScene(Scene.UIUioptions);
     }
 
     private static void _on_credits_pressed()
