@@ -20,6 +20,8 @@ public partial class Draggable : Node2D
     private Vector2 _dragControlOffset;
     private IDraggableNode _currentlyDraggedNode;
     private HashSet<Node> _draggableNodes = [];
+    private Dictionary<Node, DragType> _nodeDragTypes = new();
+    private bool _releaseClickAfterDrag;
 
     public override void _Ready()
     {
@@ -31,7 +33,9 @@ public partial class Draggable : Node2D
     {
         if (@event is InputEventMouseButton btn)
         {
-            if (btn.IsLeftClickPressed())
+            bool draggingNodeInClickMode = _selectedNode != null && _nodeDragTypes[_selectedNode.Node] == DragType.Click && _releaseClickAfterDrag;
+
+            if (btn.IsLeftClickPressed() && !draggingNodeInClickMode)
             {
                 // Consider the scenario where the cursor does not leave the Area2D area when
                 // letting go of a draggable. The area.MouseEntered event will never get fired
@@ -77,24 +81,22 @@ public partial class Draggable : Node2D
 
             if (btn.IsLeftClickReleased() && _currentlyDraggedNode != null)
             {
-                // Expose event to developers to let them do things with node
-                DragReleased?.Invoke(_selectedNode.Node);
-
-                // Developer has not queue freed the node
-                bool valid = IsInstanceValid(_selectedNode.Node);
-                
-                // Developer has not reparented the node
-                bool sameParent = _selectedNode.GetParent() == GetTree().Root;
-
-                // Since node was not queue freed or reparented, snap it back to its previous parent
-                if (valid && sameParent)
+                if (_nodeDragTypes[_selectedNode.Node] == DragType.Hold)
                 {
-                    _selectedNode.Reparent(_previousParent);
-                    _selectedNode.GlobalPosition = _previousPosition;
+                    HandleReleaseDraggableNode();
                 }
+                else if (_nodeDragTypes[_selectedNode.Node] == DragType.Click)
+                {
+                    if (_releaseClickAfterDrag)
+                    {
+                        _releaseClickAfterDrag = false;
 
-                _currentlyDraggedNode = null;
-                _selectedNode = null;
+                        HandleReleaseDraggableNode();
+                        return;
+                    }
+
+                    _releaseClickAfterDrag = true;
+                }
             }
         }
     }
@@ -134,6 +136,8 @@ public partial class Draggable : Node2D
         {
             return;
         }
+
+        _nodeDragTypes.Add(node, attribute.DragType);
 
         Area2D area = CreateDraggableArea(node);
 
@@ -184,6 +188,28 @@ public partial class Draggable : Node2D
         };
 
         return area;
+    }
+
+    private void HandleReleaseDraggableNode()
+    {
+        // Expose event to developers to let them do things with node
+        DragReleased?.Invoke(_selectedNode.Node);
+
+        // Developer has not queue freed the node
+        bool valid = IsInstanceValid(_selectedNode.Node);
+
+        // Developer has not reparented the node
+        bool sameParent = _selectedNode.GetParent() == GetTree().Root;
+
+        // Since node was not queue freed or reparented, snap it back to its previous parent
+        if (valid && sameParent)
+        {
+            _selectedNode.Reparent(_previousParent);
+            _selectedNode.GlobalPosition = _previousPosition;
+        }
+
+        _currentlyDraggedNode = null;
+        _selectedNode = null;
     }
 
     private static Vector2 GetNodeSize(Node node)
