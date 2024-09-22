@@ -35,10 +35,6 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Template"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
-
 [file_customization]
 
 folder_colors={
