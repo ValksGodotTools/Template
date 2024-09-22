@@ -20,14 +20,13 @@
 - **[In-Game Debugging](https://github.com/ValksGodotTools/Template/wiki/In%E2%80%90Game-Debugging)** - Streamline your development process with visual in-game debugging tools.
 - **[Draggable Nodes](https://github.com/ValksGodotTools/Template/wiki/Draggable-Nodes)** - Easily make any Node2D or Control draggable in-game.
 - **[Simplified Tween Logic](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)** - Super simplified tween logic.
+- **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
 - **[Console Commands](https://github.com/ValksGodotTools/Template/wiki/Console-Commands)** - Enhance debugging with customizable console commands.
 - **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates in your game.
+- **[Switching Scenes](https://github.com/ValksGodotTools/Template/wiki/Switching-Scenes)** - Easily switch scenes.
 - **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
+- **[Cat Lips Source Generators](https://github.com/Cat-Lips/GodotSharp.SourceGenerators)** - Simplify a lot of code with [`[SceneTree]`](https://github.com/Cat-Lips/GodotSharp.SourceGenerators?tab=readme-ov-file#scenetree) and [`[OnInstantiate]`](https://github.com/Cat-Lips/GodotSharp.SourceGenerators?tab=readme-ov-file#oninstantiate)
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
-
-#### Resource Management
-- **[Fetching Resources](https://github.com/ValksGodotTools/Template/wiki/Fetching-Resources)** - Streamlining resource management with source generators and attributes.
-- **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
 
 ### Setup
 1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
