@@ -49,11 +49,8 @@ public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
 
     private void AddDashGhost(Node2D node)
     {
-        PlayerDashGhost ghost = PlayerDashGhost.Instantiate();
-        ghost.Position = node.Position;
-        AnimatedSprite2D sprite = (AnimatedSprite2D)dashSprite.Duplicate();
-        sprite.Material = null;
-        ghost.AddChild(sprite);
-        node.GetTree().CurrentScene.AddChild(ghost);
+        PlayerDashGhost ghost = PlayerDashGhost.Instantiate(node.Position, dashSprite);
+
+        node.AddChildToCurrentScene(ghost);
     }
 }

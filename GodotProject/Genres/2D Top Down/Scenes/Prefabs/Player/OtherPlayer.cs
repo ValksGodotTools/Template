@@ -12,9 +12,11 @@ public partial class OtherPlayer : Node2D
     private float _smoothFactor;
 
     [OnInstantiate]
-    private void Init()
+    private void Init(uint id, PlayerData playerData)
     {
-
+        LastServerPosition = playerData.Position;
+        Position = playerData.Position;
+        SetLabelText($"{playerData.Username} ({id})");
     }
 
     public override void _Ready()

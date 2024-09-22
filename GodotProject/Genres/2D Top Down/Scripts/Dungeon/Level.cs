@@ -62,8 +62,7 @@ public partial class Level : Node
     // This is called when the client receives a SPacketPlayerConnectionAcknowleged
     public void AddLocalPlayer()
     {
-        Player = Player.Instantiate();
-        Player.Position = PlayerSpawnPosition;
+        Player = Player.Instantiate(PlayerSpawnPosition);
         _entities.AddChild(Player);
 
         _playerCamera.StartFollowingPlayer(Player);
@@ -72,13 +71,9 @@ public partial class Level : Node
 
     public void AddOtherPlayer(uint id, PlayerData playerData)
     {
-        OtherPlayer otherPlayer = OtherPlayer.Instantiate();
+        OtherPlayer otherPlayer = OtherPlayer.Instantiate(id, playerData);
 
-        otherPlayer.LastServerPosition = playerData.Position;
         _entities.AddChild(otherPlayer);
-        otherPlayer.Position = playerData.Position;
-        otherPlayer.SetLabelText($"{playerData.Username} ({id})");
-
         OtherPlayers.Add(id, otherPlayer);
     }
 

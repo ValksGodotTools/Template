@@ -20,9 +20,9 @@ public partial class Player : CharacterBody2D
     private Sprite2D _cursor;
 
     [OnInstantiate]
-    private void Init()
+    private void Init(Vector2 position)
     {
-
+        Position = position;
     }
 
     public override void _Ready()

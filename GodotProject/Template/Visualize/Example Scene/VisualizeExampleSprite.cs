@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Template.Example;
 
 [Visualize(nameof(Position), nameof(Offset), nameof(Rotation))]
-public partial class VisualizeExample : Sprite2D
+public partial class VisualizeExampleSprite : Sprite2D
 {
 	[Visualize] private Vector2I _position;
     [Visualize] private float _rotation;
@@ -13,6 +13,12 @@ public partial class VisualizeExample : Sprite2D
     [Visualize] private Vector2 _offset;
 
     private readonly VisualLogger _logger = new();
+
+    [OnInstantiate]
+    private void Init()
+    {
+
+    }
 
     public override void _PhysicsProcess(double delta)
     {

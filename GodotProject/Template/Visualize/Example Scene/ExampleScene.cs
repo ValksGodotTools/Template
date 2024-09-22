@@ -13,8 +13,7 @@ public partial class ExampleScene : Node
 	{
 		_camera = GetNode<Camera2D>("Camera2D");
 
-		PackedScene packedScene = GD.Load<PackedScene>("res://addons/visualize/Example Scene/sprite_2d.tscn");
-		Sprite2D sprite = packedScene.Instantiate<Sprite2D>();
+        VisualizeExampleSprite sprite = VisualizeExampleSprite.Instantiate();
 
         // As you can see the visualize info is created at the moment of node creation
         _ = new GTween(this)
