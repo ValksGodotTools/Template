@@ -155,6 +155,10 @@ public class PacketWriter : IDisposable
                 Write(item.Value);
             }
         }
+        else
+        {
+            throw new NotImplementedException("PacketWriter: " + t + " is not a supported generic type.");
+        }
     }
 
     private void WriteStructOrClass<T>(T v, Type t)
