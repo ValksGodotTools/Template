@@ -4,11 +4,11 @@ using Godot;
 namespace Template.TopDown2D;
 
 [GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
-public partial class StateMachineComponent : Node2D
+public sealed partial class StateMachineComponent : Node2D
 {
     [Export] public EnemyState IdleState { get; private set; }
 
-    protected State _curState;
+    private State _curState;
 
     public override void _Ready()
     {
@@ -21,7 +21,7 @@ public partial class StateMachineComponent : Node2D
         _curState.Update((float)delta);
     }
 
-    public virtual void SwitchState(EnemyState newState, bool callExit = true)
+    public void SwitchState(EnemyState newState, bool callExit = true)
     {
         SwitchState(newState.State, callExit);
     }
