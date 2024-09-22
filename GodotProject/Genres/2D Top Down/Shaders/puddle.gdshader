@@ -16,7 +16,7 @@ uniform float wave_speed : hint_range(0.05, 0.2);
 // Noise strength
 uniform float strength : hint_range(0, 0.1);
 
-void fragment() 
+void fragment()
 {
 	float noise_value = texture(noise, UV + TIME * wave_speed).r;
 	vec4 screen_tex = texture(screen_texture, SCREEN_UV + vec2(noise_value) * strength);
