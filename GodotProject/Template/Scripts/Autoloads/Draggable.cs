@@ -10,8 +10,6 @@ namespace Template;
 // Autoload
 public partial class Draggable : Node2D
 {
-    public static event Action<Node> DragReleased;
-
     private const float LERP_FACTOR = 0.3f;
 
     private Dictionary<Node, DragConstraints> _nodeDragConstraints = [];
@@ -223,8 +221,11 @@ public partial class Draggable : Node2D
     {
         SetPhysicsProcess(false);
 
-        // Expose event to developers to let them do things with node
-        DragReleased?.Invoke(_selectedNode.Node);
+        // Developers will need to implement IDraggable on the draggable node
+        if (_selectedNode.Node is IDraggable draggable)
+        {
+            draggable.OnDragReleased();
+        }
 
         // Developer has not queue freed the node
         bool valid = IsInstanceValid(_selectedNode.Node);
@@ -384,4 +385,9 @@ public interface IDraggableNode
 
     Node GetParent();
     void Reparent(Node node);
+}
+
+public interface IDraggable
+{
+    void OnDragReleased();
 }
