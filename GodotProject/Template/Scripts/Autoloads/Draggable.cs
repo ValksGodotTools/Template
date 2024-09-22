@@ -14,19 +14,24 @@ public partial class Draggable : Node2D
 
     private const float LERP_FACTOR = 0.3f;
 
+    private Dictionary<Node, DragConstraints> _nodeDragConstraints = [];
+    private Dictionary<Node, DragType> _nodeDragTypes = [];
+    private HashSet<Node> _draggableNodes = [];
+
     private DraggableWrapper _selectedNode;
+    private IDraggableNode _currentlyDraggedNode;
     private Node _previousParent;
+
     private Vector2 _previousPosition;
     private Vector2 _dragControlOffset;
-    private IDraggableNode _currentlyDraggedNode;
-    private HashSet<Node> _draggableNodes = [];
-    private Dictionary<Node, DragType> _nodeDragTypes = new();
+
     private bool _releaseClickAfterDrag;
 
     public override void _Ready()
     {
         MakeNodesDraggable();
         GetTree().NodeAdded += TryMakeNodeDraggable;
+        SetPhysicsProcess(false);
     }
 
     public override void _Input(InputEvent @event)
@@ -76,6 +81,7 @@ public partial class Draggable : Node2D
                     _selectedNode.Node.Reparent(GetTree().Root);
 
                     _currentlyDraggedNode = _selectedNode;
+                    SetPhysicsProcess(true);
                 }
             }
 
@@ -105,10 +111,18 @@ public partial class Draggable : Node2D
     {
         if (_currentlyDraggedNode != null)
         {
-            float distance = _currentlyDraggedNode.GlobalPosition.DistanceTo(GetGlobalMousePosition());
+            // Only use MoveTowards for Node2D's as using on Control's looks and feels weird
+            if (_currentlyDraggedNode.Node is Node2D)
+            {
+                float distance = _currentlyDraggedNode.GlobalPosition.DistanceTo(GetGlobalMousePosition());
 
-            _currentlyDraggedNode.GlobalPosition = _currentlyDraggedNode.GlobalPosition
-                .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * LERP_FACTOR);
+                _currentlyDraggedNode.GlobalPosition = _currentlyDraggedNode.GlobalPosition
+                    .MoveToward(GetGlobalMousePosition() - _dragControlOffset, distance * LERP_FACTOR);
+            }
+            else
+            {
+                _currentlyDraggedNode.GlobalPosition = GetGlobalMousePosition() - _dragControlOffset;
+            }
         }
     }
 
@@ -138,6 +152,7 @@ public partial class Draggable : Node2D
         }
 
         _nodeDragTypes.Add(node, attribute.DragType);
+        _nodeDragConstraints.Add(node, attribute.DragConstraints);
 
         Area2D area = CreateDraggableArea(node);
 
@@ -192,6 +207,8 @@ public partial class Draggable : Node2D
 
     private void HandleReleaseDraggableNode()
     {
+        SetPhysicsProcess(false);
+
         // Expose event to developers to let them do things with node
         DragReleased?.Invoke(_selectedNode.Node);
 
