@@ -26,7 +26,7 @@
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
 
 #### Resource Management
-- **[Fetching Resources](https://github.com/ValksGodotTools/Template/wiki/Fetching-Resources)** - Trying to remember where scenes or prefabs are located in your project is now a thing of the past.
+- **[Fetching Resources](https://github.com/ValksGodotTools/Template/wiki/Fetching-Resources)** - Streamlining resource management with source generators and attributes.
 - **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
 
 ### Setup
