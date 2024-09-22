@@ -9,6 +9,7 @@ namespace Template.TopDown2D;
 public partial class GameServer : ENetServer
 {
     public Dictionary<uint, PlayerData> Players { get; set; } = [];
+    public Dictionary<ulong, Vector2> Enemies { get; set; } = [];
 
     public IEnumerable<KeyValuePair<uint, PlayerData>> GetOtherPlayers(uint excludeId)
     {

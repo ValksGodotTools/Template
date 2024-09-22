@@ -333,11 +333,14 @@ shader_parameter/strength = 0.01
 shader_parameter/noise = SubResource("NoiseTexture2D_ptone")
 shader_parameter/mask = ExtResource("6_r6pwu")
 
-[node name="Level" type="Node2D" node_paths=PackedStringArray("_entities", "_playerCamera", "_roomTransitions")]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("_entities", "_playerCamera", "_roomTransitions", "_enemySendPositions")]
 script = ExtResource("1_jdty6")
 _entities = NodePath("Entities")
 _playerCamera = NodePath("Camera2D")
 _roomTransitions = NodePath("RoomTransitions")
+_enemySendPositions = NodePath("NetSendEnemyPositions")
+
+[node name="NetSendEnemyPositions" type="Timer" parent="."]
 
 [node name="RoomTransitions" type="Node2D" parent="." node_paths=PackedStringArray("tileMap", "playerCamera")]
 script = ExtResource("2_i5wgs")

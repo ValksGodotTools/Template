@@ -1,6 +1,7 @@
 using CSharpUtils;
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Template.TopDown2D;
 
@@ -10,6 +11,7 @@ public partial class Level : Node
     [Export] private Node _entities;
     [Export] private PlayerCamera _playerCamera;
     [Export] private RoomTransitions _roomTransitions;
+    [Export] private Timer _enemySendPositions;
 
     public Player Player { get; private set; }
     public Dictionary<uint, OtherPlayer> OtherPlayers { get; } = [];
@@ -20,7 +22,17 @@ public partial class Level : Node
 
     public override void _Ready()
     {
-        ServiceProvider.Services.Get<UINetControlPanel>().Net.OnClientCreated += client =>
+        Net net = ServiceProvider.Services.Get<UINetControlPanel>().Net;
+        
+        _enemySendPositions.Timeout += () =>
+        {
+            net.Client.Send(new CPacketEnemyPositions
+            {
+                Positions = EnemyComponents.ToDictionary(x => x.GetInstanceId(), x => x.GlobalPosition)
+            });
+        };
+
+        net.OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {
@@ -29,6 +41,16 @@ public partial class Level : Node
                     Username = PlayerUsername,
                     Position = PlayerSpawnPosition
                 });
+
+                if (net.Server.IsRunning)
+                {
+                    client.Send(new CPacketLevelInit
+                    {
+                        EnemyInstanceIds = EnemyComponents.Select(x => x.GetInstanceId()).ToList()
+                    });
+
+                    _enemySendPositions.Start();
+                }
             };
 
             client.OnDisconnected += opcode =>
@@ -55,6 +77,11 @@ public partial class Level : Node
 
                 _playerCamera.StopFollowingPlayer();
                 _roomTransitions.Reset();
+
+                if (net.Server.IsRunning)
+                {
+                    _enemySendPositions.Stop();
+                }
             };
         };
     }
