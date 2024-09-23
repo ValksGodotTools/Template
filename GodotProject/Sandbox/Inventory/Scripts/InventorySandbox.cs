@@ -6,18 +6,11 @@ public partial class InventorySandbox : Node
 {
 	public override void _Ready()
 	{
-        UIInventoryContainer inv = new(10, 5);
+        Inventory inventroy = new();
+        inventroy.AddItem(Items.Coin, 5);
+        inventroy.AddItem(Items.SnowyCoin, 3);
 
-        for (int i = 0; i < 5; i++)
-        {
-            inv.SetItem(i, InventoryItems.YellowCoin());
-        }
-
-        for (int i = 5; i < 10; i++)
-        {
-            inv.SetItem(i, InventoryItems.SnowyCoin());
-        }
-
-        AddChild(inv.Build());
+        UIInventoryContainer inventoryContainer = new(inventroy.GetItemCount(), 5);
+        AddChild(inventoryContainer.Build());
 	}
 }
