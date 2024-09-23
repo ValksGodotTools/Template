@@ -3,12 +3,12 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-public class UIInventoryItemContainer : UIContainerBase
+public class InventoryItemContainer : ContainerBase
 {
     private readonly PanelContainer _container;
     private readonly Control _control;
 
-    public UIInventoryItemContainer(float size)
+    public InventoryItemContainer(float size)
     {
         _container = new PanelContainer
         {
@@ -18,7 +18,7 @@ public class UIInventoryItemContainer : UIContainerBase
         _control = AddCenterItemContainer();
     }
 
-    public void SetItemSprite(UIInventoryItemSprite sprite)
+    public void SetItemSprite(InventoryItemSprite sprite)
     {
         _control.QueueFreeChildren();
         _control.AddChild(sprite.Build());

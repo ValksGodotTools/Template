@@ -3,29 +3,29 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-public class UIInventoryContainer : UIContainerBase
+public class InventoryContainer : ContainerBase
 {
     private const int SEPARATION = 5;
     private const int ITEM_CONTAINER_SIZE = 50;
 
     private readonly PanelContainer _container;
-    private UIInventoryItemContainer[] _itemContainers;
+    private InventoryItemContainer[] _itemContainers;
 
-    public UIInventoryContainer(Inventory inventory, int columns = 10)
+    public InventoryContainer(Inventory inventory, int columns = 10)
     {
         _container = new PanelContainer();
         GridContainer grid = AddGridContainer(columns);
 
-        _itemContainers = new UIInventoryItemContainer[inventory.GetItemCount()];
+        _itemContainers = new InventoryItemContainer[inventory.GetItemCount()];
 
         for (int i = 0; i < inventory.GetItemCount(); i++)
         {
-            UIInventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
+            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
             _itemContainers[i] = container;
 
             ItemVisualData itemVisualData = ItemSpriteManager.GetResource(inventory.GetItem(i));
 
-            UIInventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData);
+            InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData);
 
             SetItem(i, sprite);
 
@@ -33,7 +33,7 @@ public class UIInventoryContainer : UIContainerBase
         }
     }
 
-    public void SetItem(int index, UIInventoryItemSprite sprite)
+    public void SetItem(int index, InventoryItemSprite sprite)
     {
         _itemContainers[index].SetItemSprite(sprite);
     }

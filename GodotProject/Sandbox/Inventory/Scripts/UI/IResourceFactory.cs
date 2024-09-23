@@ -4,5 +4,5 @@ namespace Template.Inventory;
 
 public interface IResourceFactory
 {
-    UIInventoryItemSprite CreateSprite(Resource resource);
+    InventoryItemSprite CreateSprite(Resource resource);
 }

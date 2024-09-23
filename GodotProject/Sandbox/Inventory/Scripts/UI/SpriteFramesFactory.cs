@@ -5,11 +5,11 @@ namespace Template.Inventory;
 
 public class SpriteFramesFactory : IResourceFactory
 {
-    public UIInventoryItemSprite CreateSprite(Resource resource)
+    public InventoryItemSprite CreateSprite(Resource resource)
     {
         if (resource is SpriteFrames spriteFrames)
         {
-            return new UIInventoryItemSprite(spriteFrames);
+            return new InventoryItemSprite(spriteFrames);
         }
 
         throw new ArgumentException("Resource is not a SpriteFrames instance.");

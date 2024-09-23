@@ -2,17 +2,17 @@
 
 namespace Template.Inventory;
 
-public class UIInventoryItemSprite : UIContainerBase
+public class InventoryItemSprite : ContainerBase
 {
     private const float DEFAULT_SCALE = 2;
     private readonly DraggableItem _sprite;
 
-    public UIInventoryItemSprite(SpriteFrames spriteFrames) : this()
+    public InventoryItemSprite(SpriteFrames spriteFrames) : this()
     {
         InitializeSprite(spriteFrames);
     }
 
-    public UIInventoryItemSprite(Texture2D texture) : this()
+    public InventoryItemSprite(Texture2D texture) : this()
     {
         SpriteFrames spriteFrames = new();
         spriteFrames.AddFrame("default", texture);
@@ -20,19 +20,19 @@ public class UIInventoryItemSprite : UIContainerBase
         InitializeSprite(spriteFrames);
     }
 
-    private UIInventoryItemSprite() : base()
+    private InventoryItemSprite() : base()
     {
         _sprite = new DraggableItem();
         SetScale(DEFAULT_SCALE);
     }
 
-    public UIInventoryItemSprite SetColor(Color color)
+    public InventoryItemSprite SetColor(Color color)
     {
         _sprite.SelfModulate = color;
         return this;
     }
 
-    public UIInventoryItemSprite SetScale(float scale)
+    public InventoryItemSprite SetScale(float scale)
     {
         _sprite.Scale = Vector2.One * scale;
         return this;

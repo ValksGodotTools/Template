@@ -10,7 +10,7 @@ public partial class InventorySandbox : Node
         inventroy.AddItem(Items.Coin, 5);
         inventroy.AddItem(Items.SnowyCoin, 3);
 
-        UIInventoryContainer inventoryContainer = new(inventroy, 5);
+        InventoryContainer inventoryContainer = new(inventroy, 5);
         AddChild(inventoryContainer.Build());
 	}
 }
