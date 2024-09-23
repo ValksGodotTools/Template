@@ -12,34 +12,32 @@ public class UIInventoryContainer : UIContainerBase
     private readonly PanelContainer _container;
     private UIInventoryItemContainer[] _itemContainers;
 
-    public UIInventoryContainer(int size, int columns = 10)
+    public UIInventoryContainer(Inventory inventory, int columns = 10)
     {
         _container = new PanelContainer();
         GridContainer grid = AddGridContainer(columns);
 
-        _itemContainers = new UIInventoryItemContainer[size];
+        _itemContainers = new UIInventoryItemContainer[inventory.GetItemCount()];
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < inventory.GetItemCount(); i++)
         {
             UIInventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
             _itemContainers[i] = container;
+
+            SetItem(i, inventory.GetItem(i))
+
             grid.AddChild(container.Build());
         }
     }
 
-    public UIInventoryContainer SetItem(int index, UIInventoryItemSprite sprite)
+    public void SetItem(int index, UIInventoryItemSprite sprite)
     {
-        ValidateIndex(index);
         _itemContainers[index].SetItemSprite(sprite);
-        return this;
     }
 
-    private void ValidateIndex(int index)
+    public override PanelContainer Build()
     {
-        if (index < 0 || index >= _itemContainers.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
-        }
+        return _container;
     }
 
     private GridContainer AddGridContainer(int columns)
@@ -57,10 +55,5 @@ public class UIInventoryContainer : UIContainerBase
         margin.SetMarginAll(SEPARATION);
 
         return grid;
-    }
-
-    public override PanelContainer Build()
-    {
-        return _container;
     }
 }
