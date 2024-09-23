@@ -9,8 +9,7 @@ public static class InventoryItems
         SpriteFrames spriteFrames = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
 
         return new UIInventoryItemSprite(spriteFrames)
-            .SetColor(Colors.Yellow)
-            .SetScale(2);
+            .SetColor(Colors.Yellow);
     }
 
     public static UIInventoryItemSprite SnowyCoin()
@@ -18,7 +17,6 @@ public static class InventoryItems
         Texture2D texture = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
 
         return new UIInventoryItemSprite(texture)
-            .SetColor(Colors.LightBlue)
-            .SetScale(2);
+            .SetColor(Colors.LightBlue);
     }
 }
