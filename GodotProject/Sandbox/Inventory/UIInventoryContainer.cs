@@ -1,7 +1,6 @@
 ﻿using Godot;
 using GodotUtils;
 using System;
-using System.Collections.Generic;
 
 namespace Template.Inventory;
 
@@ -30,13 +29,17 @@ public class UIInventoryContainer : UIContainerBase
 
     public UIInventoryContainer SetItem(int index, UIInventoryItemSprite sprite)
     {
+        ValidateIndex(index);
+        _itemContainers[index].SetItemSprite(sprite);
+        return this;
+    }
+
+    private void ValidateIndex(int index)
+    {
         if (index < 0 || index >= _itemContainers.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
         }
-
-        _itemContainers[index].SetItemSprite(sprite);
-        return this;
     }
 
     private GridContainer AddGridContainer(int columns)
