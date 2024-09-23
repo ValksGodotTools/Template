@@ -46,7 +46,7 @@ public partial class Draggable : Node2D
                 // that is when _selectedNode is null.
                 if (_selectedNode == null)
                 {
-                    Node node = GetNodeUnderCursor(GetWorld2D(), GetGlobalMousePosition());
+                    Node node = GetNodeUnderCursor(this);
 
                     if (node is Area2D)
                     {
@@ -250,11 +250,11 @@ public partial class Draggable : Node2D
 
         if (node is Sprite2D sprite)
         {
-            size = sprite.GetScaledSize();
+            size = sprite.GetSize();
         }
         else if (node is AnimatedSprite2D animatedSprite)
         {
-            size = animatedSprite.GetScaledSize();
+            size = animatedSprite.GetSize();
         }
         else if (node is Control control)
         {
@@ -264,11 +264,11 @@ public partial class Draggable : Node2D
         return size;
     }
 
-    private static Node GetNodeUnderCursor(World2D world, Vector2 cursorPosition)
+    public static Node GetNodeUnderCursor(Node2D node)
     {
         // Create a shape query parameters object
         PhysicsShapeQueryParameters2D queryParams = new();
-        queryParams.Transform = new Transform2D(0, cursorPosition);
+        queryParams.Transform = new Transform2D(0, node.GetGlobalMousePosition());
         queryParams.CollideWithAreas = true;
 
         // Use a small circle shape to simulate a point intersection
@@ -278,7 +278,7 @@ public partial class Draggable : Node2D
 
         // Perform the query
         PhysicsDirectSpaceState2D spaceState =
-            PhysicsServer2D.SpaceGetDirectState(world.GetSpace());
+            PhysicsServer2D.SpaceGetDirectState(node.GetWorld2D().GetSpace());
 
         Godot.Collections.Array<Godot.Collections.Dictionary> results =
             spaceState.IntersectShape(queryParams, 1);

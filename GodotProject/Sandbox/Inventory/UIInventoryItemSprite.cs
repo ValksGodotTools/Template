@@ -5,11 +5,11 @@ namespace Template.Inventory;
 
 public class UIInventoryItemSprite : UIContainerBase
 {
-    private readonly AnimatedSprite2D _sprite;
+    private readonly UIInventoryDraggableAnimatedSprite _sprite;
 
     public UIInventoryItemSprite(SpriteFrames spriteFrames)
     {
-        _sprite = new AnimatedSprite2D();
+        _sprite = new UIInventoryDraggableAnimatedSprite();
         _sprite.SpriteFrames = spriteFrames;
         _sprite.Play();
     }
