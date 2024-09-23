@@ -24,7 +24,22 @@ public class UIInventoryContainer : UIContainerBase
             UIInventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
             _itemContainers[i] = container;
 
-            SetItem(i, inventory.GetItem(i))
+            ItemSpriteManager manager = new();
+
+            Resource resource = manager.GetResource(inventory.GetItem(i));
+
+            UIInventoryItemSprite sprite = null;
+
+            if (resource is SpriteFrames spriteFrames)
+            {
+                sprite = new(spriteFrames);
+            }
+            else if (resource is Texture2D texture)
+            {
+                sprite = new(texture);
+            }
+
+            SetItem(i, sprite);
 
             grid.AddChild(container.Build());
         }

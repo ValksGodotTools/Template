@@ -15,8 +15,8 @@ public class ItemSpriteManager
 
     private void LoadItemResources()
     {
-        itemResources["CoinAnimated"] = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
-        itemResources["CoinStatic"] = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
+        itemResources["Coin"] = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
+        itemResources["Snowy Coin"] = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
     }
 
     public Resource GetResource(Item item)
