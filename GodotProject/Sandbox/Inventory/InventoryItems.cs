@@ -6,17 +6,14 @@ public static class InventoryItems
 {
     public static UIInventoryItemSprite YellowCoin()
     {
-        SpriteFrames spriteFrames = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
-
-        return new UIInventoryItemSprite(spriteFrames)
-            .SetColor(Colors.Yellow);
+        return new UIInventoryItemSprite(CoinAnimated).SetColor(Colors.Yellow);
     }
 
     public static UIInventoryItemSprite SnowyCoin()
     {
-        Texture2D texture = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
-
-        return new UIInventoryItemSprite(texture)
-            .SetColor(Colors.LightBlue);
+        return new UIInventoryItemSprite(CoinStatic).SetColor(Colors.LightBlue);
     }
+
+    private readonly static SpriteFrames CoinAnimated = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
+    private readonly static Texture2D CoinStatic = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
 }
