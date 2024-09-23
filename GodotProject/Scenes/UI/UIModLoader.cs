@@ -55,7 +55,7 @@ public partial class UIModLoader : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionJustPressed("ui_cancel"))
+        if (Input.IsActionJustPressed(InputActions.UICancel))
         {
             Game.SwitchScene(Scene.UIUimainmenu);
         }

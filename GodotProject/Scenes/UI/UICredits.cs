@@ -107,7 +107,7 @@ public partial class UICredits : Node
             Game.SwitchScene(Scene.UIUimainmenu);
         }
 
-        if (Input.IsActionJustPressed("ui_cancel"))
+        if (Input.IsActionJustPressed(InputActions.UICancel))
         {
             Game.SwitchScene(Scene.UIUimainmenu);
         }

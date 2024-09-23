@@ -9,7 +9,7 @@ public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
 
     public void HandleDash(Node2D node, Vector2 moveDirection)
     {
-        bool dashJustPressed = Input.IsActionJustPressed("dash") || Input.IsJoyButtonPressed(0, JoyButton.LeftShoulder);
+        bool dashJustPressed = Input.IsActionJustPressed(InputActions.Dash) || Input.IsJoyButtonPressed(0, JoyButton.LeftShoulder);
 
         if (dashJustPressed && _canDash && moveDirection != Vector2.Zero)
         {

@@ -18,8 +18,8 @@ public partial class Player : CharacterBody3D
         float delta = (float)d;
         float h_rot = _camera.Basis.GetEuler().Y;
 
-        float f_input = -Input.GetAxis("move_down", "move_up");
-        float h_input = Input.GetAxis("move_left", "move_right");
+        float f_input = -Input.GetAxis(InputActions.MoveDown, InputActions.MoveUp);
+        float h_input = Input.GetAxis(InputActions.MoveLeft, InputActions.MoveRight);
 
         Vector3 dir = new Vector3(h_input, 0, f_input)
             .Rotated(Vector3.Up, h_rot) // Always face correct direction
@@ -29,7 +29,7 @@ public partial class Player : CharacterBody3D
         {
             gravityVec = Vector3.Zero;
 
-            if (Input.IsActionJustPressed("jump"))
+            if (Input.IsActionJustPressed(InputActions.Jump))
             {
                 gravityVec = Vector3.Up * jumpForce * delta;
             }

@@ -32,7 +32,7 @@ public partial class UIPopupMenu : Control
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionJustPressed("ui_cancel"))
+        if (Input.IsActionJustPressed(InputActions.UICancel))
         {
             if (Game.Console.Visible)
             {
