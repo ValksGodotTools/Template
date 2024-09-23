@@ -1,6 +1,5 @@
 ﻿using Godot;
 using GodotUtils;
-using System;
 
 namespace Template.Inventory;
 
@@ -26,16 +25,7 @@ public class UIInventoryContainer : UIContainerBase
 
             Resource resource = ItemSpriteManager.GetResource(inventory.GetItem(i));
 
-            UIInventoryItemSprite sprite = null;
-
-            if (resource is SpriteFrames spriteFrames)
-            {
-                sprite = new(spriteFrames);
-            }
-            else if (resource is Texture2D texture)
-            {
-                sprite = new(texture);
-            }
+            UIInventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(resource);
 
             SetItem(i, sprite);
 
