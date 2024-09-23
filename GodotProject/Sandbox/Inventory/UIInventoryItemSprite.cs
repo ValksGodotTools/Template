@@ -5,7 +5,7 @@ namespace Template.Inventory;
 public class UIInventoryItemSprite : UIContainerBase
 {
     private const float DEFAULT_SCALE = 2;
-    private readonly UIInventoryDraggableAnimatedSprite _sprite;
+    private readonly DraggableItem _sprite;
 
     public UIInventoryItemSprite(SpriteFrames spriteFrames) : this()
     {
@@ -22,7 +22,7 @@ public class UIInventoryItemSprite : UIContainerBase
 
     private UIInventoryItemSprite() : base()
     {
-        _sprite = new UIInventoryDraggableAnimatedSprite();
+        _sprite = new DraggableItem();
         SetScale(DEFAULT_SCALE);
     }
 
