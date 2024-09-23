@@ -4,6 +4,7 @@ public class Item
 {
     public string Name { get; }
     public int Count { get; set; }
+    public ItemTexture Texture { get; set; }
 
     public Item(string name, int count = 1)
     {
@@ -15,6 +16,7 @@ public class Item
     {
         Name = other.Name;
         Count = other.Count;
+        Texture = other.Texture;
     }
 
     public override string ToString()

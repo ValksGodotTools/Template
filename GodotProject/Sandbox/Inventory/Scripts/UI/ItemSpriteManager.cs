@@ -6,19 +6,19 @@ namespace Template.Inventory;
 
 public class ItemSpriteManager
 {
-    private static Dictionary<string, Resource> itemResources = [];
+    private static Dictionary<ItemTexture, Resource> itemResources = [];
 
     static ItemSpriteManager()
     {
-        itemResources["Coin"] = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
-        itemResources["Snowy Coin"] = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
+        itemResources[ItemTexture.CoinAnimated] = GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres");
+        itemResources[ItemTexture.CoinStatic] = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
     }
 
     public static Resource GetResource(Item item)
     {
-        if (!itemResources.TryGetValue(item.Name, out Resource resource))
+        if (!itemResources.TryGetValue(item.Texture, out Resource resource))
         {
-            throw new Exception($"Resource for item '{item.Name}' not found.");
+            throw new Exception($"Texture for item '{item.Texture}' not found.");
         }
 
         return resource;
