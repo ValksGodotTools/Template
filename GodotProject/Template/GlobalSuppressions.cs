@@ -6,4 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Performance", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "No idea how to do this", Scope = "member", Target = "~M:CSharpUtils.ExtensionsString.IsAddress(System.String)~System.Boolean")]
-[assembly: SuppressMessage("Performance", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "No idea how to do this", Scope = "member", Target = "~M:GodotUtils.GSceneFileUtils.FixBrokenResourcePaths(System.String)")]
+[assembly: SuppressMessage("Performance", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "No idea how to do this", Scope = "member", Target = "~M:GodotUtils.SceneFileUtils.FixBrokenResourcePaths(System.String)")]

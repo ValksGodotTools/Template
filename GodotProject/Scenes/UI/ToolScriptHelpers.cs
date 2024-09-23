@@ -31,7 +31,7 @@ public partial class ToolScriptHelpers : Node
             return;
         }
 
-        GDirectories.DeleteEmptyDirectories("res://");
+        DirectoryUtils.DeleteEmptyDirectories("res://");
         GD.Print("Removed all empty folders from the project");
     }
 
@@ -44,7 +44,7 @@ public partial class ToolScriptHelpers : Node
 
         StringBuilder creditsBuilder = new();
 
-        GDirectories.Traverse("res://", ProcessCreditFile);
+        DirectoryUtils.Traverse("res://", ProcessCreditFile);
 
         string finalCredits = creditsBuilder.ToString();
 
