@@ -1,4 +1,5 @@
 ﻿using Godot;
+using GodotUtils;
 
 namespace Template.Inventory;
 
@@ -17,8 +18,9 @@ public class UIInventoryItemContainer : UIContainerBase
         _control = AddCenterItemContainer();
     }
 
-    public void AddItemSprite(UIInventoryItemSprite sprite)
+    public void SetItemSprite(UIInventoryItemSprite sprite)
     {
+        _control.QueueFreeChildren();
         _control.AddChild(sprite.Build());
     }
 
