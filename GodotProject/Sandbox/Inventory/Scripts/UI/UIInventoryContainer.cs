@@ -24,9 +24,7 @@ public class UIInventoryContainer : UIContainerBase
             UIInventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
             _itemContainers[i] = container;
 
-            ItemSpriteManager manager = new();
-
-            Resource resource = manager.GetResource(inventory.GetItem(i));
+            Resource resource = ItemSpriteManager.GetResource(inventory.GetItem(i));
 
             UIInventoryItemSprite sprite = null;
 
