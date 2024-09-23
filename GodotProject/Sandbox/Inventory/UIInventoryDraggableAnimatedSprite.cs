@@ -8,8 +8,8 @@ public partial class UIInventoryDraggableAnimatedSprite : AnimatedSprite2D, IDra
 {
     public void OnDragReleased()
     {
-        Node node = CursorUtils.GetAreaUnder(this);
+        Area2D area = CursorUtils2D.GetAreaUnder(this);
 
-        GD.Print(node?.GetParent().Name);
+        GD.Print(area?.GetParent().GetType());
     }
 }

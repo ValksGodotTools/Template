@@ -12,4 +12,13 @@ public static class InventoryItems
             .SetColor(Colors.Yellow)
             .SetScale(2);
     }
+
+    public static UIInventoryItemSprite SnowyCoin()
+    {
+        Texture2D texture = GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png");
+
+        return new UIInventoryItemSprite(texture)
+            .SetColor(Colors.LightBlue)
+            .SetScale(2);
+    }
 }

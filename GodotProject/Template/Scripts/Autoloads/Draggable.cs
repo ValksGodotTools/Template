@@ -46,7 +46,7 @@ public partial class Draggable : Node2D
                 // that is when _selectedNode is null.
                 if (_selectedNode == null)
                 {
-                    Node node = CursorUtils.GetAreaUnderCursor(this);
+                    Node node = CursorUtils2D.GetAreaUnderCursor(this);
 
                     if (node is Area2D)
                     {

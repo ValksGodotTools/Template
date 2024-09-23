@@ -1,5 +1,4 @@
 ﻿using Godot;
-using GodotUtils;
 
 namespace Template.Inventory;
 
@@ -7,11 +6,22 @@ public class UIInventoryItemSprite : UIContainerBase
 {
     private readonly UIInventoryDraggableAnimatedSprite _sprite;
 
-    public UIInventoryItemSprite(SpriteFrames spriteFrames)
+    public UIInventoryItemSprite(SpriteFrames spriteFrames) : this()
+    {
+        InitializeSprite(spriteFrames);
+    }
+
+    public UIInventoryItemSprite(Texture2D texture) : this()
+    {
+        SpriteFrames spriteFrames = new();
+        spriteFrames.AddFrame("default", texture);
+
+        InitializeSprite(spriteFrames);
+    }
+
+    private UIInventoryItemSprite() : base()
     {
         _sprite = new UIInventoryDraggableAnimatedSprite();
-        _sprite.SpriteFrames = spriteFrames;
-        _sprite.Play();
     }
 
     public UIInventoryItemSprite SetColor(Color color)
@@ -26,13 +36,14 @@ public class UIInventoryItemSprite : UIContainerBase
         return this;
     }
 
-    public Vector2 GetSize()
-    {
-        return _sprite.GetScaledSize();
-    }
-
     public override Node Build()
     {
         return _sprite;
+    }
+
+    private void InitializeSprite(SpriteFrames spriteFrames)
+    {
+        _sprite.SpriteFrames = spriteFrames;
+        _sprite.Play();
     }
 }
