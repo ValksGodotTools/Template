@@ -12,13 +12,16 @@ public class ResourceFactoryRegistry
         [typeof(CompressedTexture2D)] = new Texture2DFactory()
     };
 
-    public static UIInventoryItemSprite CreateSprite(Resource resource)
+    public static UIInventoryItemSprite CreateSprite(ItemVisualData itemVisualData)
     {
-        Type resourceType = resource.GetType();
+        Type resourceType = itemVisualData.Resource.GetType();
 
         if (_factories.TryGetValue(resourceType, out IResourceFactory factory))
         {
-            return factory.CreateSprite(resource);
+            UIInventoryItemSprite sprite = factory.CreateSprite(itemVisualData.Resource);
+            sprite.SetColor(itemVisualData.Color);
+
+            return sprite;
         }
 
         throw new ArgumentException($"No factory found for resource type {resourceType}.");
