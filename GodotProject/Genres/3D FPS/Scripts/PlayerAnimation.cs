@@ -48,7 +48,7 @@ public partial class Player : CharacterBody3D
             {
                 case "Rest to ADS":
                 case "ADS":
-                    if (!Input.IsActionPressed("ads"))
+                    if (!Input.IsActionPressed(InputActions.Ads))
                     {
                         animTree.SetCondition("rest", true);
                     }
@@ -96,22 +96,22 @@ public partial class Player : CharacterBody3D
         fpsRig.Position = _camera.Position;
         fpsRig.Quaternion = camTarget;
 
-        if (Input.IsActionJustPressed("reload"))
+        if (Input.IsActionJustPressed(InputActions.Reload))
         {
             animTree.SetCondition("reload", true);
         }
 
-        if (Input.IsActionJustPressed("ads"))
+        if (Input.IsActionJustPressed(InputActions.Ads))
         {
             animTree.SetCondition("ads", true);
         }
 
-        if (Input.IsActionJustReleased("ads"))
+        if (Input.IsActionJustReleased(InputActions.Ads))
         {
             animTree.SetCondition("rest", true);
         }
 
-        if (Input.IsActionJustPressed("inspect"))
+        if (Input.IsActionJustPressed(InputActions.Inspect))
         {
             animTree.SetCondition("inspect", true);
         }

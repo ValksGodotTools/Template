@@ -23,7 +23,7 @@ public partial class UIOptionsInput : Control
     {
         if (_btnNewInput != null)
         {
-            if (Input.IsActionJustPressed("remove_hotkey"))
+            if (Input.IsActionJustPressed(InputActions.RemoveHotkey))
             {
                 StringName action = _btnNewInput.Action;
 
@@ -38,7 +38,7 @@ public partial class UIOptionsInput : Control
                 _btnNewInput = null;
             }
 
-            if (Input.IsActionJustPressed("ui_cancel"))
+            if (Input.IsActionJustPressed(InputActions.UICancel))
             {
                 _btnNewInput.Btn.Text = _btnNewInput.OriginalText;
                 _btnNewInput.Btn.Disabled = false;
@@ -71,7 +71,7 @@ public partial class UIOptionsInput : Control
         }
         else
         {
-            if (Input.IsActionJustPressed("ui_cancel"))
+            if (Input.IsActionJustPressed(InputActions.UICancel))
             {
                 if (ServiceProvider.Services.Get<SceneManager>().CurrentScene.Name == "Options")
                 {

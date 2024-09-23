@@ -16,12 +16,12 @@ public partial class Player
 
         state.Transitions = () =>
         {
-            if (Input.IsActionJustPressed("jump") && IsOnFloor())
+            if (Input.IsActionJustPressed(InputActions.Jump) && IsOnFloor())
             {
                 SwitchState(Jump());
             }
 
-            else if (Input.IsActionJustPressed("move_down") && GetFloorAngle() > 0)
+            else if (Input.IsActionJustPressed(InputActions.MoveDown) && GetFloorAngle() > 0)
             {
 
             }

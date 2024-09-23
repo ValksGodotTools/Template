@@ -20,7 +20,7 @@ public partial class Player
 
         state.Update = delta =>
         {
-            if (Input.IsActionPressed("jump") && _jumpVars.HoldingKey)
+            if (Input.IsActionPressed(InputActions.Jump) && _jumpVars.HoldingKey)
             {
                 _jumpVars.LossBuildUp += _jumpVars.Loss;
                 Velocity -= new Vector2(
@@ -28,7 +28,7 @@ public partial class Player
                     y: Mathf.Max(0, _jumpVars.Force - _jumpVars.LossBuildUp));
             }
 
-            if (Input.IsActionJustReleased("jump"))
+            if (Input.IsActionJustReleased(InputActions.Jump))
             {
                 _jumpVars.HoldingKey = false;
             }

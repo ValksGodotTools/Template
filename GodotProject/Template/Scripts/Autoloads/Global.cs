@@ -25,7 +25,7 @@ public partial class Global : Node
 
 	public override void _PhysicsProcess(double delta)
 	{
-        if (Input.IsActionJustPressed("fullscreen"))
+        if (Input.IsActionJustPressed(InputActions.Fullscreen))
         {
             optionsManager.ToggleFullscreen();
         }

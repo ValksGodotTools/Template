@@ -25,12 +25,12 @@ public partial class Player : CharacterBody3D
 
     private void OnPhysicsProcessUI()
     {
-        if (Input.IsActionJustPressed("next_held_item"))
+        if (Input.IsActionJustPressed(InputActions.NextHeldItem))
         {
             animTree.SetCondition("holster", true);
         }
 
-        if (Input.IsActionJustPressed("previous_held_item"))
+        if (Input.IsActionJustPressed(InputActions.PreviousHeldItem))
         {
             //animTree.SetCondition("holster", true);
         }

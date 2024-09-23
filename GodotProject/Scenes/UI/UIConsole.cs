@@ -46,7 +46,7 @@ public partial class UIConsole : PanelContainer
 
     public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionJustPressed("toggle_console"))
+        if (Input.IsActionJustPressed(InputActions.ToggleConsole))
         {
             ToggleVisibility();
             return;
@@ -242,7 +242,7 @@ public partial class UIConsole : PanelContainer
             return;
         }
 
-        if (Input.IsActionJustPressed("ui_up"))
+        if (Input.IsActionJustPressed(InputActions.UIUp))
         {
             string historyText = _history.MoveUpOne();
 
@@ -252,7 +252,7 @@ public partial class UIConsole : PanelContainer
             SetCaretColumn(historyText.Length);
         }
 
-        if (Input.IsActionJustPressed("ui_down"))
+        if (Input.IsActionJustPressed(InputActions.UIDown))
         {
             string historyText = _history.MoveDownOne();
 

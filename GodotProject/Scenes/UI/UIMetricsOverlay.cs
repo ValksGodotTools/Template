@@ -40,7 +40,7 @@ public partial class UIMetricsOverlay : Control
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("debug_overlay"))
+        if (Input.IsActionJustPressed(InputActions.DebugOverlay))
         {
             Visible = !Visible;
             SetPhysicsProcess(Visible);
