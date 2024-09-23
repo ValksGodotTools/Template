@@ -1,4 +1,5 @@
 ﻿using Godot;
+using GodotUtils;
 
 namespace Template.Inventory;
 
@@ -7,6 +8,8 @@ public partial class UIInventoryDraggableAnimatedSprite : AnimatedSprite2D, IDra
 {
     public void OnDragReleased()
     {
-        
+        Node node = CursorUtils.GetAreaUnder(this);
+
+        GD.Print(node?.GetParent().Name);
     }
 }
