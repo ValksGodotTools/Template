@@ -30,11 +30,11 @@ public class InventoryContainer
 
     private void AddItems(Inventory inventory, GridContainer grid)
     {
-        const int ITEM_CONTAINER_SIZE = 50;
+        const int ITEM_CONTAINER_PIXEL_SIZE = 50;
 
         for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
-            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE, grid);
+            InventoryItemContainer container = new(ITEM_CONTAINER_PIXEL_SIZE, grid);
             _itemContainers[i] = container;
 
             Item item = inventory.GetItem(i);
