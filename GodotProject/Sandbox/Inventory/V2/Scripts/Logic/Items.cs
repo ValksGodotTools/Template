@@ -2,20 +2,13 @@
 
 public static class Items
 {
-    public static readonly Item Coin = CreateCoin();
-    public static readonly Item SnowyCoin = CreateSnowyCoin();
-
-    private static Item CreateCoin()
+    public static readonly Item Coin = new(nameof(Coin))
     {
-        Item item = new("Coin");
-        item.ResourcePath = "res://Sandbox/Inventory/CoinSpriteFrames.tres";
-        return item;
-    }
+        ResourcePath = "res://Sandbox/Inventory/CoinSpriteFrames.tres"
+    };
 
-    private static Item CreateSnowyCoin()
+    public static readonly Item SnowyCoin = new(nameof(SnowyCoin))
     {
-        Item item = new("Snowy Coin");
-        item.ResourcePath = "res://Sandbox/Inventory/CoinStatic.png";
-        return item;
-    }
+        ResourcePath = "res://Sandbox/Inventory/CoinStatic.png"
+    };
 }
