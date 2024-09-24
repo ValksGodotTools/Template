@@ -74,6 +74,9 @@ public class InventoryItemContainer
 
     private void CreateItemSprite(Item item)
     {
+        if (item == null)
+            return;
+
         ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
         InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, this);
         UIItem = sprite.UIItem;
@@ -82,6 +85,9 @@ public class InventoryItemContainer
 
     private void UpdateUIItem(Item item)
     {
+        if (item == null)
+            return;
+
         UIItem.SetItemCount(item.Count);
         UIItem.SetInventoryItemContainer(this);
     }
@@ -129,5 +135,28 @@ public class InventoryItemContainer
         center.AddChild(control);
 
         return control;
+    }
+
+    public void CombineItems(InventoryItemContainer other)
+    {
+        if (other == null)
+            return;
+
+        Inventory thisInventory = InventoryContainer.Inventory;
+        Inventory otherInventory = other.InventoryContainer.Inventory;
+
+        Item thisItem = thisInventory.GetItem(Index);
+        Item otherItem = otherInventory.GetItem(other.Index);
+
+        if (otherItem != null && thisItem != null && otherItem.Equals(thisItem))
+        {
+            // Combine counts if items are of the same type
+            otherItem.Count += thisItem.Count;
+            otherInventory.SetItem(other.Index, otherItem); // Update the inventory
+            other.SetItem(otherItem); // Update the UI
+            thisInventory.SetItem(Index, null); // Clear the current item in the inventory
+            Item = null; // Clear the current item
+            ClearItemParent(); // Update the UI to reflect the absence of an item
+        }
     }
 }

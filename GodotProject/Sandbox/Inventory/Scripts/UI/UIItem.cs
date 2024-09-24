@@ -44,12 +44,7 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
             if (otherItem != null && thisItem != null && otherItem.Equals(thisItem))
             {
                 // Combine counts if items are of the same type
-                otherItem.Count += thisItem.Count;
-                otherInventory.SetItem(otherContainer.Index, otherItem); // Update the inventory
-                otherContainer.SetItem(otherItem); // Update the UI
-                thisInventory.SetItem(_inventoryItemContainer.Index, null); // Clear the current item in the inventory
-                _inventoryItemContainer.Item = null; // Clear the current item
-                _inventoryItemContainer.ClearItemParent(); // Update the UI to reflect the absence of an item
+                _inventoryItemContainer.CombineItems(otherContainer);
             }
             else
             {
