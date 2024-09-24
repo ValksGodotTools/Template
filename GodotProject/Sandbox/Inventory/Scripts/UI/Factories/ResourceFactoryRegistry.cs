@@ -12,13 +12,13 @@ public class ResourceFactoryRegistry
         [typeof(CompressedTexture2D)] = new Texture2DFactory()
     };
 
-    public static InventoryItemSprite CreateSprite(ItemVisualData itemVisualData)
+    public static InventoryItemSprite CreateSprite(ItemVisualData itemVisualData, InventoryItemContainer itemContainer)
     {
         Type resourceType = itemVisualData.Resource.GetType();
 
         if (_factories.TryGetValue(resourceType, out IResourceFactory factory))
         {
-            InventoryItemSprite sprite = factory.CreateSprite(itemVisualData.Resource);
+            InventoryItemSprite sprite = factory.CreateSprite(itemVisualData.Resource, itemContainer);
             sprite.SetColor(itemVisualData.Color);
 
             return sprite;

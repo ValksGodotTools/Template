@@ -4,14 +4,14 @@ namespace Template.Inventory;
 
 public class InventoryItemSprite
 {
-    private readonly DraggableItem _item;
+    public DraggableItem DraggableItem { get; private set; }
 
-    public InventoryItemSprite(SpriteFrames spriteFrames) : this()
+    public InventoryItemSprite(SpriteFrames spriteFrames, InventoryItemContainer itemContainer) : this(itemContainer)
     {
         InitializeSprite(spriteFrames);
     }
 
-    public InventoryItemSprite(Texture2D texture) : this()
+    public InventoryItemSprite(Texture2D texture, InventoryItemContainer itemContainer) : this(itemContainer)
     {
         SpriteFrames spriteFrames = new();
         spriteFrames.AddFrame("default", texture);
@@ -19,9 +19,10 @@ public class InventoryItemSprite
         InitializeSprite(spriteFrames);
     }
 
-    private InventoryItemSprite()
+    private InventoryItemSprite(InventoryItemContainer itemContainer)
     {
-        _item = new DraggableItem();
+        DraggableItem = new DraggableItem();
+        DraggableItem.InventoryItemContainer = itemContainer;
 
         const float DEFAULT_SCALE = 2;
 
@@ -30,27 +31,27 @@ public class InventoryItemSprite
 
     public void SetCount(int count)
     {
-        _item.SetItemCount(count);
+        DraggableItem.SetItemCount(count);
     }
 
     public void SetColor(Color color)
     {
-        _item.SelfModulate = color;
+        DraggableItem.SelfModulate = color;
     }
 
     public void SetScale(float scale)
     {
-        _item.Scale = Vector2.One * scale;
+        DraggableItem.Scale = Vector2.One * scale;
     }
 
     public DraggableItem Build()
     {
-        return _item;
+        return DraggableItem;
     }
 
     private void InitializeSprite(SpriteFrames spriteFrames)
     {
-        _item.SpriteFrames = spriteFrames;
-        _item.Play();
+        DraggableItem.SpriteFrames = spriteFrames;
+        DraggableItem.Play();
     }
 }

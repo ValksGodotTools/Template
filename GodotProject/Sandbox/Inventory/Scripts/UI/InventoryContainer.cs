@@ -5,6 +5,9 @@ namespace Template.Inventory;
 
 public class InventoryContainer
 {
+    public bool MouseIsOnSlot { get; private set; }
+    public ItemContainerMouseEventArgs ActiveSlot { get; private set; }
+
     private InventoryItemContainer[] _itemContainers;
 
     public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
@@ -21,7 +24,7 @@ public class InventoryContainer
     public void SetItem(int index, Item item)
     {
         ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
-        InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData);
+        InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, _itemContainers[index]);
 
         _itemContainers[index].SetItemSprite(sprite);
 
@@ -34,13 +37,26 @@ public class InventoryContainer
 
         for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
-            InventoryItemContainer container = new(ITEM_CONTAINER_PIXEL_SIZE, grid);
+            InventoryItemContainer container = new(i, ITEM_CONTAINER_PIXEL_SIZE, grid, this);
             _itemContainers[i] = container;
+
+            container.MouseEntered += args =>
+            {
+                MouseIsOnSlot = true;
+                ActiveSlot = args;
+            };
+
+            container.MouseExited += args =>
+            {
+                MouseIsOnSlot = false;
+                ActiveSlot = args;
+            };
 
             Item item = inventory.GetItem(i);
 
             if (item != null)
             {
+                container.Item = item;
                 SetItem(i, item);
             }
         }

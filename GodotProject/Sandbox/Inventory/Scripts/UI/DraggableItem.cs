@@ -7,6 +7,7 @@ namespace Template.Inventory;
 public partial class DraggableItem : AnimatedSprite2D, IDraggable
 {
     public int Count { get; set; }
+    public InventoryItemContainer InventoryItemContainer { get; set; }
 
     private Label _itemCountLabel;
 
@@ -24,19 +25,24 @@ public partial class DraggableItem : AnimatedSprite2D, IDraggable
 
     public void OnDragReleased()
     {
-        Area2D area = CursorUtils2D.GetAreaUnder(this);
+        InventoryItemContainer itemContainer = InventoryItemContainer;
+        InventoryContainer inventoryContainer = itemContainer.InventoryContainer;
 
-        DraggableItem otherItem = area?.GetParent<DraggableItem>();
-
-        if (otherItem != null)
+        if (inventoryContainer.MouseIsOnSlot)
         {
-            /*DraggableItem originalItem = this;
+            ItemContainerMouseEventArgs otherSlot = inventoryContainer.ActiveSlot;
+            InventoryItemContainer otherItemContainer = otherSlot.InventoryItemContainer;
+            DraggableItem otherItem = otherItemContainer.DraggableItem;
 
-            SetItemCount(otherItem.Count);
-            SpriteFrames = otherItem.SpriteFrames;
+            if (otherItem == null)
+            {
+                ItemVisualData itemVisualData = ItemSpriteManager.GetResource(itemContainer.Item);
+                InventoryItemSprite invItemSprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, otherItemContainer);
 
-            otherItem.SetItemCount(originalItem.Count);
-            otherItem.SpriteFrames = originalItem.SpriteFrames;*/
+                otherItemContainer.SetItemSprite(invItemSprite);
+                otherItemContainer.SetItemCount(Count);
+                QueueFree();
+            }
         }
     }
 
