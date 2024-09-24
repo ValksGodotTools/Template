@@ -35,8 +35,11 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
             ItemContainerMouseEventArgs otherSlot = _inventoryItemContainer.InventoryContainer.ActiveSlot;
             InventoryItemContainer otherContainer = otherSlot.InventoryItemContainer;
 
+            int thisIndex = _inventoryItemContainer.Index;
+            int otherIndex = otherContainer.Index;
+
             // Check if the item is being dragged onto the same slot
-            if (_inventoryItemContainer.Index == otherContainer.Index)
+            if (thisIndex == otherIndex)
             {
                 // Do nothing if the item is dragged onto the same slot
                 return;
@@ -45,8 +48,8 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
             Inventory thisInventory = _inventoryItemContainer.InventoryContainer.Inventory;
             Inventory otherInventory = otherContainer.InventoryContainer.Inventory;
 
-            Item thisItem = thisInventory.GetItem(_inventoryItemContainer.Index);
-            Item otherItem = otherInventory.GetItem(otherContainer.Index);
+            Item thisItem = thisInventory.GetItem(thisIndex);
+            Item otherItem = otherInventory.GetItem(otherIndex);
 
             if (otherItem != null && thisItem != null && otherItem.Equals(thisItem))
             {
