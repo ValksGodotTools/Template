@@ -25,18 +25,26 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
 
     public void OnDragReleased()
     {
-        InventoryItemContainer itemContainer = InventoryItemContainer;
-        InventoryContainer inventoryContainer = itemContainer.InventoryContainer;
+        InventoryItemContainer thisInvItemContainer = InventoryItemContainer;
+        InventoryContainer thisInvContainer = thisInvItemContainer.InventoryContainer;
+        Inventory thisInv = thisInvContainer.Inventory;
 
-        if (inventoryContainer.MouseIsOnSlot)
+        if (thisInvContainer.MouseIsOnSlot)
         {
-            ItemContainerMouseEventArgs otherSlot = inventoryContainer.ActiveSlot;
-            InventoryItemContainer otherItemContainer = otherSlot.InventoryItemContainer;
-            UIItem otherItem = otherItemContainer.UIItem;
+            ItemContainerMouseEventArgs otherSlot = thisInvContainer.ActiveSlot;
 
+            InventoryItemContainer otherInvItemContainer = otherSlot.InventoryItemContainer;
+            InventoryContainer otherInvContainer = otherInvItemContainer.InventoryContainer;
+            Inventory otherInv = otherInvContainer.Inventory;
+
+            UIItem otherItem = otherInvItemContainer.UIItem;
+
+            // Dragged an item onto an empty inventory slot
             if (otherItem == null)
             {
-                otherItemContainer.SetItem(itemContainer.Item);
+                otherInvItemContainer.SetItem(thisInv.GetItem(thisInvItemContainer.Index));
+                thisInv.SwapItems(thisInvItemContainer.Index, otherInvItemContainer.Index);
+
                 QueueFree();
             }
         }

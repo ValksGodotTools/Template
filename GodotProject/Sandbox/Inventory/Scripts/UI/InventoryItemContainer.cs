@@ -19,11 +19,13 @@ public class InventoryItemContainer
     public UIItem UIItem { get; private set; }
     public Control ItemParent { get; private set; }
     public InventoryContainer InventoryContainer { get; private set; }
+    public int Index { get; private set; }
     public Item Item { get; set; }
 
     public InventoryItemContainer(int index, float size, Node parent, InventoryContainer inventoryContainer)
     {
         InventoryContainer = inventoryContainer;
+        Index = index;
 
         PanelContainer container = new()
         {

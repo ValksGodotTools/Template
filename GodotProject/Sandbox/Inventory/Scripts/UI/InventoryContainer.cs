@@ -7,11 +7,14 @@ public class InventoryContainer
 {
     public bool MouseIsOnSlot { get; private set; }
     public ItemContainerMouseEventArgs ActiveSlot { get; private set; }
+    public Inventory Inventory { get; private set; }
 
     private InventoryItemContainer[] _itemContainers;
 
     public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
     {
+        Inventory = inventory;
+
         _itemContainers = new InventoryItemContainer[inventory.GetInventorySize()];
 
         PanelContainer container = new();
