@@ -30,7 +30,7 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
 
     public void OnDragStarted(MouseButtonType mouseButtonType)
     {
-        GD.Print(mouseButtonType);
+        
     }
 
     public void OnDragReleased()
