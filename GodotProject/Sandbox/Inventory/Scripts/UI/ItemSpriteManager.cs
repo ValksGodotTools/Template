@@ -10,14 +10,14 @@ public class ItemSpriteManager
 
     static ItemSpriteManager()
     {
-        itemResources[ItemTexture.CoinAnimated] = new ItemVisualData(
+        itemResources[ItemTexture.Coin] = new ItemVisualData(
             GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres"),
             Colors.Yellow
         );
 
-        itemResources[ItemTexture.CoinStatic] = new ItemVisualData(
+        itemResources[ItemTexture.CoinSnowy] = new ItemVisualData(
             GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png"),
-            Colors.Yellow
+            Colors.LightSkyBlue
         );
     }
 

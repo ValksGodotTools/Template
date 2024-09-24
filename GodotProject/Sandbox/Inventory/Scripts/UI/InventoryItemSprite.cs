@@ -2,10 +2,10 @@
 
 namespace Template.Inventory;
 
-public class InventoryItemSprite : ContainerBase
+public class InventoryItemSprite
 {
     private const float DEFAULT_SCALE = 2;
-    private readonly DraggableItem _sprite;
+    private readonly DraggableItem _item;
 
     public InventoryItemSprite(SpriteFrames spriteFrames) : this()
     {
@@ -20,32 +20,35 @@ public class InventoryItemSprite : ContainerBase
         InitializeSprite(spriteFrames);
     }
 
-    private InventoryItemSprite() : base()
+    private InventoryItemSprite()
     {
-        _sprite = new DraggableItem();
+        _item = new DraggableItem();
         SetScale(DEFAULT_SCALE);
     }
 
-    public InventoryItemSprite SetColor(Color color)
+    public void SetCount(int count)
     {
-        _sprite.SelfModulate = color;
-        return this;
+        _item.SetItemCount(count);
     }
 
-    public InventoryItemSprite SetScale(float scale)
+    public void SetColor(Color color)
     {
-        _sprite.Scale = Vector2.One * scale;
-        return this;
+        _item.SelfModulate = color;
     }
 
-    public override Node Build()
+    public void SetScale(float scale)
     {
-        return _sprite;
+        _item.Scale = Vector2.One * scale;
+    }
+
+    public DraggableItem Build()
+    {
+        return _item;
     }
 
     private void InitializeSprite(SpriteFrames spriteFrames)
     {
-        _sprite.SpriteFrames = spriteFrames;
-        _sprite.Play();
+        _item.SpriteFrames = spriteFrames;
+        _item.Play();
     }
 }

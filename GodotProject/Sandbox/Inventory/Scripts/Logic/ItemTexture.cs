@@ -2,6 +2,6 @@
 
 public enum ItemTexture
 {
-    CoinAnimated,
-    CoinStatic
+    Coin,
+    CoinSnowy
 }

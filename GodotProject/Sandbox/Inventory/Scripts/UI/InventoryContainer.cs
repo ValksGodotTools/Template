@@ -3,44 +3,48 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-public class InventoryContainer : ContainerBase
+public class InventoryContainer
 {
     private const int SEPARATION = 5;
     private const int ITEM_CONTAINER_SIZE = 50;
 
     private readonly PanelContainer _container;
+    private readonly GridContainer _grid;
     private InventoryItemContainer[] _itemContainers;
 
-    public InventoryContainer(Inventory inventory, int columns = 10)
+    public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
     {
         _container = new PanelContainer();
-        GridContainer grid = AddGridContainer(columns);
+        _grid = AddGridContainer(columns);
 
         _itemContainers = new InventoryItemContainer[inventory.GetItemCount()];
 
+        parent.AddChild(_container);
+
+        AddItems(inventory);
+    }
+
+    public void SetItem(int index, Item item)
+    {
+        ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
+        InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData);
+
+        _itemContainers[index].SetItemSprite(sprite);
+
+        sprite.SetCount(item.Count);
+    }
+
+    private void AddItems(Inventory inventory)
+    {
         for (int i = 0; i < inventory.GetItemCount(); i++)
         {
-            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE);
+            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE, _grid);
             _itemContainers[i] = container;
 
-            ItemVisualData itemVisualData = ItemSpriteManager.GetResource(inventory.GetItem(i));
+            Item item = inventory.GetItem(i);
 
-            InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData);
-
-            SetItem(i, sprite);
-
-            grid.AddChild(container.Build());
+            SetItem(i, item);
         }
-    }
-
-    public void SetItem(int index, InventoryItemSprite sprite)
-    {
-        _itemContainers[index].SetItemSprite(sprite);
-    }
-
-    public override PanelContainer Build()
-    {
-        return _container;
     }
 
     private GridContainer AddGridContainer(int columns)

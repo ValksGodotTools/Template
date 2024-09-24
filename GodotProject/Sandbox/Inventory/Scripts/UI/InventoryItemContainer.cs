@@ -3,12 +3,12 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-public class InventoryItemContainer : ContainerBase
+public class InventoryItemContainer
 {
     private readonly PanelContainer _container;
     private readonly Control _control;
 
-    public InventoryItemContainer(float size)
+    public InventoryItemContainer(float size, Node parent)
     {
         _container = new PanelContainer
         {
@@ -16,6 +16,8 @@ public class InventoryItemContainer : ContainerBase
         };
 
         _control = AddCenterItemContainer();
+
+        parent.AddChild(_container);
     }
 
     public void SetItemSprite(InventoryItemSprite sprite)
@@ -33,10 +35,5 @@ public class InventoryItemContainer : ContainerBase
         center.AddChild(control);
 
         return control;
-    }
-
-    public override PanelContainer Build()
-    {
-        return _container;
     }
 }

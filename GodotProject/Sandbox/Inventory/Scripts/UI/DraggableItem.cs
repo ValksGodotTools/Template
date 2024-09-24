@@ -1,6 +1,5 @@
 ﻿using Godot;
 using GodotUtils;
-using System.Drawing;
 
 namespace Template.Inventory;
 
