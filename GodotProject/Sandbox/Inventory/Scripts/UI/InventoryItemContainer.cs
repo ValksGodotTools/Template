@@ -59,6 +59,7 @@ public class InventoryItemContainer
 
         // Must be set after the sprite is added
         UIItem.SetItemCount(item.Count);
+        UIItem.SetInventoryItemContainer(this);
     }
 
     public void SwapItems(InventoryItemContainer other)
@@ -76,13 +77,6 @@ public class InventoryItemContainer
 
         // Swap the UI items
         (other.UIItem, UIItem) = (UIItem, other.UIItem);
-
-        // Update the UI items' references to their new containers
-        if (UIItem != null)
-            UIItem.InventoryItemContainer = this;
-
-        if (other.UIItem != null)
-            other.UIItem.InventoryItemContainer = other;
 
         // Update the visuals
         if (UIItem != null)

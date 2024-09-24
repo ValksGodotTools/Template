@@ -22,7 +22,7 @@ public class InventoryItemSprite
     private InventoryItemSprite(InventoryItemContainer itemContainer)
     {
         UIItem = new UIItem();
-        UIItem.InventoryItemContainer = itemContainer;
+        UIItem.SetInventoryItemContainer(itemContainer);
 
         const float DEFAULT_SCALE = 2;
 
