@@ -6,10 +6,13 @@ public partial class InventorySandbox : Node
 {
 	public override void _Ready()
 	{
-        Inventory inventroy = new();
-        inventroy.AddItem(Items.Coin, 5);
-        inventroy.AddItem(Items.SnowyCoin, 3);
+        Inventory inventory = new(10);
+        inventory.AddItem(Items.Coin, 5);
+        inventory.AddItem(Items.SnowyCoin, 3);
+        inventory.SetItem(9, new Item(Items.Coin, 42));
+        inventory.SwapItems(9, 0);
+        inventory.RemoveItem(0);
 
-        InventoryContainer inventoryContainer = new(inventroy, this, 5);
+        InventoryContainer inventoryContainer = new(inventory, this, 5);
 	}
 }

@@ -9,7 +9,7 @@ public class InventoryContainer
 
     public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
     {
-        _itemContainers = new InventoryItemContainer[inventory.GetItemCount()];
+        _itemContainers = new InventoryItemContainer[inventory.GetInventorySize()];
 
         PanelContainer container = new();
         GridContainer grid = AddGridContainer(container, columns);
@@ -32,14 +32,17 @@ public class InventoryContainer
     {
         const int ITEM_CONTAINER_SIZE = 50;
 
-        for (int i = 0; i < inventory.GetItemCount(); i++)
+        for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
             InventoryItemContainer container = new(ITEM_CONTAINER_SIZE, grid);
             _itemContainers[i] = container;
 
             Item item = inventory.GetItem(i);
 
-            SetItem(i, item);
+            if (item != null)
+            {
+                SetItem(i, item);
+            }
         }
     }
 

@@ -12,6 +12,11 @@ public class Item
         Count = count;
     }
 
+    public Item(Item other, int count = 1) : this(other)
+    {
+        Count = count;
+    }
+
     public Item(Item other)
     {
         Name = other.Name;
