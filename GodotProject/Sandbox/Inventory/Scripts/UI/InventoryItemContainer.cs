@@ -19,30 +19,68 @@ public class InventoryItemContainer
 
     public InventoryItemContainer(int index, Node parent, InventoryContainer inventoryContainer)
     {
+        Initialize(index, inventoryContainer);
+        CreateContainer(parent);
+    }
+
+    private void Initialize(int index, InventoryContainer inventoryContainer)
+    {
         InventoryContainer = inventoryContainer;
         Index = index;
+    }
 
+    private void CreateContainer(Node parent)
+    {
+        PanelContainer container = CreatePanelContainer();
+        ItemParent = AddCenterItemContainer(container);
+        parent.AddChild(container);
+    }
+
+    private PanelContainer CreatePanelContainer()
+    {
         PanelContainer container = new()
         {
             CustomMinimumSize = Vector2.One * PIXEL_SIZE
         };
 
-        container.MouseEntered += () => MouseEntered(new ItemContainerMouseEventArgs(index, this));
-        container.MouseExited += () => MouseExited(new ItemContainerMouseEventArgs(index, this));
+        container.MouseEntered += OnMouseEntered;
+        container.MouseExited += OnMouseExited;
 
-        ItemParent = AddCenterItemContainer(container);
-        parent.AddChild(container);
+        return container;
+    }
+
+    private void OnMouseEntered()
+    {
+        MouseEntered?.Invoke(new ItemContainerMouseEventArgs(Index, this));
+    }
+
+    private void OnMouseExited()
+    {
+        MouseExited?.Invoke(new ItemContainerMouseEventArgs(Index, this));
     }
 
     public void SetItem(Item item)
     {
-        ItemParent.QueueFreeChildren();
+        ClearItemParent();
+        CreateItemSprite(item);
+        UpdateUIItem(item);
+    }
 
+    private void ClearItemParent()
+    {
+        ItemParent.QueueFreeChildren();
+    }
+
+    private void CreateItemSprite(Item item)
+    {
         ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
         InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, this);
         UIItem = sprite.UIItem;
-
         ItemParent.AddChild(sprite.Build());
+    }
+
+    private void UpdateUIItem(Item item)
+    {
         UIItem.SetItemCount(item.Count);
         UIItem.SetInventoryItemContainer(this);
     }
@@ -52,20 +90,33 @@ public class InventoryItemContainer
         if (other == null)
             return;
 
+        SwapInventoryItems(other);
+        SwapUIItems(other);
+        UpdateItemsAfterSwap(other);
+    }
+
+    private void SwapInventoryItems(InventoryItemContainer other)
+    {
         Inventory thisInventory = InventoryContainer.Inventory;
         Inventory otherInventory = other.InventoryContainer.Inventory;
 
         Item tempItem = thisInventory.GetItem(Index);
         thisInventory.SetItem(Index, otherInventory.GetItem(other.Index));
         otherInventory.SetItem(other.Index, tempItem);
+    }
 
+    private void SwapUIItems(InventoryItemContainer other)
+    {
         (other.UIItem, UIItem) = (UIItem, other.UIItem);
+    }
 
+    private void UpdateItemsAfterSwap(InventoryItemContainer other)
+    {
         if (UIItem != null)
-            SetItem(thisInventory.GetItem(Index));
+            SetItem(InventoryContainer.Inventory.GetItem(Index));
 
         if (other.UIItem != null)
-            other.SetItem(otherInventory.GetItem(other.Index));
+            other.SetItem(other.InventoryContainer.Inventory.GetItem(other.Index));
     }
 
     private Control AddCenterItemContainer(PanelContainer container)
