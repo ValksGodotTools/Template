@@ -66,9 +66,10 @@ public class InventoryItemContainer
         UpdateUIItem(item);
     }
 
-    private void ClearItemParent()
+    public void ClearItemParent()
     {
         ItemParent.QueueFreeChildren();
+        UIItem = null;
     }
 
     private void CreateItemSprite(Item item)

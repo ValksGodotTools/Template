@@ -33,9 +33,30 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
         if (_inventoryItemContainer.InventoryContainer.MouseIsOnSlot)
         {
             ItemContainerMouseEventArgs otherSlot = _inventoryItemContainer.InventoryContainer.ActiveSlot;
-            
-            _inventoryItemContainer.SwapItems(otherSlot.InventoryItemContainer);
-            
+            InventoryItemContainer otherContainer = otherSlot.InventoryItemContainer;
+
+            Inventory thisInventory = _inventoryItemContainer.InventoryContainer.Inventory;
+            Inventory otherInventory = otherContainer.InventoryContainer.Inventory;
+
+            Item thisItem = thisInventory.GetItem(_inventoryItemContainer.Index);
+            Item otherItem = otherInventory.GetItem(otherContainer.Index);
+
+            if (otherItem != null && thisItem != null && otherItem.Equals(thisItem))
+            {
+                // Combine counts if items are of the same type
+                otherItem.Count += thisItem.Count;
+                otherInventory.SetItem(otherContainer.Index, otherItem); // Update the inventory
+                otherContainer.SetItem(otherItem); // Update the UI
+                thisInventory.SetItem(_inventoryItemContainer.Index, null); // Clear the current item in the inventory
+                _inventoryItemContainer.Item = null; // Clear the current item
+                _inventoryItemContainer.ClearItemParent(); // Update the UI to reflect the absence of an item
+            }
+            else
+            {
+                // Swap items if they are not of the same type
+                _inventoryItemContainer.SwapItems(otherContainer);
+            }
+
             QueueFree();
         }
     }
