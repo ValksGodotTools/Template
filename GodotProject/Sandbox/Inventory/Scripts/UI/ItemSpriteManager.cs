@@ -6,20 +6,11 @@ namespace Template.Inventory;
 
 public class ItemSpriteManager
 {
-    private static Dictionary<ItemTexture, ItemVisualData> _itemResources = [];
-
-    static ItemSpriteManager()
+    private static readonly Dictionary<ItemTexture, ItemVisualData> _itemResources = new()
     {
-        _itemResources[ItemTexture.Coin] = new ItemVisualData(
-            GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres"),
-            Colors.Yellow
-        );
-
-        _itemResources[ItemTexture.CoinSnowy] = new ItemVisualData(
-            GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png"),
-            Colors.LightSkyBlue
-        );
-    }
+        { ItemTexture.Coin, new ItemVisualData(GD.Load<SpriteFrames>("res://Sandbox/Inventory/CoinSpriteFrames.tres"), Colors.Yellow) },
+        { ItemTexture.CoinSnowy, new ItemVisualData(GD.Load<Texture2D>("res://Sandbox/Inventory/CoinStatic.png"), Colors.LightSkyBlue) }
+    };
 
     public static ItemVisualData GetResource(Item item)
     {
