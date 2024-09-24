@@ -6,6 +6,8 @@ namespace Template.Inventory;
 [Draggable]
 public partial class DraggableItem : AnimatedSprite2D, IDraggable
 {
+    public int Count { get; set; }
+
     private Label _itemCountLabel;
 
     public override void _Ready()
@@ -16,7 +18,8 @@ public partial class DraggableItem : AnimatedSprite2D, IDraggable
 
     public void SetItemCount(int count)
     {
-        _itemCountLabel.Text = count.ToString();
+        Count = count;
+        _itemCountLabel.Text = Count.ToString();
     }
 
     public void OnDragReleased()
@@ -25,7 +28,16 @@ public partial class DraggableItem : AnimatedSprite2D, IDraggable
 
         DraggableItem otherItem = area?.GetParent<DraggableItem>();
 
-        GD.Print(otherItem);
+        if (otherItem != null)
+        {
+            /*DraggableItem originalItem = this;
+
+            SetItemCount(otherItem.Count);
+            SpriteFrames = otherItem.SpriteFrames;
+
+            otherItem.SetItemCount(originalItem.Count);
+            otherItem.SpriteFrames = originalItem.SpriteFrames;*/
+        }
     }
 
     private Label CreateItemCountLabel()
