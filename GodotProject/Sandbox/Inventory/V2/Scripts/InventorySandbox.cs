@@ -9,7 +9,7 @@ public partial class InventorySandbox : Node
     {
         Inventory inventory = new(size: 10);
         inventory.SetItem(0, Items.SnowyCoin);
-        inventory.SetItem(4, new Item(Items.Coin, 3));
+        inventory.SetItem(4, Items.Coin, 3);
 
         _ = new UIInventory(inventory, this);
     }

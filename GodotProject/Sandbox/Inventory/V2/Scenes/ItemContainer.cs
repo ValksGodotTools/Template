@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace Template.InventoryV2;
 
@@ -11,15 +10,27 @@ public partial class ItemContainer : PanelContainer
         Count.Hide();
     }
 
-    public void SetSpriteFrames(string resourcePath)
+    public void SetItem(Item item)
+    {
+        SetSpriteFrames(item.ResourcePath);
+        SetColor(item.Color);
+        SetCount(item.Count);
+    }
+
+    private void SetSpriteFrames(string resourcePath)
     {
         Sprite.SpriteFrames = SpriteFramesLoader.Load(resourcePath);
         Sprite.Play();
     }
 
-    public void SetCount(int count)
+    private void SetColor(Color color)
     {
-        if (count > 0)
+        Sprite.Modulate = color != default ? color : Colors.White;
+    }
+
+    private void SetCount(int count)
+    {
+        if (count > 1)
         {
             Count.Text = count.ToString();
             Count.Show();

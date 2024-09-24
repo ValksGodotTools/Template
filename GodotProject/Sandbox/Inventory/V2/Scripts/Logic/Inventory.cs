@@ -17,10 +17,11 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public void SetItem(int index, Item item)
+    public void SetItem(int index, Item item, int count = 1)
     {
         ValidateIndex(index);
         _items[index] = item;
+        item.Count = count;
     }
 
     public void AddItem(Item item, int count = 1)

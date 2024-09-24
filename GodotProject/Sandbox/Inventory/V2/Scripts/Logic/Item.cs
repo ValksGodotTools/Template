@@ -1,9 +1,12 @@
-﻿namespace Template.InventoryV2;
+﻿using Godot;
+
+namespace Template.InventoryV2;
 
 public class Item
 {
-    public string Name { get; }
+    public string Name { get; set; }
     public int Count { get; set; }
+    public Color Color { get; set; }
     public string ResourcePath { get; set; }
 
     public Item(string name, int count = 1)

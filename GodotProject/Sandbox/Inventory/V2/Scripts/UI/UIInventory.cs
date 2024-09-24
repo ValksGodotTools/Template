@@ -33,8 +33,7 @@ public class UIInventory
 
         if (item != null)
         {
-            itemContainer.SetSpriteFrames(item.ResourcePath);
-            itemContainer.SetCount(item.Count);
+            itemContainer.SetItem(item);
         }
     }
 }
