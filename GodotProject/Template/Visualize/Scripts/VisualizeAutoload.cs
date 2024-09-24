@@ -37,7 +37,7 @@ public partial class VisualizeAutoload : Node
 
             if (positionalNode == null)
             {
-                GPrintUtils.Warning($"[Visualize] No positional parent node could be found for {node.Name} so its visual panel will be created at position (100, 100)");
+                PrintUtils.Warning($"[Visualize] No positional parent node could be found for {node.Name} so its visual panel will be created at position (100, 100)");
             }
 
             if (positionalNode != null)

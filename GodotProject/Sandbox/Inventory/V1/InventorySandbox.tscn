@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk1hcnvtcpy13"]
+
+[ext_resource type="Script" path="res://Sandbox/Inventory/V1/Scripts/InventorySandbox.cs" id="1_ilxg6"]
+
+[node name="Inventory" type="Node2D"]
+script = ExtResource("1_ilxg6")

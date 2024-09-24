@@ -142,7 +142,7 @@ public partial class Setup : Node
         string path = ProjectSettings.GlobalizePath("res://");
 
         // The IO functions ran below will break if empty folders exist
-        GDirectories.DeleteEmptyDirectories(path);
+        DirectoryUtils.DeleteEmptyDirectories(path);
 
         RenameProjectFiles(path, gameName);
         RenameAllNamespaces(path, gameName);
@@ -151,7 +151,7 @@ public partial class Setup : Node
         {
             MoveProjectFiles(Path.Combine(path, "Genres"), path);
 
-            GSceneFileUtils.FixBrokenDependencies();
+            SceneFileUtils.FixBrokenDependencies();
         }
 
         if (checkButtonDeleteSetupScene.ButtonPressed)
@@ -161,7 +161,7 @@ public partial class Setup : Node
         }
 
         // Ensure all empty folders are deleted when finished
-        GDirectories.DeleteEmptyDirectories(path);
+        DirectoryUtils.DeleteEmptyDirectories(path);
 
         GetTree().Quit();
     }
@@ -224,11 +224,11 @@ public partial class Setup : Node
     private static void MoveFilesAndPreserveFolderStructure(string path, string folder)
     {
         // Move all assets to res://
-        GDirectories.Traverse(path, MoveFile);
+        DirectoryUtils.Traverse(path, MoveFile);
 
         void MoveFile(string fullFilePath)
         {
-            string newPath = GDirectories.RemovePathSegment(fullFilePath, folder);
+            string newPath = DirectoryUtils.RemovePathSegment(fullFilePath, folder);
 
             new FileInfo(newPath).Directory.Create();
 
@@ -247,8 +247,8 @@ public partial class Setup : Node
     {
         if (Directory.Exists(path))
         {
-            GDirectories.DeleteEmptyDirectories(path);
-            GDirectories.DeleteEmptyDirectory(path);
+            DirectoryUtils.DeleteEmptyDirectories(path);
+            DirectoryUtils.DeleteEmptyDirectory(path);
         }
     }
 
@@ -298,7 +298,7 @@ public partial class Setup : Node
     /// </summary>
     private static void RenameAllNamespaces(string path, string name)
     {
-        GDirectories.Traverse(path, RenameNamespaces);
+        DirectoryUtils.Traverse(path, RenameNamespaces);
 
         void RenameNamespaces(string fullFilePath)
         {

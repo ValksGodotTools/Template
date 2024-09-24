@@ -3,10 +3,18 @@ using System;
 namespace Template;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class DraggableAttribute(DragType dragType = DragType.Hold, DragConstraints dragConstraints = DragConstraints.None) : Attribute
+public class DraggableAttribute(DragClick dragClick = DragClick.Left, DragType dragType = DragType.Hold, DragConstraints dragConstraints = DragConstraints.None) : Attribute
 {
-	public DragType DragType { get; private set; } = dragType;
-    public DragConstraints DragConstraints { get; private set; } = dragConstraints;
+    public DragClick DragClick { get; } = dragClick;
+	public DragType DragType { get; } = dragType;
+    public DragConstraints DragConstraints { get; } = dragConstraints;
+}
+
+public enum DragClick
+{
+    Left,
+    Right,
+    Both
 }
 
 public enum DragType

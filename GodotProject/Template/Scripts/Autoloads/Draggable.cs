@@ -14,6 +14,7 @@ public partial class Draggable : Node2D
 
     private Dictionary<Node, DragConstraints> _nodeDragConstraints = [];
     private Dictionary<Node, DragType> _nodeDragTypes = [];
+    private Dictionary<Node, DragClick> _nodeDragClicks = [];
     private HashSet<Node> _draggableNodes = [];
 
     private DraggableWrapper _selectedNode;
@@ -38,7 +39,8 @@ public partial class Draggable : Node2D
         {
             bool draggingNodeInClickMode = _selectedNode != null && _nodeDragTypes[_selectedNode.Node] == DragType.Click && _releaseClickAfterDrag;
 
-            if (btn.IsLeftClickPressed() && !draggingNodeInClickMode)
+            // Check if the correct mouse button is pressed
+            if ((btn.IsLeftClickPressed() || btn.IsRightClickPressed()) && !draggingNodeInClickMode)
             {
                 // Consider the scenario where the cursor does not leave the Area2D area when
                 // letting go of a draggable. The area.MouseEntered event will never get fired
@@ -46,7 +48,7 @@ public partial class Draggable : Node2D
                 // that is when _selectedNode is null.
                 if (_selectedNode == null)
                 {
-                    Node node = GetNodeUnderCursor(GetWorld2D(), GetGlobalMousePosition());
+                    Node node = CursorUtils2D.GetAreaUnderCursor(this);
 
                     if (node is Area2D)
                     {
@@ -71,35 +73,65 @@ public partial class Draggable : Node2D
                 // the node for dragging
                 if (_selectedNode != null)
                 {
-                    _dragControlOffset = _selectedNode.DragControlOffset;
-                    _previousParent = _selectedNode.GetParent();
-                    _previousPosition = _selectedNode.GlobalPosition;
+                    bool isPressed = _nodeDragClicks[_selectedNode.Node] switch
+                    {
+                        DragClick.Left => btn.IsLeftClickPressed(),
+                        DragClick.Right => btn.IsRightClickPressed(),
+                        DragClick.Both => btn.IsLeftClickPressed() || btn.IsRightClickPressed(),
+                        _ => false
+                    };
 
-                    // Reparent to viewport root
-                    _selectedNode.Node.Reparent(GetTree().Root);
+                    if (isPressed)
+                    {
+                        _dragControlOffset = _selectedNode.DragControlOffset;
+                        _previousParent = _selectedNode.GetParent();
+                        _previousPosition = _selectedNode.GlobalPosition;
 
-                    _currentlyDraggedNode = _selectedNode;
-                    SetPhysicsProcess(true);
+                        MouseButtonType buttonType = btn.IsLeftClickPressed() ? MouseButtonType.Left : MouseButtonType.Right;
+
+                        if (_selectedNode.Node is IDraggable draggable)
+                        {
+                            draggable.OnDragStarted(buttonType);
+                        }
+
+                        // Reparent to viewport root
+                        _selectedNode.Node.Reparent(GetTree().Root);
+
+                        _currentlyDraggedNode = _selectedNode;
+                        SetPhysicsProcess(true);
+                    }
                 }
             }
 
-            if (btn.IsLeftClickReleased() && _currentlyDraggedNode != null)
+            // Check if the correct mouse button is released
+            if ((btn.IsLeftClickReleased() || btn.IsRightClickReleased()) && _currentlyDraggedNode != null)
             {
-                if (_nodeDragTypes[_selectedNode.Node] == DragType.Hold)
+                bool isReleased = _nodeDragClicks[_selectedNode.Node] switch
                 {
-                    HandleReleaseDraggableNode();
-                }
-                else if (_nodeDragTypes[_selectedNode.Node] == DragType.Click)
+                    DragClick.Left => btn.IsLeftClickReleased(),
+                    DragClick.Right => btn.IsRightClickReleased(),
+                    DragClick.Both => btn.IsLeftClickReleased() || btn.IsRightClickReleased(),
+                    _ => false
+                };
+
+                if (isReleased)
                 {
-                    if (_releaseClickAfterDrag)
+                    if (_nodeDragTypes[_selectedNode.Node] == DragType.Hold)
                     {
-                        _releaseClickAfterDrag = false;
-
                         HandleReleaseDraggableNode();
-                        return;
                     }
+                    else if (_nodeDragTypes[_selectedNode.Node] == DragType.Click)
+                    {
+                        if (_releaseClickAfterDrag)
+                        {
+                            _releaseClickAfterDrag = false;
 
-                    _releaseClickAfterDrag = true;
+                            HandleReleaseDraggableNode();
+                            return;
+                        }
+
+                        _releaseClickAfterDrag = true;
+                    }
                 }
             }
         }
@@ -165,6 +197,7 @@ public partial class Draggable : Node2D
 
         _nodeDragTypes.Add(node, attribute.DragType);
         _nodeDragConstraints.Add(node, attribute.DragConstraints);
+        _nodeDragClicks.Add(node, attribute.DragClick);
 
         Area2D area = CreateDraggableArea(node);
 
@@ -250,11 +283,11 @@ public partial class Draggable : Node2D
 
         if (node is Sprite2D sprite)
         {
-            size = sprite.GetScaledSize();
+            size = sprite.GetSize();
         }
         else if (node is AnimatedSprite2D animatedSprite)
         {
-            size = animatedSprite.GetScaledSize();
+            size = animatedSprite.GetSize();
         }
         else if (node is Control control)
         {
@@ -262,38 +295,6 @@ public partial class Draggable : Node2D
         }
 
         return size;
-    }
-
-    private static Node GetNodeUnderCursor(World2D world, Vector2 cursorPosition)
-    {
-        // Create a shape query parameters object
-        PhysicsShapeQueryParameters2D queryParams = new();
-        queryParams.Transform = new Transform2D(0, cursorPosition);
-        queryParams.CollideWithAreas = true;
-
-        // Use a small circle shape to simulate a point intersection
-        CircleShape2D circleShape = new();
-        circleShape.Radius = 1.0f;
-        queryParams.Shape = circleShape;
-
-        // Perform the query
-        PhysicsDirectSpaceState2D spaceState =
-            PhysicsServer2D.SpaceGetDirectState(world.GetSpace());
-
-        Godot.Collections.Array<Godot.Collections.Dictionary> results =
-            spaceState.IntersectShape(queryParams, 1);
-
-        if (results.Count > 0)
-        {
-            Godot.Collections.Dictionary result = results[0];
-
-            if (result != null && result.ContainsKey("collider"))
-            {
-                return result["collider"].As<Node>();
-            }
-        }
-
-        return null;
     }
 }
 
@@ -389,5 +390,12 @@ public interface IDraggableNode
 
 public interface IDraggable
 {
+    void OnDragStarted(MouseButtonType mouseButtonType);
     void OnDragReleased();
+}
+
+public enum MouseButtonType
+{
+    Left,
+    Right
 }

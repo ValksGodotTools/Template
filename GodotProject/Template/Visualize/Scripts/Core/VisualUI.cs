@@ -245,7 +245,7 @@ public static class VisualUI
 
         if (initialValue == null)
         {
-            GPrintUtils.Warning($"[Visualize] '{member.Name}' value in '{node.Name}' is null");
+            PrintUtils.Warning($"[Visualize] '{member.Name}' value in '{node.Name}' is null");
             return hbox;
         }
 

@@ -34,7 +34,7 @@ public class NumericControl(SpinBox spinBox) : IVisualControl
             catch (InvalidCastException)
             {
                 // Handle the case where the value cannot be converted to double
-                GPrintUtils.Warning($"Cannot convert value of type {value.GetType()} to double.");
+                PrintUtils.Warning($"Cannot convert value of type {value.GetType()} to double.");
             }
         }
     }
