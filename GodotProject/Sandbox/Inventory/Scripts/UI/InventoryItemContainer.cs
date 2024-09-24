@@ -16,7 +16,7 @@ public class InventoryItemContainer
     /// </summary>
     public event Action<ItemContainerMouseEventArgs> MouseExited;
 
-    public DraggableItem DraggableItem { get; private set; }
+    public UIItem UIItem { get; private set; }
     public Control ItemParent { get; private set; }
     public InventoryContainer InventoryContainer { get; private set; }
     public Item Item { get; set; }
@@ -51,12 +51,12 @@ public class InventoryItemContainer
 
         ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
         InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, this);
-        DraggableItem = sprite.DraggableItem;
+        UIItem = sprite.UIItem;
 
         ItemParent.AddChild(sprite.Build());
 
         // Must be set after the sprite is added
-        DraggableItem.SetItemCount(item.Count);
+        UIItem.SetItemCount(item.Count);
     }
 
     private Control AddCenterItemContainer(PanelContainer container)

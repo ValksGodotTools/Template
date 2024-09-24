@@ -4,7 +4,7 @@ using GodotUtils;
 namespace Template.Inventory;
 
 [Draggable]
-public partial class DraggableItem : AnimatedSprite2D, IDraggable
+public partial class UIItem : AnimatedSprite2D, IDraggable
 {
     public int Count { get; set; }
     public InventoryItemContainer InventoryItemContainer { get; set; }
@@ -32,7 +32,7 @@ public partial class DraggableItem : AnimatedSprite2D, IDraggable
         {
             ItemContainerMouseEventArgs otherSlot = inventoryContainer.ActiveSlot;
             InventoryItemContainer otherItemContainer = otherSlot.InventoryItemContainer;
-            DraggableItem otherItem = otherItemContainer.DraggableItem;
+            UIItem otherItem = otherItemContainer.UIItem;
 
             if (otherItem == null)
             {

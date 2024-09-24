@@ -4,7 +4,7 @@ namespace Template.Inventory;
 
 public class InventoryItemSprite
 {
-    public DraggableItem DraggableItem { get; private set; }
+    public UIItem UIItem { get; private set; }
 
     public InventoryItemSprite(SpriteFrames spriteFrames, InventoryItemContainer itemContainer) : this(itemContainer)
     {
@@ -21,8 +21,8 @@ public class InventoryItemSprite
 
     private InventoryItemSprite(InventoryItemContainer itemContainer)
     {
-        DraggableItem = new DraggableItem();
-        DraggableItem.InventoryItemContainer = itemContainer;
+        UIItem = new UIItem();
+        UIItem.InventoryItemContainer = itemContainer;
 
         const float DEFAULT_SCALE = 2;
 
@@ -31,27 +31,27 @@ public class InventoryItemSprite
 
     public void SetCount(int count)
     {
-        DraggableItem.SetItemCount(count);
+        UIItem.SetItemCount(count);
     }
 
     public void SetColor(Color color)
     {
-        DraggableItem.SelfModulate = color;
+        UIItem.SelfModulate = color;
     }
 
     public void SetScale(float scale)
     {
-        DraggableItem.Scale = Vector2.One * scale;
+        UIItem.Scale = Vector2.One * scale;
     }
 
-    public DraggableItem Build()
+    public UIItem Build()
     {
-        return DraggableItem;
+        return UIItem;
     }
 
     private void InitializeSprite(SpriteFrames spriteFrames)
     {
-        DraggableItem.SpriteFrames = spriteFrames;
-        DraggableItem.Play();
+        UIItem.SpriteFrames = spriteFrames;
+        UIItem.Play();
     }
 }
