@@ -42,11 +42,7 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
             // Dragged an item onto an empty inventory slot
             if (otherItem == null)
             {
-                otherInvItemContainer.SetItem(thisInv.GetItem(thisInvItemContainer.Index));
-                thisInv.SwapItems(thisInvItemContainer.Index, otherInvItemContainer.Index);
-
-                otherInvItemContainer.UIItem = this;
-                thisInvItemContainer.UIItem = null;
+                thisInvItemContainer.SwapItems(otherInvItemContainer);
 
                 QueueFree();
             }

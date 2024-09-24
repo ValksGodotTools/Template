@@ -61,6 +61,37 @@ public class InventoryItemContainer
         UIItem.SetItemCount(item.Count);
     }
 
+    public void SwapItems(InventoryItemContainer other)
+    {
+        if (other == null)
+            return;
+
+        // Swap the items in the inventories
+        Inventory thisInventory = InventoryContainer.Inventory;
+        Inventory otherInventory = other.InventoryContainer.Inventory;
+
+        Item tempItem = thisInventory.GetItem(Index);
+        thisInventory.SetItem(Index, otherInventory.GetItem(other.Index));
+        otherInventory.SetItem(other.Index, tempItem);
+
+        // Swap the UI items
+        (other.UIItem, UIItem) = (UIItem, other.UIItem);
+
+        // Update the UI items' references to their new containers
+        if (UIItem != null)
+            UIItem.InventoryItemContainer = this;
+
+        if (other.UIItem != null)
+            other.UIItem.InventoryItemContainer = other;
+
+        // Update the visuals
+        if (UIItem != null)
+            SetItem(thisInventory.GetItem(Index));
+
+        if (other.UIItem != null)
+            other.SetItem(otherInventory.GetItem(other.Index));
+    }
+
     private Control AddCenterItemContainer(PanelContainer container)
     {
         CenterContainer center = new();
