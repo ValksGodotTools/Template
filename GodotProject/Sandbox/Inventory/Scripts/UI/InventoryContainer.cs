@@ -5,17 +5,17 @@ namespace Template.Inventory;
 
 public class InventoryContainer
 {
-    public bool MouseIsOnSlot { get; private set; }
-    public ItemContainerMouseEventArgs ActiveSlot { get; private set; }
     public Inventory Inventory { get; private set; }
 
     private InventoryItemContainer[] _itemContainers;
+    private MouseEventManager _mouseEventManager;
 
     public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
     {
         Inventory = inventory;
 
         _itemContainers = new InventoryItemContainer[inventory.GetInventorySize()];
+        _mouseEventManager = new MouseEventManager();
 
         PanelContainer container = new();
         GridContainer grid = AddGridContainer(container, columns);
@@ -38,20 +38,10 @@ public class InventoryContainer
             InventoryItemContainer container = new(i, ITEM_CONTAINER_PIXEL_SIZE, grid, this);
             _itemContainers[i] = container;
 
-            container.MouseEntered += args =>
-            {
-                MouseIsOnSlot = true;
-                ActiveSlot = args;
-            };
-
-            container.MouseExited += args =>
-            {
-                MouseIsOnSlot = false;
-                ActiveSlot = args;
-            };
+            container.MouseEntered += _mouseEventManager.OnMouseEntered;
+            container.MouseExited += _mouseEventManager.OnMouseExited;
 
             Item item = inventory.GetItem(i);
-
             if (item != null)
             {
                 container.Item = item;
@@ -72,10 +62,12 @@ public class InventoryContainer
         grid.AddThemeConstantOverride("v_separation", SEPARATION);
 
         container.AddChild(margin);
-
         margin.AddChild(grid);
         margin.SetMarginAll(SEPARATION);
 
         return grid;
     }
+
+    public bool MouseIsOnSlot => _mouseEventManager.MouseIsOnSlot;
+    public ItemContainerMouseEventArgs ActiveSlot => _mouseEventManager.ActiveSlot;
 }

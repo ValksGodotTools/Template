@@ -15,7 +15,6 @@ public class InventoryItemSprite
     {
         SpriteFrames spriteFrames = new();
         spriteFrames.AddFrame("default", texture);
-
         InitializeSprite(spriteFrames);
     }
 
@@ -23,10 +22,7 @@ public class InventoryItemSprite
     {
         UIItem = new UIItem();
         UIItem.SetInventoryItemContainer(itemContainer);
-
-        const float DEFAULT_SCALE = 2;
-
-        SetScale(DEFAULT_SCALE);
+        SetScale(2);
     }
 
     public void SetCount(int count)

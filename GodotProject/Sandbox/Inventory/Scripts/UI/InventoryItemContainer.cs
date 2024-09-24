@@ -6,14 +6,7 @@ namespace Template.Inventory;
 
 public class InventoryItemContainer
 {
-    /// <summary>
-    /// Occurs when the mouse cursor enters this container.
-    /// </summary>
     public event Action<ItemContainerMouseEventArgs> MouseEntered;
-
-    /// <summary>
-    /// Occurs when the mouse cursor exits this container.
-    /// </summary>
     public event Action<ItemContainerMouseEventArgs> MouseExited;
 
     public UIItem UIItem { get; set; }
@@ -32,18 +25,10 @@ public class InventoryItemContainer
             CustomMinimumSize = Vector2.One * size
         };
 
-        container.MouseEntered += () =>
-        {
-            MouseEntered(new ItemContainerMouseEventArgs(index, this));
-        };
-
-        container.MouseExited += () =>
-        {
-            MouseExited(new ItemContainerMouseEventArgs(index, this));
-        };
+        container.MouseEntered += () => MouseEntered(new ItemContainerMouseEventArgs(index, this));
+        container.MouseExited += () => MouseExited(new ItemContainerMouseEventArgs(index, this));
 
         ItemParent = AddCenterItemContainer(container);
-
         parent.AddChild(container);
     }
 
@@ -56,8 +41,6 @@ public class InventoryItemContainer
         UIItem = sprite.UIItem;
 
         ItemParent.AddChild(sprite.Build());
-
-        // Must be set after the sprite is added
         UIItem.SetItemCount(item.Count);
         UIItem.SetInventoryItemContainer(this);
     }
@@ -67,7 +50,6 @@ public class InventoryItemContainer
         if (other == null)
             return;
 
-        // Swap the items in the inventories
         Inventory thisInventory = InventoryContainer.Inventory;
         Inventory otherInventory = other.InventoryContainer.Inventory;
 
@@ -75,10 +57,8 @@ public class InventoryItemContainer
         thisInventory.SetItem(Index, otherInventory.GetItem(other.Index));
         otherInventory.SetItem(other.Index, tempItem);
 
-        // Swap the UI items
         (other.UIItem, UIItem) = (UIItem, other.UIItem);
 
-        // Update the visuals
         if (UIItem != null)
             SetItem(thisInventory.GetItem(Index));
 

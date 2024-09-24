@@ -33,9 +33,9 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
         if (_inventoryItemContainer.InventoryContainer.MouseIsOnSlot)
         {
             ItemContainerMouseEventArgs otherSlot = _inventoryItemContainer.InventoryContainer.ActiveSlot;
-
+            
             _inventoryItemContainer.SwapItems(otherSlot.InventoryItemContainer);
-
+            
             QueueFree();
         }
     }
