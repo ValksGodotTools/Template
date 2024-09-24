@@ -2,7 +2,7 @@
 using GodotUtils;
 using System;
 
-namespace Template.Inventory;
+namespace Template.InventoryV1;
 
 public class InventoryItemContainer
 {

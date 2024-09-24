@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Template.Inventory;
+namespace Template.InventoryV1;
 
 public class ItemSpriteManager
 {

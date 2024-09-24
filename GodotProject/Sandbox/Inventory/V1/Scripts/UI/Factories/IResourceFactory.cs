@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Template.Inventory;
+namespace Template.InventoryV1;
 
 public interface IResourceFactory
 {

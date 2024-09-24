@@ -1,4 +1,4 @@
-﻿namespace Template.Inventory;
+﻿namespace Template.InventoryV1;
 
 public static class Items
 {

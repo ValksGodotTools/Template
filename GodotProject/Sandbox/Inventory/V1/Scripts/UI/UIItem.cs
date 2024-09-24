@@ -1,7 +1,7 @@
 ﻿using Godot;
 using GodotUtils;
 
-namespace Template.Inventory;
+namespace Template.InventoryV1;
 
 [Draggable(DragClick.Both)]
 public partial class UIItem : AnimatedSprite2D, IDraggable

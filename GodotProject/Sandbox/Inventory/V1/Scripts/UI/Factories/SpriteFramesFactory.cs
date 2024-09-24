@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-namespace Template.Inventory;
+namespace Template.InventoryV1;
 
 public class SpriteFramesFactory : IResourceFactory
 {
