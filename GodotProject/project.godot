@@ -44,6 +44,7 @@ folder_colors={
 "res://Genres/2D Top Down/Scripts/": "teal",
 "res://Genres/2D Top Down/Sprites/": "blue",
 "res://Genres/3D FPS/Scripts/": "teal",
+"res://Sandbox/": "pink",
 "res://Scenes/": "purple",
 "res://Scripts/": "teal",
 "res://Template/Scenes/": "purple",
