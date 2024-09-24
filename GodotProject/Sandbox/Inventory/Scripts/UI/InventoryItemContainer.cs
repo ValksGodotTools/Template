@@ -15,14 +15,16 @@ public class InventoryItemContainer
     public int Index { get; private set; }
     public Item Item { get; set; }
 
-    public InventoryItemContainer(int index, float size, Node parent, InventoryContainer inventoryContainer)
+    private const int PIXEL_SIZE = 50;
+
+    public InventoryItemContainer(int index, Node parent, InventoryContainer inventoryContainer)
     {
         InventoryContainer = inventoryContainer;
         Index = index;
 
         PanelContainer container = new()
         {
-            CustomMinimumSize = Vector2.One * size
+            CustomMinimumSize = Vector2.One * PIXEL_SIZE
         };
 
         container.MouseEntered += () => MouseEntered(new ItemContainerMouseEventArgs(index, this));
