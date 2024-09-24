@@ -4,7 +4,6 @@ namespace Template.Inventory;
 
 public class InventoryItemSprite
 {
-    private const float DEFAULT_SCALE = 2;
     private readonly DraggableItem _item;
 
     public InventoryItemSprite(SpriteFrames spriteFrames) : this()
@@ -23,6 +22,9 @@ public class InventoryItemSprite
     private InventoryItemSprite()
     {
         _item = new DraggableItem();
+
+        const float DEFAULT_SCALE = 2;
+
         SetScale(DEFAULT_SCALE);
     }
 

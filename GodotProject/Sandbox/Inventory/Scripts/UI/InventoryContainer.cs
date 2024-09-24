@@ -5,23 +5,17 @@ namespace Template.Inventory;
 
 public class InventoryContainer
 {
-    private const int SEPARATION = 5;
-    private const int ITEM_CONTAINER_SIZE = 50;
-
-    private readonly PanelContainer _container;
-    private readonly GridContainer _grid;
     private InventoryItemContainer[] _itemContainers;
 
     public InventoryContainer(Inventory inventory, Node parent, int columns = 10)
     {
-        _container = new PanelContainer();
-        _grid = AddGridContainer(columns);
-
         _itemContainers = new InventoryItemContainer[inventory.GetItemCount()];
 
-        parent.AddChild(_container);
+        PanelContainer container = new();
+        GridContainer grid = AddGridContainer(container, columns);
+        parent.AddChild(container);
 
-        AddItems(inventory);
+        AddItems(inventory, grid);
     }
 
     public void SetItem(int index, Item item)
@@ -34,11 +28,13 @@ public class InventoryContainer
         sprite.SetCount(item.Count);
     }
 
-    private void AddItems(Inventory inventory)
+    private void AddItems(Inventory inventory, GridContainer grid)
     {
+        const int ITEM_CONTAINER_SIZE = 50;
+
         for (int i = 0; i < inventory.GetItemCount(); i++)
         {
-            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE, _grid);
+            InventoryItemContainer container = new(ITEM_CONTAINER_SIZE, grid);
             _itemContainers[i] = container;
 
             Item item = inventory.GetItem(i);
@@ -47,16 +43,18 @@ public class InventoryContainer
         }
     }
 
-    private GridContainer AddGridContainer(int columns)
+    private GridContainer AddGridContainer(PanelContainer container, int columns)
     {
         GMarginContainer margin = new();
         GridContainer grid = new();
+
+        const int SEPARATION = 5;
 
         grid.Columns = columns;
         grid.AddThemeConstantOverride("h_separation", SEPARATION);
         grid.AddThemeConstantOverride("v_separation", SEPARATION);
 
-        _container.AddChild(margin);
+        container.AddChild(margin);
 
         margin.AddChild(grid);
         margin.SetMarginAll(SEPARATION);

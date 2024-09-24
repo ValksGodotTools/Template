@@ -5,33 +5,32 @@ namespace Template.Inventory;
 
 public class InventoryItemContainer
 {
-    private readonly PanelContainer _container;
-    private readonly Control _control;
+    private readonly Control _itemControlParent;
 
     public InventoryItemContainer(float size, Node parent)
     {
-        _container = new PanelContainer
+        PanelContainer container = new()
         {
             CustomMinimumSize = Vector2.One * size
         };
 
-        _control = AddCenterItemContainer();
+        _itemControlParent = AddCenterItemContainer(container);
 
-        parent.AddChild(_container);
+        parent.AddChild(container);
     }
 
     public void SetItemSprite(InventoryItemSprite sprite)
     {
-        _control.QueueFreeChildren();
-        _control.AddChild(sprite.Build());
+        _itemControlParent.QueueFreeChildren();
+        _itemControlParent.AddChild(sprite.Build());
     }
 
-    private Control AddCenterItemContainer()
+    private Control AddCenterItemContainer(PanelContainer container)
     {
         CenterContainer center = new();
         Control control = new();
 
-        _container.AddChild(center);
+        container.AddChild(center);
         center.AddChild(control);
 
         return control;
