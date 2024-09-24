@@ -39,10 +39,30 @@ public class Inventory
         }
     }
 
-    public void RemoveItem(int index)
+    public void ClearItem(int index)
     {
         ValidateIndex(index);
         _items[index] = null;
+    }
+
+    public void RemoveItem(int index, int count = 1)
+    {
+        ValidateIndex(index);
+
+        if (_items[index] == null)
+        {
+            GD.Print("No item at the specified index.");
+            return;
+        }
+
+        if (_items[index].Count <= count)
+        {
+            _items[index] = null;
+        }
+        else
+        {
+            _items[index].Count -= count;
+        }
     }
 
     public void SwapItems(int index1, int index2)
@@ -77,7 +97,7 @@ public class Inventory
         return _items.Length;
     }
 
-    public void PrintInventory()
+    public void DebugPrintInventory()
     {
         GD.Print("Inventory");
 
@@ -91,7 +111,7 @@ public class Inventory
     {
         if (index < 0 || index >= _items.Length)
         {
-            throw new IndexOutOfRangeException("Index is out of range.");
+            throw new IndexOutOfRangeException("Index out of range.");
         }
     }
 
