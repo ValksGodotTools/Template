@@ -45,6 +45,8 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
                 otherInvItemContainer.SetItem(thisInv.GetItem(thisInvItemContainer.Index));
                 thisInv.SwapItems(thisInvItemContainer.Index, otherInvItemContainer.Index);
 
+                thisInvItemContainer.UIItem = null;
+
                 QueueFree();
             }
         }

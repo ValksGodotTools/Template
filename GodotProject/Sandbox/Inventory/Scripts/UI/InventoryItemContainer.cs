@@ -16,7 +16,7 @@ public class InventoryItemContainer
     /// </summary>
     public event Action<ItemContainerMouseEventArgs> MouseExited;
 
-    public UIItem UIItem { get; private set; }
+    public UIItem UIItem { get; set; }
     public Control ItemParent { get; private set; }
     public InventoryContainer InventoryContainer { get; private set; }
     public int Index { get; private set; }
