@@ -3,7 +3,7 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-[Draggable]
+[Draggable(DragClick.Both)]
 public partial class UIItem : AnimatedSprite2D, IDraggable
 {
     public int Count { get; set; }

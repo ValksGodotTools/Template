@@ -14,6 +14,7 @@ public partial class Draggable : Node2D
 
     private Dictionary<Node, DragConstraints> _nodeDragConstraints = [];
     private Dictionary<Node, DragType> _nodeDragTypes = [];
+    private Dictionary<Node, DragClick> _nodeDragClicks = [];
     private HashSet<Node> _draggableNodes = [];
 
     private DraggableWrapper _selectedNode;
@@ -38,7 +39,8 @@ public partial class Draggable : Node2D
         {
             bool draggingNodeInClickMode = _selectedNode != null && _nodeDragTypes[_selectedNode.Node] == DragType.Click && _releaseClickAfterDrag;
 
-            if (btn.IsLeftClickPressed() && !draggingNodeInClickMode)
+            // Check if the correct mouse button is pressed
+            if ((btn.IsLeftClickPressed() || btn.IsRightClickPressed()) && !draggingNodeInClickMode)
             {
                 // Consider the scenario where the cursor does not leave the Area2D area when
                 // letting go of a draggable. The area.MouseEntered event will never get fired
@@ -71,35 +73,58 @@ public partial class Draggable : Node2D
                 // the node for dragging
                 if (_selectedNode != null)
                 {
-                    _dragControlOffset = _selectedNode.DragControlOffset;
-                    _previousParent = _selectedNode.GetParent();
-                    _previousPosition = _selectedNode.GlobalPosition;
+                    bool isPressed = _nodeDragClicks[_selectedNode.Node] switch
+                    {
+                        DragClick.Left => btn.IsLeftClickPressed(),
+                        DragClick.Right => btn.IsRightClickPressed(),
+                        DragClick.Both => btn.IsLeftClickPressed() || btn.IsRightClickPressed(),
+                        _ => false
+                    };
 
-                    // Reparent to viewport root
-                    _selectedNode.Node.Reparent(GetTree().Root);
+                    if (isPressed)
+                    {
+                        _dragControlOffset = _selectedNode.DragControlOffset;
+                        _previousParent = _selectedNode.GetParent();
+                        _previousPosition = _selectedNode.GlobalPosition;
 
-                    _currentlyDraggedNode = _selectedNode;
-                    SetPhysicsProcess(true);
+                        // Reparent to viewport root
+                        _selectedNode.Node.Reparent(GetTree().Root);
+
+                        _currentlyDraggedNode = _selectedNode;
+                        SetPhysicsProcess(true);
+                    }
                 }
             }
 
-            if (btn.IsLeftClickReleased() && _currentlyDraggedNode != null)
+            // Check if the correct mouse button is released
+            if ((btn.IsLeftClickReleased() || btn.IsRightClickReleased()) && _currentlyDraggedNode != null)
             {
-                if (_nodeDragTypes[_selectedNode.Node] == DragType.Hold)
+                bool isReleased = _nodeDragClicks[_selectedNode.Node] switch
                 {
-                    HandleReleaseDraggableNode();
-                }
-                else if (_nodeDragTypes[_selectedNode.Node] == DragType.Click)
+                    DragClick.Left => btn.IsLeftClickReleased(),
+                    DragClick.Right => btn.IsRightClickReleased(),
+                    DragClick.Both => btn.IsLeftClickReleased() || btn.IsRightClickReleased(),
+                    _ => false
+                };
+
+                if (isReleased)
                 {
-                    if (_releaseClickAfterDrag)
+                    if (_nodeDragTypes[_selectedNode.Node] == DragType.Hold)
                     {
-                        _releaseClickAfterDrag = false;
-
                         HandleReleaseDraggableNode();
-                        return;
                     }
+                    else if (_nodeDragTypes[_selectedNode.Node] == DragType.Click)
+                    {
+                        if (_releaseClickAfterDrag)
+                        {
+                            _releaseClickAfterDrag = false;
 
-                    _releaseClickAfterDrag = true;
+                            HandleReleaseDraggableNode();
+                            return;
+                        }
+
+                        _releaseClickAfterDrag = true;
+                    }
                 }
             }
         }
@@ -165,6 +190,7 @@ public partial class Draggable : Node2D
 
         _nodeDragTypes.Add(node, attribute.DragType);
         _nodeDragConstraints.Add(node, attribute.DragConstraints);
+        _nodeDragClicks.Add(node, attribute.DragClick);
 
         Area2D area = CreateDraggableArea(node);
 
