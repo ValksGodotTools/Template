@@ -30,21 +30,11 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
 
     public void OnDragReleased()
     {
-        InventoryItemContainer thisInvItemContainer = _inventoryItemContainer;
-        InventoryContainer thisInvContainer = thisInvItemContainer.InventoryContainer;
-        Inventory thisInv = thisInvContainer.Inventory;
-
-        if (thisInvContainer.MouseIsOnSlot)
+        if (_inventoryItemContainer.InventoryContainer.MouseIsOnSlot)
         {
-            ItemContainerMouseEventArgs otherSlot = thisInvContainer.ActiveSlot;
+            ItemContainerMouseEventArgs otherSlot = _inventoryItemContainer.InventoryContainer.ActiveSlot;
 
-            InventoryItemContainer otherInvItemContainer = otherSlot.InventoryItemContainer;
-            InventoryContainer otherInvContainer = otherInvItemContainer.InventoryContainer;
-            Inventory otherInv = otherInvContainer.Inventory;
-
-            UIItem otherItem = otherInvItemContainer.UIItem;
-
-            thisInvItemContainer.SwapItems(otherInvItemContainer);
+            _inventoryItemContainer.SwapItems(otherSlot.InventoryItemContainer);
 
             QueueFree();
         }
