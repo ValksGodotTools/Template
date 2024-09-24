@@ -28,6 +28,11 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
         _itemCountLabel.Text = Count.ToString();
     }
 
+    public void OnDragStarted(MouseButtonType mouseButtonType)
+    {
+        GD.Print(mouseButtonType);
+    }
+
     public void OnDragReleased()
     {
         if (_inventoryItemContainer.InventoryContainer.MouseIsOnSlot)

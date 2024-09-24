@@ -87,6 +87,13 @@ public partial class Draggable : Node2D
                         _previousParent = _selectedNode.GetParent();
                         _previousPosition = _selectedNode.GlobalPosition;
 
+                        MouseButtonType buttonType = btn.IsLeftClickPressed() ? MouseButtonType.Left : MouseButtonType.Right;
+
+                        if (_selectedNode.Node is IDraggable draggable)
+                        {
+                            draggable.OnDragStarted(buttonType);
+                        }
+
                         // Reparent to viewport root
                         _selectedNode.Node.Reparent(GetTree().Root);
 
@@ -383,5 +390,12 @@ public interface IDraggableNode
 
 public interface IDraggable
 {
+    void OnDragStarted(MouseButtonType mouseButtonType);
     void OnDragReleased();
+}
+
+public enum MouseButtonType
+{
+    Left,
+    Right
 }
