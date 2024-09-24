@@ -8,6 +8,8 @@ public partial class InventorySandbox : Node
     public override void _Ready()
     {
         Inventory inventory = new(size: 10);
+        inventory.SetItem(0, Items.SnowyCoin);
+        inventory.SetItem(4, new Item(Items.Coin, 3));
 
         _ = new UIInventory(inventory, this);
     }
@@ -24,11 +26,19 @@ public class UIInventory
     {
         InventoryContainer inventoryContainer = InventoryContainer.Instantiate();
 
+        parent.AddChild(inventoryContainer);
+
         for (int i = 0; i < inventory.GetInventorySize(); i++)
         {
-            inventoryContainer.AddItemContainer();
-        }
+            ItemContainer itemContainer = inventoryContainer.AddItemContainer();
 
-        parent.AddChild(inventoryContainer);
+            Item item = inventory.GetItem(i);
+
+            if (item != null)
+            {
+                itemContainer.SetSpriteFrames(item.ResourcePath);
+                itemContainer.SetCount(item.Count);
+            }
+        }
     }
 }

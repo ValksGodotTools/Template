@@ -1,16 +1,15 @@
 using Godot;
-using System;
-using System.Collections.Generic;
 
 namespace Template.InventoryV2;
 
 [SceneTree]
 public partial class InventoryContainer : PanelContainer
 {
-    public void AddItemContainer()
+    public ItemContainer AddItemContainer()
     {
         ItemContainer itemContainer = ItemContainer.Instantiate();
         GridContainer.AddChild(itemContainer);
+        return itemContainer;
     }
 
     [OnInstantiate]

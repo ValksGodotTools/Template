@@ -8,14 +8,14 @@ public static class Items
     private static Item CreateCoin()
     {
         Item item = new("Coin");
-        item.Texture = ItemTexture.Coin;
+        item.ResourcePath = "res://Sandbox/Inventory/CoinSpriteFrames.tres";
         return item;
     }
 
     private static Item CreateSnowyCoin()
     {
         Item item = new("Snowy Coin");
-        item.Texture = ItemTexture.CoinSnowy;
+        item.ResourcePath = "res://Sandbox/Inventory/CoinStatic.png";
         return item;
     }
 }
