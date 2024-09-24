@@ -45,9 +45,15 @@ public partial class UIItem : AnimatedSprite2D, IDraggable
                 otherInvItemContainer.SetItem(thisInv.GetItem(thisInvItemContainer.Index));
                 thisInv.SwapItems(thisInvItemContainer.Index, otherInvItemContainer.Index);
 
+                otherInvItemContainer.UIItem = this;
                 thisInvItemContainer.UIItem = null;
 
                 QueueFree();
+            }
+            // Dragged an item onto an inventory slot that has an item here
+            else
+            {
+                
             }
         }
     }
