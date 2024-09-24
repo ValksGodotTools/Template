@@ -4,32 +4,24 @@ namespace Template.InventoryV2;
 
 public class Item
 {
-    public string Name { get; set; }
+    public string Name { get; private set; }
     public int Count { get; set; }
-    public Color Color { get; set; }
-    public string ResourcePath { get; set; }
+    public Color Color { get; private set; }
+    public string ResourcePath { get; private set; }
 
-    public Item(string name, int count = 1)
+    private Item(string name, int count = 1)
     {
         Name = name;
         Count = count;
     }
 
-    public Item(Item other, int count = 1) : this(other)
+    public Item Clone(Item other)
     {
-        Count = count;
-    }
-
-    public Item(Item other)
-    {
-        Name = other.Name;
-        Count = other.Count;
-        ResourcePath = other.ResourcePath;
-    }
-
-    public override string ToString()
-    {
-        return $"{Name} (x{Count})";
+        return new(other.Name, other.Count)
+        {
+            ResourcePath = other.ResourcePath,
+            Color = other.Color
+        };
     }
 
     public bool Equals(Item other)
@@ -38,5 +30,31 @@ public class Item
             return false;
 
         return Name == other.Name;
+    }
+
+    public override string ToString()
+    {
+        return $"{Name} (x{Count})";
+    }
+
+    public class Builder(string name, int count = 1)
+    {
+        private const string BaseResourcePath = "res://Sandbox/Inventory/";
+
+        private Item _item = new(name, count);
+
+        public Builder SetResourcePath(string resourcePath)
+        {
+            _item.ResourcePath = $"{BaseResourcePath}{resourcePath}";
+            return this;
+        }
+
+        public Builder SetColor(Color color)
+        {
+            _item.Color = color;
+            return this;
+        }
+
+        public Item Build() => _item;
     }
 }

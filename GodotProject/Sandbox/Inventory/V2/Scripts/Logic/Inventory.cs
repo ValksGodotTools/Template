@@ -27,9 +27,11 @@ public class Inventory
     public void AddItem(Item item, int count = 1)
     {
         int index = FindFirstEmptySlot();
+
         if (index != -1)
         {
-            _items[index] = new Item(item) { Count = count };
+            _items[index] = item;
+            item.Count = count;
         }
         else
         {
