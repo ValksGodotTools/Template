@@ -1,9 +1,12 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 namespace Template.InventoryV2;
 
 public class UIInventory
 {
+    private List<ItemContainer> _itemContainers = [];
+
     public UIInventory(Inventory inventory, Node parent)
     {
         // Create the InventoryContainer
@@ -15,6 +18,11 @@ public class UIInventory
 
         // Add the item containers
         AddItemContainers(invContainer, inventory);
+
+        inventory.OnItemChanged += (index, item) =>
+        {
+            _itemContainers[index].SetItem(item);
+        };
     }
 
     private void AddItemContainers(InventoryContainer invContainer, Inventory inv)
@@ -28,6 +36,7 @@ public class UIInventory
     private void AddItemContainer(InventoryContainer invContainer, Inventory inv, int index)
     {
         ItemContainer itemContainer = invContainer.AddItemContainer();
+        _itemContainers.Add(itemContainer);
 
         Item item = inv.GetItem(index);
 

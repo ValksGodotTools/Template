@@ -5,6 +5,8 @@ namespace Template.InventoryV2;
 
 public class Inventory
 {
+    public event Action<int, Item> OnItemChanged;
+
     private Item[] _items;
 
     public Inventory(int size)
@@ -22,16 +24,16 @@ public class Inventory
         ValidateIndex(index);
         _items[index] = item;
         item.Count = count;
+        OnItemChanged?.Invoke(index, item);
     }
 
     public void AddItem(Item item, int count = 1)
     {
-        int index = FindFirstEmptySlot();
-
-        if (index != -1)
+        if (FindFirstEmptySlot(out int index))
         {
             _items[index] = item;
             item.Count = count;
+            OnItemChanged?.Invoke(index, item);
         }
         else
         {
@@ -43,6 +45,7 @@ public class Inventory
     {
         ValidateIndex(index);
         _items[index] = null;
+        OnItemChanged?.Invoke(index, null);
     }
 
     public void RemoveItem(int index, int count = 1)
@@ -58,10 +61,12 @@ public class Inventory
         if (_items[index].Count <= count)
         {
             _items[index] = null;
+            OnItemChanged?.Invoke(index, null);
         }
         else
         {
             _items[index].Count -= count;
+            OnItemChanged?.Invoke(index, _items[index]);
         }
     }
 
@@ -71,6 +76,9 @@ public class Inventory
         ValidateIndex(index2);
 
         (_items[index2], _items[index1]) = (_items[index1], _items[index2]);
+
+        OnItemChanged?.Invoke(index1, _items[index1]);
+        OnItemChanged?.Invoke(index2, _items[index2]);
     }
 
     public Item GetItem(int index)
@@ -115,15 +123,19 @@ public class Inventory
         }
     }
 
-    private int FindFirstEmptySlot()
+    private bool FindFirstEmptySlot(out int index)
     {
         for (int i = 0; i < _items.Length; i++)
         {
             if (_items[i] == null)
             {
-                return i;
+                index = i;
+                return true;
             }
         }
-        return -1;
+
+        index = -1;
+
+        return false;
     }
 }
