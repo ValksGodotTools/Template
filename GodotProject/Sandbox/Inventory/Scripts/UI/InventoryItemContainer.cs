@@ -45,16 +45,18 @@ public class InventoryItemContainer
         parent.AddChild(container);
     }
 
-    public void SetItemSprite(InventoryItemSprite sprite)
+    public void SetItem(Item item)
     {
-        DraggableItem = sprite.DraggableItem;
         ItemParent.QueueFreeChildren();
-        ItemParent.AddChild(sprite.Build());
-    }
 
-    public void SetItemCount(int count)
-    {
-        DraggableItem.SetItemCount(count);
+        ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
+        InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, this);
+        DraggableItem = sprite.DraggableItem;
+
+        ItemParent.AddChild(sprite.Build());
+
+        // Must be set after the sprite is added
+        DraggableItem.SetItemCount(item.Count);
     }
 
     private Control AddCenterItemContainer(PanelContainer container)

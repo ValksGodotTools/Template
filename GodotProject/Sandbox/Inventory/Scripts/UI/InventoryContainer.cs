@@ -23,12 +23,7 @@ public class InventoryContainer
 
     public void SetItem(int index, Item item)
     {
-        ItemVisualData itemVisualData = ItemSpriteManager.GetResource(item);
-        InventoryItemSprite sprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, _itemContainers[index]);
-
-        _itemContainers[index].SetItemSprite(sprite);
-
-        sprite.SetCount(item.Count);
+        _itemContainers[index].SetItem(item);
     }
 
     private void AddItems(Inventory inventory, GridContainer grid)

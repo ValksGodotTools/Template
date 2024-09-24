@@ -36,11 +36,7 @@ public partial class DraggableItem : AnimatedSprite2D, IDraggable
 
             if (otherItem == null)
             {
-                ItemVisualData itemVisualData = ItemSpriteManager.GetResource(itemContainer.Item);
-                InventoryItemSprite invItemSprite = ResourceFactoryRegistry.CreateSprite(itemVisualData, otherItemContainer);
-
-                otherItemContainer.SetItemSprite(invItemSprite);
-                otherItemContainer.SetItemCount(Count);
+                otherItemContainer.SetItem(itemContainer.Item);
                 QueueFree();
             }
         }
