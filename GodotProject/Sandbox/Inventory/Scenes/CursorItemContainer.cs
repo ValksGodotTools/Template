@@ -1,4 +1,6 @@
+using CSharpUtils;
 using Godot;
+using System;
 
 namespace Template.Inventory;
 
@@ -12,6 +14,7 @@ public partial class CursorItemContainer : Node2D
     private Inventory _inventory;
     private Vector2 _offset;
     private float _currentSmoothFactor;
+    private State _currentState;
 
     public override void _Ready()
     {
@@ -24,22 +27,21 @@ public partial class CursorItemContainer : Node2D
         _offset = _itemContainer.CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactor;
 
+        _currentState = Idle();
+
         Show();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 target = GetGlobalMousePosition() - _offset;
-        float distance = _itemContainer.Position.DistanceTo(target);
-
-        _itemContainer.Position = _itemContainer.Position.MoveToward(target, distance * _currentSmoothFactor);
-        _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
+        _currentState.Update((float)delta);
     }
 
     public void SetItemAndFrame(Item item, int frame)
     {
         _inventory.SetItem(0, item);
         _itemContainer.SetCurrentSpriteFrame(frame);
+        _currentState = MoveTowardsCursor();
     }
 
     public void GetItemAndFrame(out Item item, out int frame)
@@ -56,6 +58,7 @@ public partial class CursorItemContainer : Node2D
     public void ClearItem()
     {
         _inventory.ClearItem(0);
+        _currentState = Idle();
     }
 
     public new void SetPosition(Vector2 position)
@@ -77,5 +80,39 @@ public partial class CursorItemContainer : Node2D
     {
         control.MouseFilter = Control.MouseFilterEnum.Ignore;
         control.SetProcessInput(false);
+    }
+
+    private State Idle()
+    {
+        State state = new(nameof(Idle));
+        return state;
+    }
+
+    private State MoveTowardsCursor()
+    {
+        State state = new(nameof(MoveTowardsCursor));
+
+        state.Update = delta =>
+        {
+            Vector2 target = GetGlobalMousePosition() - _offset;
+            float distance = _itemContainer.Position.DistanceTo(target);
+
+            _itemContainer.Position = _itemContainer.Position.MoveToward(target, distance * _currentSmoothFactor);
+            _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
+        };
+
+        return state;
+    }
+
+    private State MoveTowardsContainer()
+    {
+        State state = new(nameof(MoveTowardsContainer));
+
+        state.Update = delta =>
+        {
+            // TODO: Implement move towards container
+        };
+
+        return state;
     }
 }
