@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b0d0dvcv2awdp"]
 
-[ext_resource type="Script" path="res://Sandbox/Inventory/V2/Scenes/ItemContainer.cs" id="1_6ktsa"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/Scenes/ItemContainer.cs" id="1_6ktsa"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pwodw"]
 font_size = 14

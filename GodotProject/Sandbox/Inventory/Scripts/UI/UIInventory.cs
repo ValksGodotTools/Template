@@ -2,7 +2,7 @@
 using GodotUtils;
 using System.Collections.Generic;
 
-namespace Template.InventoryV2;
+namespace Template.Inventory;
 
 public class UIInventory
 {

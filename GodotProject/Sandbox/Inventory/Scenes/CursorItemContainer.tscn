@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dcmf0bbkqyl01"]
 
-[ext_resource type="PackedScene" uid="uid://b0d0dvcv2awdp" path="res://Sandbox/Inventory/V2/Scenes/ItemContainer.tscn" id="1_gdf4h"]
-[ext_resource type="Script" path="res://Sandbox/Inventory/V2/Scenes/CursorItemContainer.cs" id="1_vdyrg"]
+[ext_resource type="PackedScene" uid="uid://b0d0dvcv2awdp" path="res://Sandbox/Inventory/Scenes/ItemContainer.tscn" id="1_gdf4h"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/Scenes/CursorItemContainer.cs" id="1_vdyrg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x7ajr"]
 

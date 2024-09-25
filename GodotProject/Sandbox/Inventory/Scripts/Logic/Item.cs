@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Template.InventoryV2;
+namespace Template.Inventory;
 
 public class Item
 {

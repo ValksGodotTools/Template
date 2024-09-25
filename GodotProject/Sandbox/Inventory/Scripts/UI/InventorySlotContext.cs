@@ -1,4 +1,4 @@
-﻿namespace Template.InventoryV2;
+﻿namespace Template.Inventory;
 
 public class InventorySlotContext(Inventory inv, ItemContainer itemContainer, int index)
 {

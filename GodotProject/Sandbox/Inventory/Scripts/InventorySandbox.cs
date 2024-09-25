@@ -1,7 +1,7 @@
 using Godot;
 using GodotUtils;
 
-namespace Template.InventoryV2;
+namespace Template.Inventory;
 
 public partial class InventorySandbox : Node
 {

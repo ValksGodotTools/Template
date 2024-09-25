@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqyjmysxjlkq0"]
 
-[ext_resource type="Script" path="res://Sandbox/Inventory/V2/Scenes/InventoryContainer.cs" id="1_nn4xr"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/Scenes/InventoryContainer.cs" id="1_nn4xr"]
 
 [node name="InventoryContainer" type="PanelContainer"]
 offset_right = 40.0

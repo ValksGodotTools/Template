@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Template.InventoryV2;
+namespace Template.Inventory;
 
 [SceneTree]
 public partial class CursorItemContainer : Node2D
