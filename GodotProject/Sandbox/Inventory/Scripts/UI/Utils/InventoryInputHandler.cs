@@ -11,53 +11,48 @@ public class InventoryInputHandler()
         {
             if (inv.HasItem(index))
             {
-                HandleSwapItems(context);
+                SwapItems(context);
             }
             else
             {
-                HandlePlaceItem(context);
+                PlaceItem(context);
             }
         }
         else
         {
             if (inv.HasItem(index))
             {
-                HandlePickupItem(context);
+                PickupItem(context);
             }
         }
     }
 
-    private void HandleSwapItems(InventorySlotContext context)
+    private void SwapItems(InventorySlotContext context)
     {
-        CursorManager cursorManager = context.CursorManager;
-        InventorySlotManager inventoryManager = context.InventoryManager;
-
         // Get the cursor and inventory items
-        cursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
-        inventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
         // Set the inv item with the cursor item
-        inventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
+        context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
 
         // Set the cursor item with the inv item
-        cursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+        context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
     }
 
-    private void HandlePlaceItem(InventorySlotContext context)
+    private void PlaceItem(InventorySlotContext context)
     {
-        CursorManager cursorManager = context.CursorManager;
-
         // Get the item and sprite frame before clearing the item from the cursor
-        cursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
 
         // Clear the item from the cursor
-        cursorManager.ClearItem();
+        context.CursorManager.ClearItem();
 
         // Set the inventory item
         context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
     }
 
-    private void HandlePickupItem(InventorySlotContext context)
+    private void PickupItem(InventorySlotContext context)
     {
         // Get the item and sprite frame before clearing the item from the inventory
         context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
