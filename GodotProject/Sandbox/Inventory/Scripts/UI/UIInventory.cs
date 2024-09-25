@@ -96,8 +96,7 @@ public class UIInventory
         Item cursorItem = _cursorManager.GetItem();
         context.Inventory.SetItem(context.Index, cursorItem);
 
-        _cursorManager.SetTargetContainer(context.ItemContainer);
-        _cursorManager.ClearItem();
+        _cursorManager.ClearItem(context.ItemContainer);
     }
 
     private void HandlePickupItem(InventorySlotContext context)
@@ -107,6 +106,6 @@ public class UIInventory
         Item item = inv.GetItem(context.Index);
         inv.ClearItem(context.Index);
 
-        _cursorManager.SetItem(item, context.ItemContainer.GlobalPosition);
+        _cursorManager.SetItem(item, context.ItemContainer);
     }
 }

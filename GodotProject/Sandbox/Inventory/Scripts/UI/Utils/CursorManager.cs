@@ -4,12 +4,9 @@ namespace Template.Inventory;
 
 public class CursorManager(CursorItemContainer cursorItemContainer)
 {
-    private ItemContainer _originItemContainer;
-    private ItemContainer _targetItemContainer;
-
-    public void SetItem(Item item, Vector2 position)
+    public void SetItem(Item item, ItemContainer originItemContainer)
     {
-        cursorItemContainer.SetPosition(position);
+        cursorItemContainer.SetPosition(originItemContainer.GlobalPosition);
         cursorItemContainer.SetItem(item);
     }
 
@@ -23,20 +20,15 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
         return cursorItemContainer.GetItem();
     }
 
-    public void ClearItem()
+    public void ClearItem(ItemContainer targetContainer)
     {
-        if (_targetItemContainer != null)
+        if (targetContainer != null)
         {
-            cursorItemContainer.StartLerpingTowardsTargetContainer(_targetItemContainer);
+            cursorItemContainer.StartLerpingTowardsTargetContainer(targetContainer);
         }
         else
         {
             cursorItemContainer.ClearItem();
         }
-    }
-
-    public void SetTargetContainer(ItemContainer targetContainer)
-    {
-        _targetItemContainer = targetContainer;
     }
 }
