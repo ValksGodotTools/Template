@@ -75,7 +75,7 @@ public class UIInventory
         {
             if (inv.HasItem(index))
             {
-                
+                HandleSwapItems(context);
             }
             else
             {
@@ -89,6 +89,25 @@ public class UIInventory
                 HandlePickupItem(context);
             }
         }
+    }
+
+    private void HandleSwapItems(InventorySlotContext context)
+    {
+        // Get the item from the cursor
+        Item cursorItem = _cursorManager.GetItem();
+        int cursorSpriteFrame = _cursorManager.GetCurrentSpriteFrame();
+
+        // Get the item from the inventory
+        Inventory inv = context.Inventory;
+        Item invItem = inv.GetItem(context.Index);
+        int invSpriteFrame = context.ItemContainer.GetCurrentSpriteFrame();
+
+        // Set the inv item with the cursor item
+        inv.SetItem(context.Index, cursorItem);
+        context.ItemContainer.SetCurrentSpriteFrame(cursorSpriteFrame);
+
+        // Set the cursor item with the inv item
+        _cursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
     }
 
     private void HandlePlaceItem(InventorySlotContext context)
