@@ -26,6 +26,18 @@ public partial class ItemContainer : PanelContainer
         }
     }
 
+    public void HideItem()
+    {
+        Sprite.Hide();
+        Count.Hide();
+    }
+
+    public void ShowItem()
+    {
+        Sprite.Show();
+        Count.Show();
+    }
+
     private void SetSpriteFrames(string resourcePath)
     {
         if (!string.IsNullOrWhiteSpace(resourcePath))
@@ -37,6 +49,11 @@ public partial class ItemContainer : PanelContainer
         {
             Sprite.SpriteFrames = null;
         }
+    }
+
+    public int GetCurrentSpriteFrame()
+    {
+        return Sprite.Frame;
     }
 
     private void SetColor(Color color)

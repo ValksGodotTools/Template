@@ -4,6 +4,9 @@ namespace Template.Inventory;
 
 public class CursorManager(CursorItemContainer cursorItemContainer)
 {
+    private ItemContainer _originItemContainer;
+    private ItemContainer _targetItemContainer;
+
     public void SetItem(Item item, Vector2 position)
     {
         cursorItemContainer.SetPosition(position);
@@ -22,6 +25,18 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
 
     public void ClearItem()
     {
-        cursorItemContainer.ClearItem();
+        if (_targetItemContainer != null)
+        {
+            cursorItemContainer.StartLerpingTowardsTargetContainer(_targetItemContainer);
+        }
+        else
+        {
+            cursorItemContainer.ClearItem();
+        }
+    }
+
+    public void SetTargetContainer(ItemContainer targetContainer)
+    {
+        _targetItemContainer = targetContainer;
     }
 }
