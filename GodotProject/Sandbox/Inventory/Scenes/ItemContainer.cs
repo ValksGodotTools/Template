@@ -51,11 +51,6 @@ public partial class ItemContainer : PanelContainer
         }
     }
 
-    public void SetCurrentSpriteFrame(int frame)
-    {
-        Sprite.Frame = frame;
-    }
-
     public int GetCurrentSpriteFrame()
     {
         return Sprite.Frame;
