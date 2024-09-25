@@ -3,47 +3,15 @@ using GodotUtils;
 
 namespace Template.Inventory;
 
-public class InventoryInputLeftClick : IInventoryInput
+public class InventoryInputLeftClick : InventoryInputHandler
 {
-    public bool CheckInput(InputEventMouseButton mouseBtn)
+    public override bool CheckInput(InputEventMouseButton mouseBtn)
     {
         return mouseBtn.IsLeftClickPressed();
     }
 
-    public void Handle(InventorySlotContext context)
-    {
-        Inventory inv = context.Inventory;
-        CursorManager cursorManager = context.CursorManager;
-        int index = context.Index;
-
-        if (cursorManager.HasItem())
-        {
-            if (inv.HasItem(index))
-            {
-                if (cursorManager.ItemsAreOfSameType(inv.GetItem(index)))
-                {
-                    StackItems(context);
-                }
-                else
-                {
-                    SwapItems(context);
-                }
-            }
-            else
-            {
-                PlaceItem(context);
-            }
-        }
-        else
-        {
-            if (inv.HasItem(index))
-            {
-                PickupItem(context);
-            }
-        }
-    }
-
-    private void StackItems(InventorySlotContext context)
+    // Stack the cursor item onto the inventory item
+    public override void HandleSameType(InventorySlotContext context)
     {
         // Get the cursor and inventory items
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
@@ -56,7 +24,8 @@ public class InventoryInputLeftClick : IInventoryInput
         context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
     }
 
-    private void SwapItems(InventorySlotContext context)
+    // Swap the cursor item with the inventory item
+    public override void HandleDiffType(InventorySlotContext context)
     {
         // Get the cursor and inventory items
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
@@ -69,7 +38,8 @@ public class InventoryInputLeftClick : IInventoryInput
         context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
     }
 
-    private void PlaceItem(InventorySlotContext context)
+    // Place the item from the cursor to the inventory
+    public override void HandlePlace(InventorySlotContext context)
     {
         // Get the item and sprite frame before clearing the item from the cursor
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
@@ -81,7 +51,8 @@ public class InventoryInputLeftClick : IInventoryInput
         context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
     }
 
-    private void PickupItem(InventorySlotContext context)
+    // Pickup the item from the inventory and put it on the cursor
+    public override void HandlePickup(InventorySlotContext context)
     {
         // Get the item and sprite frame before clearing the item from the inventory
         context.InventoryManager.GetItemAndFrame(out Item item, out int frame);

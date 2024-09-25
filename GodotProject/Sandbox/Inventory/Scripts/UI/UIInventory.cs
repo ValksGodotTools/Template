@@ -26,7 +26,7 @@ public class UIInventory
     {
         List<ItemContainer> itemContainers = [];
 
-        List<IInventoryInput> inputs = 
+        List<InventoryInputHandler> inputs = 
         [
             new InventoryInputLeftClick(),
             new InventoryInputRightClick()
@@ -42,7 +42,7 @@ public class UIInventory
         UpdateItemContainerOnInvChanged(itemContainers, inv);
     }
 
-    private void AddItemContainer(List<IInventoryInput> inputs, List<ItemContainer> itemContainers, InventorySlotContext context)
+    private void AddItemContainer(List<InventoryInputHandler> inputs, List<ItemContainer> itemContainers, InventorySlotContext context)
     {
         ItemContainer itemContainer = context.ItemContainer;
         itemContainer.SetItem(context.Inventory.GetItem(context.Index));
@@ -61,7 +61,7 @@ public class UIInventory
         {
             if (inputEvent is InputEventMouseButton mouseBtn)
             {
-                foreach (IInventoryInput input in inputs)
+                foreach (InventoryInputHandler input in inputs)
                 {
                     if (input.CheckInput(mouseBtn))
                     {
