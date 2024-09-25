@@ -37,12 +37,17 @@ public partial class CursorItemContainer : Node2D
     public void SetItem(Item item)
     {
         _inventory.SetItem(0, item);
-        _currentSmoothFactor = InitialSmoothFactor;
+        ResetSmoothFactor();
     }
 
     public new void SetPosition(Vector2 position)
     {
         _itemContainer.Position = position;
+    }
+
+    private void ResetSmoothFactor()
+    {
+        _currentSmoothFactor = InitialSmoothFactor;
     }
 
     private void HandleItemChanged(int index, Item item)
