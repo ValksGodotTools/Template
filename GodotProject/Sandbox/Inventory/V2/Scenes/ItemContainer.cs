@@ -12,15 +12,31 @@ public partial class ItemContainer : PanelContainer
 
     public void SetItem(Item item)
     {
-        SetSpriteFrames(item.ResourcePath);
-        SetColor(item.Color);
-        SetCount(item.Count);
+        if (item != null)
+        {
+            SetSpriteFrames(item.ResourcePath);
+            SetColor(item.Color);
+            SetCount(item.Count);
+        }
+        else
+        {
+            SetSpriteFrames(null);
+            SetColor(default);
+            SetCount(0);
+        }
     }
 
     private void SetSpriteFrames(string resourcePath)
     {
-        Sprite.SpriteFrames = SpriteFramesLoader.Load(resourcePath);
-        Sprite.Play();
+        if (!string.IsNullOrWhiteSpace(resourcePath))
+        {
+            Sprite.SpriteFrames = SpriteFramesLoader.Load(resourcePath);
+            Sprite.Play();
+        }
+        else
+        {
+            Sprite.SpriteFrames = null;
+        }
     }
 
     private void SetColor(Color color)

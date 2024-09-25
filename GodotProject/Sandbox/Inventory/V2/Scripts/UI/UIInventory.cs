@@ -1,4 +1,5 @@
 ﻿using Godot;
+using GodotUtils;
 using System.Collections.Generic;
 
 namespace Template.InventoryV2;
@@ -38,11 +39,32 @@ public class UIInventory
         ItemContainer itemContainer = invContainer.AddItemContainer();
         _itemContainers.Add(itemContainer);
 
-        Item item = inv.GetItem(index);
+        itemContainer.SetItem(inv.GetItem(index));
 
-        if (item != null)
+        itemContainer.MouseEntered += () =>
         {
-            itemContainer.SetItem(item);
-        }
+
+        };
+
+        itemContainer.MouseExited += () =>
+        {
+
+        };
+
+        itemContainer.GuiInput += inputEvent =>
+        {
+            if (inputEvent is InputEventMouseButton mouseBtn)
+            {
+                if (mouseBtn.IsLeftClickPressed())
+                {
+                    if (inv.HasItem(index))
+                    {
+                        //Item itemToPickup = inv.GetItem(index);
+
+                        inv.ClearItem(index);
+                    }
+                }
+            }
+        };
     }
 }

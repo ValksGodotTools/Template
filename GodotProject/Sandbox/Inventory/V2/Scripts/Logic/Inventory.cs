@@ -81,6 +81,11 @@ public class Inventory
         OnItemChanged?.Invoke(index2, _items[index2]);
     }
 
+    public bool HasItem(int index)
+    {
+        return GetItem(index) != null;
+    }
+
     public Item GetItem(int index)
     {
         ValidateIndex(index);
