@@ -33,16 +33,14 @@ public class UIInventory
     {
         for (int i = 0; i < inv.GetInventorySize(); i++)
         {
-            AddItemContainer(invContainer, inv, i);
+            AddItemContainer(new InventorySlotContext(inv, invContainer.AddItemContainer(), i));
         }
     }
 
-    private void AddItemContainer(InventoryContainer invContainer, Inventory inv, int index)
+    private void AddItemContainer(InventorySlotContext context)
     {
-        ItemContainer itemContainer = invContainer.AddItemContainer();
-        _itemContainers.Add(itemContainer);
-
-        itemContainer.SetItem(inv.GetItem(index));
+        ItemContainer itemContainer = context.ItemContainer;
+        itemContainer.SetItem(context.Inventory.GetItem(context.Index));
 
         itemContainer.MouseEntered += () =>
         {
@@ -60,14 +58,19 @@ public class UIInventory
             {
                 if (mouseBtn.IsLeftClickPressed())
                 {
-                    HandleLeftClick(inv, itemContainer, index);
+                    HandleLeftClick(context);
                 }
             }
         };
+
+        _itemContainers.Add(itemContainer);
     }
 
-    private void HandleLeftClick(Inventory inv, ItemContainer itemContainer, int index)
+    private void HandleLeftClick(InventorySlotContext context)
     {
+        Inventory inv = context.Inventory;
+        int index = context.Index;
+
         if (_cursorManager.HasItem())
         {
             if (inv.HasItem(index))
@@ -76,31 +79,33 @@ public class UIInventory
             }
             else
             {
-                HandlePlaceItem(inv, itemContainer, index);
+                HandlePlaceItem(context);
             }
         }
         else
         {
             if (inv.HasItem(index))
             {
-                HandlePickupItem(inv, itemContainer, index);
+                HandlePickupItem(context);
             }
         }
     }
 
-    private void HandlePlaceItem(Inventory inv, ItemContainer itemContainer, int index)
+    private void HandlePlaceItem(InventorySlotContext context)
     {
         Item cursorItem = _cursorManager.GetItem();
         _cursorManager.ClearItem();
 
-        inv.SetItem(index, cursorItem);
+        context.Inventory.SetItem(context.Index, cursorItem);
     }
 
-    private void HandlePickupItem(Inventory inv, ItemContainer itemContainer, int index)
+    private void HandlePickupItem(InventorySlotContext context)
     {
-        Item item = inv.GetItem(index);
-        inv.ClearItem(index);
+        Inventory inv = context.Inventory;
 
-        _cursorManager.SetItem(item, itemContainer.GlobalPosition);
+        Item item = inv.GetItem(context.Index);
+        inv.ClearItem(context.Index);
+
+        _cursorManager.SetItem(item, context.ItemContainer.GlobalPosition);
     }
 }
