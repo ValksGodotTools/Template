@@ -30,18 +30,14 @@ public class InventoryInputHandler()
     private void HandleSwapItems(InventorySlotContext context)
     {
         CursorManager cursorManager = context.CursorManager;
+        InventorySlotManager inventoryManager = context.InventoryManager;
 
-        // Get the item from the cursor
+        // Get the cursor and inventory items
         cursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
-
-        // Get the item from the inventory
-        Inventory inv = context.Inventory;
-        Item invItem = inv.GetItem(context.Index);
-        int invSpriteFrame = context.ItemContainer.GetCurrentSpriteFrame();
+        inventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
         // Set the inv item with the cursor item
-        inv.SetItem(context.Index, cursorItem);
-        context.ItemContainer.SetCurrentSpriteFrame(cursorItemFrame);
+        inventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
 
         // Set the cursor item with the inv item
         cursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
@@ -58,22 +54,18 @@ public class InventoryInputHandler()
         cursorManager.ClearItem();
 
         // Set the inventory item
-        context.Inventory.SetItem(context.Index, cursorItem);
-        context.ItemContainer.SetCurrentSpriteFrame(cursorItemFrame);
+        context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
     }
 
     private void HandlePickupItem(InventorySlotContext context)
     {
-        Inventory inv = context.Inventory;
-
         // Get the item and sprite frame before clearing the item from the inventory
-        Item item = inv.GetItem(context.Index);
-        int spriteFrame = context.ItemContainer.GetCurrentSpriteFrame();
+        context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
 
         // Clear the item from the inventory
-        inv.ClearItem(context.Index);
+        context.Inventory.ClearItem(context.Index);
 
         // Set the cursor item
-        context.CursorManager.SetItem(item, context.ItemContainer.GlobalPosition, spriteFrame);
+        context.CursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
     }
 }

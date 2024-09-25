@@ -29,7 +29,9 @@ public class UIInventory
 
         for (int i = 0; i < inv.GetInventorySize(); i++)
         {
-            AddItemContainer(inputHandler, itemContainers, new InventorySlotContext(cursorManager, inv, invContainer.AddItemContainer(), i));
+            InventorySlotContext context = new(cursorManager, inv, invContainer.AddItemContainer(), i);
+            
+            AddItemContainer(inputHandler, itemContainers, context);
         }
 
         UpdateItemContainerOnInvChanged(itemContainers, inv);
