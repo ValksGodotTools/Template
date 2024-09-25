@@ -94,10 +94,9 @@ public class UIInventory
     private void HandlePlaceItem(InventorySlotContext context)
     {
         Item cursorItem = _cursorManager.GetItem();
-        context.Inventory.SetItem(context.Index, cursorItem);
-
-        _cursorManager.SetTargetContainer(context.ItemContainer);
         _cursorManager.ClearItem();
+
+        context.Inventory.SetItem(context.Index, cursorItem);
     }
 
     private void HandlePickupItem(InventorySlotContext context)
