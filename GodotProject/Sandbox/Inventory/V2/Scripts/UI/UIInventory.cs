@@ -7,6 +7,7 @@ namespace Template.InventoryV2;
 public class UIInventory
 {
     private List<ItemContainer> _itemContainers = [];
+    private CursorItemContainer _cursorItemContainer;
 
     public UIInventory(Inventory inventory, Node parent)
     {
@@ -24,6 +25,8 @@ public class UIInventory
         {
             _itemContainers[index].SetItem(item);
         };
+
+        _cursorItemContainer = parent.GetSceneNode<CursorItemContainer>();
     }
 
     private void AddItemContainers(InventoryContainer invContainer, Inventory inv)
@@ -57,14 +60,21 @@ public class UIInventory
             {
                 if (mouseBtn.IsLeftClickPressed())
                 {
-                    if (inv.HasItem(index))
-                    {
-                        //Item itemToPickup = inv.GetItem(index);
-
-                        inv.ClearItem(index);
-                    }
+                    HandleLeftClick(inv, itemContainer, index);
                 }
             }
         };
+    }
+
+    private void HandleLeftClick(Inventory inv, ItemContainer itemContainer, int index)
+    {
+        if (inv.HasItem(index))
+        {
+            Item itemToPickup = inv.GetItem(index);
+            inv.ClearItem(index);
+
+            _cursorItemContainer.SetPosition(itemContainer.GlobalPosition);
+            _cursorItemContainer.SetItem(itemToPickup);
+        }
     }
 }

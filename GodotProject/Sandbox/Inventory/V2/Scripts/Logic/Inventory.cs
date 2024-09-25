@@ -19,11 +19,10 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public void SetItem(int index, Item item, int count = 1)
+    public void SetItem(int index, Item item)
     {
         ValidateIndex(index);
         _items[index] = item;
-        item.Count = count;
         OnItemChanged?.Invoke(index, item);
     }
 
