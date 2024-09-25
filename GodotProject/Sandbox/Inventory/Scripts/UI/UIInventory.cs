@@ -93,19 +93,30 @@ public class UIInventory
 
     private void HandlePlaceItem(InventorySlotContext context)
     {
+        // Get the item and sprite frame before clearing the item from the cursor
         Item cursorItem = _cursorManager.GetItem();
+        int spriteFrame = _cursorManager.GetCurrentSpriteFrame();
+
+        // Clear the item from the cursor
         _cursorManager.ClearItem();
 
+        // Set the inventory item
         context.Inventory.SetItem(context.Index, cursorItem);
+        context.ItemContainer.SetCurrentSpriteFrame(spriteFrame);
     }
 
     private void HandlePickupItem(InventorySlotContext context)
     {
         Inventory inv = context.Inventory;
-
+        
+        // Get the item and sprite frame before clearing the item from the inventory
         Item item = inv.GetItem(context.Index);
+        int spriteFrame = context.ItemContainer.GetCurrentSpriteFrame();
+
+        // Clear the item from the inventory
         inv.ClearItem(context.Index);
 
-        _cursorManager.SetItem(item, context.ItemContainer.GlobalPosition);
+        // Set the cursor item
+        _cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, spriteFrame);
     }
 }

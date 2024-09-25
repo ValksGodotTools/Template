@@ -39,6 +39,16 @@ public partial class ItemContainer : PanelContainer
         }
     }
 
+    public void SetCurrentSpriteFrame(int frame)
+    {
+        Sprite.Frame = frame;
+    }
+
+    public int GetCurrentSpriteFrame()
+    {
+        return Sprite.Frame;
+    }
+
     private void SetColor(Color color)
     {
         Sprite.Modulate = color != default ? color : Colors.White;
