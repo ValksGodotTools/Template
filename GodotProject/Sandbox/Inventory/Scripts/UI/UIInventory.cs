@@ -25,27 +25,24 @@ public class UIInventory
     private void AddItemContainers(CursorManager cursorManager, InventoryContainer invContainer, Inventory inv)
     {
         List<ItemContainer> itemContainers = [];
-        InventoryInputHandler inputHandler = new();
+
+        List<IInventoryInput> inputs = 
+        [
+            new InventoryInputLeftClick(),
+            new InventoryInputRightClick()
+        ];
 
         for (int i = 0; i < inv.GetInventorySize(); i++)
         {
             InventorySlotContext context = new(cursorManager, inv, invContainer.AddItemContainer(), i);
             
-            AddItemContainer(inputHandler, itemContainers, context);
+            AddItemContainer(inputs, itemContainers, context);
         }
 
         UpdateItemContainerOnInvChanged(itemContainers, inv);
     }
 
-    private void UpdateItemContainerOnInvChanged(List<ItemContainer> itemContainers, Inventory inv)
-    {
-        inv.OnItemChanged += (index, item) =>
-        {
-            itemContainers[index].SetItem(item);
-        };
-    }
-
-    private void AddItemContainer(InventoryInputHandler inputHandler, List<ItemContainer> itemContainers, InventorySlotContext context)
+    private void AddItemContainer(List<IInventoryInput> inputs, List<ItemContainer> itemContainers, InventorySlotContext context)
     {
         ItemContainer itemContainer = context.ItemContainer;
         itemContainer.SetItem(context.Inventory.GetItem(context.Index));
@@ -64,13 +61,24 @@ public class UIInventory
         {
             if (inputEvent is InputEventMouseButton mouseBtn)
             {
-                if (mouseBtn.IsLeftClickPressed())
+                foreach (IInventoryInput input in inputs)
                 {
-                    inputHandler.HandleLeftClick(context);
+                    if (input.CheckInput(mouseBtn))
+                    {
+                        input.Handle(context);
+                    }
                 }
             }
         };
 
         itemContainers.Add(itemContainer);
+    }
+
+    private void UpdateItemContainerOnInvChanged(List<ItemContainer> itemContainers, Inventory inv)
+    {
+        inv.OnItemChanged += (index, item) =>
+        {
+            itemContainers[index].SetItem(item);
+        };
     }
 }

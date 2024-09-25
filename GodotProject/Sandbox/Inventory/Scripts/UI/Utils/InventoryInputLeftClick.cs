@@ -1,8 +1,16 @@
-﻿namespace Template.Inventory;
+﻿using Godot;
+using GodotUtils;
 
-public class InventoryInputHandler()
+namespace Template.Inventory;
+
+public class InventoryInputLeftClick : IInventoryInput
 {
-    public void HandleLeftClick(InventorySlotContext context)
+    public bool CheckInput(InputEventMouseButton mouseBtn)
+    {
+        return mouseBtn.IsLeftClickPressed();
+    }
+
+    public void Handle(InventorySlotContext context)
     {
         Inventory inv = context.Inventory;
         CursorManager cursorManager = context.CursorManager;
