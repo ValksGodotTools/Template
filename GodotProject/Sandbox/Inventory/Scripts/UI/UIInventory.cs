@@ -6,9 +6,6 @@ namespace Template.Inventory;
 
 public class UIInventory
 {
-    private List<ItemContainer> _itemContainers = [];
-    private CursorManager _cursorManager;
-
     public UIInventory(Inventory inventory, Node parent)
     {
         // Create the InventoryContainer
@@ -18,26 +15,28 @@ public class UIInventory
         // children nodes will get called at the correct times
         parent.AddChild(invContainer);
 
+        List<ItemContainer> itemContainers = [];
+
+        CursorManager cursorManager = new(parent.GetSceneNode<CursorItemContainer>());
+
         // Add the item containers
-        AddItemContainers(invContainer, inventory);
+        AddItemContainers(cursorManager, itemContainers, invContainer, inventory);
 
         inventory.OnItemChanged += (index, item) =>
         {
-            _itemContainers[index].SetItem(item);
+            itemContainers[index].SetItem(item);
         };
-
-        _cursorManager = new CursorManager(parent.GetSceneNode<CursorItemContainer>());
     }
 
-    private void AddItemContainers(InventoryContainer invContainer, Inventory inv)
+    private void AddItemContainers(CursorManager cursorManager, List<ItemContainer> itemContainers, InventoryContainer invContainer, Inventory inv)
     {
         for (int i = 0; i < inv.GetInventorySize(); i++)
         {
-            AddItemContainer(new InventorySlotContext(inv, invContainer.AddItemContainer(), i));
+            AddItemContainer(itemContainers, new InventorySlotContext(cursorManager, inv, invContainer.AddItemContainer(), i));
         }
     }
 
-    private void AddItemContainer(InventorySlotContext context)
+    private void AddItemContainer(List<ItemContainer> itemContainers, InventorySlotContext context)
     {
         ItemContainer itemContainer = context.ItemContainer;
         itemContainer.SetItem(context.Inventory.GetItem(context.Index));
@@ -63,7 +62,7 @@ public class UIInventory
             }
         };
 
-        _itemContainers.Add(itemContainer);
+        itemContainers.Add(itemContainer);
     }
 
     private void HandleLeftClick(InventorySlotContext context)
@@ -71,7 +70,7 @@ public class UIInventory
         Inventory inv = context.Inventory;
         int index = context.Index;
 
-        if (_cursorManager.HasItem())
+        if (context.CursorManager.HasItem())
         {
             if (inv.HasItem(index))
             {
@@ -93,9 +92,11 @@ public class UIInventory
 
     private void HandleSwapItems(InventorySlotContext context)
     {
+        CursorManager cursorManager = context.CursorManager;
+
         // Get the item from the cursor
-        Item cursorItem = _cursorManager.GetItem();
-        int cursorSpriteFrame = _cursorManager.GetCurrentSpriteFrame();
+        Item cursorItem = cursorManager.GetItem();
+        int cursorSpriteFrame = cursorManager.GetCurrentSpriteFrame();
 
         // Get the item from the inventory
         Inventory inv = context.Inventory;
@@ -107,17 +108,19 @@ public class UIInventory
         context.ItemContainer.SetCurrentSpriteFrame(cursorSpriteFrame);
 
         // Set the cursor item with the inv item
-        _cursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+        cursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
     }
 
     private void HandlePlaceItem(InventorySlotContext context)
     {
+        CursorManager cursorManager = context.CursorManager;
+
         // Get the item and sprite frame before clearing the item from the cursor
-        Item cursorItem = _cursorManager.GetItem();
-        int spriteFrame = _cursorManager.GetCurrentSpriteFrame();
+        Item cursorItem = cursorManager.GetItem();
+        int spriteFrame = cursorManager.GetCurrentSpriteFrame();
 
         // Clear the item from the cursor
-        _cursorManager.ClearItem();
+        cursorManager.ClearItem();
 
         // Set the inventory item
         context.Inventory.SetItem(context.Index, cursorItem);
@@ -136,6 +139,6 @@ public class UIInventory
         inv.ClearItem(context.Index);
 
         // Set the cursor item
-        _cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, spriteFrame);
+        context.CursorManager.SetItem(item, context.ItemContainer.GlobalPosition, spriteFrame);
     }
 }
