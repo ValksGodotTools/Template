@@ -1,6 +1,6 @@
 ﻿namespace Template.Inventory;
 
-public class InventoryManager()
+public class InventoryInputHandler()
 {
     public void HandleLeftClick(InventorySlotContext context)
     {

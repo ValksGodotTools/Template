@@ -25,11 +25,11 @@ public class UIInventory
     private void AddItemContainers(CursorManager cursorManager, InventoryContainer invContainer, Inventory inv)
     {
         List<ItemContainer> itemContainers = [];
-        InventoryManager inventoryManager = new();
+        InventoryInputHandler inputHandler = new();
 
         for (int i = 0; i < inv.GetInventorySize(); i++)
         {
-            AddItemContainer(inventoryManager, itemContainers, new InventorySlotContext(cursorManager, inv, invContainer.AddItemContainer(), i));
+            AddItemContainer(inputHandler, itemContainers, new InventorySlotContext(cursorManager, inv, invContainer.AddItemContainer(), i));
         }
 
         UpdateItemContainerOnInvChanged(itemContainers, inv);
@@ -43,7 +43,7 @@ public class UIInventory
         };
     }
 
-    private void AddItemContainer(InventoryManager inventoryManager, List<ItemContainer> itemContainers, InventorySlotContext context)
+    private void AddItemContainer(InventoryInputHandler inputHandler, List<ItemContainer> itemContainers, InventorySlotContext context)
     {
         ItemContainer itemContainer = context.ItemContainer;
         itemContainer.SetItem(context.Inventory.GetItem(context.Index));
@@ -64,7 +64,7 @@ public class UIInventory
             {
                 if (mouseBtn.IsLeftClickPressed())
                 {
-                    inventoryManager.HandleLeftClick(context);
+                    inputHandler.HandleLeftClick(context);
                 }
             }
         };
