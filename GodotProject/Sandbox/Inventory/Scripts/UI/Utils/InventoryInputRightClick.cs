@@ -17,12 +17,6 @@ public class InventoryInputRightClick : InventoryInputHandler
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
-        // If the cursor item count is 1 or less, do nothing
-        if (cursorItem.Count <= 0)
-        {
-            return;
-        }
-
         // Add one count to the inventory item
         invItem.Count += 1;
 
@@ -64,12 +58,6 @@ public class InventoryInputRightClick : InventoryInputHandler
         // Get the item and sprite frame before clearing the item from the cursor
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
 
-        // If the cursor item count is 1 or less, do nothing
-        if (cursorItem.Count <= 0)
-        {
-            return;
-        }
-
         // Create a new item with a count of 1
         Item newItem = new(cursorItem)
         {
@@ -99,12 +87,6 @@ public class InventoryInputRightClick : InventoryInputHandler
     {
         // Get the item and sprite frame before clearing the item from the inventory
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
-
-        // If the inventory item count is 1 or less, do nothing
-        if (invItem.Count <= 0)
-        {
-            return;
-        }
 
         // Calculate the half count to split
         int halfCount = invItem.Count / 2;
