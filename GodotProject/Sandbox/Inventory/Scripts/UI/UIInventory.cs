@@ -26,7 +26,7 @@ public class UIInventory
             _itemContainers[index].SetItem(item);
         };
 
-        _cursorManager = new CursorManager(parent, 5);
+        _cursorManager = new CursorManager(parent.GetSceneNode<CursorItemContainer>());
     }
 
     private void AddItemContainers(InventoryContainer invContainer, Inventory inv)
@@ -71,7 +71,7 @@ public class UIInventory
         Inventory inv = context.Inventory;
         int index = context.Index;
 
-        if (_cursorManager.HasActiveItem())
+        if (_cursorManager.HasItem())
         {
             if (inv.HasItem(index))
             {
