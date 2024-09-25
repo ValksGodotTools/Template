@@ -22,17 +22,26 @@ public class Inventory
     public void SetItem(int index, Item item)
     {
         ValidateIndex(index);
-        _items[index] = item;
-        OnItemChanged?.Invoke(index, item);
+
+        Item newItem = new(item);
+
+        _items[index] = newItem;
+
+        OnItemChanged?.Invoke(index, newItem);
     }
 
     public void AddItem(Item item, int count = 1)
     {
         if (FindFirstEmptySlot(out int index))
         {
-            _items[index] = item;
-            item.Count = count;
-            OnItemChanged?.Invoke(index, item);
+            Item newItem = new(item)
+            {
+                Count = count
+            };
+
+            _items[index] = newItem;
+
+            OnItemChanged?.Invoke(index, newItem);
         }
         else
         {
@@ -43,7 +52,9 @@ public class Inventory
     public void ClearItem(int index)
     {
         ValidateIndex(index);
+
         _items[index] = null;
+
         OnItemChanged?.Invoke(index, null);
     }
 
@@ -60,11 +71,13 @@ public class Inventory
         if (_items[index].Count <= count)
         {
             _items[index] = null;
+
             OnItemChanged?.Invoke(index, null);
         }
         else
         {
             _items[index].Count -= count;
+
             OnItemChanged?.Invoke(index, _items[index]);
         }
     }
@@ -88,12 +101,14 @@ public class Inventory
     public Item GetItem(int index)
     {
         ValidateIndex(index);
+
         return _items[index];
     }
 
     public int GetItemCount()
     {
         int count = 0;
+
         foreach (Item item in _items)
         {
             if (item != null)

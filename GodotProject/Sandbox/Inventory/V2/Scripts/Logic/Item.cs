@@ -15,13 +15,12 @@ public class Item
         Count = count;
     }
 
-    public Item Clone(Item other)
+    public Item(Item other)
     {
-        return new(other.Name, other.Count)
-        {
-            ResourcePath = other.ResourcePath,
-            Color = other.Color
-        };
+        Name = other.Name;
+        Count = other.Count;
+        Color = other.Color;
+        ResourcePath = other.ResourcePath;
     }
 
     public bool Equals(Item other)
