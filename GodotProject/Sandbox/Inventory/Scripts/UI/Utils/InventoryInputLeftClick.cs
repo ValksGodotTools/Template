@@ -5,7 +5,7 @@ namespace Template.Inventory;
 
 public class InventoryInputLeftClick : InventoryInputHandler
 {
-    public override bool CheckInput(InputEventMouseButton mouseBtn)
+    public override bool HasInput(InputEventMouseButton mouseBtn)
     {
         return mouseBtn.IsLeftClickPressed();
     }

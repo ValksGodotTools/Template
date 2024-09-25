@@ -38,7 +38,7 @@ public abstract class InventoryInputHandler
     }
 
     /// <summary>If the correct <paramref name="mouseBtn"/> input is provided then handle this input.</summary>
-    public abstract bool CheckInput(InputEventMouseButton mouseBtn);
+    public abstract bool HasInput(InputEventMouseButton mouseBtn);
     
     /// <summary>Both items are of the same type. The cursor and inventory slots are both guaranteed to have at least one item.</summary>
     public abstract void HandleSameType(InventorySlotContext context);

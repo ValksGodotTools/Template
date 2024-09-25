@@ -63,7 +63,7 @@ public class UIInventory
             {
                 foreach (InventoryInputHandler input in inputs)
                 {
-                    if (input.CheckInput(mouseBtn))
+                    if (input.HasInput(mouseBtn))
                     {
                         input.Handle(context);
                     }

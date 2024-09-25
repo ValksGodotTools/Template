@@ -5,7 +5,7 @@ namespace Template.Inventory;
 
 public class InventoryInputRightClick : InventoryInputHandler
 {
-    public override bool CheckInput(InputEventMouseButton mouseBtn)
+    public override bool HasInput(InputEventMouseButton mouseBtn)
     {
         return mouseBtn.IsRightClickPressed();
     }
