@@ -40,7 +40,6 @@ public partial class CursorItemContainer : Node2D
     {
         _inventory.SetItem(0, item);
         _itemContainer.SetCurrentSpriteFrame(frame);
-        ResetSmoothFactor();
     }
 
     public void GetItemAndFrame(out Item item, out int frame)
@@ -64,7 +63,7 @@ public partial class CursorItemContainer : Node2D
         _itemContainer.Position = position;
     }
 
-    private void ResetSmoothFactor()
+    public void ResetSmoothFactor()
     {
         _currentSmoothFactor = InitialSmoothFactor;
     }

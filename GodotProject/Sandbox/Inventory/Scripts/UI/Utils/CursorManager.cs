@@ -8,6 +8,7 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
     {
         cursorItemContainer.SetPosition(position);
         cursorItemContainer.SetItemAndFrame(item, spriteFrame);
+        cursorItemContainer.ResetSmoothFactor();
     }
 
     public bool HasItem()
