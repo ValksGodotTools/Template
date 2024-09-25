@@ -40,6 +40,21 @@ public partial class CursorItemContainer : Node2D
         ResetSmoothFactor();
     }
 
+    public Item GetItem()
+    {
+        return _inventory.GetItem(0);
+    }
+
+    public bool HasItem()
+    {
+        return _inventory.HasItem(0);
+    }
+
+    public void ClearItem()
+    {
+        _inventory.ClearItem(0);
+    }
+
     public new void SetPosition(Vector2 position)
     {
         _itemContainer.Position = position;

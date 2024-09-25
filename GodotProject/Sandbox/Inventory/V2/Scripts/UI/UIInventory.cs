@@ -68,12 +68,39 @@ public class UIInventory
 
     private void HandleLeftClick(Inventory inv, ItemContainer itemContainer, int index)
     {
-        if (inv.HasItem(index))
+        if (_cursorManager.HasItem())
         {
-            Item itemToPickup = inv.GetItem(index);
-            inv.ClearItem(index);
-
-            _cursorManager.SetCursorItem(itemToPickup, itemContainer.GlobalPosition);
+            if (inv.HasItem(index))
+            {
+                
+            }
+            else
+            {
+                HandlePlaceItem(inv, itemContainer, index);
+            }
         }
+        else
+        {
+            if (inv.HasItem(index))
+            {
+                HandlePickupItem(inv, itemContainer, index);
+            }
+        }
+    }
+
+    private void HandlePlaceItem(Inventory inv, ItemContainer itemContainer, int index)
+    {
+        Item cursorItem = _cursorManager.GetItem();
+        _cursorManager.ClearItem();
+
+        inv.SetItem(index, cursorItem);
+    }
+
+    private void HandlePickupItem(Inventory inv, ItemContainer itemContainer, int index)
+    {
+        Item item = inv.GetItem(index);
+        inv.ClearItem(index);
+
+        _cursorManager.SetItem(item, itemContainer.GlobalPosition);
     }
 }
