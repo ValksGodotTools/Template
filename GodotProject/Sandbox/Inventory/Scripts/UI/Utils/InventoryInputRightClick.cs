@@ -10,23 +10,132 @@ public class InventoryInputRightClick : InventoryInputHandler
         return mouseBtn.IsRightClickPressed();
     }
 
-    public override void HandleDiffType(InventorySlotContext context)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void HandlePickup(InventorySlotContext context)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void HandlePlace(InventorySlotContext context)
-    {
-        throw new System.NotImplementedException();
-    }
-
+    // Place one item from the cursor onto the inventory item
     public override void HandleSameType(InventorySlotContext context)
     {
-        throw new System.NotImplementedException();
+        // Get the cursor and inventory items
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // If the cursor item count is 1 or less, do nothing
+        if (cursorItem.Count <= 0)
+        {
+            return;
+        }
+
+        // Add one count to the inventory item
+        invItem.Count += 1;
+
+        // Reduce the cursor item count by one
+        cursorItem.Count -= 1;
+
+        // If the cursor item count is zero, clear the cursor item
+        if (cursorItem.Count == 0)
+        {
+            context.CursorManager.ClearItem();
+        }
+        else
+        {
+            // Update the cursor item with the new count
+            context.CursorManager.SetItem(cursorItem, context.ItemContainer.GlobalPosition, cursorItemFrame);
+        }
+
+        // Set the inventory item with the new count
+        context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
+    }
+
+    // Swap the cursor item with the inventory item
+    public override void HandleDiffType(InventorySlotContext context)
+    {
+        // Get the cursor and inventory items
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // Set the inv item with the cursor item
+        context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
+
+        // Set the cursor item with the inv item
+        context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+    }
+
+    // Place one item from the cursor to the inventory
+    public override void HandlePlace(InventorySlotContext context)
+    {
+        // Get the item and sprite frame before clearing the item from the cursor
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+
+        // If the cursor item count is 1 or less, do nothing
+        if (cursorItem.Count <= 0)
+        {
+            return;
+        }
+
+        // Create a new item with a count of 1
+        Item newItem = new(cursorItem)
+        {
+            Count = 1
+        };
+
+        // Reduce the cursor item count by 1
+        cursorItem.Count -= 1;
+
+        // If the cursor item count is zero, clear the cursor item
+        if (cursorItem.Count == 0)
+        {
+            context.CursorManager.ClearItem();
+        }
+        else
+        {
+            // Update the cursor item with the new count
+            context.CursorManager.SetItem(cursorItem, context.ItemContainer.GlobalPosition, cursorItemFrame);
+        }
+
+        // Set the inventory item
+        context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
+    }
+
+    // Pickup half of the item from the inventory and put it on the cursor, or a single item if only one exists
+    public override void HandlePickup(InventorySlotContext context)
+    {
+        // Get the item and sprite frame before clearing the item from the inventory
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // If the inventory item count is 1 or less, do nothing
+        if (invItem.Count <= 0)
+        {
+            return;
+        }
+
+        // Calculate the half count to split
+        int halfCount = invItem.Count / 2;
+
+        // If the inventory item count is 1, pick up a single item
+        if (invItem.Count == 1)
+        {
+            halfCount = 1;
+        }
+
+        // Create a new item with the half count
+        Item newItem = new(invItem)
+        {
+            Count = halfCount
+        };
+
+        // Reduce the inventory item count by the half count
+        invItem.Count -= halfCount;
+
+        // If the inventory item count is zero, clear the inventory item
+        if (invItem.Count == 0)
+        {
+            context.Inventory.ClearItem(context.Index);
+        }
+        else
+        {
+            // Update the inventory item with the new count
+            context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
+        }
+
+        // Set the cursor item
+        context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
     }
 }
