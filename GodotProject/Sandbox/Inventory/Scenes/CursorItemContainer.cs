@@ -19,6 +19,8 @@ public partial class CursorItemContainer : Node2D
         _inventory.OnItemChanged += HandleItemChanged;
 
         _itemContainer = _.ItemContainer;
+        IgnoreInputEvents(_itemContainer);
+
         _offset = _itemContainer.CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactor;
 
@@ -70,5 +72,11 @@ public partial class CursorItemContainer : Node2D
     private void HandleItemChanged(int index, Item item)
     {
         _itemContainer.SetItem(item);
+    }
+
+    private static void IgnoreInputEvents(Control control)
+    {
+        control.MouseFilter = Control.MouseFilterEnum.Ignore;
+        control.SetProcessInput(false);
     }
 }
