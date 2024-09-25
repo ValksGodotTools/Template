@@ -34,25 +34,17 @@ public partial class CursorItemContainer : Node2D
         _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
     }
 
-    public void SetCurrentSpriteFrame(int frame)
-    {
-        _itemContainer.SetCurrentSpriteFrame(frame);
-    }
-
-    public int GetCurrentSpriteFrame()
-    {
-        return _itemContainer.GetCurrentSpriteFrame();
-    }
-
-    public void SetItem(Item item)
+    public void SetItemAndFrame(Item item, int frame)
     {
         _inventory.SetItem(0, item);
+        _itemContainer.SetCurrentSpriteFrame(frame);
         ResetSmoothFactor();
     }
 
-    public Item GetItem()
+    public void GetItemAndFrame(out Item item, out int frame)
     {
-        return _inventory.GetItem(0);
+        item = _inventory.GetItem(0);
+        frame = _itemContainer.GetCurrentSpriteFrame();
     }
 
     public bool HasItem()

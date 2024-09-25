@@ -7,8 +7,7 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
     public void SetItem(Item item, Vector2 position, int spriteFrame)
     {
         cursorItemContainer.SetPosition(position);
-        cursorItemContainer.SetItem(item);
-        cursorItemContainer.SetCurrentSpriteFrame(spriteFrame);
+        cursorItemContainer.SetItemAndFrame(item, spriteFrame);
     }
 
     public bool HasItem()
@@ -16,18 +15,13 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
         return cursorItemContainer.HasItem();
     }
 
-    public Item GetItem()
+    public void GetItemAndFrame(out Item item, out int frame)
     {
-        return cursorItemContainer.GetItem();
+        cursorItemContainer.GetItemAndFrame(out item, out frame);
     }
 
     public void ClearItem()
     {
         cursorItemContainer.ClearItem();
-    }
-
-    public int GetCurrentSpriteFrame()
-    {
-        return cursorItemContainer.GetCurrentSpriteFrame();
     }
 }
