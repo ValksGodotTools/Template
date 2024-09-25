@@ -13,6 +13,7 @@ script = ExtResource("1_6ktsa")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Center" type="Control" parent="CenterContainer"]
 layout_mode = 2
@@ -23,6 +24,7 @@ scale = Vector2(2, 2)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = -1
 theme_override_constants/margin_right = 2

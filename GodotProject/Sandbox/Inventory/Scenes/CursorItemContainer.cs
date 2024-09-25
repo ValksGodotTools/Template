@@ -23,6 +23,8 @@ public partial class CursorItemContainer : Node2D
         _inventory.OnItemChanged += HandleItemChanged;
 
         _itemContainer = _.ItemContainer;
+        _itemContainer.MouseFilter = Control.MouseFilterEnum.Ignore;
+
         _offset = _itemContainer.CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactorMouse;
 
@@ -83,6 +85,11 @@ public partial class CursorItemContainer : Node2D
         _inventory.ClearItem(0);
     }
 
+    public bool IsLerpingTowardsTargetContainer()
+    {
+        return _lerpTowardsTargetContainer;
+    }
+
     public new void SetPosition(Vector2 position)
     {
         _itemContainer.Position = position;
@@ -103,5 +110,11 @@ public partial class CursorItemContainer : Node2D
     private void HandleItemChanged(int index, Item item)
     {
         _itemContainer.SetItem(item);
+    }
+
+    [OnInstantiate]
+    private void Init()
+    {
+
     }
 }

@@ -2,33 +2,61 @@
 
 namespace Template.Inventory;
 
-public class CursorManager(CursorItemContainer cursorItemContainer)
+public class CursorManager(Node parent, int poolSize)
 {
+    private CursorItemContainerPool _pool = new(parent, poolSize);
+
     public void SetItem(Item item, ItemContainer originItemContainer)
     {
+        CursorItemContainer cursorItemContainer = _pool.GetAvailableCursorItemContainer();
+
         cursorItemContainer.SetPosition(originItemContainer.GlobalPosition);
         cursorItemContainer.SetItem(item);
     }
 
-    public bool HasItem()
+    public bool HasActiveItem()
     {
-        return cursorItemContainer.HasItem();
+        foreach (CursorItemContainer cursorItemContainer in _pool.Pool)
+        {
+            if (cursorItemContainer.HasItem() && !cursorItemContainer.IsLerpingTowardsTargetContainer())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Item GetItem()
     {
-        return cursorItemContainer.GetItem();
+        foreach (CursorItemContainer cursorItemContainer in _pool.Pool)
+        {
+            if (cursorItemContainer.HasItem())
+            {
+                return cursorItemContainer.GetItem();
+            }
+        }
+
+        return null;
     }
 
     public void ClearItem(ItemContainer targetContainer)
     {
-        if (targetContainer != null)
+        foreach (CursorItemContainer cursorItemContainer in _pool.Pool)
         {
-            cursorItemContainer.StartLerpingTowardsTargetContainer(targetContainer);
-        }
-        else
-        {
-            cursorItemContainer.ClearItem();
+            if (cursorItemContainer.HasItem())
+            {
+                if (targetContainer != null)
+                {
+                    cursorItemContainer.StartLerpingTowardsTargetContainer(targetContainer);
+                }
+                else
+                {
+                    cursorItemContainer.ClearItem();
+                }
+
+                break;
+            }
         }
     }
 }
