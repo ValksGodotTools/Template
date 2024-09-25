@@ -49,12 +49,12 @@ public class UIInventory
 
         itemContainer.MouseEntered += () =>
         {
-
+            // TODO: Will be used for checking if an item was dropped in the world
         };
 
         itemContainer.MouseExited += () =>
         {
-
+            // TODO: Will be used for checking if an item was dropped in the world
         };
 
         itemContainer.GuiInput += inputEvent =>
