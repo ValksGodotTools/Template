@@ -16,6 +16,16 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
         return cursorItemContainer.HasItem();
     }
 
+    public bool ItemsAreOfSameType(Item itemToCompare)
+    {
+        return cursorItemContainer.GetItem().Equals(itemToCompare);
+    }
+
+    public Item GetItem()
+    {
+        return cursorItemContainer.GetItem();
+    }
+
     public void GetItemAndFrame(out Item item, out int frame)
     {
         cursorItemContainer.GetItemAndFrame(out item, out frame);

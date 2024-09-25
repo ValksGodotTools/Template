@@ -5,13 +5,21 @@ public class InventoryInputHandler()
     public void HandleLeftClick(InventorySlotContext context)
     {
         Inventory inv = context.Inventory;
+        CursorManager cursorManager = context.CursorManager;
         int index = context.Index;
 
-        if (context.CursorManager.HasItem())
+        if (cursorManager.HasItem())
         {
             if (inv.HasItem(index))
             {
-                SwapItems(context);
+                if (cursorManager.ItemsAreOfSameType(inv.GetItem(index)))
+                {
+                    StackItems(context);
+                }
+                else
+                {
+                    SwapItems(context);
+                }
             }
             else
             {
@@ -25,6 +33,19 @@ public class InventoryInputHandler()
                 PickupItem(context);
             }
         }
+    }
+
+    private void StackItems(InventorySlotContext context)
+    {
+        // Get the cursor and inventory items
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // Add the count from cursor item to inventory item
+        invItem.Count += context.CursorManager.GetItem().Count;
+        context.CursorManager.ClearItem();
+
+        // Set the item with the new count
+        context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
     }
 
     private void SwapItems(InventorySlotContext context)

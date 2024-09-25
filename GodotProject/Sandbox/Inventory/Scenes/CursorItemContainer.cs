@@ -50,6 +50,11 @@ public partial class CursorItemContainer : Node2D
         frame = _itemContainer.GetCurrentSpriteFrame();
     }
 
+    public Item GetItem()
+    {
+        return _inventory.GetItem(0);
+    }
+
     public bool HasItem()
     {
         return _inventory.HasItem(0);
