@@ -32,11 +32,6 @@ public static class Items
 
     public static Color GetColor(Item item)
     {
-        if (ColorMap.TryGetValue(item, out Color color))
-        {
-            return color;
-        }
-
-        return Colors.White;
+        return ColorMap.GetValueOrDefault(item);
     }
 }
