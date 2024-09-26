@@ -16,6 +16,8 @@ public abstract class InventoryInputHandler
         Item invItem = inv.GetItem(index);
         Item cursorItem = cursorInventory.GetItem(0);
 
+        // We no longer have to worry about setting the visual properties of an item when
+        // its count has been changed
         SubscribeToCountChanged(invItem, InvItemCountChanged);
         SubscribeToCountChanged(cursorItem, CursorItemCountChanged);
 
@@ -42,8 +44,8 @@ public abstract class InventoryInputHandler
             HandlePickup(context);
         }
 
-        UnsubscribeFromCountChanged(inv, index, InvItemCountChanged);
-        UnsubscribeFromCountChanged(cursorInventory, 0, CursorItemCountChanged);
+        UnsubscribeFromCountChanged(inv.GetItem(index), InvItemCountChanged);
+        UnsubscribeFromCountChanged(cursorInventory.GetItem(0), CursorItemCountChanged);
 
         void InvItemCountChanged(int count)
         {
@@ -80,11 +82,11 @@ public abstract class InventoryInputHandler
         }
     }
 
-    private void UnsubscribeFromCountChanged(Inventory inventory, int index, Action<int> countChangedHandler)
+    private void UnsubscribeFromCountChanged(Item item, Action<int> countChangedHandler)
     {
-        if (inventory.HasItem(index))
+        if (item != null)
         {
-            inventory.GetItem(index).OnCountChanged -= countChangedHandler;
+            item.OnCountChanged -= countChangedHandler;
         }
     }
 
