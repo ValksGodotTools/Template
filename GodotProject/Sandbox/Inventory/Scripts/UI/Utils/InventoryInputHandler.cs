@@ -151,7 +151,6 @@ public abstract class InventoryInputHandler
             {
                 cursorManager.GetItemAndFrame(out Item item, out int frame);
                 cursorManager.SetItemAndFrame(item, frame);
-                cursorManager.SetPosition(context.ItemContainer.GlobalPosition);
             }
         }
 
