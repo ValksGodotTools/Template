@@ -4,6 +4,8 @@ namespace Template.Inventory;
 
 public class CursorManager(CursorItemContainer cursorItemContainer)
 {
+    public Inventory Inventory { get => cursorItemContainer.Inventory; }
+
     public void SetItem(Item item, Vector2 position, int spriteFrame)
     {
         cursorItemContainer.SetPosition(position);

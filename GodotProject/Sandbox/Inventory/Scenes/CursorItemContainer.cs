@@ -1,25 +1,25 @@
 using CSharpUtils;
 using Godot;
-using System;
 
 namespace Template.Inventory;
 
 [SceneTree]
 public partial class CursorItemContainer : Node2D
 {
+    public Inventory Inventory { get; private set; }
+
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
 
     private ItemContainer _itemContainer;
-    private Inventory _inventory;
     private Vector2 _offset;
     private float _currentSmoothFactor;
     private State _currentState;
 
     public override void _Ready()
     {
-        _inventory = new(1);
-        _inventory.OnItemChanged += HandleItemChanged;
+        Inventory = new(1);
+        Inventory.OnItemChanged += HandleItemChanged;
 
         _itemContainer = _.ItemContainer;
         IgnoreInputEvents(_itemContainer);
@@ -39,30 +39,30 @@ public partial class CursorItemContainer : Node2D
 
     public void SetItemAndFrame(Item item, int frame)
     {
-        _inventory.SetItem(0, item);
+        Inventory.SetItem(0, item);
         _itemContainer.SetCurrentSpriteFrame(frame);
         _currentState = MoveTowardsCursor();
     }
 
     public void GetItemAndFrame(out Item item, out int frame)
     {
-        item = _inventory.GetItem(0);
+        item = Inventory.GetItem(0);
         frame = _itemContainer.GetCurrentSpriteFrame();
     }
 
     public Item GetItem()
     {
-        return _inventory.GetItem(0);
+        return Inventory.GetItem(0);
     }
 
     public bool HasItem()
     {
-        return _inventory.HasItem(0);
+        return Inventory.HasItem(0);
     }
 
     public void ClearItem()
     {
-        _inventory.ClearItem(0);
+        Inventory.ClearItem(0);
         _currentState = Idle();
     }
 

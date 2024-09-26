@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System;
 
 namespace Template.Inventory;
 
@@ -10,25 +11,17 @@ public abstract class InventoryInputHandler
         CursorManager cursorManager = context.CursorManager;
         int index = context.Index;
 
+        Inventory cursorInventory = cursorManager.Inventory;
+
         Item invItem = inv.GetItem(index);
-        Item cursorItem = cursorManager.GetItem();
+        Item cursorItem = cursorInventory.GetItem(0);
 
-        bool hasInvItem = invItem != null;
-        bool hasCursorItem = cursorItem != null;
+        SubscribeToCountChanged(invItem, InvItemCountChanged);
+        SubscribeToCountChanged(cursorItem, CursorItemCountChanged);
 
-        if (hasInvItem)
+        if (cursorItem != null)
         {
-            invItem.OnCountChanged += InvItemCountChanged;
-        }
-
-        if (hasCursorItem)
-        {
-            cursorItem.OnCountChanged += CursorItemCountChanged;
-        }
-
-        if (hasCursorItem)
-        {
-            if (hasInvItem)
+            if (invItem != null)
             {
                 if (cursorManager.ItemsAreOfSameType(invItem))
                 {
@@ -44,25 +37,13 @@ public abstract class InventoryInputHandler
                 HandlePlace(context);
             }
         }
-        else
+        else if (invItem != null)
         {
-            if (hasInvItem)
-            {
-                HandlePickup(context);
-            }
+            HandlePickup(context);
         }
 
-        // Check again if inventory item is null
-        if (inv.HasItem(index))
-        {
-            inv.GetItem(index).OnCountChanged -= InvItemCountChanged;
-        }
-
-        // Check again if cursor item is null
-        if (cursorManager.HasItem())
-        {
-            cursorManager.GetItem().OnCountChanged -= CursorItemCountChanged;
-        }
+        UnsubscribeFromCountChanged(inv, index, InvItemCountChanged);
+        UnsubscribeFromCountChanged(cursorInventory, 0, CursorItemCountChanged);
 
         void InvItemCountChanged(int count)
         {
@@ -81,13 +62,29 @@ public abstract class InventoryInputHandler
         {
             if (count <= 0)
             {
-                cursorManager.ClearItem();
+                cursorInventory.ClearItem(0);
             }
             else
             {
                 cursorManager.GetItemAndFrame(out Item item, out int frame);
                 cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
             }
+        }
+    }
+
+    private void SubscribeToCountChanged(Item item, Action<int> countChangedHandler)
+    {
+        if (item != null)
+        {
+            item.OnCountChanged += countChangedHandler;
+        }
+    }
+
+    private void UnsubscribeFromCountChanged(Inventory inventory, int index, Action<int> countChangedHandler)
+    {
+        if (inventory.HasItem(index))
+        {
+            inventory.GetItem(index).OnCountChanged -= countChangedHandler;
         }
     }
 
