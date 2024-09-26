@@ -22,6 +22,4 @@ Properties/*
 .vscode/
 
 # Include these files
-!Properties/.gdignore
-!TestResults/.gdignore
-!gdunit4_testadapter/.gdignore
+!**/*.gdignore
