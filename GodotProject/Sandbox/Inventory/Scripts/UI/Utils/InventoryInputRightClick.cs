@@ -13,7 +13,7 @@ public class InventoryInputRightClick : InventoryInputHandler
     // Place one item from the cursor onto the inventory item
     public override void HandleSameType(InventorySlotContext context)
     {
-        HandleSameTypeCommon(context, 1);
+        CommonHandleSameType(context, 1);
     }
 
     // Swap the cursor item with the inventory item
@@ -25,7 +25,7 @@ public class InventoryInputRightClick : InventoryInputHandler
     // Place one item from the cursor to the inventory
     public override void HandlePlace(InventorySlotContext context)
     {
-        HandlePlaceCommon(context, 1);
+        CommonHandlePlace(context, 1);
     }
 
     // Pickup half of the item from the inventory and put it on the cursor, or a single item if only one exists
@@ -40,6 +40,6 @@ public class InventoryInputRightClick : InventoryInputHandler
             halfCount = 1;
         }
 
-        HandlePickupCommon(context, halfCount);
+        CommonHandlePickup(context, halfCount);
     }
 }

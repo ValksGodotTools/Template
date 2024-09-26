@@ -77,7 +77,7 @@ public abstract class InventoryInputHandler
     /// <summary>Picking up an item from the inventory to the cursor. The inventory slot is guaranteed to have at least one item and there is no item in the cursor slot.</summary>
     public abstract void HandlePickup(InventorySlotContext context);
 
-    protected void HandleSameTypeCommon(InventorySlotContext context, int amount)
+    protected void CommonHandleSameType(InventorySlotContext context, int amount)
     {
         // Increase the inventory item count by one
         context.Inventory.GetItem(context.Index).AddCount(amount);
@@ -86,7 +86,7 @@ public abstract class InventoryInputHandler
         context.CursorManager.GetItem().RemoveCount(amount);
     }
 
-    protected void HandlePlaceCommon(InventorySlotContext context, int count)
+    protected void CommonHandlePlace(InventorySlotContext context, int count)
     {
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
 
@@ -101,7 +101,7 @@ public abstract class InventoryInputHandler
         context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
     }
 
-    protected void HandlePickupCommon(InventorySlotContext context, int count)
+    protected void CommonHandlePickup(InventorySlotContext context, int count)
     {
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
