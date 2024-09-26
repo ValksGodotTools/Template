@@ -3,7 +3,18 @@
 namespace Template;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ServiceAttribute(bool persistent = false) : Attribute
+public class ServiceAttribute(ServiceLifeTime serviceLifeTime = ServiceLifeTime.Scene) : Attribute
 {
-    public bool Persistent { get; private set; } = persistent;
+    public ServiceLifeTime LifeTime { get; } = serviceLifeTime;
+
+    public bool IsPersistent
+    {
+        get => LifeTime == ServiceLifeTime.Application;
+    }
+}
+
+public enum ServiceLifeTime
+{
+    Application, // Persistent (Exists for the lifetime of the application)
+    Scene // Non-persistent between scenes
 }

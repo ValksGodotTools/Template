@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Template;
 
-[Service(true)]
+[Service(ServiceLifeTime.Application)]
 public partial class ModLoader
 {
     public Dictionary<string, ModInfo> Mods { get; } = [];

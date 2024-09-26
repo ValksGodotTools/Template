@@ -3,7 +3,7 @@ using Godot;
 namespace Template.Inventory;
 
 [SceneTree]
-[Service(persistent: false)]
+[Service(ServiceLifeTime.Scene)]
 public partial class CursorItemContainer : ItemContainer
 {
     public CursorInventory Inventory { get; private set; }

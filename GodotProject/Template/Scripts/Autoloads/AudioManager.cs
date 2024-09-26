@@ -3,7 +3,7 @@ using GodotUtils;
 
 namespace Template;
 
-[Service(true)]
+[Service(ServiceLifeTime.Application)]
 public partial class AudioManager : Node
 {
     [Export] private OptionsManager optionsManager;

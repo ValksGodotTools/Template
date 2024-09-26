@@ -108,7 +108,7 @@ public partial class ServiceProvider : Node
         Service service = new()
         {
             Instance = node,
-            Persistent = serviceAttribute.Persistent
+            Persistent = serviceAttribute.IsPersistent
         };
 
         _services.Add(node.GetType(), service);

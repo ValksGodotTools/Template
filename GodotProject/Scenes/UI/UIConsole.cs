@@ -8,7 +8,7 @@ using System;
 
 namespace Template;
 
-[Service(true)]
+[Service(ServiceLifeTime.Application)]
 [SceneTree]
 public partial class UIConsole : PanelContainer
 {

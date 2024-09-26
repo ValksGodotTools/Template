@@ -5,7 +5,7 @@ using System;
 namespace Template;
 
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
-[Service(true)]
+[Service(ServiceLifeTime.Application)]
 public partial class SceneManager : Node
 {
     /// <summary>
