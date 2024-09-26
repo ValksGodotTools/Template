@@ -16,10 +16,12 @@ public abstract class InventoryInputHandler
         Item invItem = inv.GetItem(index);
         Item cursorItem = cursorInventory.GetItem(0);
 
+        CountChangedHandler countChanged = new();
+
         // We no longer have to worry about setting the visual properties of an item when
         // its count has been changed
-        SubscribeToCountChanged(invItem, InvItemCountChanged);
-        SubscribeToCountChanged(cursorItem, CursorItemCountChanged);
+        countChanged.Subscribe(invItem, InvItemCountChanged);
+        countChanged.Subscribe(cursorItem, CursorItemCountChanged);
 
         if (cursorItem != null)
         {
@@ -44,11 +46,11 @@ public abstract class InventoryInputHandler
             HandlePickup(context);
         }
 
-        UnsubscribeFromCountChanged(inv.GetItem(index), InvItemCountChanged);
-        UnsubscribeFromCountChanged(cursorInventory.GetItem(0), CursorItemCountChanged);
+        countChanged.Unsubscribe(inv.GetItem(index), InvItemCountChanged);
+        countChanged.Unsubscribe(cursorInventory.GetItem(0), CursorItemCountChanged);
 
-        void InvItemCountChanged(int count) => HandleInvItemCountChanged(context, count);
-        void CursorItemCountChanged(int count) => HandleCursorItemCountChanged(context, count);
+        void InvItemCountChanged(int count) => countChanged.InvItem(context, count);
+        void CursorItemCountChanged(int count) => countChanged.CursorItem(context, count);
     }
 
     /// <summary>If the correct <paramref name="mouseBtn"/> input is provided then handle this input.</summary>
@@ -77,52 +79,6 @@ public abstract class InventoryInputHandler
 
     /// <summary>Picking up an item from the inventory to the cursor. The inventory slot is guaranteed to have at least one item and there is no item in the cursor slot.</summary>
     public abstract void HandlePickup(InventorySlotContext context);
-
-    private void HandleInvItemCountChanged(InventorySlotContext context, int count)
-    {
-        if (count <= 0)
-        {
-            context.Inventory.ClearItem(context.Index);
-        }
-        else
-        {
-            context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
-            context.InventoryManager.SetItemAndFrame(item, frame);
-        }
-    }
-
-    private void HandleCursorItemCountChanged(InventorySlotContext context, int count)
-    {
-        CursorManager cursorManager = context.CursorManager;
-        Inventory cursorInventory = cursorManager.Inventory;
-
-        if (count <= 0)
-        {
-            cursorInventory.ClearItem(0);
-        }
-        else
-        {
-            cursorManager.GetItemAndFrame(out Item item, out int frame);
-            cursorManager.SetItemAndFrame(item, frame);
-            cursorManager.SetPosition(context.ItemContainer.GlobalPosition);
-        }
-    }
-
-    private void SubscribeToCountChanged(Item item, Action<int> countChangedHandler)
-    {
-        if (item != null)
-        {
-            item.OnCountChanged += countChangedHandler;
-        }
-    }
-
-    private void UnsubscribeFromCountChanged(Item item, Action<int> countChangedHandler)
-    {
-        if (item != null)
-        {
-            item.OnCountChanged -= countChangedHandler;
-        }
-    }
 
     protected class InputCommon
     {
@@ -164,6 +120,55 @@ public abstract class InventoryInputHandler
             // Set the cursor item
             context.CursorManager.SetItemAndFrame(newItem, invSpriteFrame);
             context.CursorManager.SetPosition(context.ItemContainer.GlobalPosition);
+        }
+    }
+
+    private class CountChangedHandler
+    {
+        public void InvItem(InventorySlotContext context, int count)
+        {
+            if (count <= 0)
+            {
+                context.Inventory.ClearItem(context.Index);
+            }
+            else
+            {
+                context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
+                context.InventoryManager.SetItemAndFrame(item, frame);
+            }
+        }
+
+        public void CursorItem(InventorySlotContext context, int count)
+        {
+            CursorManager cursorManager = context.CursorManager;
+            Inventory cursorInventory = cursorManager.Inventory;
+
+            if (count <= 0)
+            {
+                cursorInventory.ClearItem(0);
+            }
+            else
+            {
+                cursorManager.GetItemAndFrame(out Item item, out int frame);
+                cursorManager.SetItemAndFrame(item, frame);
+                cursorManager.SetPosition(context.ItemContainer.GlobalPosition);
+            }
+        }
+
+        public void Subscribe(Item item, Action<int> countChangedHandler)
+        {
+            if (item != null)
+            {
+                item.OnCountChanged += countChangedHandler;
+            }
+        }
+
+        public void Unsubscribe(Item item, Action<int> countChangedHandler)
+        {
+            if (item != null)
+            {
+                item.OnCountChanged -= countChangedHandler;
+            }
         }
     }
 }
