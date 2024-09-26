@@ -1,5 +1,4 @@
-﻿using Godot;
-using System;
+﻿using System;
 
 namespace Template.Inventory;
 
@@ -8,8 +7,7 @@ public class Item
     public event Action<int> OnCountChanged;
 
     public string Name { get; private set; }
-    public Color Color { get; private set; }
-    public string ResourcePath { get; private set; }
+    public string Description { get; private set; }
     public int Count { get; private set; }
 
     private Item(string name, int count = 1)
@@ -22,8 +20,6 @@ public class Item
     {
         Name = other.Name;
         Count = other.Count;
-        Color = other.Color;
-        ResourcePath = other.ResourcePath;
     }
 
     public void SetCount(int count)
@@ -48,9 +44,26 @@ public class Item
     public bool Equals(Item other)
     {
         if (other == null)
+        {
             return false;
+        }
 
         return Name == other.Name;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        return Equals((Item)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode();
     }
 
     public override string ToString()
@@ -60,19 +73,11 @@ public class Item
 
     public class Builder(string name, int count = 1)
     {
-        private const string BaseResourcePath = "res://Sandbox/Inventory/";
-
         private Item _item = new(name, count);
 
-        public Builder SetResourcePath(string resourcePath)
+        public Builder SetDescription(string description)
         {
-            _item.ResourcePath = $"{BaseResourcePath}{resourcePath}";
-            return this;
-        }
-
-        public Builder SetColor(Color color)
-        {
-            _item.Color = color;
+            _item.Description = description;
             return this;
         }
 

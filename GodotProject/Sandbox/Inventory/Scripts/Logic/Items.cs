@@ -1,16 +1,37 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 namespace Template.Inventory;
 
 public static class Items
 {
-    public static readonly Item Coin = new Item.Builder(nameof(Coin))
-        .SetResourcePath("CoinSpriteFrames.tres")
-        .SetColor(Colors.Yellow)
-        .Build();
+    public static readonly Item Coin = new Item.Builder(nameof(Coin)).Build();
+    public static readonly Item SnowyCoin = new Item.Builder(nameof(SnowyCoin)).Build();
 
-    public static readonly Item SnowyCoin = new Item.Builder(nameof(SnowyCoin))
-        .SetResourcePath("CoinStatic.png")
-        .SetColor(Colors.LightSkyBlue)
-        .Build();
+    private static readonly Dictionary<Item, string> ResourcePaths = new()
+    {
+        { Coin, "res://Sandbox/Inventory/CoinSpriteFrames.tres" },
+        { SnowyCoin, "res://Sandbox/Inventory/CoinStatic.png" }
+    };
+
+    private static readonly Dictionary<Item, Color> ColorMap = new()
+    {
+        { Coin, Colors.Yellow },
+        { SnowyCoin, Colors.LightSkyBlue }
+    };
+
+    public static string GetResourcePath(Item item)
+    {
+        return ResourcePaths.GetValueOrDefault(item);
+    }
+
+    public static Color GetColor(Item item)
+    {
+        if (ColorMap.TryGetValue(item, out Color color))
+        {
+            return color;
+        }
+
+        return Colors.White;
+    }
 }

@@ -14,8 +14,8 @@ public partial class ItemContainer : PanelContainer
     {
         if (item != null)
         {
-            SetSpriteFrames(item.ResourcePath);
-            SetColor(item.Color);
+            SetSpriteFrames(Items.GetResourcePath(item));
+            SetColor(Items.GetColor(item));
             SetCount(item.Count);
         }
         else
