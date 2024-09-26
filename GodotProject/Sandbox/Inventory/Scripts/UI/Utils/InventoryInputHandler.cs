@@ -96,6 +96,15 @@ public abstract class InventoryInputHandler
         }
     }
 
+    protected void TakeAmountFromCursorAndPutOnInvItem(InventorySlotContext context, int amount)
+    {
+        // Increase the inventory item count by one
+        context.Inventory.GetItem(context.Index).AddCount(amount);
+
+        // Reduce the cursor item count by one
+        context.CursorManager.GetItem().RemoveCount(amount);
+    }
+
     /// <summary>If the correct <paramref name="mouseBtn"/> input is provided then handle this input.</summary>
     public abstract bool HasInput(InputEventMouseButton mouseBtn);
     
@@ -103,7 +112,18 @@ public abstract class InventoryInputHandler
     public abstract void HandleSameType(InventorySlotContext context);
     
     /// <summary>Both items are of different types. The cursor and inventory slots are both guaranteed to have at least one item.</summary>
-    public abstract void HandleDiffType(InventorySlotContext context);
+    public virtual void HandleDiffType(InventorySlotContext context)
+    {
+        // Get the cursor and inventory items
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // Set the inv item with the cursor item
+        context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
+
+        // Set the cursor item with the inv item
+        context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+    }
     
     /// <summary>Placing an item from the cursor to the inventory. The cursor is guaranteed to have at least one item and there is no item in the inventory slot.</summary>
     public abstract void HandlePlace(InventorySlotContext context);

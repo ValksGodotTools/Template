@@ -13,32 +13,13 @@ public class InventoryInputRightClick : InventoryInputHandler
     // Place one item from the cursor onto the inventory item
     public override void HandleSameType(InventorySlotContext context)
     {
-        // Get the cursor and inventory items
-        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
-        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
-
-        // Add one count to the inventory item
-        invItem.AddCount(1);
-
-        // Reduce the cursor item count by one
-        cursorItem.RemoveCount(1);
-
-        // Set the inventory item with the new count
-        context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
+        TakeAmountFromCursorAndPutOnInvItem(context, 1);
     }
 
     // Swap the cursor item with the inventory item
     public override void HandleDiffType(InventorySlotContext context)
     {
-        // Get the cursor and inventory items
-        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
-        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
-
-        // Set the inv item with the cursor item
-        context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
-
-        // Set the cursor item with the inv item
-        context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+        base.HandleDiffType(context);
     }
 
     // Place one item from the cursor to the inventory
