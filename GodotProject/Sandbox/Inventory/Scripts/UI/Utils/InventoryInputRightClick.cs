@@ -18,10 +18,10 @@ public class InventoryInputRightClick : InventoryInputHandler
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
         // Add one count to the inventory item
-        invItem.Count += 1;
+        invItem.AddCount(1);
 
         // Reduce the cursor item count by one
-        cursorItem.Count -= 1;
+        cursorItem.RemoveCount(1);
 
         // If the cursor item count is zero, clear the cursor item
         if (cursorItem.Count == 0)
@@ -59,13 +59,11 @@ public class InventoryInputRightClick : InventoryInputHandler
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
 
         // Create a new item with a count of 1
-        Item newItem = new(cursorItem)
-        {
-            Count = 1
-        };
+        Item newItem = new(cursorItem);
+        newItem.SetCount(1);
 
         // Reduce the cursor item count by 1
-        cursorItem.Count -= 1;
+        cursorItem.RemoveCount(1);
 
         // If the cursor item count is zero, clear the cursor item
         if (cursorItem.Count == 0)
@@ -98,13 +96,11 @@ public class InventoryInputRightClick : InventoryInputHandler
         }
 
         // Create a new item with the half count
-        Item newItem = new(invItem)
-        {
-            Count = halfCount
-        };
+        Item newItem = new(invItem);
+        newItem.SetCount(halfCount);
 
         // Reduce the inventory item count by the half count
-        invItem.Count -= halfCount;
+        invItem.RemoveCount(halfCount);
 
         // If the inventory item count is zero, clear the inventory item
         if (invItem.Count == 0)

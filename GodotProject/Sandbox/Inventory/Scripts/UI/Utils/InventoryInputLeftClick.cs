@@ -17,7 +17,7 @@ public class InventoryInputLeftClick : InventoryInputHandler
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
         // Add the count from cursor item to inventory item
-        invItem.Count += context.CursorManager.GetItem().Count;
+        invItem.AddCount(context.CursorManager.GetItem().Count);
         context.CursorManager.ClearItem();
 
         // Set the item with the new count

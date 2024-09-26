@@ -20,10 +20,15 @@ public partial class ItemContainer : PanelContainer
         }
         else
         {
-            SetSpriteFrames(null);
-            SetColor(default);
-            SetCount(0);
+            ClearItem();
         }
+    }
+
+    private void ClearItem()
+    {
+        SetSpriteFrames(null);
+        SetColor(default);
+        SetCount(0);
     }
 
     private void SetSpriteFrames(string resourcePath)

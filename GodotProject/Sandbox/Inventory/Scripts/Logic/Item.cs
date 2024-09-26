@@ -1,13 +1,16 @@
 ﻿using Godot;
+using System;
 
 namespace Template.Inventory;
 
 public class Item
 {
+    public event Action<int> OnCountChanged;
+
     public string Name { get; private set; }
-    public int Count { get; set; }
     public Color Color { get; private set; }
     public string ResourcePath { get; private set; }
+    public int Count { get; private set; }
 
     private Item(string name, int count = 1)
     {
@@ -21,6 +24,25 @@ public class Item
         Count = other.Count;
         Color = other.Color;
         ResourcePath = other.ResourcePath;
+    }
+
+    public void SetCount(int count)
+    {
+        Count = count;
+        OnCountChanged?.Invoke(Count);
+    }
+
+    public void AddCount(int count)
+    {
+        Count += count;
+        OnCountChanged?.Invoke(Count);
+    }
+
+    public void RemoveCount(int count)
+    {
+        Count -= count;
+        if (count < 0) Count = 0;
+        OnCountChanged?.Invoke(Count);
     }
 
     public bool Equals(Item other)
