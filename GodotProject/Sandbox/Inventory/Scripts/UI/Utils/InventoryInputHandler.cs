@@ -8,13 +8,11 @@ public abstract class InventoryInputHandler
     public void Handle(InventorySlotContext context)
     {
         Inventory inv = context.Inventory;
-        CursorManager cursorManager = context.CursorManager;
+        CursorInventory cursorInv = context.CursorInventory;
         int index = context.Index;
 
-        CursorInventory cursorInventory = cursorManager.Inventory;
-
         Item invItem = inv.GetItem(index);
-        Item cursorItem = cursorInventory.GetItem();
+        Item cursorItem = cursorInv.GetItem();
 
         CountChangedHandler countChanged = new();
 
@@ -27,7 +25,7 @@ public abstract class InventoryInputHandler
         {
             if (invItem != null)
             {
-                if (cursorManager.ItemsAreOfSameType(invItem))
+                if (cursorInv.GetItem().Equals(invItem))
                 {
                     HandleSameType(context);
                 }
@@ -47,7 +45,7 @@ public abstract class InventoryInputHandler
         }
 
         countChanged.Unsubscribe(inv.GetItem(index), InvItemCountChanged);
-        countChanged.Unsubscribe(cursorInventory.GetItem(), CursorItemCountChanged);
+        countChanged.Unsubscribe(cursorInv.GetItem(), CursorItemCountChanged);
 
         void InvItemCountChanged(int count) => countChanged.InvItem(context, count);
         void CursorItemCountChanged(int count) => countChanged.CursorItem(context, count);
@@ -88,7 +86,7 @@ public abstract class InventoryInputHandler
             context.Inventory.GetItem(context.Index).AddCount(amount);
 
             // Reduce the cursor item count by one
-            context.CursorManager.GetItem().RemoveCount(amount);
+            context.CursorInventory.GetItem().RemoveCount(amount);
         }
 
         public static void HandlePlace(InventorySlotContext context, int count)
@@ -140,17 +138,14 @@ public abstract class InventoryInputHandler
 
         public void CursorItem(InventorySlotContext context, int count)
         {
-            CursorManager cursorManager = context.CursorManager;
-            CursorInventory cursorInventory = cursorManager.Inventory;
-
             if (count <= 0)
             {
-                cursorInventory.ClearItem();
+                context.CursorInventory.ClearItem();
             }
             else
             {
-                cursorManager.GetItemAndFrame(out Item item, out int frame);
-                cursorManager.SetItemAndFrame(item, frame);
+                context.CursorManager.GetItemAndFrame(out Item item, out int frame);
+                context.CursorManager.SetItemAndFrame(item, frame);
             }
         }
 

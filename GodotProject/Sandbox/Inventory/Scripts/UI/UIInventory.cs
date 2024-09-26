@@ -1,11 +1,10 @@
 ﻿using Godot;
-using GodotUtils;
 
 namespace Template.Inventory;
 
 public class UIInventory
 {
-    public UIInventory(Inventory inventory, Node parent)
+    public UIInventory(Inventory inventory, UICursorInventory cursorInventory, Node parent)
     {
         // Create the InventoryContainer
         InventoryContainer invContainer = InventoryContainer.Instantiate();
@@ -14,15 +13,11 @@ public class UIInventory
         // children nodes will get called at the correct times
         parent.AddChild(invContainer);
 
-        // Create a cursor manager
-        CursorItemContainer cursorItemContainer = parent.GetSceneNode<CursorItemContainer>();
-        CursorManager cursorManager = new(cursorItemContainer.Inventory, cursorItemContainer);
-
         // Add the item containers
-        AddItemContainers(cursorManager, invContainer, inventory);
+        AddItemContainers(cursorInventory, invContainer, inventory);
     }
 
-    private void AddItemContainers(CursorManager cursorManager, InventoryContainer invContainer, Inventory inv)
+    private void AddItemContainers(UICursorInventory cursorInventory, InventoryContainer invContainer, Inventory inv)
     {
         int invSize = inv.GetInventorySize();
         ItemContainer[] itemContainers = new ItemContainer[invSize];
@@ -35,7 +30,7 @@ public class UIInventory
 
         for (int i = 0; i < invSize; i++)
         {
-            InventorySlotContext context = new(cursorManager, inv, invContainer.AddItemContainer(), i);
+            InventorySlotContext context = new(cursorInventory, inv, invContainer.AddItemContainer(), i);
             
             AddItemContainer(inputs, i, itemContainers, context);
         }
