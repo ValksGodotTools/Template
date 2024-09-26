@@ -7,4 +7,3 @@
 script = ExtResource("1_fmlrj")
 
 [node name="CursorItemContainer" parent="." instance=ExtResource("2_bqf6y")]
-visible = false

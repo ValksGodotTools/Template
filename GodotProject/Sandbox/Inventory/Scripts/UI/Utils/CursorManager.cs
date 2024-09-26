@@ -2,14 +2,14 @@
 
 namespace Template.Inventory;
 
-public class CursorManager(Inventory inv, CursorItemContainer cursorItemContainer) : InventoryManager(inv, 0, cursorItemContainer.ItemContainer)
+public class CursorManager(Inventory inv, CursorItemContainer cursorItemContainer) : InventoryManager(inv, 0, cursorItemContainer)
 {
     public Inventory Inventory { get => cursorItemContainer.Inventory; }
 
     public override void SetItemAndFrame(Item item, int frame)
     {
         base.SetItemAndFrame(item, frame);
-        cursorItemContainer.CurrentState = cursorItemContainer.MoveTowardsCursor();
+        cursorItemContainer.SetPhysicsProcess(true);
     }
 
     public void SetPosition(Vector2 position)

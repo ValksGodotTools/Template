@@ -1,14 +1,11 @@
-using CSharpUtils;
 using Godot;
 
 namespace Template.Inventory;
 
 [SceneTree]
-public partial class CursorItemContainer : Node2D
+public partial class CursorItemContainer : ItemContainer
 {
     public Inventory Inventory { get; private set; }
-    public ItemContainer ItemContainer { get; private set; }
-    public State CurrentState { get; set; }
 
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
@@ -21,20 +18,23 @@ public partial class CursorItemContainer : Node2D
         Inventory = new(1);
         Inventory.OnItemChanged += HandleItemChanged;
 
-        ItemContainer = _.ItemContainer;
-        IgnoreInputEvents(ItemContainer);
+        IgnoreInputEvents(this);
 
-        _offset = ItemContainer.CustomMinimumSize * 0.5f;
+        _offset = CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactor;
 
-        CurrentState = Idle();
+        SetPhysicsProcess(false);
 
         Show();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        CurrentState.Update((float)delta);
+        Vector2 target = GetGlobalMousePosition() - _offset;
+        float distance = Position.DistanceTo(target);
+
+        Position = Position.MoveToward(target, distance * _currentSmoothFactor);
+        _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
     }
 
     public Item GetItem()
@@ -50,12 +50,7 @@ public partial class CursorItemContainer : Node2D
     public void ClearItem()
     {
         Inventory.ClearItem(0);
-        CurrentState = Idle();
-    }
-
-    public new void SetPosition(Vector2 position)
-    {
-        ItemContainer.Position = position;
+        SetPhysicsProcess(false);
     }
 
     public void ResetSmoothFactor()
@@ -65,46 +60,12 @@ public partial class CursorItemContainer : Node2D
 
     private void HandleItemChanged(int index, Item item)
     {
-        ItemContainer.SetItem(item);
+        SetItem(item);
     }
 
     private static void IgnoreInputEvents(Control control)
     {
         control.MouseFilter = Control.MouseFilterEnum.Ignore;
         control.SetProcessInput(false);
-    }
-
-    private State Idle()
-    {
-        State state = new(nameof(Idle));
-        return state;
-    }
-
-    public State MoveTowardsCursor()
-    {
-        State state = new(nameof(MoveTowardsCursor));
-
-        state.Update = delta =>
-        {
-            Vector2 target = GetGlobalMousePosition() - _offset;
-            float distance = ItemContainer.Position.DistanceTo(target);
-
-            ItemContainer.Position = ItemContainer.Position.MoveToward(target, distance * _currentSmoothFactor);
-            _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
-        };
-
-        return state;
-    }
-
-    private State MoveTowardsContainer()
-    {
-        State state = new(nameof(MoveTowardsContainer));
-
-        state.Update = delta =>
-        {
-            // TODO: Implement move towards container
-        };
-
-        return state;
     }
 }
