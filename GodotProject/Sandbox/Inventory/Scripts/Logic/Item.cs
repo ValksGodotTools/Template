@@ -4,8 +4,6 @@ namespace Template.Inventory;
 
 public class Item
 {
-    public event Action<int> OnCountChanged;
-
     public string Name { get; private set; }
     public string Description { get; private set; }
     public int Count { get; private set; }
@@ -25,20 +23,21 @@ public class Item
     public void SetCount(int count)
     {
         Count = count;
-        OnCountChanged?.Invoke(Count);
     }
 
     public void AddCount(int count)
     {
         Count += count;
-        OnCountChanged?.Invoke(Count);
     }
 
     public void RemoveCount(int count)
     {
         Count -= count;
-        if (count < 0) Count = 0;
-        OnCountChanged?.Invoke(Count);
+
+        if (count < 0)
+        {
+            Count = 0;
+        }
     }
 
     public bool Equals(Item other)
