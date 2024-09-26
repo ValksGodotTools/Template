@@ -9,7 +9,7 @@ font_size = 14
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="ItemContainer" type="PanelContainer"]
+[node name="CursorItemContainer" type="PanelContainer"]
 z_index = 1
 custom_minimum_size = Vector2(50, 50)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_x7ajr")

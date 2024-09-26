@@ -3,8 +3,11 @@ using Godot;
 namespace Template.Inventory;
 
 [SceneTree]
+[Service(persistent: false)]
 public partial class CursorItemContainer : ItemContainer
 {
+    public CursorInventory Inventory { get; private set; }
+
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
 
@@ -13,6 +16,9 @@ public partial class CursorItemContainer : ItemContainer
 
     public override void _Ready()
     {
+        Inventory = new();
+        Inventory.OnItemChanged += SetItem;
+
         IgnoreInputEvents(this);
 
         _offset = CustomMinimumSize * 0.5f;
@@ -41,11 +47,5 @@ public partial class CursorItemContainer : ItemContainer
     {
         control.MouseFilter = MouseFilterEnum.Ignore;
         control.SetProcessInput(false);
-    }
-
-    [OnInstantiate]
-    private void Init()
-    {
-
     }
 }

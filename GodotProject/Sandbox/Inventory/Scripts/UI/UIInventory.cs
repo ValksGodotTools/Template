@@ -4,7 +4,7 @@ namespace Template.Inventory;
 
 public class UIInventory
 {
-    public UIInventory(Inventory inventory, UICursorInventory cursorInventory, Node parent)
+    public UIInventory(Inventory inventory, Node parent)
     {
         // Create the InventoryContainer
         InventoryContainer invContainer = InventoryContainer.Instantiate();
@@ -14,10 +14,10 @@ public class UIInventory
         parent.AddChild(invContainer);
 
         // Add the item containers
-        AddItemContainers(cursorInventory, invContainer, inventory);
+        AddItemContainers(invContainer, inventory);
     }
 
-    private void AddItemContainers(UICursorInventory cursorInventory, InventoryContainer invContainer, Inventory inv)
+    private void AddItemContainers(InventoryContainer invContainer, Inventory inv)
     {
         int invSize = inv.GetInventorySize();
         ItemContainer[] itemContainers = new ItemContainer[invSize];
@@ -30,7 +30,8 @@ public class UIInventory
 
         for (int i = 0; i < invSize; i++)
         {
-            InventorySlotContext context = new(cursorInventory, inv, invContainer.AddItemContainer(), i);
+            CursorItemContainer cursorItemContainer = ServiceProvider.Services.Get<CursorItemContainer>();
+            InventorySlotContext context = new(cursorItemContainer, inv, invContainer.AddItemContainer(), i);
             
             AddItemContainer(inputs, i, itemContainers, context);
         }
