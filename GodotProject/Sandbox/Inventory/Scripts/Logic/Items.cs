@@ -5,8 +5,13 @@ namespace Template.Inventory;
 
 public static class Items
 {
-    public static readonly Item Coin = new Item.Builder(nameof(Coin)).Build();
-    public static readonly Item SnowyCoin = new Item.Builder(nameof(SnowyCoin)).Build();
+    public static readonly Item Coin = new Item.Builder(nameof(Coin))
+        .SetDescription("An ordinary shiny coin.")
+        .Build();
+
+    public static readonly Item SnowyCoin = new Item.Builder(nameof(SnowyCoin))
+        .SetDescription("A coin with snow infused into it.")
+        .Build();
 
     private static readonly Dictionary<Item, string> ResourcePaths = new()
     {
