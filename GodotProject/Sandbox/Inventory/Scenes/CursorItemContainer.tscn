@@ -37,7 +37,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-text = "0"
 label_settings = SubResource("LabelSettings_pwodw")
 horizontal_alignment = 1
 vertical_alignment = 1
