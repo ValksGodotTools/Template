@@ -13,15 +13,14 @@ public class InventoryInputLeftClick : InventoryInputHandler
     // Stack the cursor item onto the inventory item
     public override void HandleSameType(InventorySlotContext context)
     {
-        // Get the cursor and inventory items
-        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+        Item invItem = context.Inventory.GetItem(context.Index);
+        Item cursorItem = context.CursorManager.GetItem();
 
         // Add the count from cursor item to inventory item
-        invItem.AddCount(context.CursorManager.GetItem().Count);
-        context.CursorManager.ClearItem();
+        invItem.AddCount(cursorItem.Count);
 
-        // Set the item with the new count
-        context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
+        // Set the cursor item count to zero
+        cursorItem.SetCount(0);
     }
 
     // Swap the cursor item with the inventory item
