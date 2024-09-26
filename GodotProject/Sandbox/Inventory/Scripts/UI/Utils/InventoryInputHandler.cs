@@ -47,30 +47,36 @@ public abstract class InventoryInputHandler
         UnsubscribeFromCountChanged(inv.GetItem(index), InvItemCountChanged);
         UnsubscribeFromCountChanged(cursorInventory.GetItem(0), CursorItemCountChanged);
 
-        void InvItemCountChanged(int count)
-        {
-            if (count <= 0)
-            {
-                inv.ClearItem(index);
-            }
-            else
-            {
-                context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
-                context.InventoryManager.SetItemAndFrame(item, frame);
-            }
-        }
+        void InvItemCountChanged(int count) => HandleInvItemCountChanged(context, count);
+        void CursorItemCountChanged(int count) => HandleCursorItemCountChanged(context, count);
+    }
 
-        void CursorItemCountChanged(int count)
+    private void HandleInvItemCountChanged(InventorySlotContext context, int count)
+    {
+        if (count <= 0)
         {
-            if (count <= 0)
-            {
-                cursorInventory.ClearItem(0);
-            }
-            else
-            {
-                cursorManager.GetItemAndFrame(out Item item, out int frame);
-                cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
-            }
+            context.Inventory.ClearItem(context.Index);
+        }
+        else
+        {
+            context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
+            context.InventoryManager.SetItemAndFrame(item, frame);
+        }
+    }
+
+    private void HandleCursorItemCountChanged(InventorySlotContext context, int count)
+    {
+        CursorManager cursorManager = context.CursorManager;
+        Inventory cursorInventory = cursorManager.Inventory;
+
+        if (count <= 0)
+        {
+            cursorInventory.ClearItem(0);
+        }
+        else
+        {
+            cursorManager.GetItemAndFrame(out Item item, out int frame);
+            cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
         }
     }
 
