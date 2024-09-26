@@ -6,6 +6,7 @@
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <ImplicitUsings>false</ImplicitUsings> <!--Prevent use of the global usings feature-->
         <RootNamespace>Template</RootNamespace>
+        <NoWarn>CS0108</NoWarn> <!--Suppress warning "Use new keyword if hiding was intended" to suppress warnings from Cat-Lips source generators-->
         <Nullable>disable</Nullable>
     </PropertyGroup>
 
