@@ -96,7 +96,7 @@ public abstract class InventoryInputHandler
         }
     }
 
-    protected void TakeAmountFromCursorAndPutOnInvItem(InventorySlotContext context, int amount)
+    protected void HandleSameTypeCommon(InventorySlotContext context, int amount)
     {
         // Increase the inventory item count by one
         context.Inventory.GetItem(context.Index).AddCount(amount);
@@ -105,7 +105,7 @@ public abstract class InventoryInputHandler
         context.CursorManager.GetItem().RemoveCount(amount);
     }
 
-    protected void PlaceItemFromCursor(InventorySlotContext context, int count)
+    protected void HandlePlaceCommon(InventorySlotContext context, int count)
     {
         context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
 
@@ -120,7 +120,7 @@ public abstract class InventoryInputHandler
         context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
     }
 
-    protected void PickupItemFromInventory(InventorySlotContext context, int count)
+    protected void HandlePickupCommon(InventorySlotContext context, int count)
     {
         context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
 
