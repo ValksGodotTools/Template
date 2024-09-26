@@ -5,7 +5,7 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class CursorItemContainer : ItemContainer
 {
-    public Inventory Inventory { get; private set; }
+    public CursorInventory Inventory { get; private set; }
 
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
@@ -15,7 +15,7 @@ public partial class CursorItemContainer : ItemContainer
 
     public override void _Ready()
     {
-        Inventory = new(1);
+        Inventory = new();
         Inventory.OnItemChanged += HandleItemChanged;
 
         IgnoreInputEvents(this);
@@ -39,17 +39,17 @@ public partial class CursorItemContainer : ItemContainer
 
     public Item GetItem()
     {
-        return Inventory.GetItem(0);
+        return Inventory.GetItem();
     }
 
     public bool HasItem()
     {
-        return Inventory.HasItem(0);
+        return Inventory.HasItem();
     }
 
     public void ClearItem()
     {
-        Inventory.ClearItem(0);
+        Inventory.ClearItem();
         SetPhysicsProcess(false);
     }
 
@@ -58,14 +58,14 @@ public partial class CursorItemContainer : ItemContainer
         _currentSmoothFactor = InitialSmoothFactor;
     }
 
-    private void HandleItemChanged(int index, Item item)
+    private void HandleItemChanged(Item item)
     {
         SetItem(item);
     }
 
     private static void IgnoreInputEvents(Control control)
     {
-        control.MouseFilter = Control.MouseFilterEnum.Ignore;
+        control.MouseFilter = MouseFilterEnum.Ignore;
         control.SetProcessInput(false);
     }
 }

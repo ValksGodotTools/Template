@@ -11,10 +11,10 @@ public abstract class InventoryInputHandler
         CursorManager cursorManager = context.CursorManager;
         int index = context.Index;
 
-        Inventory cursorInventory = cursorManager.Inventory;
+        CursorInventory cursorInventory = cursorManager.Inventory;
 
         Item invItem = inv.GetItem(index);
-        Item cursorItem = cursorInventory.GetItem(0);
+        Item cursorItem = cursorInventory.GetItem();
 
         CountChangedHandler countChanged = new();
 
@@ -47,7 +47,7 @@ public abstract class InventoryInputHandler
         }
 
         countChanged.Unsubscribe(inv.GetItem(index), InvItemCountChanged);
-        countChanged.Unsubscribe(cursorInventory.GetItem(0), CursorItemCountChanged);
+        countChanged.Unsubscribe(cursorInventory.GetItem(), CursorItemCountChanged);
 
         void InvItemCountChanged(int count) => countChanged.InvItem(context, count);
         void CursorItemCountChanged(int count) => countChanged.CursorItem(context, count);
@@ -141,11 +141,11 @@ public abstract class InventoryInputHandler
         public void CursorItem(InventorySlotContext context, int count)
         {
             CursorManager cursorManager = context.CursorManager;
-            Inventory cursorInventory = cursorManager.Inventory;
+            CursorInventory cursorInventory = cursorManager.Inventory;
 
             if (count <= 0)
             {
-                cursorInventory.ClearItem(0);
+                cursorInventory.ClearItem();
             }
             else
             {
