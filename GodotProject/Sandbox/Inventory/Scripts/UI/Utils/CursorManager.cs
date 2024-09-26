@@ -2,14 +2,19 @@
 
 namespace Template.Inventory;
 
-public class CursorManager(CursorItemContainer cursorItemContainer)
+public class CursorManager(Inventory inv, CursorItemContainer cursorItemContainer) : InventoryManager(inv, 0, cursorItemContainer.ItemContainer)
 {
     public Inventory Inventory { get => cursorItemContainer.Inventory; }
 
-    public void SetItem(Item item, Vector2 position, int spriteFrame)
+    public override void SetItemAndFrame(Item item, int frame)
+    {
+        base.SetItemAndFrame(item, frame);
+        cursorItemContainer.CurrentState = cursorItemContainer.MoveTowardsCursor();
+    }
+
+    public void SetPosition(Vector2 position)
     {
         cursorItemContainer.SetPosition(position);
-        cursorItemContainer.SetItemAndFrame(item, spriteFrame);
         cursorItemContainer.ResetSmoothFactor();
     }
 
@@ -26,11 +31,6 @@ public class CursorManager(CursorItemContainer cursorItemContainer)
     public Item GetItem()
     {
         return cursorItemContainer.GetItem();
-    }
-
-    public void GetItemAndFrame(out Item item, out int frame)
-    {
-        cursorItemContainer.GetItemAndFrame(out item, out frame);
     }
 
     public void ClearItem()

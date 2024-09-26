@@ -7,47 +7,34 @@ namespace Template.Inventory;
 public partial class CursorItemContainer : Node2D
 {
     public Inventory Inventory { get; private set; }
+    public ItemContainer ItemContainer { get; private set; }
+    public State CurrentState { get; set; }
 
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
 
-    private ItemContainer _itemContainer;
     private Vector2 _offset;
     private float _currentSmoothFactor;
-    private State _currentState;
 
     public override void _Ready()
     {
         Inventory = new(1);
         Inventory.OnItemChanged += HandleItemChanged;
 
-        _itemContainer = _.ItemContainer;
-        IgnoreInputEvents(_itemContainer);
+        ItemContainer = _.ItemContainer;
+        IgnoreInputEvents(ItemContainer);
 
-        _offset = _itemContainer.CustomMinimumSize * 0.5f;
+        _offset = ItemContainer.CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactor;
 
-        _currentState = Idle();
+        CurrentState = Idle();
 
         Show();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        _currentState.Update((float)delta);
-    }
-
-    public void SetItemAndFrame(Item item, int frame)
-    {
-        Inventory.SetItem(0, item);
-        _itemContainer.SetCurrentSpriteFrame(frame);
-        _currentState = MoveTowardsCursor();
-    }
-
-    public void GetItemAndFrame(out Item item, out int frame)
-    {
-        item = Inventory.GetItem(0);
-        frame = _itemContainer.GetCurrentSpriteFrame();
+        CurrentState.Update((float)delta);
     }
 
     public Item GetItem()
@@ -63,12 +50,12 @@ public partial class CursorItemContainer : Node2D
     public void ClearItem()
     {
         Inventory.ClearItem(0);
-        _currentState = Idle();
+        CurrentState = Idle();
     }
 
     public new void SetPosition(Vector2 position)
     {
-        _itemContainer.Position = position;
+        ItemContainer.Position = position;
     }
 
     public void ResetSmoothFactor()
@@ -78,7 +65,7 @@ public partial class CursorItemContainer : Node2D
 
     private void HandleItemChanged(int index, Item item)
     {
-        _itemContainer.SetItem(item);
+        ItemContainer.SetItem(item);
     }
 
     private static void IgnoreInputEvents(Control control)
@@ -93,16 +80,16 @@ public partial class CursorItemContainer : Node2D
         return state;
     }
 
-    private State MoveTowardsCursor()
+    public State MoveTowardsCursor()
     {
         State state = new(nameof(MoveTowardsCursor));
 
         state.Update = delta =>
         {
             Vector2 target = GetGlobalMousePosition() - _offset;
-            float distance = _itemContainer.Position.DistanceTo(target);
+            float distance = ItemContainer.Position.DistanceTo(target);
 
-            _itemContainer.Position = _itemContainer.Position.MoveToward(target, distance * _currentSmoothFactor);
+            ItemContainer.Position = ItemContainer.Position.MoveToward(target, distance * _currentSmoothFactor);
             _currentSmoothFactor = Mathf.Lerp(_currentSmoothFactor, 1, LerpBackToOneFactor);
         };
 

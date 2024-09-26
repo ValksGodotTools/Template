@@ -15,7 +15,8 @@ public class UIInventory
         parent.AddChild(invContainer);
 
         // Create a cursor manager
-        CursorManager cursorManager = new(parent.GetSceneNode<CursorItemContainer>());
+        CursorItemContainer cursorItemContainer = parent.GetSceneNode<CursorItemContainer>();
+        CursorManager cursorManager = new(cursorItemContainer.Inventory, cursorItemContainer);
 
         // Add the item containers
         AddItemContainers(cursorManager, invContainer, inventory);

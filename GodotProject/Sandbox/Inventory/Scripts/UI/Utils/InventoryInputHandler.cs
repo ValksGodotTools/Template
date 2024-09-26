@@ -68,7 +68,8 @@ public abstract class InventoryInputHandler
         context.InventoryManager.SetItemAndFrame(cursorItem, cursorItemFrame);
 
         // Set the cursor item with the inv item
-        context.CursorManager.SetItem(invItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+        context.CursorManager.SetItemAndFrame(invItem, invSpriteFrame);
+        context.CursorManager.SetPosition(context.ItemContainer.GlobalPosition);
     }
 
     /// <summary>Placing an item from the cursor to the inventory. The cursor is guaranteed to have at least one item and there is no item in the inventory slot.</summary>
@@ -102,7 +103,8 @@ public abstract class InventoryInputHandler
         else
         {
             cursorManager.GetItemAndFrame(out Item item, out int frame);
-            cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
+            cursorManager.SetItemAndFrame(item, frame);
+            cursorManager.SetPosition(context.ItemContainer.GlobalPosition);
         }
     }
 
@@ -160,7 +162,8 @@ public abstract class InventoryInputHandler
             invItem.RemoveCount(count);
 
             // Set the cursor item
-            context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+            context.CursorManager.SetItemAndFrame(newItem, invSpriteFrame);
+            context.CursorManager.SetPosition(context.ItemContainer.GlobalPosition);
         }
     }
 }
