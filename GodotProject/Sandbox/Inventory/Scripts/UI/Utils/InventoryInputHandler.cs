@@ -10,11 +10,27 @@ public abstract class InventoryInputHandler
         CursorManager cursorManager = context.CursorManager;
         int index = context.Index;
 
-        if (cursorManager.HasItem())
+        Item invItem = inv.GetItem(index);
+        Item cursorItem = cursorManager.GetItem();
+
+        bool hasInvItem = invItem != null;
+        bool hasCursorItem = cursorItem != null;
+
+        if (hasInvItem)
         {
-            if (inv.HasItem(index))
+            invItem.OnCountChanged += InvItemCountChanged;
+        }
+
+        if (hasCursorItem)
+        {
+            cursorItem.OnCountChanged += CursorItemCountChanged;
+        }
+
+        if (hasCursorItem)
+        {
+            if (hasInvItem)
             {
-                if (cursorManager.ItemsAreOfSameType(inv.GetItem(index)))
+                if (cursorManager.ItemsAreOfSameType(invItem))
                 {
                     HandleSameType(context);
                 }
@@ -30,9 +46,47 @@ public abstract class InventoryInputHandler
         }
         else
         {
-            if (inv.HasItem(index))
+            if (hasInvItem)
             {
                 HandlePickup(context);
+            }
+        }
+
+        // Check again if inventory item is null
+        if (inv.HasItem(index))
+        {
+            inv.GetItem(index).OnCountChanged -= InvItemCountChanged;
+        }
+
+        // Check again if cursor item is null
+        if (cursorManager.HasItem())
+        {
+            cursorManager.GetItem().OnCountChanged -= CursorItemCountChanged;
+        }
+
+        void InvItemCountChanged(int count)
+        {
+            if (count <= 0)
+            {
+                inv.ClearItem(index);
+            }
+            else
+            {
+                context.InventoryManager.GetItemAndFrame(out Item item, out int frame);
+                context.InventoryManager.SetItemAndFrame(item, frame);
+            }
+        }
+
+        void CursorItemCountChanged(int count)
+        {
+            if (count <= 0)
+            {
+                cursorManager.ClearItem();
+            }
+            else
+            {
+                cursorManager.GetItemAndFrame(out Item item, out int frame);
+                cursorManager.SetItem(item, context.ItemContainer.GlobalPosition, frame);
             }
         }
     }

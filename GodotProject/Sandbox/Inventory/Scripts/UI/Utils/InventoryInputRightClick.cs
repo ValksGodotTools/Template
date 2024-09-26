@@ -23,17 +23,6 @@ public class InventoryInputRightClick : InventoryInputHandler
         // Reduce the cursor item count by one
         cursorItem.RemoveCount(1);
 
-        // If the cursor item count is zero, clear the cursor item
-        if (cursorItem.Count == 0)
-        {
-            context.CursorManager.ClearItem();
-        }
-        else
-        {
-            // Update the cursor item with the new count
-            context.CursorManager.SetItem(cursorItem, context.ItemContainer.GlobalPosition, cursorItemFrame);
-        }
-
         // Set the inventory item with the new count
         context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
     }
@@ -65,17 +54,6 @@ public class InventoryInputRightClick : InventoryInputHandler
         // Reduce the cursor item count by 1
         cursorItem.RemoveCount(1);
 
-        // If the cursor item count is zero, clear the cursor item
-        if (cursorItem.Count == 0)
-        {
-            context.CursorManager.ClearItem();
-        }
-        else
-        {
-            // Update the cursor item with the new count
-            context.CursorManager.SetItem(cursorItem, context.ItemContainer.GlobalPosition, cursorItemFrame);
-        }
-
         // Set the inventory item
         context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
     }
@@ -101,17 +79,6 @@ public class InventoryInputRightClick : InventoryInputHandler
 
         // Reduce the inventory item count by the half count
         invItem.RemoveCount(halfCount);
-
-        // If the inventory item count is zero, clear the inventory item
-        if (invItem.Count == 0)
-        {
-            context.Inventory.ClearItem(context.Index);
-        }
-        else
-        {
-            // Update the inventory item with the new count
-            context.InventoryManager.SetItemAndFrame(invItem, invSpriteFrame);
-        }
 
         // Set the cursor item
         context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
