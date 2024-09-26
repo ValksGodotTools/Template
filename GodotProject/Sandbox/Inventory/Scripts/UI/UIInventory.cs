@@ -24,25 +24,26 @@ public class UIInventory
 
     private void AddItemContainers(CursorManager cursorManager, InventoryContainer invContainer, Inventory inv)
     {
-        List<ItemContainer> itemContainers = [];
+        int invSize = inv.GetInventorySize();
+        ItemContainer[] itemContainers = new ItemContainer[invSize];
 
-        List<InventoryInputHandler> inputs = 
+        InventoryInputHandler[] inputs = 
         [
             new InventoryInputLeftClick(),
             new InventoryInputRightClick()
         ];
 
-        for (int i = 0; i < inv.GetInventorySize(); i++)
+        for (int i = 0; i < invSize; i++)
         {
             InventorySlotContext context = new(cursorManager, inv, invContainer.AddItemContainer(), i);
             
-            AddItemContainer(inputs, itemContainers, context);
+            AddItemContainer(inputs, i, itemContainers, context);
         }
 
         UpdateItemContainerOnInvChanged(itemContainers, inv);
     }
 
-    private void AddItemContainer(List<InventoryInputHandler> inputs, List<ItemContainer> itemContainers, InventorySlotContext context)
+    private void AddItemContainer(InventoryInputHandler[] inputs, int index, ItemContainer[] itemContainers, InventorySlotContext context)
     {
         ItemContainer itemContainer = context.ItemContainer;
         itemContainer.SetItem(context.Inventory.GetItem(context.Index));
@@ -71,10 +72,10 @@ public class UIInventory
             }
         };
 
-        itemContainers.Add(itemContainer);
+        itemContainers[index] = itemContainer;
     }
 
-    private void UpdateItemContainerOnInvChanged(List<ItemContainer> itemContainers, Inventory inv)
+    private void UpdateItemContainerOnInvChanged(ItemContainer[] itemContainers, Inventory inv)
     {
         inv.OnItemChanged += (index, item) =>
         {
