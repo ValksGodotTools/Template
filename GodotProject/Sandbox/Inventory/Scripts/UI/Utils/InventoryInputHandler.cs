@@ -105,6 +105,36 @@ public abstract class InventoryInputHandler
         context.CursorManager.GetItem().RemoveCount(amount);
     }
 
+    protected void PlaceItemFromCursor(InventorySlotContext context, int count)
+    {
+        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+
+        // Create a new item with the specified count
+        Item newItem = new(cursorItem);
+        newItem.SetCount(count);
+
+        // Reduce the cursor item count by the specified count
+        cursorItem.RemoveCount(count);
+
+        // Set the inventory item
+        context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
+    }
+
+    protected void PickupItemFromInventory(InventorySlotContext context, int count)
+    {
+        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+        // Create a new item with the specified count
+        Item newItem = new(invItem);
+        newItem.SetCount(count);
+
+        // Reduce the inventory item count by the specified count
+        invItem.RemoveCount(count);
+
+        // Set the cursor item
+        context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
+    }
+
     /// <summary>If the correct <paramref name="mouseBtn"/> input is provided then handle this input.</summary>
     public abstract bool HasInput(InputEventMouseButton mouseBtn);
     
