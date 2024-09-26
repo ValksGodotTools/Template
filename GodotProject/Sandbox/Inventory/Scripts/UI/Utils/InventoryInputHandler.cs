@@ -77,45 +77,6 @@ public abstract class InventoryInputHandler
     /// <summary>Picking up an item from the inventory to the cursor. The inventory slot is guaranteed to have at least one item and there is no item in the cursor slot.</summary>
     public abstract void HandlePickup(InventorySlotContext context);
 
-    protected void CommonHandleSameType(InventorySlotContext context, int amount)
-    {
-        // Increase the inventory item count by one
-        context.Inventory.GetItem(context.Index).AddCount(amount);
-
-        // Reduce the cursor item count by one
-        context.CursorManager.GetItem().RemoveCount(amount);
-    }
-
-    protected void CommonHandlePlace(InventorySlotContext context, int count)
-    {
-        context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
-
-        // Create a new item with the specified count
-        Item newItem = new(cursorItem);
-        newItem.SetCount(count);
-
-        // Reduce the cursor item count by the specified count
-        cursorItem.RemoveCount(count);
-
-        // Set the inventory item
-        context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
-    }
-
-    protected void CommonHandlePickup(InventorySlotContext context, int count)
-    {
-        context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
-
-        // Create a new item with the specified count
-        Item newItem = new(invItem);
-        newItem.SetCount(count);
-
-        // Reduce the inventory item count by the specified count
-        invItem.RemoveCount(count);
-
-        // Set the cursor item
-        context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
-    }
-
     private void HandleInvItemCountChanged(InventorySlotContext context, int count)
     {
         if (count <= 0)
@@ -158,6 +119,48 @@ public abstract class InventoryInputHandler
         if (item != null)
         {
             item.OnCountChanged -= countChangedHandler;
+        }
+    }
+
+    protected class InputCommon
+    {
+        public static void HandleSameType(InventorySlotContext context, int amount)
+        {
+            // Increase the inventory item count by one
+            context.Inventory.GetItem(context.Index).AddCount(amount);
+
+            // Reduce the cursor item count by one
+            context.CursorManager.GetItem().RemoveCount(amount);
+        }
+
+        public static void HandlePlace(InventorySlotContext context, int count)
+        {
+            context.CursorManager.GetItemAndFrame(out Item cursorItem, out int cursorItemFrame);
+
+            // Create a new item with the specified count
+            Item newItem = new(cursorItem);
+            newItem.SetCount(count);
+
+            // Reduce the cursor item count by the specified count
+            cursorItem.RemoveCount(count);
+
+            // Set the inventory item
+            context.InventoryManager.SetItemAndFrame(newItem, cursorItemFrame);
+        }
+
+        public static void HandlePickup(InventorySlotContext context, int count)
+        {
+            context.InventoryManager.GetItemAndFrame(out Item invItem, out int invSpriteFrame);
+
+            // Create a new item with the specified count
+            Item newItem = new(invItem);
+            newItem.SetCount(count);
+
+            // Reduce the inventory item count by the specified count
+            invItem.RemoveCount(count);
+
+            // Set the cursor item
+            context.CursorManager.SetItem(newItem, context.ItemContainer.GlobalPosition, invSpriteFrame);
         }
     }
 }

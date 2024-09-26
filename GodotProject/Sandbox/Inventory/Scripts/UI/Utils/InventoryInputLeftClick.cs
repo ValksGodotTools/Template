@@ -13,7 +13,7 @@ public class InventoryInputLeftClick : InventoryInputHandler
     // Stack the cursor item onto the inventory item
     public override void HandleSameType(InventorySlotContext context)
     {
-        CommonHandleSameType(context, context.CursorManager.GetItem().Count);
+        InputCommon.HandleSameType(context, context.CursorManager.GetItem().Count);
     }
 
     public override void HandleDiffType(InventorySlotContext context)
@@ -24,12 +24,12 @@ public class InventoryInputLeftClick : InventoryInputHandler
     // Place the item from the cursor to the inventory
     public override void HandlePlace(InventorySlotContext context)
     {
-        CommonHandlePlace(context, context.CursorManager.GetItem().Count);
+        InputCommon.HandlePlace(context, context.CursorManager.GetItem().Count);
     }
 
     // Pickup the item from the inventory and put it on the cursor
     public override void HandlePickup(InventorySlotContext context)
     {
-        CommonHandlePickup(context, context.Inventory.GetItem(context.Index).Count);
+        InputCommon.HandlePickup(context, context.Inventory.GetItem(context.Index).Count);
     }
 }
