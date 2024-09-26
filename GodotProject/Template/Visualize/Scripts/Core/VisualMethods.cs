@@ -1,5 +1,5 @@
-﻿using CSharpUtils;
-using Godot;
+﻿using Godot;
+using GodotUtils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

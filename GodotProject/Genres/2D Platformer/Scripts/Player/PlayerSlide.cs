@@ -1,4 +1,4 @@
-using CSharpUtils;
+using GodotUtils;
 
 namespace Template.Platformer2D.Retro;
 

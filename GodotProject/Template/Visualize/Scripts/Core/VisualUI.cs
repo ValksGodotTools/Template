@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using static Godot.Control;
 using GodotUtils;
-using CSharpUtils;
 
 namespace Template;
 
