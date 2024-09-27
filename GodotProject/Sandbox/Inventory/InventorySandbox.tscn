@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3wfc7hp8thk3"]
+[gd_scene load_steps=4 format=3 uid="uid://c3wfc7hp8thk3"]
 
 [ext_resource type="Script" path="res://Sandbox/Inventory/Scripts/InventorySandbox.cs" id="1_fmlrj"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/Scripts/UI/Utils/InputDetector.cs" id="2_8yfvp"]
 [ext_resource type="PackedScene" uid="uid://dcmf0bbkqyl01" path="res://Sandbox/Inventory/Scenes/CursorItemContainer.tscn" id="2_bqf6y"]
 
 [node name="InventorySandbox" type="Node2D"]
 script = ExtResource("1_fmlrj")
+
+[node name="InputDetector" type="Node2D" parent="."]
+script = ExtResource("2_8yfvp")
 
 [node name="CursorItemContainer" parent="." instance=ExtResource("2_bqf6y")]
