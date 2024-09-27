@@ -47,6 +47,53 @@ public class UIInventory
         InventoryManager invM = context.InventoryManager;
         CursorManager cM = context.CursorManager;
 
+        itemContainer.MouseEntered += () =>
+        {
+            InputDetector input = Services.Get<InputDetector>();
+
+            if (input.HoldingRightClick)
+            {
+                if (cInv.HasItem())
+                {
+                    if (inv.HasItem(index))
+                    {
+                        if (cInv.GetItem().Equals(inv.GetItem(index)))
+                        {
+                            // Stack one of the cursor item onto the inventory item
+
+                            // Add one to item
+                            invM.GetItemAndFrame(out Item item, out int frame);
+                            item.AddCount(1);
+                            invM.SetItemAndFrame(item, frame);
+
+                            // Remove one from cursor item
+                            Item cItem = cInv.GetItem();
+                            cItem.RemoveCount(1);
+
+                            // Update cursor
+                            if (cItem.Count <= 0)
+                            {
+                                cInv.ClearItem();
+                            }
+                            else
+                            {
+                                cM.GetItemAndFrame(out Item _, out int cFrame);
+                                cM.SetItemAndFrame(cItem, cFrame);
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+        };
+
         itemContainer.GuiInput += inputEvent =>
         {
             if (inputEvent is InputEventMouseButton mouseBtn)
