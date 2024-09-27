@@ -24,8 +24,6 @@ public partial class CursorItemContainer : ItemContainer
         _offset = CustomMinimumSize * 0.5f;
         _currentSmoothFactor = InitialSmoothFactor;
 
-        SetPhysicsProcess(false);
-
         Show();
     }
 

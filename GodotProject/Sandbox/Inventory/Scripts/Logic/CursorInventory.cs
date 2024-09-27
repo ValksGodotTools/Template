@@ -18,8 +18,7 @@ public class CursorInventory
     }
 
     public void SetItem(Item item) => _inventory.SetItem(0, item);
-    public void ClearItem() => _inventory.ClearItem(0);
-    public void RemoveItem(int count = 1) => _inventory.RemoveItem(0, count);
+    public void RemoveItem() => _inventory.RemoveItem(0);
     public void DebugPrintInventory() => _inventory.DebugPrintInventory();
     public bool HasItem() => _inventory.HasItem(0);
     public Item GetItem() => _inventory.GetItem(0);

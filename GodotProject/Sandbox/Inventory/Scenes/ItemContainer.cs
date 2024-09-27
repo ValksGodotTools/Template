@@ -5,11 +5,6 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class ItemContainer : PanelContainer
 {
-    public override void _Ready()
-    {
-        Count.Hide();
-    }
-
     public void SetItem(Item item)
     {
         if (item != null)
@@ -22,6 +17,16 @@ public partial class ItemContainer : PanelContainer
         {
             ClearItem();
         }
+    }
+
+    public void SetCurrentSpriteFrame(int frame)
+    {
+        Sprite.Frame = frame;
+    }
+
+    public int GetCurrentSpriteFrame()
+    {
+        return Sprite.Frame;
     }
 
     private void ClearItem()
@@ -42,16 +47,6 @@ public partial class ItemContainer : PanelContainer
         {
             Sprite.SpriteFrames = null;
         }
-    }
-
-    public void SetCurrentSpriteFrame(int frame)
-    {
-        Sprite.Frame = frame;
-    }
-
-    public int GetCurrentSpriteFrame()
-    {
-        return Sprite.Frame;
     }
 
     private void SetColor(Color color)

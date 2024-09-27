@@ -19,7 +19,7 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public void SetItem(int index, Item item)
+    public virtual void SetItem(int index, Item item)
     {
         ValidateIndex(index);
 
@@ -27,10 +27,10 @@ public class Inventory
 
         _items[index] = newItem;
 
-        OnItemChanged?.Invoke(index, newItem);
+        OnItemChanged?.Invoke(index, item);
     }
 
-    public void AddItem(Item item, int count = 1)
+    public virtual void AddItem(Item item, int count = 1)
     {
         if (FindFirstEmptySlot(out int index))
         {
@@ -47,7 +47,7 @@ public class Inventory
         }
     }
 
-    public void ClearItem(int index)
+    public virtual void RemoveItem(int index)
     {
         ValidateIndex(index);
 
@@ -56,31 +56,7 @@ public class Inventory
         OnItemChanged?.Invoke(index, null);
     }
 
-    public void RemoveItem(int index, int count = 1)
-    {
-        ValidateIndex(index);
-
-        if (_items[index] == null)
-        {
-            GD.Print("No item at the specified index.");
-            return;
-        }
-
-        if (_items[index].Count <= count)
-        {
-            _items[index] = null;
-
-            OnItemChanged?.Invoke(index, null);
-        }
-        else
-        {
-            _items[index].RemoveCount(count);
-
-            OnItemChanged?.Invoke(index, _items[index]);
-        }
-    }
-
-    public void SwapItems(int index1, int index2)
+    public virtual void SwapItems(int index1, int index2)
     {
         ValidateIndex(index1);
         ValidateIndex(index2);
@@ -91,38 +67,24 @@ public class Inventory
         OnItemChanged?.Invoke(index2, _items[index2]);
     }
 
-    public bool HasItem(int index)
+    public virtual bool HasItem(int index)
     {
         return GetItem(index) != null;
     }
 
-    public Item GetItem(int index)
+    public virtual Item GetItem(int index)
     {
         ValidateIndex(index);
 
         return _items[index];
     }
 
-    public int GetItemCount()
-    {
-        int count = 0;
-
-        foreach (Item item in _items)
-        {
-            if (item != null)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int GetInventorySize()
+    public virtual int GetInventorySize()
     {
         return _items.Length;
     }
 
-    public void DebugPrintInventory()
+    public virtual void DebugPrintInventory()
     {
         GD.Print("Inventory");
 
