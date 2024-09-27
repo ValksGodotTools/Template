@@ -18,7 +18,7 @@ config/icon="res://Template/Sprites/UI/icon.svg"
 
 [autoload]
 
-ServiceProvider="*res://Template/Scripts/Autoloads/ServiceProvider.cs"
+ServiceProvider="*res://Template/Scripts/Autoloads/Services.cs"
 Console="*res://Template/Autoloads/console.tscn"
 Global="*res://Template/Autoloads/global.tscn"
 AudioManager="*res://Template/Autoloads/audio_manager.tscn"
