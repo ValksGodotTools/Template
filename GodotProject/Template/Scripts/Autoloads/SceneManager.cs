@@ -25,7 +25,7 @@ public partial class SceneManager : Node
 
         // Gradually fade out all SFX whenever the scene is changed
         PreSceneChanged += scene =>
-            ServiceProvider.Services.Get<AudioManager>().FadeOutSFX();
+            Services.Get<AudioManager>().FadeOutSFX();
     }
 
     public void SwitchScene(Prefab prefab, TransType transType = TransType.None)

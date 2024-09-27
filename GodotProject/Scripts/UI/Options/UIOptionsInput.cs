@@ -73,7 +73,7 @@ public partial class UIOptionsInput : Control
         {
             if (Input.IsActionJustPressed(InputActions.UICancel))
             {
-                if (ServiceProvider.Services.Get<SceneManager>().CurrentScene.Name == "Options")
+                if (Services.Get<SceneManager>().CurrentScene.Name == "Options")
                 {
                     if (_btnNewInput == null)
                     {

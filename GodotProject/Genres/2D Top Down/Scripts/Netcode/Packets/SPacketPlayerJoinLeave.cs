@@ -41,7 +41,7 @@ public class SPacketPlayerJoinLeave : ServerPacket
 
     public override void Handle(ENetClient client)
     {
-        Level level = ServiceProvider.Services.Get<Level>();
+        Level level = Services.Get<Level>();
 
         if (Joined)
         {

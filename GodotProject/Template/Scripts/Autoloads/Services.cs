@@ -10,21 +10,15 @@ namespace Template;
 /// <summary>
 /// A service provider class that manages the registration and retrieval of services in a Godot project.
 /// </summary>
-public partial class ServiceProvider : Node
+public partial class Services : Node
 {
-    /// <summary>
-    /// Static property to access the singleton instance of the ServiceProvider.
-    /// </summary>
-    public static ServiceProvider Services { get; private set; }
-
     /// <summary>
     /// Dictionary to store registered services, keyed by their type.
     /// </summary>
-    private Dictionary<Type, Service> _services = [];
+    private static Dictionary<Type, Service> _services = [];
 
     public override void _EnterTree()
     {
-        Services = this;
         RegisterServices();
     }
 
@@ -34,7 +28,7 @@ public partial class ServiceProvider : Node
     /// <typeparam name="T">The type of the service to retrieve.</typeparam>
     /// <returns>The instance of the service.</returns>
     /// <exception cref="Exception">Thrown if the service is not found.</exception>
-    public T Get<T>()
+    public static T Get<T>()
     {
         if (!_services.ContainsKey(typeof(T)))
         {

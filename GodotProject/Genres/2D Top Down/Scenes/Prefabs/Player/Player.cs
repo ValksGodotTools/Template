@@ -31,7 +31,7 @@ public partial class Player : CharacterBody2D
         _sprite = _.AnimatedSprite2D;
         _cursor = _.Cursor;
         _cameraShake = GetTree().Root.GetNode<CameraShakeComponent>("Level/Camera2D/CameraShake");
-        _client = ServiceProvider.Services.Get<UINetControlPanel>().Net.Client;
+        _client = Services.Get<UINetControlPanel>().Net.Client;
 
         _dashManager = new PlayerDashManager(_config, _sprite);
         _moveManager = new PlayerMoveManager(_config);

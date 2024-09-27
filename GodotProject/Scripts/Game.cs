@@ -6,16 +6,16 @@ namespace Template;
 
 public partial class Game
 {
-    public static UIConsole Console { get => ServiceProvider.Services.Get<UIConsole>(); }
+    public static UIConsole Console { get => Services.Get<UIConsole>(); }
 
     public static void SwitchScene(Scene scene, TransType transType = TransType.None)
     {
-        ServiceProvider.Services.Get<SceneManager>().SwitchScene(scene, transType);
+        Services.Get<SceneManager>().SwitchScene(scene, transType);
     }
 
     public static void SwitchScene(Prefab scene, TransType transType = TransType.None)
     {
-        ServiceProvider.Services.Get<SceneManager>().SwitchScene(scene, transType);
+        Services.Get<SceneManager>().SwitchScene(scene, transType);
     }
 
     [Obsolete("Please use the [OnInstantiate] attribute instead")]
@@ -26,21 +26,21 @@ public partial class Game
 
     public static void Log(object message, BBColor color = BBColor.Gray)
     {
-        ServiceProvider.Services.Get<Global>().Logger.Log(message, color);
+        Services.Get<Global>().Logger.Log(message, color);
     }
 
     public static void Log(params object[] objects)
     {
-        ServiceProvider.Services.Get<Global>().Logger.Log(objects);
+        Services.Get<Global>().Logger.Log(objects);
     }
 
     public static void LogWarning(object message, BBColor color = BBColor.Orange)
     {
-        ServiceProvider.Services.Get<Global>().Logger.LogWarning(message, color);
+        Services.Get<Global>().Logger.LogWarning(message, color);
     }
 
     public static void LogErr(Exception e, string hint = null)
     {
-        ServiceProvider.Services.Get<Global>().Logger.LogErr(e, hint);
+        Services.Get<Global>().Logger.LogErr(e, hint);
     }
 }

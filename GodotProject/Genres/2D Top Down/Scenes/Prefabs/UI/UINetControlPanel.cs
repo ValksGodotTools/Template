@@ -9,7 +9,7 @@ public partial class UINetControlPanel : UINetControlPanelLow
 {
     public override void StartClientButtonPressed(string username)
     {
-        ServiceProvider.Services.Get<Level>().PlayerUsername = username;
+        Services.Get<Level>().PlayerUsername = username;
     }
 
     public override IGameServerFactory GameServerFactory() => new GameServerFactory();

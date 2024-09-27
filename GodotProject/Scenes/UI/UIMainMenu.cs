@@ -8,7 +8,7 @@ public partial class UIMainMenu : Node
 
     public override void _Ready()
     {
-        //ServiceProvider.Services.Get<AudioManager>().PlayMusic(Music.Menu);
+        //ServiceProvider.Get<AudioManager>().PlayMusic(Music.Menu);
     }
 }
 

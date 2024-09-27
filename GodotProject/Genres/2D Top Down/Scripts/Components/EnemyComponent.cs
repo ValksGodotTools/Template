@@ -22,7 +22,7 @@ public partial class EnemyComponent : EntityComponent
     public override void _Ready()
     {
         base._Ready();
-        ServiceProvider.Services.Get<Level>().EnemyComponents.Add(this);
+        Services.Get<Level>().EnemyComponents.Add(this);
 
         _hitbox.BodyEntered += OnBodyEntered;
         _hitbox.BodyExited += OnBodyExited;

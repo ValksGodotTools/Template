@@ -25,7 +25,7 @@ public class UIInventory
 
         for (int i = 0; i < invSize; i++)
         {
-            CursorItemContainer cursorItemContainer = ServiceProvider.Services.Get<CursorItemContainer>();
+            CursorItemContainer cursorItemContainer = Services.Get<CursorItemContainer>();
             InventorySlotContext context = new(cursorItemContainer, inv, invContainer.AddItemContainer(), i);
             
             AddItemContainer(i, itemContainers, context);

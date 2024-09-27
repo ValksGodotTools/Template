@@ -20,7 +20,7 @@ public partial class Level : Node
 
     public override void _Ready()
     {
-        ServiceProvider.Services.Get<UINetControlPanel>().Net.OnClientCreated += client =>
+        Services.Get<UINetControlPanel>().Net.OnClientCreated += client =>
         {
             client.OnConnected += () =>
             {
