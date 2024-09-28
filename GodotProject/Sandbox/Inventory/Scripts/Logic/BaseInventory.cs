@@ -34,18 +34,59 @@ public class BaseInventory
     protected void MoveItemTo(BaseInventory other, int fromIndex, int toIndex)
     {
         ItemStack item = GetItem(fromIndex);
+        ItemStack otherItem = other.GetItem(toIndex);
 
+        if (item != null && otherItem != null)
+        {
+            if (item.Material.Equals(otherItem.Material))
+            {
+                // Stack items
+                otherItem.Add(item.Count);
+                other.NotifyItemChanged(toIndex, otherItem);
+
+                RemoveItem(fromIndex);
+                return;
+            }
+            else
+            {
+                other.SetItem(toIndex, item);
+                SetItem(fromIndex, otherItem);
+                return;
+            }
+        }
+        
+        // Place or Pickup items
         other.SetItem(toIndex, item);
-
         RemoveItem(fromIndex);
     }
 
     protected void TakeItemFrom(BaseInventory other, int fromIndex, int toIndex)
     {
-        ItemStack item = other.GetItem(fromIndex);
+        ItemStack otherItem = other.GetItem(fromIndex);
+        ItemStack item = GetItem(toIndex);
 
-        SetItem(toIndex, item);
+        if (item != null && otherItem != null)
+        {
+            if (item.Material.Equals(otherItem.Material))
+            {
+                // Stack items
+                item.Add(otherItem.Count);
+                NotifyItemChanged(toIndex, item);
 
+                other.RemoveItem(fromIndex);
+                return;
+            }
+            else
+            {
+                // Swap items
+                SetItem(toIndex, otherItem);
+                other.SetItem(fromIndex, item);
+                return;
+            }
+        }
+
+        // Place or Pickup items
+        SetItem(toIndex, otherItem);
         other.RemoveItem(fromIndex);
     }
 
@@ -61,7 +102,7 @@ public class BaseInventory
     protected void AddItem(ItemStack item)
     {
         // Try to stack the item with an existing item in the inventory
-        if (TryStackItem(item))
+        if (TryStackItemFullSearch(item))
         {
             return;
         }
@@ -116,6 +157,11 @@ public class BaseInventory
         return _itemStacks.Length;
     }
 
+    protected void NotifyItemChanged(int index, ItemStack item)
+    {
+        OnItemChanged?.Invoke(index, item);
+    }
+
     private void ValidateIndex(int index)
     {
         if (index < 0 || index >= _itemStacks.Length)
@@ -124,11 +170,11 @@ public class BaseInventory
         }
     }
 
-    private bool TryStackItem(ItemStack item)
+    private bool TryStackItemFullSearch(ItemStack item)
     {
         for (int i = 0; i < _itemStacks.Length; i++)
         {
-            if (_itemStacks[i] != null && _itemStacks[i].Equals(item))
+            if (_itemStacks[i] != null && _itemStacks[i].Material.Equals(item.Material))
             {
                 _itemStacks[i].Add(item.Count);
                 NotifyItemChanged(i, _itemStacks[i]);
@@ -153,11 +199,6 @@ public class BaseInventory
         index = -1;
 
         return false;
-    }
-
-    private void NotifyItemChanged(int index, ItemStack item)
-    {
-        OnItemChanged?.Invoke(index, item);
     }
 
     public void DebugPrintInventory()

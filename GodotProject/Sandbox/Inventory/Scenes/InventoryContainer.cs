@@ -62,10 +62,18 @@ public partial class InventoryContainer : PanelContainer
                 {
                     cursorInventory.MoveItemTo(inventory, index);
                 }
+                else if (action == Action.Swap)
+                {
+                    cursorInventory.MoveItemTo(inventory, index);
+                }
+                else if (action == Action.Stack)
+                {
+                    cursorInventory.MoveItemTo(inventory, index);
+                }
             }
             else if (clickType == ClickType.Right)
             {
-
+                // TODO
             }
         };
     }

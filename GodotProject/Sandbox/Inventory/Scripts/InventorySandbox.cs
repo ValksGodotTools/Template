@@ -12,7 +12,7 @@ public partial class InventorySandbox : Node
         _inventory = new(4);
         _inventory.AddItem(new ItemStack(Material.SnowyCoin, 3));
         _inventory.AddItem(new ItemStack(Material.Coin, 100));
-        _inventory.AddItem(new ItemStack(Material.SnowyCoin, 42));
+        _inventory.SetItem(2, new ItemStack(Material.SnowyCoin, 42));
 
         InventoryContainer invContainer = InventoryContainer.Instantiate(_inventory);
         AddChild(invContainer);
