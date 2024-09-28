@@ -5,7 +5,7 @@ namespace Template.Inventory;
 
 public class Inventory
 {
-    public event Action<Item, int> OnItemChanged;
+    public event Action<int, Item> OnItemChanged;
 
     private Item[] _items;
 
@@ -19,7 +19,7 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public void SetItem(Item item, int index = 0)
+    public void SetItem(int index, Item item)
     {
         ValidateIndex(index);
 
@@ -27,10 +27,10 @@ public class Inventory
 
         _items[index] = newItem;
 
-        OnItemChanged?.Invoke(item, index);
+        OnItemChanged?.Invoke(index, item);
     }
 
-    public void AddItem(Item item, int count = 1)
+    public void AddItem(Item item, int count)
     {
         if (FindFirstEmptySlot(out int index))
         {
@@ -39,7 +39,7 @@ public class Inventory
 
             _items[index] = newItem;
 
-            OnItemChanged?.Invoke(newItem, index);
+            OnItemChanged?.Invoke(index, newItem);
         }
         else
         {
@@ -47,13 +47,13 @@ public class Inventory
         }
     }
 
-    public void RemoveItem(int index = 0)
+    public void RemoveItem(int index)
     {
         ValidateIndex(index);
 
         _items[index] = null;
 
-        OnItemChanged?.Invoke(null, index);
+        OnItemChanged?.Invoke(index, null);
     }
 
     public void SwapItems(int index1, int index2)
@@ -63,16 +63,16 @@ public class Inventory
 
         (_items[index2], _items[index1]) = (_items[index1], _items[index2]);
 
-        OnItemChanged?.Invoke(_items[index1], index1);
-        OnItemChanged?.Invoke(_items[index2], index2);
+        OnItemChanged?.Invoke(index1, _items[index1]);
+        OnItemChanged?.Invoke(index2, _items[index2]);
     }
 
-    public bool HasItem(int index = 0)
+    public bool HasItem(int index)
     {
         return GetItem(index) != null;
     }
 
-    public Item GetItem(int index = 0)
+    public Item GetItem(int index)
     {
         ValidateIndex(index);
 

@@ -10,7 +10,7 @@ public class InventoryManager(Inventory inv, int index, ItemContainer itemContai
 
     public virtual void SetItemAndFrame(Item item, int frame)
     {
-        inv.SetItem(item, index);
+        inv.SetItem(index, item);
         itemContainer.SetCurrentSpriteFrame(frame);
     }
 }
