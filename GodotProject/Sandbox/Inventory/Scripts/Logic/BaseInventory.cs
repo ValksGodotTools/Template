@@ -7,9 +7,9 @@ namespace Template.Inventory;
 
 public class BaseInventory
 {
-    protected event Action<int, Item> OnItemChanged;
+    protected event Action<int, ItemStack> OnItemChanged;
     
-    private Item[] _items;
+    private ItemStack[] _itemStacks;
 
     protected BaseInventory(int size)
     {
@@ -18,34 +18,30 @@ public class BaseInventory
             throw new ArgumentException("Inventory size must be greater than zero.");
         }
 
-        _items = new Item[size];
+        _itemStacks = new ItemStack[size];
     }
 
     public void Clear()
     {
-        for (int i = 0; i < _items.Length; i++)
+        for (int i = 0; i < _itemStacks.Length; i++)
         {
             RemoveItem(i);
         }
     }
 
-    public IEnumerable<Item> GetItems() => _items.Where(item => item != null);
+    public IEnumerable<ItemStack> GetItems() => _itemStacks.Where(item => item != null);
 
-    protected void SetItem(int index, Item item)
+    protected void SetItem(int index, ItemStack item)
     {
         ValidateIndex(index);
 
-        Item newItem = new(item);
-
-        _items[index] = newItem;
+        _itemStacks[index] = item;
 
         NotifyItemChanged(index, item);
     }
 
-    protected void AddItem(Item item, int count)
+    protected void AddItem(ItemStack item)
     {
-        item.Count = count;
-
         // Try to stack the item with an existing item in the inventory
         if (TryStackItem(item))
         {
@@ -55,9 +51,8 @@ public class BaseInventory
         // If the item cannot be stacked, try to place the item in the first empty slot
         if (TryFindFirstEmptySlot(out int index))
         {
-            Item newItem = new(item);
-            _items[index] = newItem;
-            NotifyItemChanged(index, newItem);
+            _itemStacks[index] = item;
+            NotifyItemChanged(index, item);
         }
         else
         {
@@ -70,7 +65,7 @@ public class BaseInventory
     {
         ValidateIndex(index);
 
-        _items[index] = null;
+        _itemStacks[index] = null;
 
         NotifyItemChanged(index, null);
     }
@@ -80,10 +75,10 @@ public class BaseInventory
         ValidateIndex(index1);
         ValidateIndex(index2);
 
-        (_items[index2], _items[index1]) = (_items[index1], _items[index2]);
+        (_itemStacks[index2], _itemStacks[index1]) = (_itemStacks[index1], _itemStacks[index2]);
 
-        NotifyItemChanged(index1, _items[index1]);
-        NotifyItemChanged(index2, _items[index2]);
+        NotifyItemChanged(index1, _itemStacks[index1]);
+        NotifyItemChanged(index2, _itemStacks[index2]);
     }
 
     protected bool HasItem(int index)
@@ -91,34 +86,34 @@ public class BaseInventory
         return GetItem(index) != null;
     }
 
-    protected Item GetItem(int index)
+    protected ItemStack GetItem(int index)
     {
         ValidateIndex(index);
 
-        return _items[index];
+        return _itemStacks[index];
     }
 
     protected int GetInventorySize()
     {
-        return _items.Length;
+        return _itemStacks.Length;
     }
 
     private void ValidateIndex(int index)
     {
-        if (index < 0 || index >= _items.Length)
+        if (index < 0 || index >= _itemStacks.Length)
         {
             throw new IndexOutOfRangeException("Index out of range.");
         }
     }
 
-    private bool TryStackItem(Item item)
+    private bool TryStackItem(ItemStack item)
     {
-        for (int i = 0; i < _items.Length; i++)
+        for (int i = 0; i < _itemStacks.Length; i++)
         {
-            if (_items[i] != null && _items[i].Equals(item))
+            if (_itemStacks[i] != null && _itemStacks[i].Equals(item))
             {
-                _items[i].Count += item.Count;
-                NotifyItemChanged(i, _items[i]);
+                _itemStacks[i].Add(item.Count);
+                NotifyItemChanged(i, _itemStacks[i]);
                 return true;
             }
         }
@@ -128,9 +123,9 @@ public class BaseInventory
 
     private bool TryFindFirstEmptySlot(out int index)
     {
-        for (int i = 0; i < _items.Length; i++)
+        for (int i = 0; i < _itemStacks.Length; i++)
         {
-            if (_items[i] == null)
+            if (_itemStacks[i] == null)
             {
                 index = i;
                 return true;
@@ -142,7 +137,7 @@ public class BaseInventory
         return false;
     }
 
-    private void NotifyItemChanged(int index, Item item)
+    private void NotifyItemChanged(int index, ItemStack item)
     {
         OnItemChanged?.Invoke(index, item);
     }
@@ -151,14 +146,14 @@ public class BaseInventory
     {
         GD.Print(GetType().Name);
 
-        for (int i = 0; i < _items.Length; i++)
+        for (int i = 0; i < _itemStacks.Length; i++)
         {
-            GD.Print($"Slot {i}: {(_items[i] != null ? _items[i].ToString() : "Empty")}");
+            GD.Print($"Slot {i}: {(_itemStacks[i] != null ? _itemStacks[i].ToString() : "Empty")}");
         }
     }
 
     public override string ToString()
     {
-        return string.Join(' ', _items.Where(item => item != null));
+        return string.Join(' ', _itemStacks.Where(item => item != null));
     }
 }

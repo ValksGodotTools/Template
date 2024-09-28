@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Template.Inventory;
 
-public static class Items
+public static class ItemType
 {
     public static readonly Item Coin = new Item.Builder(nameof(Coin))
         .SetDescription("An ordinary shiny coin.")

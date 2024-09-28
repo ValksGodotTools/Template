@@ -1,23 +1,18 @@
-﻿using System;
-
-namespace Template.Inventory;
+﻿namespace Template.Inventory;
 
 public class Item
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public int Count { get; set; }
 
-    private Item(string name, int count = 1)
+    private Item(string name)
     {
         Name = name;
-        Count = count;
     }
 
     public Item(Item other)
     {
         Name = other.Name;
-        Count = other.Count;
     }
 
     public bool Equals(Item other)
@@ -47,12 +42,12 @@ public class Item
 
     public override string ToString()
     {
-        return $"{Name} (x{Count})";
+        return Name;
     }
 
-    public class Builder(string name, int count = 1)
+    public class Builder(string name)
     {
-        private Item _item = new(name, count);
+        private Item _item = new(name);
 
         public Builder SetDescription(string description)
         {

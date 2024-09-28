@@ -56,7 +56,7 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (action == Action.Pickup)
                 {
-                    Item item = inventory.GetItem(index);
+                    ItemStack item = inventory.GetItem(index);
 
                     cursorInventory.SetItem(item);
                     
@@ -64,7 +64,7 @@ public partial class InventoryContainer : PanelContainer
                 }
                 else if (action == Action.Place)
                 {
-                    Item item = cursorInventory.GetItem();
+                    ItemStack item = cursorInventory.GetItem();
 
                     inventory.SetItem(index, item);
 

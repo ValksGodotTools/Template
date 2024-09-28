@@ -5,13 +5,13 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class ItemContainer : PanelContainer
 {
-    public void SetItem(Item item)
+    public void SetItem(ItemStack itemStack)
     {
-        if (item != null)
+        if (itemStack != null)
         {
-            SetSpriteFrames(Items.GetResourcePath(item));
-            SetColor(Items.GetColor(item));
-            SetCount(item.Count);
+            SetSpriteFrames(ItemType.GetResourcePath(itemStack.Item));
+            SetColor(ItemType.GetColor(itemStack.Item));
+            SetCount(itemStack.Count);
         }
         else
         {
