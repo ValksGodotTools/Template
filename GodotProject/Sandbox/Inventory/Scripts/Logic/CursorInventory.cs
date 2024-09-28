@@ -11,6 +11,8 @@ public class CursorInventory : BaseInventory
         base.OnItemChanged += (index, item) => OnItemChanged?.Invoke(item);
     }
 
+    public void MoveItemTo(BaseInventory other, int toIndex) => base.MoveItemTo(other, 0, toIndex);
+    public void TakeItemFrom(BaseInventory other, int fromIndex) => base.TakeItemFrom(other, fromIndex, 0);
     public void SetItem(ItemStack item) => base.SetItem(0, item);
     public void RemoveItem() => base.RemoveItem(0);
     public bool HasItem() => GetItem() != null;

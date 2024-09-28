@@ -31,6 +31,24 @@ public class BaseInventory
 
     public IEnumerable<ItemStack> GetItems() => _itemStacks.Where(item => item != null);
 
+    protected void MoveItemTo(BaseInventory other, int fromIndex, int toIndex)
+    {
+        ItemStack item = GetItem(fromIndex);
+
+        other.SetItem(toIndex, item);
+
+        RemoveItem(fromIndex);
+    }
+
+    protected void TakeItemFrom(BaseInventory other, int fromIndex, int toIndex)
+    {
+        ItemStack item = other.GetItem(fromIndex);
+
+        SetItem(toIndex, item);
+
+        other.RemoveItem(fromIndex);
+    }
+
     protected void SetItem(int index, ItemStack item)
     {
         ValidateIndex(index);

@@ -11,6 +11,8 @@ public class Inventory : BaseInventory
         base.OnItemChanged += (index, item) => OnItemChanged?.Invoke(index, item);
     }
 
+    public void MoveItemTo(BaseInventory other, int fromIndex, int toIndex) => base.MoveItemTo(other, fromIndex, toIndex);
+    public void TakeItemFrom(BaseInventory other, int fromIndex, int toIndex) => base.TakeItemFrom(other, fromIndex, toIndex);
     public void SetItem(int index, ItemStack item) => base.SetItem(index, item);
     public void AddItem(ItemStack item) => base.AddItem(item);
     public void RemoveItem(int index) => base.RemoveItem(index);

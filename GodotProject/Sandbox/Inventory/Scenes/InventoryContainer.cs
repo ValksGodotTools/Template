@@ -56,19 +56,11 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (action == Action.Pickup)
                 {
-                    ItemStack item = inventory.GetItem(index);
-
-                    cursorInventory.SetItem(item);
-                    
-                    inventory.RemoveItem(index);
+                    cursorInventory.TakeItemFrom(inventory, index);
                 }
                 else if (action == Action.Place)
                 {
-                    ItemStack item = cursorInventory.GetItem();
-
-                    inventory.SetItem(index, item);
-
-                    cursorInventory.RemoveItem();
+                    cursorInventory.MoveItemTo(inventory, index);
                 }
             }
             else if (clickType == ClickType.Right)
