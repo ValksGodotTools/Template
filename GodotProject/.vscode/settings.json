@@ -4,7 +4,6 @@
     "files.insertFinalNewline": true,
     "files.exclude": {
         "**/.gitattributes": true,
-        "**/.gitignore": true,
         "**/.gitmodules": true,
         "**/.runsettings": true,
         "**/project.godot": true,

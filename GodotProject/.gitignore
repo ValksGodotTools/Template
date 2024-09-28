@@ -24,3 +24,4 @@ Properties/*
 # Include these files
 !**/*.gdignore
 !.vscode/settings.json
+!.vscode/extensions.json
