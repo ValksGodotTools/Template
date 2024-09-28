@@ -9,7 +9,7 @@ public partial class InventorySandbox : Node
 
     public override void _Ready()
     {
-        _inventory = new(5);
+        _inventory = new(4);
         _inventory.AddItem(Items.SnowyCoin, 3);
         _inventory.AddItem(Items.Coin, 100);
         _inventory.AddItem(Items.SnowyCoin, 42);
@@ -24,7 +24,7 @@ public partial class InventorySandbox : Node
         {
             if (key.IsJustPressed(Key.Q))
             {
-                _inventory.DebugPrintInventory();
+                GD.Print(_inventory);
             }
         }
     }
