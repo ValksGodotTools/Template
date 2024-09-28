@@ -19,7 +19,7 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public virtual void SetItem(Item item, int index = 0)
+    public void SetItem(Item item, int index = 0)
     {
         ValidateIndex(index);
 
@@ -30,7 +30,7 @@ public class Inventory
         OnItemChanged?.Invoke(item, index);
     }
 
-    public virtual void AddItem(Item item, int count = 1)
+    public void AddItem(Item item, int count = 1)
     {
         if (FindFirstEmptySlot(out int index))
         {
@@ -47,7 +47,7 @@ public class Inventory
         }
     }
 
-    public virtual void RemoveItem(int index = 0)
+    public void RemoveItem(int index = 0)
     {
         ValidateIndex(index);
 
@@ -56,7 +56,7 @@ public class Inventory
         OnItemChanged?.Invoke(null, index);
     }
 
-    public virtual void SwapItems(int index1, int index2)
+    public void SwapItems(int index1, int index2)
     {
         ValidateIndex(index1);
         ValidateIndex(index2);
@@ -67,24 +67,24 @@ public class Inventory
         OnItemChanged?.Invoke(_items[index2], index2);
     }
 
-    public virtual bool HasItem(int index = 0)
+    public bool HasItem(int index = 0)
     {
         return GetItem(index) != null;
     }
 
-    public virtual Item GetItem(int index = 0)
+    public Item GetItem(int index = 0)
     {
         ValidateIndex(index);
 
         return _items[index];
     }
 
-    public virtual int GetInventorySize()
+    public int GetInventorySize()
     {
         return _items.Length;
     }
 
-    public virtual void DebugPrintInventory()
+    public void DebugPrintInventory()
     {
         GD.Print("Inventory");
 
