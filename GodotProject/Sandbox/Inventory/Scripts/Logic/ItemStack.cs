@@ -2,9 +2,9 @@
 
 namespace Template.Inventory;
 
-public class ItemStack(Item item, int count)
+public class ItemStack(Material material, int count)
 {
-    public Item Item { get; private set; } = item ?? throw new ArgumentNullException(nameof(item));
+    public Material Material { get; private set; } = material;
     public int Count { get; private set; } = count > 0 ? count : throw new ArgumentOutOfRangeException(nameof(count), "Count must be greater than zero.");
 
     public void Add(int amount)
@@ -35,7 +35,7 @@ public class ItemStack(Item item, int count)
 
     public override string ToString()
     {
-        return $"{Item} (x{Count})";
+        return $"{Material} (x{Count})";
     }
 
     public bool Equals(ItemStack other)
@@ -45,7 +45,7 @@ public class ItemStack(Item item, int count)
             return false;
         }
 
-        return Item.Equals(other.Item) && Count == other.Count;
+        return Material.Equals(other.Material) && Count == other.Count;
     }
 
     public override bool Equals(object obj)
@@ -60,6 +60,6 @@ public class ItemStack(Item item, int count)
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Item, Count);
+        return HashCode.Combine(Material, Count);
     }
 }

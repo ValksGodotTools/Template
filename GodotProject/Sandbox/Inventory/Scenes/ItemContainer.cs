@@ -9,8 +9,10 @@ public partial class ItemContainer : PanelContainer
     {
         if (itemStack != null)
         {
-            SetSpriteFrames(itemStack.Item.Resource);
-            SetColor(itemStack.Item.Color);
+            Item item = ItemInformation.Get(itemStack.Material);
+
+            SetSpriteFrames(item.Resource);
+            SetColor(item.Color);
             SetCount(itemStack.Count);
         }
         else
