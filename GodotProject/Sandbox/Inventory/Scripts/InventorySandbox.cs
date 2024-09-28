@@ -24,7 +24,7 @@ public partial class InventorySandbox : Node
         {
             if (key.IsJustPressed(Key.Q))
             {
-                GD.Print(_inventory);
+                _inventory.DebugPrintInventory();
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace Template.Inventory;
@@ -7,7 +8,7 @@ namespace Template.Inventory;
 public class BaseInventory
 {
     protected event Action<int, Item> OnItemChanged;
-
+    
     private Item[] _items;
 
     protected BaseInventory(int size)
@@ -19,6 +20,16 @@ public class BaseInventory
 
         _items = new Item[size];
     }
+
+    public void Clear()
+    {
+        for (int i = 0; i < _items.Length; i++)
+        {
+            RemoveItem(i);
+        }
+    }
+
+    public IEnumerable<Item> GetItems() => _items.Where(item => item != null);
 
     protected void SetItem(int index, Item item)
     {
@@ -33,22 +44,18 @@ public class BaseInventory
 
     protected void AddItem(Item item, int count)
     {
-        // Check if the item can be stacked
-        for (int i = 0; i < _items.Length; i++)
+        item.Count = count;
+
+        // Try to stack the item with an existing item in the inventory
+        if (TryStackItem(item))
         {
-            if (_items[i] != null && _items[i].Equals(item))
-            {
-                // Item exists, increase its count
-                _items[i].Count += count;
-                NotifyItemChanged(i, _items[i]);
-                return; // Item added, exit the method
-            }
+            return;
         }
 
-        // If the item cannot be stacked, find the first empty slot
-        if (FindFirstEmptySlot(out int index))
+        // If the item cannot be stacked, try to place the item in the first empty slot
+        if (TryFindFirstEmptySlot(out int index))
         {
-            Item newItem = new(item) { Count = count };
+            Item newItem = new(item);
             _items[index] = newItem;
             NotifyItemChanged(index, newItem);
         }
@@ -104,7 +111,22 @@ public class BaseInventory
         }
     }
 
-    private bool FindFirstEmptySlot(out int index)
+    private bool TryStackItem(Item item)
+    {
+        for (int i = 0; i < _items.Length; i++)
+        {
+            if (_items[i] != null && _items[i].Equals(item))
+            {
+                _items[i].Count += item.Count;
+                NotifyItemChanged(i, _items[i]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool TryFindFirstEmptySlot(out int index)
     {
         for (int i = 0; i < _items.Length; i++)
         {
@@ -125,17 +147,18 @@ public class BaseInventory
         OnItemChanged?.Invoke(index, item);
     }
 
-    public override string ToString()
+    public void DebugPrintInventory()
     {
-        StringBuilder strBuilder = new();
-
-        strBuilder.AppendLine("Inventory");
+        GD.Print(GetType().Name);
 
         for (int i = 0; i < _items.Length; i++)
         {
-            strBuilder.AppendLine($"Slot {i}: {(_items[i] != null ? _items[i].ToString() : "Empty")}");
+            GD.Print($"Slot {i}: {(_items[i] != null ? _items[i].ToString() : "Empty")}");
         }
+    }
 
-        return strBuilder.ToString();
+    public override string ToString()
+    {
+        return string.Join(' ', _items.Where(item => item != null));
     }
 }
