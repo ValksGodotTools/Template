@@ -9,9 +9,3 @@ enet.dylib
 
 # os files
 .DS_Store
-
-# VSCode
-.vscode/*
-
-# Include these files
-!.vscode/settings.json
