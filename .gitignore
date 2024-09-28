@@ -11,4 +11,7 @@ enet.dylib
 .DS_Store
 
 # VSCode
-.vscode/
+.vscode/*
+
+# Include these files
+!.vscode/settings.json
