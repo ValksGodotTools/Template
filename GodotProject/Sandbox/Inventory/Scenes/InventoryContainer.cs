@@ -19,7 +19,7 @@ public partial class InventoryContainer : PanelContainer
     {
         ItemContainer[] itemContainers = new ItemContainer[inventory.GetInventorySize()];
         CursorItemContainer cursorItemContainer = Services.Get<CursorItemContainer>();
-        CursorInventory cursorInventory = cursorItemContainer.Inventory;
+        Inventory cursorInventory = cursorItemContainer.Inventory;
 
         for (int i = 0; i < itemContainers.Length; i++)
         {
@@ -45,7 +45,7 @@ public partial class InventoryContainer : PanelContainer
             };
         }
 
-        inventory.OnItemChanged += (index, item) =>
+        inventory.OnItemChanged += (item, index) =>
         {
             itemContainers[index].SetItem(item);
         };
@@ -66,7 +66,7 @@ public partial class InventoryContainer : PanelContainer
                 {
                     Item item = cursorInventory.GetItem();
 
-                    inventory.SetItem(index, item);
+                    inventory.SetItem(item, index);
 
                     cursorInventory.RemoveItem();
                 }
@@ -78,7 +78,7 @@ public partial class InventoryContainer : PanelContainer
         };
     }
 
-    private void HandleClick(ClickType clickType, int index, CursorInventory cursorInventory, Inventory inventory)
+    private void HandleClick(ClickType clickType, int index, Inventory cursorInventory, Inventory inventory)
     {
         if (cursorInventory.HasItem())
         {

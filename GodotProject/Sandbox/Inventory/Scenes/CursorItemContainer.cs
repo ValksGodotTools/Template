@@ -6,7 +6,7 @@ namespace Template.Inventory;
 [Service(ServiceLifeTime.Scene)]
 public partial class CursorItemContainer : ItemContainer
 {
-    public CursorInventory Inventory { get; private set; }
+    public Inventory Inventory { get; private set; }
 
     private const float InitialSmoothFactor = 0.05f;
     private const float LerpBackToOneFactor = 0.01f;
@@ -16,8 +16,8 @@ public partial class CursorItemContainer : ItemContainer
 
     public override void _Ready()
     {
-        Inventory = new();
-        Inventory.OnItemChanged += SetItem;
+        Inventory = new(1);
+        Inventory.OnItemChanged += (item, index) => SetItem(item);
 
         IgnoreInputEvents(this);
 

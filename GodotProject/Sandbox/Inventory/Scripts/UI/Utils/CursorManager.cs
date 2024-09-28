@@ -2,7 +2,7 @@
 
 namespace Template.Inventory;
 
-public class CursorManager(CursorInventory inv, CursorItemContainer cursorItemContainer) : InventoryManager(inv._inventory, 0, cursorItemContainer)
+public class CursorManager(Inventory inv, CursorItemContainer cursorItemContainer) : InventoryManager(inv, 0, cursorItemContainer)
 {
     public override void SetItemAndFrame(Item item, int frame)
     {

@@ -5,7 +5,7 @@ namespace Template.Inventory;
 
 public class Inventory
 {
-    public event Action<int, Item> OnItemChanged;
+    public event Action<Item, int> OnItemChanged;
 
     private Item[] _items;
 
@@ -19,7 +19,7 @@ public class Inventory
         _items = new Item[size];
     }
 
-    public virtual void SetItem(int index, Item item)
+    public virtual void SetItem(Item item, int index = 0)
     {
         ValidateIndex(index);
 
@@ -27,7 +27,7 @@ public class Inventory
 
         _items[index] = newItem;
 
-        OnItemChanged?.Invoke(index, item);
+        OnItemChanged?.Invoke(item, index);
     }
 
     public virtual void AddItem(Item item, int count = 1)
@@ -39,7 +39,7 @@ public class Inventory
 
             _items[index] = newItem;
 
-            OnItemChanged?.Invoke(index, newItem);
+            OnItemChanged?.Invoke(newItem, index);
         }
         else
         {
@@ -47,13 +47,13 @@ public class Inventory
         }
     }
 
-    public virtual void RemoveItem(int index)
+    public virtual void RemoveItem(int index = 0)
     {
         ValidateIndex(index);
 
         _items[index] = null;
 
-        OnItemChanged?.Invoke(index, null);
+        OnItemChanged?.Invoke(null, index);
     }
 
     public virtual void SwapItems(int index1, int index2)
@@ -63,16 +63,16 @@ public class Inventory
 
         (_items[index2], _items[index1]) = (_items[index1], _items[index2]);
 
-        OnItemChanged?.Invoke(index1, _items[index1]);
-        OnItemChanged?.Invoke(index2, _items[index2]);
+        OnItemChanged?.Invoke(_items[index1], index1);
+        OnItemChanged?.Invoke(_items[index2], index2);
     }
 
-    public virtual bool HasItem(int index)
+    public virtual bool HasItem(int index = 0)
     {
         return GetItem(index) != null;
     }
 
-    public virtual Item GetItem(int index)
+    public virtual Item GetItem(int index = 0)
     {
         ValidateIndex(index);
 

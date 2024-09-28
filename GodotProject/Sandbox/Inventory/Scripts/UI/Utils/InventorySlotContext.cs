@@ -4,7 +4,7 @@ public class InventorySlotContext(CursorItemContainer cursorItemContainer, Inven
 {
     public CursorManager CursorManager { get; } = new(cursorItemContainer.Inventory, cursorItemContainer);
     public InventoryManager InventoryManager { get; } = new(inv, index, itemContainer);
-    public CursorInventory CursorInventory { get; } = cursorItemContainer.Inventory;
+    public Inventory CursorInventory { get; } = cursorItemContainer.Inventory;
     public Inventory Inventory { get; } = inv;
     public ItemContainer ItemContainer { get; } = itemContainer;
     public int Index { get; } = index;
