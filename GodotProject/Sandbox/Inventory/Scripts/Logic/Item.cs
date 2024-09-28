@@ -1,18 +1,41 @@
-﻿namespace Template.Inventory;
+﻿using Godot;
+using System;
+
+namespace Template.Inventory;
 
 public class Item
 {
     public string Name { get; private set; }
     public string Description { get; private set; }
+    public string Resource { get; private set; }
+    public Color Color { get; private set; }
 
-    private Item(string name)
+    public Item(string name)
     {
-        Name = name;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 
     public Item(Item other)
     {
         Name = other.Name;
+    }
+
+    public Item SetDescription(string description)
+    {
+        Description = description;
+        return this;
+    }
+
+    public Item SetResource(string resource)
+    {
+        Resource = resource;
+        return this;
+    }
+
+    public Item SetColor(Color color)
+    {
+        Color = color;
+        return this;
     }
 
     public bool Equals(Item other)
@@ -43,18 +66,5 @@ public class Item
     public override string ToString()
     {
         return Name;
-    }
-
-    public class Builder(string name)
-    {
-        private Item _item = new(name);
-
-        public Builder SetDescription(string description)
-        {
-            _item.Description = description;
-            return this;
-        }
-
-        public Item Build() => _item;
     }
 }
