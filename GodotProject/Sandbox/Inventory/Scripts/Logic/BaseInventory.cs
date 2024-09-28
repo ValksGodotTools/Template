@@ -33,13 +33,23 @@ public class BaseInventory
 
     protected void AddItem(Item item, int count)
     {
+        // Check if the item can be stacked
+        for (int i = 0; i < _items.Length; i++)
+        {
+            if (_items[i] != null && _items[i].Equals(item))
+            {
+                // Item exists, increase its count
+                _items[i].Count += count;
+                NotifyItemChanged(i, _items[i]);
+                return; // Item added, exit the method
+            }
+        }
+
+        // If the item cannot be stacked, find the first empty slot
         if (FindFirstEmptySlot(out int index))
         {
-            Item newItem = new(item);
-            newItem.Count = count;
-
+            Item newItem = new(item) { Count = count };
             _items[index] = newItem;
-
             NotifyItemChanged(index, newItem);
         }
         else
@@ -47,6 +57,7 @@ public class BaseInventory
             GD.Print("Inventory is full.");
         }
     }
+
 
     protected void RemoveItem(int index)
     {
