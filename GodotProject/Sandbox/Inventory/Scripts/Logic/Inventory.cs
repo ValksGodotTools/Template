@@ -35,7 +35,7 @@ public class Inventory
         if (FindFirstEmptySlot(out int index))
         {
             Item newItem = new(item);
-            newItem.SetCount(count);
+            newItem.Count = count;
 
             _items[index] = newItem;
 
