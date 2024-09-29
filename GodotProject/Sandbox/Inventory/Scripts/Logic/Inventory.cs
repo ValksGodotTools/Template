@@ -42,61 +42,12 @@ public class Inventory
 
     public void MoveItemTo(Inventory other, int fromIndex, int toIndex)
     {
-        ItemStack item = GetItem(fromIndex);
-        ItemStack otherItem = other.GetItem(toIndex);
-
-        if (item != null && otherItem != null)
-        {
-            if (item.Material.Equals(otherItem.Material))
-            {
-                // Stack items
-                otherItem.Add(item.Count);
-                other.NotifyItemChanged(toIndex, otherItem);
-
-                RemoveItem(fromIndex);
-                return;
-            }
-            else
-            {
-                other.SetItem(toIndex, item);
-                SetItem(fromIndex, otherItem);
-                return;
-            }
-        }
-        
-        // Place or Pickup items
-        other.SetItem(toIndex, item);
-        RemoveItem(fromIndex);
+        ItemTransfer(this, other, fromIndex, toIndex);
     }
 
     public void TakeItemFrom(Inventory other, int fromIndex, int toIndex)
     {
-        ItemStack otherItem = other.GetItem(fromIndex);
-        ItemStack item = GetItem(toIndex);
-
-        if (item != null && otherItem != null)
-        {
-            if (item.Material.Equals(otherItem.Material))
-            {
-                // Stack items
-                item.Add(otherItem.Count);
-                NotifyItemChanged(toIndex, item);
-
-                other.RemoveItem(fromIndex);
-                return;
-            }
-            else
-            {
-                // Swap items
-                SetItem(toIndex, otherItem);
-                other.SetItem(fromIndex, item);
-                return;
-            }
-        }
-
-        // Place or Pickup items
-        SetItem(toIndex, otherItem);
-        other.RemoveItem(fromIndex);
+        ItemTransfer(other, this, fromIndex, toIndex);
     }
 
     public void SetItem(int index, ItemStack item)
@@ -186,6 +137,36 @@ public class Inventory
     private void NotifyItemChanged(int index, ItemStack item)
     {
         OnItemChanged?.Invoke(index, item);
+    }
+
+    private void ItemTransfer(Inventory source, Inventory destination, int fromIndex, int toIndex)
+    {
+        ItemStack sourceItem = source.GetItem(fromIndex);
+        ItemStack destinationItem = destination.GetItem(toIndex);
+
+        if (sourceItem != null && destinationItem != null)
+        {
+            if (sourceItem.Material.Equals(destinationItem.Material))
+            {
+                // Stack items
+                destinationItem.Add(sourceItem.Count);
+                destination.NotifyItemChanged(toIndex, destinationItem);
+
+                source.RemoveItem(fromIndex);
+                return;
+            }
+            else
+            {
+                // Swap items
+                destination.SetItem(toIndex, sourceItem);
+                source.SetItem(fromIndex, destinationItem);
+                return;
+            }
+        }
+
+        // Place or Pickup items
+        destination.SetItem(toIndex, sourceItem);
+        source.RemoveItem(fromIndex);
     }
 
     private void ThrowIfIndexOutOfRange(int index)
