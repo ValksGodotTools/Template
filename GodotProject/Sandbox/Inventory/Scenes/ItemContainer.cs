@@ -5,23 +5,30 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class ItemContainer : PanelContainer
 {
-    public override void _Ready()
+    public void SetItem(ItemStack itemStack)
     {
-        Count.Hide();
-    }
-
-    public void SetItem(Item item)
-    {
-        if (item != null)
+        if (itemStack != null)
         {
-            SetSpriteFrames(Items.GetResourcePath(item));
-            SetColor(Items.GetColor(item));
-            SetCount(item.Count);
+            Item item = ItemInformation.Get(itemStack.Material);
+
+            SetSpriteFrames(item.Resource);
+            SetColor(item.Color);
+            SetCount(itemStack.Count);
         }
         else
         {
             ClearItem();
         }
+    }
+
+    public void SetCurrentSpriteFrame(int frame)
+    {
+        Sprite.Frame = frame;
+    }
+
+    public int GetCurrentSpriteFrame()
+    {
+        return Sprite.Frame;
     }
 
     private void ClearItem()
@@ -42,16 +49,6 @@ public partial class ItemContainer : PanelContainer
         {
             Sprite.SpriteFrames = null;
         }
-    }
-
-    public void SetCurrentSpriteFrame(int frame)
-    {
-        Sprite.Frame = frame;
-    }
-
-    public int GetCurrentSpriteFrame()
-    {
-        return Sprite.Frame;
     }
 
     private void SetColor(Color color)

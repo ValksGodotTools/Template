@@ -1,49 +1,41 @@
-﻿using System;
+﻿using Godot;
+using System;
 
 namespace Template.Inventory;
 
 public class Item
 {
-    public event Action<int> OnCountChanged;
-
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public int Count { get; private set; }
+    public string Resource { get; private set; }
+    public Color Color { get; private set; }
 
-    private Item(string name, int count = 1)
+    public Item(string name)
     {
-        Name = name;
-        Count = count;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 
     public Item(Item other)
     {
         Name = other.Name;
-        Count = other.Count;
     }
 
-    public void SetCount(int count)
+    public Item SetDescription(string description)
     {
-        Count = count;
-        OnCountChanged?.Invoke(Count);
+        Description = description;
+        return this;
     }
 
-    public void AddCount(int count)
+    public Item SetResource(string resource)
     {
-        Count += count;
-        OnCountChanged?.Invoke(Count);
+        Resource = resource;
+        return this;
     }
 
-    public void RemoveCount(int count)
+    public Item SetColor(Color color)
     {
-        Count -= count;
-
-        if (count < 0)
-        {
-            Count = 0;
-        }
-
-        OnCountChanged?.Invoke(Count);
+        Color = color;
+        return this;
     }
 
     public bool Equals(Item other)
@@ -73,19 +65,6 @@ public class Item
 
     public override string ToString()
     {
-        return $"{Name} (x{Count})";
-    }
-
-    public class Builder(string name, int count = 1)
-    {
-        private Item _item = new(name, count);
-
-        public Builder SetDescription(string description)
-        {
-            _item.Description = description;
-            return this;
-        }
-
-        public Item Build() => _item;
+        return Name;
     }
 }

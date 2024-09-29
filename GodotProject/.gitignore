@@ -19,7 +19,9 @@ mono_crash.*.json
 Properties/*
 
 # Visual Studio Code
-.vscode/
+.vscode/*
 
 # Include these files
 !**/*.gdignore
+!.vscode/settings.json
+!.vscode/extensions.json
