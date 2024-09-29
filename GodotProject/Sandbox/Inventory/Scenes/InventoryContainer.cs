@@ -84,7 +84,7 @@ public partial class InventoryContainer : PanelContainer
         {
             if (inventory.HasItem(index))
             {
-                if (cursorInventory.GetItem(0).Equals(inventory.GetItem(index)))
+                if (cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
                 {
                     OnInput?.Invoke(clickType, Action.Stack, index);
                 }
