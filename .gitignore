@@ -1,3 +1,26 @@
+# Godot
+.godot/*
+Exported/*
+.import/
+export.cfg
+export_presets.cfg
+*.translation
+
+# GdUnit4
+TestResults/
+
+# Mono-specific
+.mono/
+data_*/
+mono_crash.*.json
+
+# Visual Studio
+.vs/*
+Properties/*
+
+# Visual Studio Code
+.vscode/*
+
 # enet custom
 ENet-CSharp.dll
 
@@ -9,3 +32,8 @@ enet.dylib
 
 # os files
 .DS_Store
+
+# Include these files
+!**/*.gdignore
+!.vscode/settings.json
+!.vscode/extensions.json
