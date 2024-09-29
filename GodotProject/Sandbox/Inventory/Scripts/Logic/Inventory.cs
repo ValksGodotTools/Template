@@ -40,7 +40,6 @@ public class Inventory
         return _itemStacks.Where(item => item != null);
     }
 
-    // This method calls NotifyItemChanged 5 times, this should be reduced to 2 times
     public void MoveItemTo(Inventory other, int fromIndex, int toIndex)
     {
         ItemStack item = GetItem(fromIndex);
@@ -70,7 +69,6 @@ public class Inventory
         RemoveItem(fromIndex);
     }
 
-    // This method calls NotifyItemChanged 5 times, this should be reduced to 2 times
     public void TakeItemFrom(Inventory other, int fromIndex, int toIndex)
     {
         ItemStack otherItem = other.GetItem(fromIndex);
