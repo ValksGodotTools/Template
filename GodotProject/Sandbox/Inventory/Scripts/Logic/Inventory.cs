@@ -156,7 +156,7 @@ public class Inventory
 
         if (sourceItem == null)
         {
-            throw new Exception("Source item is null.");
+            return;
         }
 
         if (count <= 0 || count > sourceItem.Count)
