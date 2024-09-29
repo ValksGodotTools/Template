@@ -19,7 +19,7 @@ public partial class InventoryContainer : PanelContainer
     {
         ItemContainer[] itemContainers = new ItemContainer[inventory.GetInventorySize()];
         CursorItemContainer cursorItemContainer = Services.Get<CursorItemContainer>();
-        CursorInventory cursorInventory = cursorItemContainer.Inventory;
+        Inventory cursorInventory = cursorItemContainer.Inventory;
 
         for (int i = 0; i < itemContainers.Length; i++)
         {
@@ -56,19 +56,19 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (action == Action.Pickup)
                 {
-                    cursorInventory.TakeItemFrom(inventory, index);
+                    cursorInventory.TakeItemFrom(inventory, index, 0);
                 }
                 else if (action == Action.Place)
                 {
-                    cursorInventory.MoveItemTo(inventory, index);
+                    cursorInventory.MoveItemTo(inventory, 0, index);
                 }
                 else if (action == Action.Swap)
                 {
-                    cursorInventory.MoveItemTo(inventory, index);
+                    cursorInventory.MoveItemTo(inventory, 0, index);
                 }
                 else if (action == Action.Stack)
                 {
-                    cursorInventory.MoveItemTo(inventory, index);
+                    cursorInventory.MoveItemTo(inventory, 0, index);
                 }
             }
             else if (clickType == ClickType.Right)
@@ -78,13 +78,13 @@ public partial class InventoryContainer : PanelContainer
         };
     }
 
-    private void HandleClick(ClickType clickType, int index, CursorInventory cursorInventory, Inventory inventory)
+    private void HandleClick(ClickType clickType, int index, Inventory cursorInventory, Inventory inventory)
     {
-        if (cursorInventory.HasItem())
+        if (cursorInventory.HasItem(0))
         {
             if (inventory.HasItem(index))
             {
-                if (cursorInventory.GetItem().Equals(inventory.GetItem(index)))
+                if (cursorInventory.GetItem(0).Equals(inventory.GetItem(index)))
                 {
                     OnInput?.Invoke(clickType, Action.Stack, index);
                 }
