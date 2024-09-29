@@ -131,7 +131,17 @@ public partial class InventoryContainer : PanelContainer
             }
             else if (clickType == ClickType.Right)
             {
-                // TODO
+                switch (action)
+                {
+                    case Action.Pickup:
+                        cursorInventory.TakePartOfItemFrom(inventory, index, 0, 1);
+                        break;
+                    case Action.Place:
+                    case Action.Swap:
+                    case Action.Stack:
+                        cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
+                        break;
+                }
             }
         };
     }

@@ -50,6 +50,16 @@ public class Inventory
         ItemTransfer(other, this, fromIndex, toIndex);
     }
 
+    public void TakePartOfItemFrom(Inventory other, int fromIndex, int toIndex, int count)
+    {
+        PartOfItemTransfer(other, this, fromIndex, toIndex, count);
+    }
+
+    public void MovePartOfItemTo(Inventory other, int fromIndex, int toIndex, int count)
+    {
+        PartOfItemTransfer(this, other, fromIndex, toIndex, count);
+    }
+
     public void SetItem(int index, ItemStack item)
     {
         ThrowIfIndexOutOfRange(index);
@@ -137,6 +147,65 @@ public class Inventory
     private void NotifyItemChanged(int index, ItemStack item)
     {
         OnItemChanged?.Invoke(index, item);
+    }
+
+    private void PartOfItemTransfer(Inventory source, Inventory destination, int fromIndex, int toIndex, int count)
+    {
+        ItemStack sourceItem = source.GetItem(fromIndex);
+        ItemStack destinationItem = destination.GetItem(toIndex);
+
+        if (sourceItem == null)
+        {
+            throw new Exception("Source item is null.");
+        }
+
+        if (count <= 0 || count > sourceItem.Count)
+        {
+            throw new Exception("Invalid count for transfer.");
+        }
+
+        if (destinationItem == null)
+        {
+            // Destination slot is empty, create a new ItemStack with the specified count
+            destinationItem = new ItemStack(sourceItem.Material, count);
+            destination.SetItem(toIndex, destinationItem);
+
+            // Remove the transferred count from the source item
+            sourceItem.Remove(count);
+
+            if (sourceItem.Count == 0)
+            {
+                source.RemoveItem(fromIndex);
+            }
+            else
+            {
+                source.NotifyItemChanged(fromIndex, sourceItem);
+            }
+        }
+        else if (destinationItem.Material.Equals(sourceItem.Material))
+        {
+            // Destination item is of the same material, add the count to it
+            destinationItem.Add(count);
+            destination.NotifyItemChanged(toIndex, destinationItem);
+
+            // Remove the transferred count from the source item
+            sourceItem.Remove(count);
+
+            if (sourceItem.Count == 0)
+            {
+                source.RemoveItem(fromIndex);
+            }
+            else
+            {
+                source.NotifyItemChanged(fromIndex, sourceItem);
+            }
+        }
+        else
+        {
+            // Swap items
+            destination.SetItem(toIndex, sourceItem);
+            source.SetItem(fromIndex, destinationItem);
+        }
     }
 
     private void ItemTransfer(Inventory source, Inventory destination, int fromIndex, int toIndex)
