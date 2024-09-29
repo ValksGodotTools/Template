@@ -183,6 +183,12 @@ public partial class InventoryContainer : PanelContainer
                 }
                 else
                 {
+                    // Swapping is disabled for right click operations
+                    if (clickType == ClickType.Right)
+                    {
+                        return;
+                    }
+
                     _onPreSwap(index);
                     _onInput(clickType, Action.Swap, index);
                     _onPostSwap(index);
