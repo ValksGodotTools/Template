@@ -17,7 +17,7 @@ public partial class InventoryContainer : PanelContainer
 
     private void AddItemContainers(Inventory inventory)
     {
-        ItemContainer[] itemContainers = new ItemContainer[inventory.GetInventorySize()];
+        ItemContainer[] itemContainers = new ItemContainer[inventory.GetItemSlotCount()];
         CursorItemContainer cursorItemContainer = Services.Get<CursorItemContainer>();
         Inventory cursorInventory = cursorItemContainer.Inventory;
 

@@ -11,16 +11,19 @@ public class Inventory
     
     private ItemStack[] _itemStacks;
 
-    public Inventory(int size)
+    public Inventory(int itemSlotCount)
     {
-        if (size <= 0)
+        if (itemSlotCount <= 0)
         {
-            throw new ArgumentException("Inventory size must be greater than zero.");
+            throw new ArgumentException("Inventory item slot count must be greater than zero.");
         }
 
-        _itemStacks = new ItemStack[size];
+        _itemStacks = new ItemStack[itemSlotCount];
     }
 
+    /// <summary>
+    /// Remove all items from the inventory.
+    /// </summary>
     public void Clear()
     {
         for (int i = 0; i < _itemStacks.Length; i++)
@@ -29,8 +32,15 @@ public class Inventory
         }
     }
 
-    public IEnumerable<ItemStack> GetItems() => _itemStacks.Where(item => item != null);
+    /// <summary>
+    /// Returns all non-empty <see cref="ItemStack"/>'s from this inventory.
+    /// </summary>
+    public IEnumerable<ItemStack> GetItems()
+    {
+        return _itemStacks.Where(item => item != null);
+    }
 
+    // This method calls NotifyItemChanged 5 times, this should be reduced to 2 times
     public void MoveItemTo(Inventory other, int fromIndex, int toIndex)
     {
         ItemStack item = GetItem(fromIndex);
@@ -60,6 +70,7 @@ public class Inventory
         RemoveItem(fromIndex);
     }
 
+    // This method calls NotifyItemChanged 5 times, this should be reduced to 2 times
     public void TakeItemFrom(Inventory other, int fromIndex, int toIndex)
     {
         ItemStack otherItem = other.GetItem(fromIndex);
@@ -92,7 +103,7 @@ public class Inventory
 
     public void SetItem(int index, ItemStack item)
     {
-        ValidateIndex(index);
+        ThrowIfIndexOutOfRange(index);
 
         _itemStacks[index] = item;
 
@@ -122,7 +133,7 @@ public class Inventory
 
     public void RemoveItem(int index)
     {
-        ValidateIndex(index);
+        ThrowIfIndexOutOfRange(index);
 
         _itemStacks[index] = null;
 
@@ -131,8 +142,8 @@ public class Inventory
 
     public void SwapItems(int index1, int index2)
     {
-        ValidateIndex(index1);
-        ValidateIndex(index2);
+        ThrowIfIndexOutOfRange(index1);
+        ThrowIfIndexOutOfRange(index2);
 
         (_itemStacks[index2], _itemStacks[index1]) = (_itemStacks[index1], _itemStacks[index2]);
 
@@ -142,19 +153,36 @@ public class Inventory
 
     public bool HasItem(int index)
     {
-        return GetItem(index) != null;
+        ThrowIfIndexOutOfRange(index);
+
+        return _itemStacks[index] != null;
     }
 
     public ItemStack GetItem(int index)
     {
-        ValidateIndex(index);
+        ThrowIfIndexOutOfRange(index);
 
         return _itemStacks[index];
     }
 
-    public int GetInventorySize()
+    public int GetItemSlotCount()
     {
         return _itemStacks.Length;
+    }
+
+    public void DebugPrintInventory()
+    {
+        GD.Print(GetType().Name);
+
+        for (int i = 0; i < _itemStacks.Length; i++)
+        {
+            GD.Print($"Slot {i}: {(_itemStacks[i] != null ? _itemStacks[i].ToString() : "Empty")}");
+        }
+    }
+
+    public override string ToString()
+    {
+        return string.Join(' ', _itemStacks.Where(item => item != null));
     }
 
     private void NotifyItemChanged(int index, ItemStack item)
@@ -162,7 +190,7 @@ public class Inventory
         OnItemChanged?.Invoke(index, item);
     }
 
-    private void ValidateIndex(int index)
+    private void ThrowIfIndexOutOfRange(int index)
     {
         if (index < 0 || index >= _itemStacks.Length)
         {
@@ -199,20 +227,5 @@ public class Inventory
         index = -1;
 
         return false;
-    }
-
-    public void DebugPrintInventory()
-    {
-        GD.Print(GetType().Name);
-
-        for (int i = 0; i < _itemStacks.Length; i++)
-        {
-            GD.Print($"Slot {i}: {(_itemStacks[i] != null ? _itemStacks[i].ToString() : "Empty")}");
-        }
-    }
-
-    public override string ToString()
-    {
-        return string.Join(' ', _itemStacks.Where(item => item != null));
     }
 }
