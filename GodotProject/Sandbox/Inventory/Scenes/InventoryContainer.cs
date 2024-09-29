@@ -71,6 +71,10 @@ public partial class InventoryContainer : PanelContainer
         OnPostPickup += index =>
         {
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+
+            // Ensure cursorItemContainer's position is in the correct position
+            cursorItemContainer.Position = itemContainers[index].GlobalPosition;
+            cursorItemContainer.ResetSmoothFactor();
         };
 
         OnPrePlace += index =>
@@ -93,6 +97,10 @@ public partial class InventoryContainer : PanelContainer
         {
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+
+            // Ensure cursorItemContainer's position is in the correct position
+            cursorItemContainer.Position = itemContainers[index].GlobalPosition;
+            cursorItemContainer.ResetSmoothFactor();
         };
 
         OnPreStack += index =>
