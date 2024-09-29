@@ -19,10 +19,25 @@ public partial class InventoryContainer : PanelContainer
     private Action<int> _onPostStack;
     private Action<int> _onPostSwap;
 
+    private Holding _holding;
+
     [OnInstantiate]
     private void Init(Inventory inventory)
     {
         AddItemContainers(inventory);
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton mouseBtn)
+        {
+            _holding.RightClick = mouseBtn.IsRightClickPressed();
+            _holding.LeftClick = mouseBtn.IsLeftClickPressed();
+        }
+        else if (@event is InputEventKey key)
+        {
+            _holding.Shift = key.Keycode == Key.Shift && key.Pressed;
+        }
     }
 
     private void AddItemContainers(Inventory inventory)
@@ -189,7 +204,6 @@ public partial class InventoryContainer : PanelContainer
         GridContainer.AddChild(itemContainer);
         return itemContainer;
     }
-}
 
 public enum ClickType
 {
