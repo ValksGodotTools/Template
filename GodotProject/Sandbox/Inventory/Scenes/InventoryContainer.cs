@@ -68,6 +68,14 @@ public partial class InventoryContainer : PanelContainer
                     }
                 }
             };
+
+            itemContainer.MouseEntered += () =>
+            {
+                if (_holding.RightClick)
+                {
+                    cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
+                }
+            };
         }
 
         inventory.OnItemChanged += (index, item) =>
