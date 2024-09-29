@@ -202,9 +202,8 @@ public class Inventory
         }
         else
         {
-            // Swap items
-            destination.SetItem(toIndex, sourceItem);
-            source.SetItem(fromIndex, destinationItem);
+            // No way to tell if the user was drag right clicking or doing a single right
+            // click. Usually we would swap items here but instead lets do nothing.
         }
     }
 
