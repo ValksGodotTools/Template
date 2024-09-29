@@ -1,4 +1,4 @@
-![banner](https://github.com/user-attachments/assets/8879cbc8-04fd-4d41-bb4d-d29d5438ac01)
+![github_banner](https://github.com/user-attachments/assets/6899e707-d410-45f5-9c1b-78863e58a393)
 
 [![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/network)
