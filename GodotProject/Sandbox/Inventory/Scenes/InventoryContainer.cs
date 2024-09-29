@@ -205,16 +205,24 @@ public partial class InventoryContainer : PanelContainer
         return itemContainer;
     }
 
-public enum ClickType
-{
-    Left,
-    Right
-}
+    private class Holding
+    {
+        public bool RightClick { get; set; }
+        public bool LeftClick { get; set; }
+        public bool Shift { get; set; }
+    }
 
-public enum Action
-{
-    Pickup,
-    Place,
-    Stack,
-    Swap
+    private enum ClickType
+    {
+        Left,
+        Right
+    }
+
+    private enum Action
+    {
+        Pickup,
+        Place,
+        Stack,
+        Swap
+    }
 }
