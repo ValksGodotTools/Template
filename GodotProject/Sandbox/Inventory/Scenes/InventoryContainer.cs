@@ -115,3 +115,17 @@ public partial class InventoryContainer : PanelContainer
         return itemContainer;
     }
 }
+
+public enum ClickType
+{
+    Left,
+    Right
+}
+
+public enum Action
+{
+    Pickup,
+    Place,
+    Stack,
+    Swap
+}
