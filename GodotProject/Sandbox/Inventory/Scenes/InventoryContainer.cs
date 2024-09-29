@@ -19,7 +19,7 @@ public partial class InventoryContainer : PanelContainer
     private Action<int> _onPostStack;
     private Action<int> _onPostSwap;
 
-    private Holding _holding;
+    private Holding _holding = new();
 
     [OnInstantiate]
     private void Init(Inventory inventory)
