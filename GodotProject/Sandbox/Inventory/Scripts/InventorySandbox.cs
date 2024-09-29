@@ -9,10 +9,14 @@ public partial class InventorySandbox : Node
 
     public override void _Ready()
     {
-        _inventory = new(4);
+        _inventory = new(10);
         _inventory.AddItem(new ItemStack(Material.SnowyCoin, 3));
         _inventory.AddItem(new ItemStack(Material.Coin, 100));
         _inventory.SetItem(2, new ItemStack(Material.SnowyCoin, 42));
+        _inventory.SetItem(3, new ItemStack(Material.Coin, 2));
+        _inventory.SetItem(4, new ItemStack(Material.Coin, 2));
+        _inventory.SetItem(5, new ItemStack(Material.Coin, 2));
+        _inventory.SetItem(6, new ItemStack(Material.Coin, 2));
 
         InventoryContainer invContainer = InventoryContainer.Instantiate(_inventory);
         AddChild(invContainer);

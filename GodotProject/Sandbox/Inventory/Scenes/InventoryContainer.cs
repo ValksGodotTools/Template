@@ -56,19 +56,35 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (action == Action.Pickup)
                 {
+                    int frame = itemContainers[index].GetCurrentSpriteFrame();
+
                     cursorInventory.TakeItemFrom(inventory, index, 0);
+
+                    cursorItemContainer.SetCurrentSpriteFrame(frame);
                 }
                 else if (action == Action.Place)
                 {
+                    int frame = cursorItemContainer.GetCurrentSpriteFrame();
+
                     cursorInventory.MoveItemTo(inventory, 0, index);
+
+                    itemContainers[index].SetCurrentSpriteFrame(frame);
                 }
                 else if (action == Action.Swap)
                 {
+                    int frame = itemContainers[index].GetCurrentSpriteFrame();
+
                     cursorInventory.MoveItemTo(inventory, 0, index);
+
+                    itemContainers[index].SetCurrentSpriteFrame(frame);
                 }
                 else if (action == Action.Stack)
                 {
+                    int frame = itemContainers[index].GetCurrentSpriteFrame();
+
                     cursorInventory.MoveItemTo(inventory, 0, index);
+
+                    itemContainers[index].SetCurrentSpriteFrame(frame);
                 }
             }
             else if (clickType == ClickType.Right)
