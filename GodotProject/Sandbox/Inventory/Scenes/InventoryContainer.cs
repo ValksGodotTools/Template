@@ -9,6 +9,16 @@ public partial class InventoryContainer : PanelContainer
 {
     public event Action<ClickType, Action, int> OnInput;
 
+    private event Action<int> OnPrePickup;
+    private event Action<int> OnPrePlace;
+    private event Action<int> OnPreStack;
+    private event Action<int> OnPreSwap;
+
+    private event Action<int> OnPostPickup;
+    private event Action<int> OnPostPlace;
+    private event Action<int> OnPostStack;
+    private event Action<int> OnPostSwap;
+
     [OnInstantiate]
     private void Init(Inventory inventory)
     {
@@ -50,43 +60,70 @@ public partial class InventoryContainer : PanelContainer
             itemContainers[index].SetItem(item);
         };
 
+        int itemFrame = 0;
+        int cursorFrame = 0;
+
+        OnPrePickup += index =>
+        {
+            itemFrame = itemContainers[index].GetCurrentSpriteFrame();
+        };
+
+        OnPostPickup += index =>
+        {
+            cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+        };
+
+        OnPrePlace += index =>
+        {
+            itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
+        };
+
+        OnPostPlace += index =>
+        {
+            itemContainers[index].SetCurrentSpriteFrame(itemFrame);
+        };
+
+        OnPreSwap += index =>
+        {
+            itemFrame = itemContainers[index].GetCurrentSpriteFrame();
+            cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
+        };
+
+        OnPostSwap += index =>
+        {
+            itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
+            cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+        };
+
+        OnPreStack += index =>
+        {
+            itemFrame = itemContainers[index].GetCurrentSpriteFrame();
+        };
+
+        OnPostStack += index =>
+        {
+            itemContainers[index].SetCurrentSpriteFrame(itemFrame);
+        };
+
         OnInput += (clickType, action, index) =>
         {
             if (clickType == ClickType.Left)
             {
                 if (action == Action.Pickup)
                 {
-                    int frame = itemContainers[index].GetCurrentSpriteFrame();
-
                     cursorInventory.TakeItemFrom(inventory, index, 0);
-
-                    cursorItemContainer.SetCurrentSpriteFrame(frame);
                 }
                 else if (action == Action.Place)
                 {
-                    int frame = cursorItemContainer.GetCurrentSpriteFrame();
-
                     cursorInventory.MoveItemTo(inventory, 0, index);
-
-                    itemContainers[index].SetCurrentSpriteFrame(frame);
                 }
                 else if (action == Action.Swap)
                 {
-                    int itemFrame = itemContainers[index].GetCurrentSpriteFrame();
-                    int cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
-
                     cursorInventory.MoveItemTo(inventory, 0, index);
-
-                    itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
-                    cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
                 }
                 else if (action == Action.Stack)
                 {
-                    int frame = itemContainers[index].GetCurrentSpriteFrame();
-
                     cursorInventory.MoveItemTo(inventory, 0, index);
-
-                    itemContainers[index].SetCurrentSpriteFrame(frame);
                 }
             }
             else if (clickType == ClickType.Right)
@@ -104,27 +141,34 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
                 {
+                    OnPreStack?.Invoke(index);
                     OnInput?.Invoke(clickType, Action.Stack, index);
+                    OnPostStack?.Invoke(index);
                 }
                 else
                 {
+                    OnPreSwap?.Invoke(index);
                     OnInput?.Invoke(clickType, Action.Swap, index);
+                    OnPostSwap?.Invoke(index);
                 }
             }
             else
             {
+                OnPrePlace?.Invoke(index);
                 OnInput?.Invoke(clickType, Action.Place, index);
+                OnPostPlace?.Invoke(index);
             }
         }
         else
         {
             if (inventory.HasItem(index))
             {
+                OnPrePickup?.Invoke(index);
                 OnInput?.Invoke(clickType, Action.Pickup, index);
+                OnPostPickup?.Invoke(index);
             }
         }
     }
-
 
     private ItemContainer AddItemContainer()
     {
