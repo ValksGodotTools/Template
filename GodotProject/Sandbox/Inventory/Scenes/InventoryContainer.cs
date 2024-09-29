@@ -7,17 +7,17 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class InventoryContainer : PanelContainer
 {
-    public event Action<ClickType, Action, int> OnInput;
+    private Action<ClickType, Action, int> _onInput;
 
-    private event Action<int> OnPrePickup;
-    private event Action<int> OnPrePlace;
-    private event Action<int> OnPreStack;
-    private event Action<int> OnPreSwap;
+    private Action<int> _onPrePickup;
+    private Action<int> _onPrePlace;
+    private Action<int> _onPreStack;
+    private Action<int> _onPreSwap;
 
-    private event Action<int> OnPostPickup;
-    private event Action<int> OnPostPlace;
-    private event Action<int> OnPostStack;
-    private event Action<int> OnPostSwap;
+    private Action<int> _onPostPickup;
+    private Action<int> _onPostPlace;
+    private Action<int> _onPostStack;
+    private Action<int> _onPostSwap;
 
     [OnInstantiate]
     private void Init(Inventory inventory)
@@ -63,12 +63,12 @@ public partial class InventoryContainer : PanelContainer
         int itemFrame = 0;
         int cursorFrame = 0;
 
-        OnPrePickup += index =>
+        _onPrePickup += index =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
-        OnPostPickup += index =>
+        _onPostPickup += index =>
         {
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
@@ -77,23 +77,23 @@ public partial class InventoryContainer : PanelContainer
             cursorItemContainer.ResetSmoothFactor();
         };
 
-        OnPrePlace += index =>
+        _onPrePlace += index =>
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
         };
 
-        OnPostPlace += index =>
+        _onPostPlace += index =>
         {
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        OnPreSwap += index =>
+        _onPreSwap += index =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
         };
 
-        OnPostSwap += index =>
+        _onPostSwap += index =>
         {
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
@@ -103,35 +103,30 @@ public partial class InventoryContainer : PanelContainer
             cursorItemContainer.ResetSmoothFactor();
         };
 
-        OnPreStack += index =>
+        _onPreStack += index =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
-        OnPostStack += index =>
+        _onPostStack += index =>
         {
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        OnInput += (clickType, action, index) =>
+        _onInput += (clickType, action, index) =>
         {
             if (clickType == ClickType.Left)
             {
-                if (action == Action.Pickup)
+                switch (action)
                 {
-                    cursorInventory.TakeItemFrom(inventory, index, 0);
-                }
-                else if (action == Action.Place)
-                {
-                    cursorInventory.MoveItemTo(inventory, 0, index);
-                }
-                else if (action == Action.Swap)
-                {
-                    cursorInventory.MoveItemTo(inventory, 0, index);
-                }
-                else if (action == Action.Stack)
-                {
-                    cursorInventory.MoveItemTo(inventory, 0, index);
+                    case Action.Pickup:
+                        cursorInventory.TakeItemFrom(inventory, index, 0);
+                        break;
+                    case Action.Place:
+                    case Action.Swap:
+                    case Action.Stack:
+                        cursorInventory.MoveItemTo(inventory, 0, index);
+                        break;
                 }
             }
             else if (clickType == ClickType.Right)
@@ -149,31 +144,31 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
                 {
-                    OnPreStack?.Invoke(index);
-                    OnInput?.Invoke(clickType, Action.Stack, index);
-                    OnPostStack?.Invoke(index);
+                    _onPreStack(index);
+                    _onInput(clickType, Action.Stack, index);
+                    _onPostStack(index);
                 }
                 else
                 {
-                    OnPreSwap?.Invoke(index);
-                    OnInput?.Invoke(clickType, Action.Swap, index);
-                    OnPostSwap?.Invoke(index);
+                    _onPreSwap(index);
+                    _onInput(clickType, Action.Swap, index);
+                    _onPostSwap(index);
                 }
             }
             else
             {
-                OnPrePlace?.Invoke(index);
-                OnInput?.Invoke(clickType, Action.Place, index);
-                OnPostPlace?.Invoke(index);
+                _onPrePlace(index);
+                _onInput(clickType, Action.Place, index);
+                _onPostPlace(index);
             }
         }
         else
         {
             if (inventory.HasItem(index))
             {
-                OnPrePickup?.Invoke(index);
-                OnInput?.Invoke(clickType, Action.Pickup, index);
-                OnPostPickup?.Invoke(index);
+                _onPrePickup(index);
+                _onInput(clickType, Action.Pickup, index);
+                _onPostPickup(index);
             }
         }
     }
