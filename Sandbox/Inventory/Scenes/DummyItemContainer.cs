@@ -10,11 +10,11 @@ public partial class DummyItemContainer : ItemContainer
     private CursorItemContainer _cursor;
     private float _currentSmoothFactor;
     private Vector2 _offset;
-    private DummyItemTarget _dummyTarget;
+    private DummyTarget _dummyTarget;
     private ItemContainer _target;
 
     [OnInstantiate]
-    private void Init(Vector2 position, DummyItemTarget targetType, ItemContainer target = null)
+    private void Init(Vector2 position, DummyTarget targetType, ItemContainer target = null)
     {
         Position = position;
         _dummyTarget = targetType;
@@ -26,7 +26,7 @@ public partial class DummyItemContainer : ItemContainer
         _currentSmoothFactor = InitialSmoothFactor;
         _offset = CustomMinimumSize * 0.5f;
 
-        if (_dummyTarget == DummyItemTarget.Cursor)
+        if (_dummyTarget == DummyTarget.Cursor)
         {
             _cursor = Services.Get<CursorItemContainer>();
             _cursor.Hide();
@@ -42,7 +42,7 @@ public partial class DummyItemContainer : ItemContainer
     {
         Vector2 target;
 
-        if (_dummyTarget == DummyItemTarget.Cursor)
+        if (_dummyTarget == DummyTarget.Cursor)
         {
             target = GetGlobalMousePosition() - _offset;
         }
@@ -58,7 +58,7 @@ public partial class DummyItemContainer : ItemContainer
 
         if (distance < 1)
         {
-            if (_dummyTarget == DummyItemTarget.Cursor)
+            if (_dummyTarget == DummyTarget.Cursor)
             {
                 _cursor.Show();
             }
@@ -73,7 +73,7 @@ public partial class DummyItemContainer : ItemContainer
     }
 }
 
-public enum DummyItemTarget
+public enum DummyTarget
 {
     Cursor,
     Inventory
