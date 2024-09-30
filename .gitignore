@@ -37,3 +37,6 @@ enet.dylib
 !**/*.gdignore
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# Make sure this file is ignored
+.godot/.gdignore
