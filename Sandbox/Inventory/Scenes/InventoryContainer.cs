@@ -21,7 +21,6 @@ public partial class InventoryContainer : PanelContainer
     private Action<int> _onPostSwap;
 
     private Holding _holding = new();
-    private List<DummyItemContainer> _dummies = [];
 
     [OnInstantiate]
     private void Init(Inventory inventory)
@@ -102,9 +101,33 @@ public partial class InventoryContainer : PanelContainer
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
+        List<DummyItemContainer> dummies = [];
+
+        _onPostPickup += index =>
+        {
+            cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+
+            DummyItemContainer dummy = DummyItemContainer.Instantiate(itemContainers[index].GlobalPosition, DummyItemTarget.Cursor, null);
+            dummy.SetItem(cursorInventory.GetItem(0));
+            dummy.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummy);
+            dummies.Add(dummy);
+        };
+
         _onPrePlace += index =>
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
+        };
+
+        _onPostPlace += index =>
+        {
+            itemContainers[index].SetCurrentSpriteFrame(itemFrame);
+
+            DummyItemContainer dummy = DummyItemContainer.Instantiate(cursorItemContainer.GlobalPosition, DummyItemTarget.Inventory, itemContainers[index]);
+            dummy.SetItem(inventory.GetItem(index));
+            dummy.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummy);
+            dummies.Add(dummy);
         };
 
         _onPreSwap += index =>
@@ -113,59 +136,27 @@ public partial class InventoryContainer : PanelContainer
             cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
         };
 
-        _onPreStack += index =>
-        {
-            itemFrame = itemContainers[index].GetCurrentSpriteFrame();
-        };
-
-        _onPostPickup += index =>
-        {
-            cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
-
-            CreateDummyItemContainer
-            (
-                DummyTarget.Cursor,
-                cursorInventory.GetItem(0),
-                itemContainers[index].GlobalPosition,
-                itemFrame
-            );
-        };
-
-        _onPostPlace += index =>
-        {
-            itemContainers[index].SetCurrentSpriteFrame(itemFrame);
-
-            CreateDummyItemContainer
-            (
-                DummyTarget.Inventory,
-                inventory.GetItem(index),
-                cursorItemContainer.GlobalPosition,
-                itemFrame,
-                itemContainers[index]
-            );
-        };
-
         _onPostSwap += index =>
         {
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
-            CreateDummyItemContainer
-            (
-                DummyTarget.Cursor,
-                cursorInventory.GetItem(0),
-                itemContainers[index].GlobalPosition,
-                itemFrame
-            );
+            DummyItemContainer dummyToCursor = DummyItemContainer.Instantiate(itemContainers[index].GlobalPosition, DummyItemTarget.Cursor, null);
+            dummyToCursor.SetItem(cursorInventory.GetItem(0));
+            dummyToCursor.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummyToCursor);
+            dummies.Add(dummyToCursor);
 
-            CreateDummyItemContainer
-            (
-                DummyTarget.Inventory,
-                inventory.GetItem(index),
-                cursorItemContainer.GlobalPosition,
-                itemFrame,
-                itemContainers[index]
-            );
+            DummyItemContainer dummyToInv = DummyItemContainer.Instantiate(cursorItemContainer.GlobalPosition, DummyItemTarget.Inventory, itemContainers[index]);
+            dummyToInv.SetItem(inventory.GetItem(index));
+            dummyToInv.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummyToInv);
+            dummies.Add(dummyToInv);
+        };
+
+        _onPreStack += index =>
+        {
+            itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
         _onPostStack += index =>
@@ -176,7 +167,7 @@ public partial class InventoryContainer : PanelContainer
         _onInput += (clickType, action, index) =>
         {
             // Ensure only the dummies for this session are active
-            foreach (DummyItemContainer dummy in _dummies)
+            foreach (DummyItemContainer dummy in dummies)
             {
                 if (IsInstanceValid(dummy))
                 {
@@ -184,7 +175,7 @@ public partial class InventoryContainer : PanelContainer
                 }
             }
 
-            _dummies.Clear();
+            dummies.Clear();
 
             // Handle the click logic
             if (clickType == ClickType.Left)
@@ -266,15 +257,6 @@ public partial class InventoryContainer : PanelContainer
         ItemContainer itemContainer = ItemContainer.Instantiate();
         GridContainer.AddChild(itemContainer);
         return itemContainer;
-    }
-
-    private void CreateDummyItemContainer(DummyTarget targetType, ItemStack itemStack, Vector2 position, int itemFrame, ItemContainer targetContainer = null)
-    {
-        DummyItemContainer dummy = DummyItemContainer.Instantiate(position, targetType, targetContainer);
-        dummy.SetItem(itemStack);
-        dummy.SetCurrentSpriteFrame(itemFrame);
-        GetTree().Root.AddChildToCurrentScene(dummy);
-        _dummies.Add(dummy);
     }
 
     private class Holding
