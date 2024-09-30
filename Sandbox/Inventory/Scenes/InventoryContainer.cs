@@ -71,7 +71,16 @@ public partial class InventoryContainer : PanelContainer
 
             itemContainer.MouseEntered += () =>
             {
-                if (_holding.RightClick)
+                if (_holding.LeftClick)
+                {
+                    ItemStack item = inventory.GetItem(index);
+
+                    if (item != null)
+                    {
+                        cursorInventory.TakePartOfItemFrom(inventory, index, 0, item.Count);
+                    }
+                }
+                else if (_holding.RightClick)
                 {
                     cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
                 }
