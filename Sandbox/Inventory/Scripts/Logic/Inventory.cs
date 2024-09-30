@@ -11,14 +11,14 @@ public class Inventory
     
     private ItemStack[] _itemStacks;
 
-    public Inventory(int itemSlotCount)
+    public Inventory(int size)
     {
-        if (itemSlotCount <= 0)
+        if (size <= 0)
         {
-            throw new ArgumentException("Inventory item slot count must be greater than zero.");
+            throw new ArgumentException("Inventory size must be greater than zero.");
         }
 
-        _itemStacks = new ItemStack[itemSlotCount];
+        _itemStacks = new ItemStack[size];
     }
 
     /// <summary>

@@ -1,11 +1,28 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3wfc7hp8thk3"]
 
-[ext_resource type="Script" path="res://Sandbox/Inventory/Scripts/InventorySandbox.cs" id="1_fmlrj"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/InventorySandbox.cs" id="1_fmlrj"]
 [ext_resource type="PackedScene" uid="uid://bvhftv2shmjv8" path="res://Sandbox/Inventory/Scenes/CursorItemContainer.tscn" id="2_bqf6y"]
 
 [node name="InventorySandbox" type="Node2D"]
 script = ExtResource("1_fmlrj")
 
-[node name="CursorItemContainer" parent="." instance=ExtResource("2_bqf6y")]
-visible = false
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CursorItemContainer" parent="CanvasLayer" instance=ExtResource("2_bqf6y")]
+offset_right = 50.0
+offset_bottom = 50.0
+metadata/_edit_lock_ = true
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="InventoryParent" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 50
 metadata/_edit_lock_ = true

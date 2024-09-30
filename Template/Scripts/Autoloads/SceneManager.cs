@@ -135,7 +135,7 @@ public partial class SceneManager : Node
         };
 
         // Make the color rect cover the entire screen
-        colorRect.CoverEntireRect();
+        colorRect.SetLayout(Control.LayoutPreset.FullRect);
         canvasLayer.AddChild(colorRect);
 
         // Animate color rect

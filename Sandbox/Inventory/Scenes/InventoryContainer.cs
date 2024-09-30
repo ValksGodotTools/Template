@@ -22,8 +22,9 @@ public partial class InventoryContainer : PanelContainer
     private Holding _holding = new();
 
     [OnInstantiate]
-    private void Init(Inventory inventory)
+    private void Init(Inventory inventory, int columns = 10)
     {
+        GridContainer.Columns = columns;
         AddItemContainers(inventory);
     }
 
