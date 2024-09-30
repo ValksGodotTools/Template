@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmwd5ndxqnqon"]
+
+[ext_resource type="PackedScene" uid="uid://b0d0dvcv2awdp" path="res://Sandbox/Inventory/Scenes/ItemContainer.tscn" id="1_aqxf8"]
+[ext_resource type="Script" path="res://Sandbox/Inventory/Scenes/DummyItemContainer.cs" id="2_ir1fq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e6gfi"]
+
+[node name="DummyItemContainer" instance=ExtResource("1_aqxf8")]
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_e6gfi")
+script = ExtResource("2_ir1fq")
+
+[node name="CenterContainer" parent="." index="0"]
+mouse_filter = 2
+
+[node name="Center" parent="CenterContainer" index="0"]
+mouse_filter = 2
+
+[node name="MarginContainer" parent="." index="1"]
+mouse_filter = 2
+
+[node name="Count" parent="MarginContainer" index="0"]
+text = ""

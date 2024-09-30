@@ -1,6 +1,7 @@
 using Godot;
 using GodotUtils;
 using System;
+using System.Collections.Generic;
 
 namespace Template.Inventory;
 
@@ -100,13 +101,17 @@ public partial class InventoryContainer : PanelContainer
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
+        List<DummyItemContainer> dummies = [];
+
         _onPostPickup += index =>
         {
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
-            // Ensure cursorItemContainer's position is in the correct position
-            cursorItemContainer.Position = itemContainers[index].GlobalPosition;
-            cursorItemContainer.ResetSmoothFactor();
+            DummyItemContainer dummy = DummyItemContainer.Instantiate(itemContainers[index].GlobalPosition, DummyItemTarget.Cursor, null);
+            dummy.SetItem(cursorInventory.GetItem(0));
+            dummy.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummy);
+            dummies.Add(dummy);
         };
 
         _onPrePlace += index =>
@@ -117,6 +122,12 @@ public partial class InventoryContainer : PanelContainer
         _onPostPlace += index =>
         {
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
+
+            DummyItemContainer dummy = DummyItemContainer.Instantiate(cursorItemContainer.GlobalPosition, DummyItemTarget.Inventory, itemContainers[index]);
+            dummy.SetItem(inventory.GetItem(index));
+            dummy.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummy);
+            dummies.Add(dummy);
         };
 
         _onPreSwap += index =>
@@ -130,9 +141,17 @@ public partial class InventoryContainer : PanelContainer
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
-            // Ensure cursorItemContainer's position is in the correct position
-            cursorItemContainer.Position = itemContainers[index].GlobalPosition;
-            cursorItemContainer.ResetSmoothFactor();
+            DummyItemContainer dummyToCursor = DummyItemContainer.Instantiate(itemContainers[index].GlobalPosition, DummyItemTarget.Cursor, null);
+            dummyToCursor.SetItem(cursorInventory.GetItem(0));
+            dummyToCursor.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummyToCursor);
+            dummies.Add(dummyToCursor);
+
+            DummyItemContainer dummyToInv = DummyItemContainer.Instantiate(cursorItemContainer.GlobalPosition, DummyItemTarget.Inventory, itemContainers[index]);
+            dummyToInv.SetItem(inventory.GetItem(index));
+            dummyToInv.SetCurrentSpriteFrame(itemFrame);
+            GetTree().Root.AddChild(dummyToInv);
+            dummies.Add(dummyToInv);
         };
 
         _onPreStack += index =>
@@ -147,6 +166,18 @@ public partial class InventoryContainer : PanelContainer
 
         _onInput += (clickType, action, index) =>
         {
+            // Ensure only the dummies for this session are active
+            foreach (DummyItemContainer dummy in dummies)
+            {
+                if (IsInstanceValid(dummy))
+                {
+                    dummy.QueueFree();
+                }
+            }
+
+            dummies.Clear();
+
+            // Handle the click logic
             if (clickType == ClickType.Left)
             {
                 switch (action)
