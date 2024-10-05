@@ -13,12 +13,18 @@ public partial class InventoryContainer : PanelContainer
     private Action<int> _onPostPickup, _onPostPlace, _onPostStack, _onPostSwap;
 
     private HoldingInput _holding = new();
+    private CanvasLayer _ui;
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
     {
         GridContainer.Columns = columns;
         AddItemContainers(inventory);
+    }
+
+    public override void _Ready()
+    {
+        _ui = GetTree().CurrentScene.GetNode<CanvasLayer>("%UI");
     }
 
     public override void _Input(InputEvent @event)
@@ -63,11 +69,65 @@ public partial class InventoryContainer : PanelContainer
 
                     if (item != null)
                     {
+                        // ------------------- UI VISUAL CODE -------------------
+                        if (cursorInventory.HasItem(0) && !cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
+                        {
+                            // Do nothing
+                        }
+                        else
+                        {
+                            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
+                                .SetTargetAsMouse()
+                                .SetStartingLerp(0.3f) // Need to make animation quick
+                                .SetItemAndFrame(inventory.GetItem(index), 0)
+                                .SetCount(0) // Too much information on screen gets chaotic
+                                .Build();
+
+                            _ui.AddChild(container);
+
+                            if (!cursorInventory.HasItem(0))
+                            {
+                                cursorItemContainer.HideSpriteAndCount();
+                            }
+
+                            container.OnReachedTarget += () =>
+                            {
+                                cursorItemContainer.ShowSpriteAndCount();
+                            };
+                        }
+                        // ------------------- UI VISUAL CODE -------------------
+
                         cursorInventory.TakePartOfItemFrom(inventory, index, 0, item.Count);
                     }
                 }
                 else if (_holding.RightClick)
                 {
+                    // ------------------- UI VISUAL CODE -------------------
+                    // Only do animations when the cursor has a item and the inventory does
+                    // not have an item. Otherwise too many animations gets too visually
+                    // chaotic.
+                    if (cursorInventory.HasItem(0) && !inventory.HasItem(index))
+                    {
+                        // Place one of item from cursor to inventory slot
+                        AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                            .SetInitialPositionForNode2D(GetGlobalMousePosition())
+                            .SetControlTarget(itemContainers[index].GlobalPosition)
+                            .SetItemAndFrame(cursorInventory.GetItem(0), 0)
+                            .SetCount(0) // Too much information on screen gets chaotic
+                            .Build();
+
+                        itemContainers[index].HideSpriteAndCount();
+
+                        container.OnReachedTarget += () =>
+                        {
+                            itemContainers[index].ShowSpriteAndCount();
+                        };
+
+                        _ui.AddChild(container);
+                    }
+                    // ------------------- UI VISUAL CODE -------------------
+
                     cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
                 }
             };
@@ -84,10 +144,26 @@ public partial class InventoryContainer : PanelContainer
         _onPrePickup += index =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
+
+            // ------------------- UI VISUAL CODE -------------------
+            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
+                .SetTargetAsMouse()
+                .SetItemAndFrame(inventory.GetItem(index), itemFrame)
+                .Build();
+
+            container.OnReachedTarget += () =>
+            {
+                cursorItemContainer.ShowSpriteAndCount();
+            };
+
+            _ui.AddChild(container);
+            // ------------------- UI VISUAL CODE -------------------
         };
 
         _onPostPickup += index =>
         {
+            cursorItemContainer.HideSpriteAndCount();
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
             // Ensure cursorItemContainer's position is in the correct position
@@ -97,10 +173,26 @@ public partial class InventoryContainer : PanelContainer
         _onPrePlace += index =>
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
+
+            // ------------------- UI VISUAL CODE -------------------
+            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                .SetInitialPositionForNode2D(GetGlobalMousePosition())
+                .SetControlTarget(itemContainers[index].GlobalPosition)
+                .SetItemAndFrame(cursorInventory.GetItem(0), itemFrame)
+                .Build();
+
+            container.OnReachedTarget += () =>
+            {
+                itemContainers[index].ShowSpriteAndCount();
+            };
+
+            _ui.AddChild(container);
+            // ------------------- UI VISUAL CODE -------------------
         };
 
         _onPostPlace += index =>
         {
+            itemContainers[index].HideSpriteAndCount();
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 

@@ -6,14 +6,15 @@
 [node name="InventorySandbox" type="Node2D"]
 script = ExtResource("1_fmlrj")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 
-[node name="CursorItemContainer" parent="CanvasLayer" instance=ExtResource("2_bqf6y")]
+[node name="CursorItemContainer" parent="UI" instance=ExtResource("2_bqf6y")]
 offset_right = 50.0
 offset_bottom = 50.0
 metadata/_edit_lock_ = true
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="InventoryParent" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+[node name="InventoryParent" type="VBoxContainer" parent="UI/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 50
