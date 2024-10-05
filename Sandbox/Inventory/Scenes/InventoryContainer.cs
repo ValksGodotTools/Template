@@ -92,7 +92,6 @@ public partial class InventoryContainer : PanelContainer
 
             // Ensure cursorItemContainer's position is in the correct position
             cursorItemContainer.Position = itemContainers[index].GlobalPosition;
-            cursorItemContainer.ResetSmoothFactor();
         };
 
         _onPrePlace += index =>
@@ -118,7 +117,6 @@ public partial class InventoryContainer : PanelContainer
 
             // Ensure cursorItemContainer's position is in the correct position
             cursorItemContainer.Position = itemContainers[index].GlobalPosition;
-            cursorItemContainer.ResetSmoothFactor();
         };
 
         _onPreStack += index =>
