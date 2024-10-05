@@ -9,17 +9,10 @@ public partial class InventoryContainer : PanelContainer
 {
     private Action<ClickType, Action, int> _onInput;
 
-    private Action<int> _onPrePickup;
-    private Action<int> _onPrePlace;
-    private Action<int> _onPreStack;
-    private Action<int> _onPreSwap;
+    private Action<int> _onPrePickup, _onPrePlace, _onPreStack, _onPreSwap;
+    private Action<int> _onPostPickup, _onPostPlace, _onPostStack, _onPostSwap;
 
-    private Action<int> _onPostPickup;
-    private Action<int> _onPostPlace;
-    private Action<int> _onPostStack;
-    private Action<int> _onPostSwap;
-
-    private Holding _holding = new();
+    private HoldingInput _holding = new();
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
@@ -30,15 +23,7 @@ public partial class InventoryContainer : PanelContainer
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventMouseButton mouseBtn)
-        {
-            _holding.RightClick = mouseBtn.IsRightClickPressed();
-            _holding.LeftClick = mouseBtn.IsLeftClickPressed();
-        }
-        else if (@event is InputEventKey key)
-        {
-            _holding.Shift = key.Keycode == Key.Shift && key.Pressed;
-        }
+        _holding.InputUpdate(@event);
     }
 
     private void AddItemContainers(Inventory inventory)
@@ -229,11 +214,25 @@ public partial class InventoryContainer : PanelContainer
         return itemContainer;
     }
 
-    private class Holding
+    #region Class Helpers
+    private class HoldingInput
     {
-        public bool RightClick { get; set; }
-        public bool LeftClick { get; set; }
-        public bool Shift { get; set; }
+        public bool RightClick { get; private set; }
+        public bool LeftClick { get; private set; }
+        public bool Shift { get; private set; }
+
+        public void InputUpdate(InputEvent @event)
+        {
+            if (@event is InputEventMouseButton mouseBtn)
+            {
+                RightClick = mouseBtn.IsRightClickPressed();
+                LeftClick = mouseBtn.IsLeftClickPressed();
+            }
+            else if (@event is InputEventKey key)
+            {
+                Shift = key.Keycode == Key.Shift && key.Pressed;
+            }
+        }
     }
 
     private enum ClickType
@@ -249,4 +248,5 @@ public partial class InventoryContainer : PanelContainer
         Stack,
         Swap
     }
+    #endregion
 }
