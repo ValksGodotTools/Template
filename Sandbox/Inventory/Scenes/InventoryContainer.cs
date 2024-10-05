@@ -1,6 +1,7 @@
 using Godot;
 using GodotUtils;
 using System;
+using System.Collections.Generic;
 
 namespace Template.Inventory;
 
@@ -196,14 +197,62 @@ public partial class InventoryContainer : PanelContainer
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
+        List<Node> swapAnimContainers = [];
+
         _onPreSwap += index =>
         {
+            foreach (Node node in swapAnimContainers)
+            {
+                if (IsInstanceValid(node))
+                {
+                    node.QueueFree();
+                }
+            }
+
+            swapAnimContainers.Clear();
+
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
+
+            // ------------------- UI VISUAL CODE -------------------
+            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
+                .SetTargetAsMouse()
+                .SetItemAndFrame(inventory.GetItem(index), itemFrame)
+                .Build();
+
+            container.OnReachedTarget += () =>
+            {
+                cursorItemContainer.ShowSpriteAndCount();
+            };
+
+            _ui.AddChild(container);
+            // ------------------- UI VISUAL CODE -------------------
+
+            // ------------------- UI VISUAL CODE -------------------
+            AnimHelperItemContainer container2 = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+                .SetInitialPositionForNode2D(GetGlobalMousePosition())
+                .SetControlTarget(itemContainers[index].GlobalPosition)
+                .SetItemAndFrame(cursorInventory.GetItem(0), itemFrame)
+                .Build();
+
+            container2.OnReachedTarget += () =>
+            {
+                itemContainers[index].ShowSpriteAndCount();
+            };
+
+            _ui.AddChild(container2);
+            // ------------------- UI VISUAL CODE -------------------
+
+            swapAnimContainers.Add(container);
+            swapAnimContainers.Add(container2);
         };
 
         _onPostSwap += index =>
         {
+            itemContainers[index].HideSpriteAndCount();
+            cursorItemContainer.HideSpriteAndCount();
+
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
