@@ -1,7 +1,6 @@
 using Godot;
 using GodotUtils;
 using System;
-using System.Collections.Generic;
 
 namespace Template.Inventory;
 
@@ -15,6 +14,7 @@ public partial class InventoryContainer : PanelContainer
 
     private HoldingInput _holding = new();
     private CanvasLayer _ui;
+    private InventoryVisualEffects _visualEffects;
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
@@ -26,6 +26,7 @@ public partial class InventoryContainer : PanelContainer
     public override void _Ready()
     {
         _ui = GetTree().CurrentScene.GetNode<CanvasLayer>("%UI");
+        _visualEffects = new InventoryVisualEffects(_ui);
     }
 
     public override void _Input(InputEvent @event)
@@ -70,64 +71,27 @@ public partial class InventoryContainer : PanelContainer
 
                     if (item != null)
                     {
-                        // ------------------- UI VISUAL CODE -------------------
                         if (cursorInventory.HasItem(0) && !cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
                         {
                             // Do nothing
                         }
                         else
                         {
-                            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
-                                .SetTargetAsMouse()
-                                .SetStartingLerp(0.3f) // Need to make animation quick
-                                .SetItemAndFrame(inventory.GetItem(index), 0)
-                                .SetCount(0) // Too much information on screen gets chaotic
-                                .Build();
-
-                            _ui.AddChild(container);
-
-                            if (!cursorInventory.HasItem(0))
-                            {
-                                cursorItemContainer.HideSpriteAndCount();
-                            }
-
-                            container.OnReachedTarget += () =>
-                            {
-                                cursorItemContainer.ShowSpriteAndCount();
-                            };
+                            _visualEffects.AnimateDragPickup(cursorItemContainer, cursorInventory, inventory, itemContainers, index);
                         }
-                        // ------------------- UI VISUAL CODE -------------------
 
                         cursorInventory.TakePartOfItemFrom(inventory, index, 0, item.Count);
                     }
                 }
                 else if (_holding.RightClick)
                 {
-                    // ------------------- UI VISUAL CODE -------------------
                     // Only do animations when the cursor has a item and the inventory does
                     // not have an item. Otherwise too many animations gets too visually
                     // chaotic.
                     if (cursorInventory.HasItem(0) && !inventory.HasItem(index))
                     {
-                        // Place one of item from cursor to inventory slot
-                        AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                            .SetInitialPositionForNode2D(GetGlobalMousePosition())
-                            .SetControlTarget(itemContainers[index].GlobalPosition)
-                            .SetItemAndFrame(cursorInventory.GetItem(0), 0)
-                            .SetCount(0) // Too much information on screen gets chaotic
-                            .Build();
-
-                        itemContainers[index].HideSpriteAndCount();
-
-                        container.OnReachedTarget += () =>
-                        {
-                            itemContainers[index].ShowSpriteAndCount();
-                        };
-
-                        _ui.AddChild(container);
+                        _visualEffects.AnimateDragPlace(GetGlobalMousePosition(), itemContainers, index, cursorInventory);
                     }
-                    // ------------------- UI VISUAL CODE -------------------
 
                     cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
                 }
@@ -146,25 +110,12 @@ public partial class InventoryContainer : PanelContainer
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
 
-            // ------------------- UI VISUAL CODE -------------------
-            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
-                .SetTargetAsMouse()
-                .SetItemAndFrame(inventory.GetItem(index), itemFrame)
-                .Build();
-
-            container.OnReachedTarget += () =>
-            {
-                cursorItemContainer.ShowSpriteAndCount();
-            };
-
-            _ui.AddChild(container);
-            // ------------------- UI VISUAL CODE -------------------
+            _visualEffects.AnimatePickup(itemContainers, index, itemFrame, inventory, cursorItemContainer);
         };
 
         _onPostPickup += index =>
         {
-            cursorItemContainer.HideSpriteAndCount();
+            cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
             // Ensure cursorItemContainer's position is in the correct position
@@ -175,83 +126,27 @@ public partial class InventoryContainer : PanelContainer
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
 
-            // ------------------- UI VISUAL CODE -------------------
-            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                .SetInitialPositionForNode2D(GetGlobalMousePosition())
-                .SetControlTarget(itemContainers[index].GlobalPosition)
-                .SetItemAndFrame(cursorInventory.GetItem(0), itemFrame)
-                .Build();
-
-            container.OnReachedTarget += () =>
-            {
-                itemContainers[index].ShowSpriteAndCount();
-            };
-
-            _ui.AddChild(container);
-            // ------------------- UI VISUAL CODE -------------------
+            _visualEffects.AnimatePlace(GetGlobalMousePosition(), itemContainers, index, cursorInventory, itemFrame);
         };
 
         _onPostPlace += index =>
         {
-            itemContainers[index].HideSpriteAndCount();
+            itemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        List<Node> swapAnimContainers = [];
-
         _onPreSwap += index =>
         {
-            foreach (Node node in swapAnimContainers)
-            {
-                if (IsInstanceValid(node))
-                {
-                    node.QueueFree();
-                }
-            }
-
-            swapAnimContainers.Clear();
-
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
 
-            // ------------------- UI VISUAL CODE -------------------
-            AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                .SetInitialPositionForControl(itemContainers[index].GlobalPosition)
-                .SetTargetAsMouse()
-                .SetItemAndFrame(inventory.GetItem(index), itemFrame)
-                .Build();
-
-            container.OnReachedTarget += () =>
-            {
-                cursorItemContainer.ShowSpriteAndCount();
-            };
-
-            _ui.AddChild(container);
-            // ------------------- UI VISUAL CODE -------------------
-
-            // ------------------- UI VISUAL CODE -------------------
-            AnimHelperItemContainer container2 = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-                .SetInitialPositionForNode2D(GetGlobalMousePosition())
-                .SetControlTarget(itemContainers[index].GlobalPosition)
-                .SetItemAndFrame(cursorInventory.GetItem(0), itemFrame)
-                .Build();
-
-            container2.OnReachedTarget += () =>
-            {
-                itemContainers[index].ShowSpriteAndCount();
-            };
-
-            _ui.AddChild(container2);
-            // ------------------- UI VISUAL CODE -------------------
-
-            swapAnimContainers.Add(container);
-            swapAnimContainers.Add(container2);
+            _visualEffects.AnimateSwap(itemContainers, index, inventory, itemFrame, cursorItemContainer, cursorInventory, GetGlobalMousePosition());
         };
 
         _onPostSwap += index =>
         {
-            itemContainers[index].HideSpriteAndCount();
-            cursorItemContainer.HideSpriteAndCount();
+            itemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
+            cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
 
             itemContainers[index].SetCurrentSpriteFrame(cursorFrame);
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
