@@ -154,14 +154,9 @@ public class Inventory
         ItemStack sourceItem = source.GetItem(fromIndex);
         ItemStack destinationItem = destination.GetItem(toIndex);
 
-        if (sourceItem == null)
+        if (sourceItem == null || count <= 0 || count > sourceItem.Count)
         {
             return;
-        }
-
-        if (count <= 0 || count > sourceItem.Count)
-        {
-            throw new Exception("Invalid count for transfer.");
         }
 
         if (destinationItem == null)

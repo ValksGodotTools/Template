@@ -4,7 +4,7 @@ using System;
 
 namespace Template.Inventory;
 
-public class InventoryInputHandler(InventoryInputDetector inputDetector)
+public class InventoryInputHandler(InventoryInputDetector input)
 {
     public event Action<ClickType, int> OnPrePickup, OnPrePlace, OnPreStack, OnPreSwap;
     public event Action<ClickType, int> OnPostPickup, OnPostPlace, OnPostStack, OnPostSwap;
@@ -37,7 +37,7 @@ public class InventoryInputHandler(InventoryInputDetector inputDetector)
                 switch (action)
                 {
                     case Action.Pickup:
-                        cursorInventory.TakePartOfItemFrom(inventory, index, 0, 1);
+                        RightClickPickup(context, index);
                         break;
                     case Action.Place:
                     case Action.Swap:
@@ -66,7 +66,7 @@ public class InventoryInputHandler(InventoryInputDetector inputDetector)
 
     public void HandleMouseEntered(InventoryVFXContext context, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
-        if (inputDetector.HoldingLeftClick)
+        if (input.HoldingLeftClick)
         {
             ItemStack item = context.Inventory.GetItem(index);
 
@@ -76,10 +76,27 @@ public class InventoryInputHandler(InventoryInputDetector inputDetector)
                 context.CursorInventory.TakePartOfItemFrom(context.Inventory, index, 0, item.Count);
             }
         }
-        else if (inputDetector.HoldingRightClick)
+        else if (input.HoldingRightClick)
         {
             vfxManager.AnimateDragPlace(context, index, mousePos);
             context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
+        }
+    }
+
+    private void RightClickPickup(InventoryVFXContext context, int index)
+    {
+        Inventory cursorInventory = context.CursorInventory;
+        Inventory inventory = context.Inventory;
+
+        int halfItemCount = inventory.GetItem(index).Count / 2;
+
+        if (input.HoldingShift && halfItemCount != 0)
+        {
+            cursorInventory.TakePartOfItemFrom(inventory, index, 0, halfItemCount);
+        }
+        else
+        {
+            cursorInventory.TakePartOfItemFrom(inventory, index, 0, 1);
         }
     }
 
