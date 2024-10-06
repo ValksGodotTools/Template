@@ -5,8 +5,11 @@ using Layout = Godot.Control.LayoutPreset;
 namespace Template.Inventory;
 
 [SceneTree]
+[Service]
 public partial class InventorySandbox : Node
 {
+    public Inventory OtherInventory { get; private set; }
+
     private Inventory _invPlayer;
     private Inventory _invChest;
 
@@ -14,6 +17,8 @@ public partial class InventorySandbox : Node
     {
         AddPlayerInv();
         AddChestInv();
+
+        OtherInventory = _invChest;
     }
 
     public override void _Input(InputEvent @event)

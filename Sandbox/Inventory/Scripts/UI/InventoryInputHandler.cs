@@ -23,7 +23,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                 switch (action)
                 {
                     case Action.Pickup:
-                        cursorInventory.TakeItemFrom(inventory, index, 0);
+                        LeftClickPickup(context, index);
                         break;
                     case Action.Place:
                     case Action.Swap:
@@ -80,6 +80,23 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             vfxManager.AnimateDragPlace(context, index, mousePos);
             context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
+        }
+    }
+
+    private void LeftClickPickup(InventoryVFXContext context, int index)
+    {
+        if (input.HoldingShift)
+        {
+            Inventory otherInventory = Services.Get<InventorySandbox>().OtherInventory;
+
+            if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+            {
+                context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
+            }
+        }
+        else
+        {
+            context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
         }
     }
 

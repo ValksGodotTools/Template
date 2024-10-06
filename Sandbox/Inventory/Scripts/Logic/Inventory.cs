@@ -129,6 +129,22 @@ public class Inventory
         return _itemStacks.Length;
     }
 
+    public bool TryFindFirstEmptySlot(out int index)
+    {
+        for (int i = 0; i < _itemStacks.Length; i++)
+        {
+            if (_itemStacks[i] == null)
+            {
+                index = i;
+                return true;
+            }
+        }
+
+        index = -1;
+
+        return false;
+    }
+
     public void DebugPrintInventory()
     {
         GD.Print(GetType().Name);
@@ -251,22 +267,6 @@ public class Inventory
                 return true;
             }
         }
-
-        return false;
-    }
-
-    private bool TryFindFirstEmptySlot(out int index)
-    {
-        for (int i = 0; i < _itemStacks.Length; i++)
-        {
-            if (_itemStacks[i] == null)
-            {
-                index = i;
-                return true;
-            }
-        }
-
-        index = -1;
 
         return false;
     }
