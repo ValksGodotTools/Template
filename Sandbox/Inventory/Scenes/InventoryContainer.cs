@@ -109,6 +109,7 @@ public partial class InventoryContainer : PanelContainer
             itemContainers[index].SetItem(item);
         };
 
+        AnimHelperItemContainer vfxContainer = null;
         int itemFrame = 0;
         int cursorFrame = 0;
 
@@ -116,11 +117,14 @@ public partial class InventoryContainer : PanelContainer
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
 
-            _visualEffects.AnimatePickup(vfxContext, index, itemFrame);
+            vfxContainer = _visualEffects.AnimatePickup(vfxContext, index, itemFrame);
         };
 
         _onPostPickup += (clickType, index) =>
         {
+            // Ensure the count is correctly displayed
+            vfxContainer.SetCount(cursorInventory.GetItem(0).Count);
+
             cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
@@ -132,11 +136,14 @@ public partial class InventoryContainer : PanelContainer
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
 
-            _visualEffects.AnimatePlace(vfxContext, index, itemFrame, GetGlobalMousePosition());
+            vfxContainer = _visualEffects.AnimatePlace(vfxContext, index, itemFrame, GetGlobalMousePosition());
         };
 
         _onPostPlace += (clickType, index) =>
         {
+            // Ensure the count is correctly displayed
+            vfxContainer.SetCount(inventory.GetItem(index).Count);
+
             itemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };

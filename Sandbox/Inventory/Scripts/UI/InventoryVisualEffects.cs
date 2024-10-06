@@ -49,7 +49,7 @@ public class InventoryVisualEffects()
         context.UI.AddChild(container);
     }
 
-    public void AnimatePickup(Context context, int index, int itemFrame)
+    public AnimHelperItemContainer AnimatePickup(Context context, int index, int itemFrame)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForControl(context.ItemContainers[index].GlobalPosition)
@@ -60,9 +60,11 @@ public class InventoryVisualEffects()
         container.OnReachedTarget += context.CursorItemContainer.ShowSpriteAndCount;
 
         context.UI.AddChild(container);
+
+        return container;
     }
 
-    public void AnimatePlace(Context context, int index, int itemFrame, Vector2 mousePos)
+    public AnimHelperItemContainer AnimatePlace(Context context, int index, int itemFrame, Vector2 mousePos)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForNode2D(mousePos)
@@ -76,6 +78,8 @@ public class InventoryVisualEffects()
         };
 
         context.UI.AddChild(container);
+
+        return container;
     }
 
     public void AnimateSwap(Context context, int index, int itemFrame, Vector2 mousePos)
