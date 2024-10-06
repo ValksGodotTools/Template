@@ -9,24 +9,27 @@ public partial class InventoryContainer : PanelContainer
 {
     private Action<ClickType, Action, int> _onInput;
 
-    private Action<int> _onPrePickup, _onPrePlace, _onPreStack, _onPreSwap;
-    private Action<int> _onPostPickup, _onPostPlace, _onPostStack, _onPostSwap;
+    private Action<ClickType, int> _onPrePickup, _onPrePlace, _onPreStack, _onPreSwap;
+    private Action<ClickType, int> _onPostPickup, _onPostPlace, _onPostStack, _onPostSwap;
 
     private HoldingInput _holding = new();
     private CanvasLayer _ui;
     private InventoryVisualEffects _visualEffects;
+    private Inventory _inventory;
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
     {
         GridContainer.Columns = columns;
-        AddItemContainers(inventory);
+        _inventory = inventory;
     }
 
     public override void _Ready()
     {
         _ui = GetTree().CurrentScene.GetNode<CanvasLayer>("%UI");
-        _visualEffects = new InventoryVisualEffects(_ui);
+        _visualEffects = new InventoryVisualEffects();
+
+        AddItemContainers(_inventory);
     }
 
     public override void _Input(InputEvent @event)
@@ -39,6 +42,9 @@ public partial class InventoryContainer : PanelContainer
         ItemContainer[] itemContainers = new ItemContainer[inventory.GetItemSlotCount()];
         CursorItemContainer cursorItemContainer = Services.Get<CursorItemContainer>();
         Inventory cursorInventory = cursorItemContainer.Inventory;
+
+        InventoryVisualEffects.Context vfxContext = new(_ui, itemContainers, 
+            cursorItemContainer, inventory, cursorInventory);
 
         for (int i = 0; i < itemContainers.Length; i++)
         {
@@ -77,7 +83,7 @@ public partial class InventoryContainer : PanelContainer
                         }
                         else
                         {
-                            _visualEffects.AnimateDragPickup(cursorItemContainer, cursorInventory, inventory, itemContainers, index);
+                            _visualEffects.AnimateDragPickup(vfxContext, index);
                         }
 
                         cursorInventory.TakePartOfItemFrom(inventory, index, 0, item.Count);
@@ -90,7 +96,7 @@ public partial class InventoryContainer : PanelContainer
                     // chaotic.
                     if (cursorInventory.HasItem(0) && !inventory.HasItem(index))
                     {
-                        _visualEffects.AnimateDragPlace(GetGlobalMousePosition(), itemContainers, index, cursorInventory);
+                        _visualEffects.AnimateDragPlace(vfxContext, index, GetGlobalMousePosition());
                     }
 
                     cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
@@ -106,14 +112,14 @@ public partial class InventoryContainer : PanelContainer
         int itemFrame = 0;
         int cursorFrame = 0;
 
-        _onPrePickup += index =>
+        _onPrePickup += (clickType, index) =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
 
-            _visualEffects.AnimatePickup(itemContainers, index, itemFrame, inventory, cursorItemContainer);
+            _visualEffects.AnimatePickup(vfxContext, index, itemFrame);
         };
 
-        _onPostPickup += index =>
+        _onPostPickup += (clickType, index) =>
         {
             cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
@@ -122,28 +128,28 @@ public partial class InventoryContainer : PanelContainer
             cursorItemContainer.Position = itemContainers[index].GlobalPosition;
         };
 
-        _onPrePlace += index =>
+        _onPrePlace += (clickType, index) =>
         {
             itemFrame = cursorItemContainer.GetCurrentSpriteFrame();
 
-            _visualEffects.AnimatePlace(GetGlobalMousePosition(), itemContainers, index, cursorInventory, itemFrame);
+            _visualEffects.AnimatePlace(vfxContext, index, itemFrame, GetGlobalMousePosition());
         };
 
-        _onPostPlace += index =>
+        _onPostPlace += (clickType, index) =>
         {
             itemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        _onPreSwap += index =>
+        _onPreSwap += (clickType, index) =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = cursorItemContainer.GetCurrentSpriteFrame();
 
-            _visualEffects.AnimateSwap(itemContainers, index, inventory, itemFrame, cursorItemContainer, cursorInventory, GetGlobalMousePosition());
+            _visualEffects.AnimateSwap(vfxContext, index, itemFrame, GetGlobalMousePosition());
         };
 
-        _onPostSwap += index =>
+        _onPostSwap += (clickType, index) =>
         {
             itemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
@@ -155,12 +161,12 @@ public partial class InventoryContainer : PanelContainer
             cursorItemContainer.Position = itemContainers[index].GlobalPosition;
         };
 
-        _onPreStack += index =>
+        _onPreStack += (clickType, index) =>
         {
             itemFrame = itemContainers[index].GetCurrentSpriteFrame();
         };
 
-        _onPostStack += index =>
+        _onPostStack += (clickType, index) =>
         {
             itemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
@@ -206,9 +212,9 @@ public partial class InventoryContainer : PanelContainer
             {
                 if (cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
                 {
-                    _onPreStack(index);
+                    _onPreStack(clickType, index);
                     _onInput(clickType, Action.Stack, index);
-                    _onPostStack(index);
+                    _onPostStack(clickType, index);
                 }
                 else
                 {
@@ -218,25 +224,25 @@ public partial class InventoryContainer : PanelContainer
                         return;
                     }
 
-                    _onPreSwap(index);
+                    _onPreSwap(clickType, index);
                     _onInput(clickType, Action.Swap, index);
-                    _onPostSwap(index);
+                    _onPostSwap(clickType, index);
                 }
             }
             else
             {
-                _onPrePlace(index);
+                _onPrePlace(clickType, index);
                 _onInput(clickType, Action.Place, index);
-                _onPostPlace(index);
+                _onPostPlace(clickType, index);
             }
         }
         else
         {
             if (inventory.HasItem(index))
             {
-                _onPrePickup(index);
+                _onPrePickup(clickType, index);
                 _onInput(clickType, Action.Pickup, index);
-                _onPostPickup(index);
+                _onPostPickup(clickType, index);
             }
         }
     }
