@@ -4,21 +4,21 @@ namespace Template.Inventory;
 
 public class InventoryVFXManager
 {
-    public void RegisterEvents(InventoryContainer container, InventoryVFXContext context)
+    public void RegisterEvents(InventoryInputHandler input, InventoryVFXContext context, InventoryContainer container)
     {
         AnimHelperItemContainer vfxContainer = null;
 
         int itemFrame = 0;
         int cursorFrame = 0;
 
-        container.OnPrePickup += (clickType, index) =>
+        input.OnPrePickup += (clickType, index) =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
 
             vfxContainer = context.VFX.AnimatePickup(context, index, itemFrame);
         };
 
-        container.OnPostPickup += (clickType, index) =>
+        input.OnPostPickup += (clickType, index) =>
         {
             // Ensure the count is correctly displayed
             vfxContainer.SetCount(context.CursorInventory.GetItem(0).Count);
@@ -32,14 +32,14 @@ public class InventoryVFXManager
             cursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
         };
 
-        container.OnPrePlace += (clickType, index) =>
+        input.OnPrePlace += (clickType, index) =>
         {
             itemFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
 
             vfxContainer = context.VFX.AnimatePlace(context, index, itemFrame, container.GetGlobalMousePosition());
         };
 
-        container.OnPostPlace += (clickType, index) =>
+        input.OnPostPlace += (clickType, index) =>
         {
             // Ensure the count is correctly displayed
             vfxContainer.SetCount(context.Inventory.GetItem(index).Count);
@@ -48,7 +48,7 @@ public class InventoryVFXManager
             context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        container.OnPreSwap += (clickType, index) =>
+        input.OnPreSwap += (clickType, index) =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
@@ -56,7 +56,7 @@ public class InventoryVFXManager
             context.VFX.AnimateSwap(context, index, itemFrame, container.GetGlobalMousePosition());
         };
 
-        container.OnPostSwap += (clickType, index) =>
+        input.OnPostSwap += (clickType, index) =>
         {
             context.ItemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             context.CursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
@@ -68,12 +68,12 @@ public class InventoryVFXManager
             context.CursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
         };
 
-        container.OnPreStack += (clickType, index) =>
+        input.OnPreStack += (clickType, index) =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
         };
 
-        container.OnPostStack += (clickType, index) =>
+        input.OnPostStack += (clickType, index) =>
         {
             context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
