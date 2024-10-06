@@ -23,6 +23,7 @@
 - **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
 
 **Experimental Features**
+- **[Inventory](https://github.com/ValksGodotTools/Template/wiki/Inventory)** - A WIP re-creation of my old inventory system.
 - **[Draggable Nodes](https://github.com/ValksGodotTools/Template/wiki/Draggable-Nodes)** - Easily make any Node2D or Control draggable in-game.
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
 
