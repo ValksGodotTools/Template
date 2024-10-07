@@ -6,8 +6,17 @@ namespace Template.Inventory;
 
 public class InventoryInputHandler(InventoryInputDetector input)
 {
-    public event Action<ClickType, int> OnPrePickup, OnPrePlace, OnPreStack, OnPreSwap;
-    public event Action<ClickType, int> OnPostPickup, OnPostPlace, OnPostStack, OnPostSwap;
+    public event Action<ClickType, int>
+        OnPrePickup,
+        OnPrePlace,
+        OnPreStack,
+        OnPreSwap,
+        OnPreTransfer,
+        OnPostPickup, 
+        OnPostPlace, 
+        OnPostStack, 
+        OnPostSwap,
+        OnPostTransfer;
 
     private Action<ClickType, Action, int> _onInput;
 
@@ -29,6 +38,9 @@ public class InventoryInputHandler(InventoryInputDetector input)
                     case Action.Swap:
                     case Action.Stack:
                         cursorInventory.MoveItemTo(inventory, 0, index);
+                        break;
+                    case Action.Transfer:
+                        LeftClickTransfer(context, index);
                         break;
                 }
             }
@@ -80,6 +92,16 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             vfxManager.AnimateDragPlace(context, index, mousePos);
             context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
+        }
+    }
+
+    private void LeftClickTransfer(InventoryVFXContext context, int index)
+    {
+        Inventory otherInventory = Services.Get<InventorySandbox>().GetOtherInventory(context.Inventory);
+
+        if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+        {
+            context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
         }
     }
 
@@ -149,7 +171,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             if (input.HoldingShift)
             {
-                TransferToOtherInventory(context);
+                TransferToOtherInventory(context.ClickType, context.Index);
             }
             else
             {
@@ -158,14 +180,11 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void TransferToOtherInventory(InputContext context)
+    private void TransferToOtherInventory(ClickType clickType, int index)
     {
-        Inventory otherInventory = Services.Get<InventorySandbox>().GetOtherInventory(context.Inventory);
-
-        if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
-        {
-            context.Inventory.MoveItemTo(otherInventory, context.Index, otherIndex);
-        }
+        OnPreTransfer?.Invoke(clickType, index);
+        _onInput(clickType, Action.Transfer, index);
+        OnPostTransfer?.Invoke(clickType, index);
     }
 
     private void Stack(ClickType clickType, int index)
@@ -221,6 +240,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         Pickup,
         Place,
         Stack,
-        Swap
+        Swap,
+        Transfer
     }
 }
