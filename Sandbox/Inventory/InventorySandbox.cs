@@ -8,8 +8,6 @@ namespace Template.Inventory;
 [Service]
 public partial class InventorySandbox : Node
 {
-    public Inventory OtherInventory { get; private set; }
-
     private Inventory _invPlayer;
     private Inventory _invChest;
 
@@ -17,8 +15,6 @@ public partial class InventorySandbox : Node
     {
         AddPlayerInv();
         AddChestInv();
-
-        OtherInventory = _invChest;
     }
 
     public override void _Input(InputEvent @event)
@@ -34,6 +30,11 @@ public partial class InventorySandbox : Node
                 _invPlayer.DebugPrintInventory();
             }
         }
+    }
+
+    public Inventory GetOtherInventory(Inventory inventory)
+    {
+        return inventory == _invPlayer ? _invChest : _invPlayer;
     }
 
     private void AddPlayerInv()

@@ -160,7 +160,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
     private void TransferToOtherInventory(InputContext context)
     {
-        Inventory otherInventory = Services.Get<InventorySandbox>().OtherInventory;
+        Inventory otherInventory = Services.Get<InventorySandbox>().GetOtherInventory(context.Inventory);
 
         if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
         {
