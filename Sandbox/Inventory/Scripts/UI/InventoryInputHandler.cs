@@ -55,11 +55,11 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(ClickType.Left, index, context.CursorInventory, context.Inventory);
+                HandleClick(new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(ClickType.Right, index, context.CursorInventory, context.Inventory);
+                HandleClick(new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
             }
         }
     }
@@ -117,53 +117,103 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void HandleClick(ClickType clickType, int index, Inventory cursorInventory, Inventory inventory)
+    private void HandleClick(InputContext context)
     {
-        if (cursorInventory.HasItem(0))
+        if (context.CursorInventory.HasItem(0))
         {
-            if (inventory.HasItem(index))
-            {
-                if (cursorInventory.GetItem(0).Material.Equals(inventory.GetItem(index).Material))
-                {
-                    OnPreStack?.Invoke(clickType, index);
-                    _onInput(clickType, Action.Stack, index);
-                    OnPostStack?.Invoke(clickType, index);
-                }
-                else
-                {
-                    // Swapping is disabled for right click operations
-                    if (clickType == ClickType.Right)
-                    {
-                        return;
-                    }
-
-                    OnPreSwap?.Invoke(clickType, index);
-                    _onInput(clickType, Action.Swap, index);
-                    OnPostSwap?.Invoke(clickType, index);
-                }
-            }
-            else
-            {
-                OnPrePlace?.Invoke(clickType, index);
-                _onInput(clickType, Action.Place, index);
-                OnPostPlace?.Invoke(clickType, index);
-            }
+            CursorHasItem(context);
         }
         else
         {
-            if (inventory.HasItem(index))
-            {
-                OnPrePickup?.Invoke(clickType, index);
-                _onInput(clickType, Action.Pickup, index);
-                OnPostPickup?.Invoke(clickType, index);
-            }
+            CursorHasNoItem(context);
         }
+    }
+
+    private void CursorHasItem(InputContext context)
+    {
+        if (context.Inventory.HasItem(context.Index))
+        {
+            CursorAndInventoryHaveItems(context);
+        }
+        else
+        {
+            // Cursor has item but inv slot does not
+            Place(context.ClickType, context.Index);
+        }
+    }
+
+    private void CursorAndInventoryHaveItems(InputContext context)
+    {
+        int index = context.Index;
+
+        Material cursorMaterial = context.CursorInventory.GetItem(0).Material;
+        Material invMaterial = context.Inventory.GetItem(index).Material;
+
+        // The cursor item and inventory item are of the same type
+        if (cursorMaterial.Equals(invMaterial))
+        {
+            Stack(context.ClickType, index);
+        }
+        else
+        {
+            Swap(context.ClickType, index);
+        }
+    }
+
+    private void CursorHasNoItem(InputContext context)
+    {
+        if (context.Inventory.HasItem(context.Index))
+        {
+            Pickup(context.ClickType, context.Index);
+        }
+    }
+
+    private void Stack(ClickType clickType, int index)
+    {
+        OnPreStack?.Invoke(clickType, index);
+        _onInput(clickType, Action.Stack, index);
+        OnPostStack?.Invoke(clickType, index);
+    }
+
+    private void Swap(ClickType clickType, int index)
+    {
+        // Swapping is disabled for right click operations
+        if (clickType == ClickType.Right)
+        {
+            return;
+        }
+
+        OnPreSwap?.Invoke(clickType, index);
+        _onInput(clickType, Action.Swap, index);
+        OnPostSwap?.Invoke(clickType, index);
+    }
+
+    private void Place(ClickType clickType, int index)
+    {
+        OnPrePlace?.Invoke(clickType, index);
+        _onInput(clickType, Action.Place, index);
+        OnPostPlace?.Invoke(clickType, index);
+    }
+
+    private void Pickup(ClickType clickType, int index)
+    {
+        OnPrePickup?.Invoke(clickType, index);
+        _onInput(clickType, Action.Pickup, index);
+        OnPostPickup?.Invoke(clickType, index);
     }
 
     public enum ClickType
     {
         Left,
         Right
+    }
+
+    private class InputContext(Inventory inventory, Inventory cursorInventory, ClickType clickType, int index)
+    {
+        public Inventory Inventory { get; } = inventory;
+        public Inventory CursorInventory { get; } = cursorInventory;
+        public ClickType ClickType { get; } = clickType;
+        public int Index { get; } = index;
     }
 
     private enum Action
