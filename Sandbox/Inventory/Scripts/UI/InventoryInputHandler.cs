@@ -23,7 +23,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                 switch (action)
                 {
                     case Action.Pickup:
-                        LeftClickPickup(context, index);
+                        context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
                         break;
                     case Action.Place:
                     case Action.Swap:
@@ -80,23 +80,6 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             vfxManager.AnimateDragPlace(context, index, mousePos);
             context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
-        }
-    }
-
-    private void LeftClickPickup(InventoryVFXContext context, int index)
-    {
-        if (input.HoldingShift)
-        {
-            Inventory otherInventory = Services.Get<InventorySandbox>().OtherInventory;
-
-            if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
-            {
-                context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
-            }
-        }
-        else
-        {
-            context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
         }
     }
 
@@ -164,7 +147,24 @@ public class InventoryInputHandler(InventoryInputDetector input)
     {
         if (context.Inventory.HasItem(context.Index))
         {
-            Pickup(context.ClickType, context.Index);
+            if (input.HoldingShift)
+            {
+                TransferToOtherInventory(context);
+            }
+            else
+            {
+                Pickup(context.ClickType, context.Index);
+            }
+        }
+    }
+
+    private void TransferToOtherInventory(InputContext context)
+    {
+        Inventory otherInventory = Services.Get<InventorySandbox>().OtherInventory;
+
+        if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+        {
+            context.Inventory.MoveItemTo(otherInventory, context.Index, otherIndex);
         }
     }
 
