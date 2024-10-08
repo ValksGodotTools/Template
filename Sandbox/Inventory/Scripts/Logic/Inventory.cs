@@ -161,18 +161,33 @@ public class Inventory
         return false;
     }
 
-    public void DebugPrint()
+    public void DebugPrint(bool printEmpty = false)
     {
         GD.Print(GetType().Name);
 
         for (int i = 0; i < _itemStacks.Length; i++)
         {
-            GD.Print($"Slot {i}: {(_itemStacks[i] != null ? _itemStacks[i].ToString() : "Empty")}");
+            if (_itemStacks[i] != null)
+            {
+                GD.Print($"Slot {i}: {_itemStacks[i]}");
+            }
+            else
+            {
+                if (printEmpty)
+                {
+                    GD.Print($"Slot {i}: Empty");
+                }
+            }
         }
     }
 
     public override string ToString()
     {
+        if (_itemStacks.Length == 0)
+        {
+            return "Inventory is empty";
+        }
+
         return string.Join(' ', _itemStacks.Where(item => item != null));
     }
 
