@@ -129,6 +129,22 @@ public class Inventory
         return _itemStacks.Length;
     }
 
+    public bool TryFindFirstSameType(Material material, out int index)
+    {
+        for (int i = 0; i < _itemStacks.Length; i++)
+        {
+            if (_itemStacks[i] != null && _itemStacks[i].Material.Equals(material))
+            {
+                index = i;
+                return true;
+            }
+        }
+
+        index = -1;
+
+        return false;
+    }
+
     public bool TryFindFirstEmptySlot(out int index)
     {
         for (int i = 0; i < _itemStacks.Length; i++)

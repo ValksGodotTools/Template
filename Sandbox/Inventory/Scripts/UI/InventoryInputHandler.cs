@@ -102,16 +102,27 @@ public class InventoryInputHandler(InventoryInputDetector input)
         InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
         Inventory otherInventory = otherInventoryContainer.Inventory;
 
-        if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+        if (otherInventory.TryFindFirstSameType(context.Inventory.GetItem(index).Material, out int stackIndex))
         {
-            ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
-
-            OnPreTransfer?.Invoke(new TransferEventArgs(index, targetItemContainer));
-
-            context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
-
-            OnPostTransfer?.Invoke(new TransferEventArgs(index, targetItemContainer));
+            Transfer(true, otherInventoryContainer, otherInventory, context, index, stackIndex);
         }
+        else if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+        {
+            Transfer(false, otherInventoryContainer, otherInventory, context, index, otherIndex);
+        }
+    }
+
+    private void Transfer(bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, InventoryVFXContext context, int index, int otherIndex)
+    {
+        ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
+
+        TransferEventArgs args = new(areSameType, index, targetItemContainer);
+
+        OnPreTransfer?.Invoke(args);
+
+        context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
+
+        OnPostTransfer?.Invoke(args);
     }
 
     private void RightClickPickup(InventoryVFXContext context, int index)
@@ -252,8 +263,9 @@ public class InventoryInputHandler(InventoryInputDetector input)
     }
 }
 
-public class TransferEventArgs(int fromIndex, ItemContainer targetItemContainer)
+public class TransferEventArgs(bool stacking, int fromIndex, ItemContainer targetItemContainer)
 {
+    public bool AreSameType { get; } = stacking;
     public int FromIndex { get; } = fromIndex;
     public ItemContainer TargetItemContainer { get; } = targetItemContainer;
 }

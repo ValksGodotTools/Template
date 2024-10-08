@@ -18,7 +18,10 @@ public class InventoryVFXManager
 
         input.OnPostTransfer += args =>
         {
-            args.TargetItemContainer.HideSpriteAndCount();
+            if (!args.AreSameType)
+            {
+                args.TargetItemContainer.HideSpriteAndCount();
+            }
         };
 
         input.OnPrePickup += index =>
