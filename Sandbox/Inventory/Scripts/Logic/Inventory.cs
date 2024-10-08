@@ -117,6 +117,22 @@ public class Inventory
         return _itemStacks[index] != null;
     }
 
+    public bool TryGetItem(int index, out ItemStack item)
+    {
+        ThrowIfIndexOutOfRange(index);
+
+        ItemStack invItem = _itemStacks[index];
+
+        if (invItem != null)
+        {
+            item = invItem;
+            return true;
+        }
+
+        item = null;
+        return false;
+    }
+
     public ItemStack GetItem(int index)
     {
         ThrowIfIndexOutOfRange(index);
