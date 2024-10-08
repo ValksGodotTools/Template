@@ -16,6 +16,11 @@ public class InventoryVFXManager
             context.VFX.AnimateTransfer(context, args);
         };
 
+        input.OnPostTransfer += args =>
+        {
+            args.TargetItemContainer.HideSpriteAndCount();
+        };
+
         input.OnPrePickup += index =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();

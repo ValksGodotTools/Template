@@ -11,13 +11,14 @@ public class InventoryVFX
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForControl(context.ItemContainers[args.FromIndex].GlobalPosition)
-            .SetControlTarget(args.TargetPos)
+            .SetControlTarget(args.TargetItemContainer.GlobalPosition)
             .SetStartingLerp(0.05f)
             .SetItemAndFrame(context.Inventory.GetItem(args.FromIndex), 0)
-            .SetCount(0) // Too much information on screen gets chaotic
             .Build();
 
         context.UI.AddChild(container);
+
+        container.OnReachedTarget += args.TargetItemContainer.ShowSpriteAndCount;
     }
 
     public void AnimateDragPickup(InventoryVFXContext context, int index)

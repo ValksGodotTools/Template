@@ -16,7 +16,9 @@ public class InventoryInputHandler(InventoryInputDetector input)
         OnPostStack,
         OnPostSwap;
 
-    public event Action<TransferEventArgs> OnPreTransfer;
+    public event Action<TransferEventArgs>
+        OnPreTransfer,
+        OnPostTransfer;
 
     private Action<ClickType, Action, int> _onInput;
 
@@ -102,10 +104,13 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
         if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
         {
-            Vector2 targetPos = otherInventoryContainer.ItemContainers[otherIndex].GlobalPosition;
-            OnPreTransfer?.Invoke(new TransferEventArgs(index, targetPos));
+            ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
+
+            OnPreTransfer?.Invoke(new TransferEventArgs(index, targetItemContainer));
 
             context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
+
+            OnPostTransfer?.Invoke(new TransferEventArgs(index, targetItemContainer));
         }
     }
 
@@ -247,8 +252,8 @@ public class InventoryInputHandler(InventoryInputDetector input)
     }
 }
 
-public class TransferEventArgs(int fromIndex, Vector2 targetPos)
+public class TransferEventArgs(int fromIndex, ItemContainer targetItemContainer)
 {
     public int FromIndex { get; } = fromIndex;
-    public Vector2 TargetPos { get; } = targetPos;
+    public ItemContainer TargetItemContainer { get; } = targetItemContainer;
 }
