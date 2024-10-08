@@ -181,9 +181,14 @@ public class Inventory
         }
     }
 
+    public bool IsEmpty()
+    {
+        return _itemStacks.Length == 0;
+    }
+
     public override string ToString()
     {
-        if (_itemStacks.Length == 0)
+        if (IsEmpty())
         {
             return "Inventory is empty";
         }
