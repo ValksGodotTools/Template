@@ -78,7 +78,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    public void HandleMouseEntered(InventoryVFXContext context, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
+    public void HandleMouseEntered(InventoryContainer container, InventoryVFXContext context, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
         if (input.HoldingLeftClick)
         {
@@ -86,8 +86,15 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
             if (item != null)
             {
-                vfxManager.AnimateDragPickup(context, index);
-                context.CursorInventory.TakePartOfItemFrom(context.Inventory, index, 0, item.Count);
+                if (input.HoldingShift)
+                {
+                    LeftClickTransfer(container, context, index);
+                }
+                else
+                {
+                    vfxManager.AnimateDragPickup(context, index);
+                    context.CursorInventory.TakePartOfItemFrom(context.Inventory, index, 0, item.Count);
+                }
             }
         }
         else if (input.HoldingRightClick)

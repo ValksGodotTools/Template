@@ -56,7 +56,7 @@ public partial class InventoryContainer : PanelContainer
 
             itemContainer.MouseEntered += () =>
             {
-                inputHandler.HandleMouseEntered(vfxContext, vfxManager, index, GetGlobalMousePosition());
+                inputHandler.HandleMouseEntered(this, vfxContext, vfxManager, index, GetGlobalMousePosition());
             };
         }
 
