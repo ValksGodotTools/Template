@@ -6,7 +6,7 @@ namespace Template.Inventory;
 
 public class InventoryInputHandler(InventoryInputDetector input)
 {
-    public event Action<ClickType, int>
+    public event Action<int>
         OnPrePickup,
         OnPrePlace,
         OnPreStack,
@@ -182,16 +182,16 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
     private void TransferToOtherInventory(ClickType clickType, int index)
     {
-        OnPreTransfer?.Invoke(clickType, index);
+        OnPreTransfer?.Invoke(index);
         _onInput(clickType, Action.Transfer, index);
-        OnPostTransfer?.Invoke(clickType, index);
+        OnPostTransfer?.Invoke(index);
     }
 
     private void Stack(ClickType clickType, int index)
     {
-        OnPreStack?.Invoke(clickType, index);
+        OnPreStack?.Invoke(index);
         _onInput(clickType, Action.Stack, index);
-        OnPostStack?.Invoke(clickType, index);
+        OnPostStack?.Invoke(index);
     }
 
     private void Swap(ClickType clickType, int index)
@@ -202,23 +202,23 @@ public class InventoryInputHandler(InventoryInputDetector input)
             return;
         }
 
-        OnPreSwap?.Invoke(clickType, index);
+        OnPreSwap?.Invoke(index);
         _onInput(clickType, Action.Swap, index);
-        OnPostSwap?.Invoke(clickType, index);
+        OnPostSwap?.Invoke(index);
     }
 
     private void Place(ClickType clickType, int index)
     {
-        OnPrePlace?.Invoke(clickType, index);
+        OnPrePlace?.Invoke(index);
         _onInput(clickType, Action.Place, index);
-        OnPostPlace?.Invoke(clickType, index);
+        OnPostPlace?.Invoke(index);
     }
 
     private void Pickup(ClickType clickType, int index)
     {
-        OnPrePickup?.Invoke(clickType, index);
+        OnPrePickup?.Invoke(index);
         _onInput(clickType, Action.Pickup, index);
-        OnPostPickup?.Invoke(clickType, index);
+        OnPostPickup?.Invoke(index);
     }
 
     public enum ClickType

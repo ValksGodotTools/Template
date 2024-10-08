@@ -11,14 +11,14 @@ public class InventoryVFXManager
         int itemFrame = 0;
         int cursorFrame = 0;
 
-        input.OnPrePickup += (clickType, index) =>
+        input.OnPrePickup += index =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
 
             vfxContainer = context.VFX.AnimatePickup(context, index, itemFrame);
         };
 
-        input.OnPostPickup += (clickType, index) =>
+        input.OnPostPickup += index =>
         {
             // Ensure the count is correctly displayed
             vfxContainer.SetCount(context.CursorInventory.GetItem(0).Count);
@@ -32,14 +32,14 @@ public class InventoryVFXManager
             cursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
         };
 
-        input.OnPrePlace += (clickType, index) =>
+        input.OnPrePlace += index =>
         {
             itemFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
 
             vfxContainer = context.VFX.AnimatePlace(context, index, itemFrame, container.GetGlobalMousePosition());
         };
 
-        input.OnPostPlace += (clickType, index) =>
+        input.OnPostPlace += index =>
         {
             // Ensure the count is correctly displayed
             vfxContainer.SetCount(context.Inventory.GetItem(index).Count);
@@ -48,7 +48,7 @@ public class InventoryVFXManager
             context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
 
-        input.OnPreSwap += (clickType, index) =>
+        input.OnPreSwap += index =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
             cursorFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
@@ -56,7 +56,7 @@ public class InventoryVFXManager
             context.VFX.AnimateSwap(context, index, itemFrame, container.GetGlobalMousePosition());
         };
 
-        input.OnPostSwap += (clickType, index) =>
+        input.OnPostSwap += index =>
         {
             context.ItemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
             context.CursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
@@ -68,12 +68,12 @@ public class InventoryVFXManager
             context.CursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
         };
 
-        input.OnPreStack += (clickType, index) =>
+        input.OnPreStack += index =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
         };
 
-        input.OnPostStack += (clickType, index) =>
+        input.OnPostStack += index =>
         {
             context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
         };
