@@ -151,9 +151,9 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
     private void HandleClick(InputContext context)
     {
-        if (context.CursorInventory.HasItem(0))
+        if (context.CursorInventory.TryGetItem(0, out ItemStack cursorItem))
         {
-            CursorHasItem(context);
+            CursorHasItem(context, cursorItem);
         }
         else
         {
@@ -161,11 +161,11 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void CursorHasItem(InputContext context)
+    private void CursorHasItem(InputContext context, ItemStack cursorItem)
     {
-        if (context.Inventory.HasItem(context.Index))
+        if (context.Inventory.TryGetItem(context.Index, out ItemStack invItem))
         {
-            CursorAndInventoryHaveItems(context);
+            CursorAndInventoryHaveItems(context, invItem, cursorItem);
         }
         else
         {
@@ -174,12 +174,12 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void CursorAndInventoryHaveItems(InputContext context)
+    private void CursorAndInventoryHaveItems(InputContext context, ItemStack invItem, ItemStack cursorItem)
     {
         int index = context.Index;
 
-        Material cursorMaterial = context.CursorInventory.GetItem(0).Material;
-        Material invMaterial = context.Inventory.GetItem(index).Material;
+        Material cursorMaterial = cursorItem.Material;
+        Material invMaterial = invItem.Material;
 
         // The cursor item and inventory item are of the same type
         if (cursorMaterial.Equals(invMaterial))
