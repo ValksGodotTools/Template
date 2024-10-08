@@ -11,6 +11,11 @@ public class InventoryVFXManager
         int itemFrame = 0;
         int cursorFrame = 0;
 
+        input.OnPreTransfer += args =>
+        {
+            context.VFX.AnimateTransfer(context, args);
+        };
+
         input.OnPrePickup += index =>
         {
             itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();

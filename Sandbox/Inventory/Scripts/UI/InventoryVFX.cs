@@ -7,6 +7,19 @@ public class InventoryVFX
 {
     private List<Node> _swapAnimContainers = [];
 
+    public void AnimateTransfer(InventoryVFXContext context, TransferEventArgs args)
+    {
+        AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
+            .SetInitialPositionForControl(context.ItemContainers[args.FromIndex].GlobalPosition)
+            .SetControlTarget(args.TargetPos)
+            .SetStartingLerp(0.05f)
+            .SetItemAndFrame(context.Inventory.GetItem(args.FromIndex), 0)
+            .SetCount(0) // Too much information on screen gets chaotic
+            .Build();
+
+        context.UI.AddChild(container);
+    }
+
     public void AnimateDragPickup(InventoryVFXContext context, int index)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())

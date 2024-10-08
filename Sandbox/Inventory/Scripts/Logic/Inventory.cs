@@ -145,7 +145,7 @@ public class Inventory
         return false;
     }
 
-    public void DebugPrintInventory()
+    public void DebugPrint()
     {
         GD.Print(GetType().Name);
 

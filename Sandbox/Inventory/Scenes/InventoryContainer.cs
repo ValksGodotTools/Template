@@ -5,22 +5,24 @@ namespace Template.Inventory;
 [SceneTree]
 public partial class InventoryContainer : PanelContainer
 {
+    public Inventory Inventory { get; private set; }
+    public ItemContainer[] ItemContainers { get; private set; }
+
     private InventoryInputDetector _inputDetector = new();
     private CanvasLayer _ui;
-    private Inventory _inventory;
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
     {
         GridContainer.Columns = columns;
-        _inventory = inventory;
+        Inventory = inventory;
     }
 
     public override void _Ready()
     {
         _ui = GetTree().CurrentScene.GetNode<CanvasLayer>("%UI");
 
-        AddItemContainers(_inventory);
+        AddItemContainers(Inventory);
     }
 
     public override void _Input(InputEvent @event)
@@ -30,20 +32,20 @@ public partial class InventoryContainer : PanelContainer
 
     private void AddItemContainers(Inventory inventory)
     {
-        ItemContainer[] itemContainers = new ItemContainer[inventory.GetItemSlotCount()];
+        ItemContainers = new ItemContainer[inventory.GetItemSlotCount()];
 
-        InventoryVFXContext vfxContext = new(_ui, itemContainers, inventory);
+        InventoryVFXContext vfxContext = new(_ui, ItemContainers, inventory);
         InventoryVFXManager vfxManager = new();
         InventoryInputHandler inputHandler = new(_inputDetector);
 
         vfxManager.RegisterEvents(inputHandler, vfxContext, this);
-        inputHandler.RegisterInput(vfxContext);
+        inputHandler.RegisterInput(this, vfxContext);
 
-        for (int i = 0; i < itemContainers.Length; i++)
+        for (int i = 0; i < ItemContainers.Length; i++)
         {
             ItemContainer itemContainer = AddItemContainer();
             itemContainer.SetItem(inventory.GetItem(i));
-            itemContainers[i] = itemContainer;
+            ItemContainers[i] = itemContainer;
 
             int index = i; // Capture i
 
@@ -60,7 +62,7 @@ public partial class InventoryContainer : PanelContainer
 
         inventory.OnItemChanged += (index, item) =>
         {
-            itemContainers[index].SetItem(item);
+            ItemContainers[index].SetItem(item);
         };
     }
 

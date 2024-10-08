@@ -8,8 +8,8 @@ namespace Template.Inventory;
 [Service]
 public partial class InventorySandbox : Node
 {
-    private Inventory _invPlayer;
-    private Inventory _invChest;
+    private InventoryContainer _invContainerPlayer;
+    private InventoryContainer _invContainerChest;
 
     public override void _Ready()
     {
@@ -23,47 +23,47 @@ public partial class InventorySandbox : Node
         {
             if (key.IsJustPressed(Key.Q))
             {
-                _invChest.DebugPrintInventory();
+                _invContainerChest.Inventory.DebugPrint();
             }
             else if (key.IsJustPressed(Key.W))
             {
-                _invPlayer.DebugPrintInventory();
+                _invContainerPlayer.Inventory.DebugPrint();
             }
         }
     }
 
-    public Inventory GetOtherInventory(Inventory inventory)
+    public InventoryContainer GetOtherInventory(InventoryContainer inventory)
     {
-        return inventory == _invPlayer ? _invChest : _invPlayer;
+        return inventory == _invContainerPlayer ? _invContainerChest : _invContainerPlayer;
     }
 
     private void AddPlayerInv()
     {
-        _invPlayer = new(40);
+        Inventory inv = new(40);
 
-        InventoryContainer container = InventoryContainer.Instantiate(_invPlayer, columns: 10);
+        _invContainerPlayer = InventoryContainer.Instantiate(inv, columns: 10);
 
-        InventoryParent.AddChild(container);
-        InventoryParent.MoveChild(container, InventoryParent.GetChildCount() - 1); // appear bottom
+        InventoryParent.AddChild(_invContainerPlayer);
+        InventoryParent.MoveChild(_invContainerPlayer, InventoryParent.GetChildCount() - 1); // appear bottom
 
-        container.SetLayout(Layout.CenterBottom);
-        container.Position -= new Vector2(0, 50);
+        _invContainerPlayer.SetLayout(Layout.CenterBottom);
+        _invContainerPlayer.Position -= new Vector2(0, 50);
     }
 
     private void AddChestInv()
     {
-        _invChest = new(40);
-        _invChest.AddItem(new ItemStack(Material.SnowyCoin, 3));
-        _invChest.AddItem(new ItemStack(Material.Coin, 100));
-        _invChest.SetItem(2, new ItemStack(Material.SnowyCoin, 42));
-        _invChest.SetItem(3, new ItemStack(Material.Coin, 2));
+        Inventory inv = new(40);
+        inv.AddItem(new ItemStack(Material.SnowyCoin, 3));
+        inv.AddItem(new ItemStack(Material.Coin, 100));
+        inv.SetItem(2, new ItemStack(Material.SnowyCoin, 42));
+        inv.SetItem(3, new ItemStack(Material.Coin, 2));
 
-        InventoryContainer container = InventoryContainer.Instantiate(_invChest, columns: 10);
+        _invContainerChest = InventoryContainer.Instantiate(inv, columns: 10);
 
-        InventoryParent.AddChild(container);
-        InventoryParent.MoveChild(container, 0); // other inventory should always appear on top
+        InventoryParent.AddChild(_invContainerChest);
+        InventoryParent.MoveChild(_invContainerChest, 0); // other inventory should always appear on top
 
-        container.SetLayout(Layout.CenterTop);
-        container.Position += new Vector2(0, 50);
+        _invContainerChest.SetLayout(Layout.CenterTop);
+        _invContainerChest.Position += new Vector2(0, 50);
     }
 }
