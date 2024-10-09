@@ -11,20 +11,18 @@
 **Hot Features**
 - **[Multiplayer](https://github.com/ValksGodotTools/Template/wiki/Multiplayer)** - Multiplayer sending minimal packet data achieved with ENet.
 - **[In-Game Debugging](https://github.com/ValksGodotTools/Template/wiki/In%E2%80%90Game-Debugging)** - See what your code is doing in-game.
+- **[Menu UI](https://github.com/ValksGodotTools/Template/wiki/Menu-UI)** - Several UI scenes including the main menu, options and credits have been setup for you.
 - **[Simplified Tween Logic](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)** - You will love writing tween logic now.
 - **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
 - **[Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)** - Source generators that make your life a little easier.
-
-**Other Features**
-- **[Menu UI](https://github.com/ValksGodotTools/Template/wiki/Menu-UI)** - Several UI scenes including the main menu, options and credits have been setup for you.
-- **[3D FPS Scene](https://github.com/ValksGodotTools/Template/wiki/3D-FPS)** - Minimal first-person shooter scene with character controller and pre-made weapon animations.
-- **[2D Top Down Scene](https://github.com/ValksGodotTools/Template/wiki/2D-Top-Down)** - A dungeon scene with enemies, room transitions and working multiplayer.
-- **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates in your game.
 - **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
 
-**Experimental Features**
+**WIP Features**
+- **[3D FPS Scene](https://github.com/ValksGodotTools/Template/wiki/3D-FPS)** - Minimal first-person shooter scene with character controller and pre-made weapon animations.
+- **[2D Top Down Scene](https://github.com/ValksGodotTools/Template/wiki/2D-Top-Down)** - A dungeon scene with enemies, room transitions and working multiplayer.
 - **[Inventory](https://github.com/ValksGodotTools/Template/wiki/Inventory)** - A WIP re-creation of my old inventory system.
 - **[Draggable Nodes](https://github.com/ValksGodotTools/Template/wiki/Draggable-Nodes)** - Easily make any Node2D or Control draggable in-game.
+- **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates in your game.
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
 
 ## Setup
