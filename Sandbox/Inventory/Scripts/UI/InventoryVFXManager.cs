@@ -24,14 +24,14 @@ public class InventoryVFXManager
             }
         };
 
-        input.OnPrePickup += index =>
+        input.OnPrePickup += (invContainer, index) =>
         {
-            itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
+            itemFrame = invContainer.ItemContainers[index].GetCurrentSpriteFrame();
 
-            vfxContainer = context.VFX.AnimatePickup(context, index, itemFrame);
+            vfxContainer = context.VFX.AnimatePickup(invContainer, context, index, itemFrame);
         };
 
-        input.OnPostPickup += index =>
+        input.OnPostPickup += (invContainer, index) =>
         {
             // Ensure the count is correctly displayed
             vfxContainer.SetCount(context.CursorInventory.GetItem(0).Count);
@@ -42,7 +42,7 @@ public class InventoryVFXManager
             cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
             // Ensure cursorItemContainer's position is in the correct position
-            cursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
+            cursorItemContainer.Position = invContainer.ItemContainers[index].GlobalPosition;
         };
 
         input.OnPrePlace += index =>

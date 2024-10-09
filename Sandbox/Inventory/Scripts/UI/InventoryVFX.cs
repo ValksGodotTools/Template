@@ -63,12 +63,12 @@ public class InventoryVFX
         context.UI.AddChild(container);
     }
 
-    public AnimHelperItemContainer AnimatePickup(InventoryVFXContext context, int index, int itemFrame)
+    public AnimHelperItemContainer AnimatePickup(InventoryContainer invContainer, InventoryVFXContext context, int index, int itemFrame)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
-            .SetInitialPositionForControl(context.ItemContainers[index].GlobalPosition)
+            .SetInitialPositionForControl(invContainer.ItemContainers[index].GlobalPosition)
             .SetTargetAsMouse()
-            .SetItemAndFrame(context.Inventory.GetItem(index), itemFrame)
+            .SetItemAndFrame(invContainer.Inventory.GetItem(index), itemFrame)
             .Build();
 
         container.OnReachedTarget += context.CursorItemContainer.ShowSpriteAndCount;

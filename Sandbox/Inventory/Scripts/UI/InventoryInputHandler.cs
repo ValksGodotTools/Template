@@ -1,26 +1,28 @@
 ﻿using Godot;
 using GodotUtils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Template.Inventory;
 
 public class InventoryInputHandler(InventoryInputDetector input)
 {
     public event Action<int>
-        OnPrePickup,
         OnPrePlace,
         OnPreStack,
         OnPreSwap,
-        OnPostPickup,
         OnPostPlace,
         OnPostStack,
         OnPostSwap;
+
+    public event Action<InventoryContainer, int> OnPrePickup, OnPostPickup;
 
     public event Action<TransferEventArgs>
         OnPreTransfer,
         OnPostTransfer;
 
-    private Action<ClickType, Action, int> _onInput;
+    private Action<ClickType, InventoryAction, int> _onInput;
 
     public void RegisterInput(InventoryContainer container, InventoryVFXContext context)
     {
@@ -33,16 +35,19 @@ public class InventoryInputHandler(InventoryInputDetector input)
             {
                 switch (action)
                 {
-                    case Action.Pickup:
+                    case InventoryAction.Pickup:
                         context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
                         break;
-                    case Action.Place:
-                    case Action.Swap:
-                    case Action.Stack:
+                    case InventoryAction.Place:
+                    case InventoryAction.Swap:
+                    case InventoryAction.Stack:
                         cursorInventory.MoveItemTo(inventory, 0, index);
                         break;
-                    case Action.Transfer:
+                    case InventoryAction.Transfer:
                         LeftClickTransfer(container, context, index);
+                        break;
+                    case InventoryAction.DoubleClick:
+                        DoubleClickPickupAll(cursorInventory, inventory, container, index);
                         break;
                 }
             }
@@ -50,12 +55,12 @@ public class InventoryInputHandler(InventoryInputDetector input)
             {
                 switch (action)
                 {
-                    case Action.Pickup:
+                    case InventoryAction.Pickup:
                         RightClickPickup(context, index);
                         break;
-                    case Action.Place:
-                    case Action.Swap:
-                    case Action.Stack:
+                    case InventoryAction.Place:
+                    case InventoryAction.Swap:
+                    case InventoryAction.Stack:
                         cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
                         break;
                 }
@@ -63,17 +68,29 @@ public class InventoryInputHandler(InventoryInputDetector input)
         };
     }
 
-    public void HandleGuiInput(InputEvent @event, InventoryVFXContext context, int index)
+    public void HandleGuiInput(InventoryContainer container, InputEvent @event, InventoryVFXContext context, int index)
     {
         if (@event is InputEventMouseButton mouseButton)
         {
             if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
+            }
+
+            if (mouseButton.DoubleClick)
+            {
+                if (mouseButton.ButtonIndex == MouseButton.Left)
+                {
+                    _onInput?.Invoke(ClickType.Left, InventoryAction.DoubleClick, index);
+                }
+                else if (mouseButton.ButtonIndex == MouseButton.Right)
+                {
+                    _onInput?.Invoke(ClickType.Right, InventoryAction.DoubleClick, index);
+                }
             }
         }
     }
@@ -101,6 +118,36 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             vfxManager.AnimateDragPlace(context, index, mousePos);
             context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
+        }
+    }
+
+    private void DoubleClickPickupAll(Inventory cursorInventory, Inventory inventory, InventoryContainer container, int index)
+    {
+        Material? material = cursorInventory.GetItem(0)?.Material ?? inventory.GetItem(index)?.Material;
+
+        if (material != null)
+        {
+            foreach ((int i, ItemStack item) in inventory.GetItems())
+            {
+                if (item.Material.Equals(material))
+                {
+                    OnPrePickup?.Invoke(container, i);
+                    cursorInventory.TakeItemFrom(inventory, i, 0);
+                    OnPostPickup?.Invoke(container, i);
+                }
+            }
+
+            InventoryContainer otherInvContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
+
+            foreach ((int i, ItemStack item) in otherInvContainer.Inventory.GetItems())
+            {
+                if (item.Material.Equals(material))
+                {
+                    OnPrePickup?.Invoke(otherInvContainer, i);
+                    cursorInventory.TakeItemFrom(otherInvContainer.Inventory, i, 0);
+                    OnPostPickup?.Invoke(otherInvContainer, i);
+                }
+            }
         }
     }
 
@@ -149,7 +196,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void HandleClick(InputContext context)
+    private void HandleClick(InventoryContainer container, InputContext context)
     {
         if (context.CursorInventory.TryGetItem(0, out ItemStack cursorItem))
         {
@@ -157,7 +204,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
         else
         {
-            CursorHasNoItem(context);
+            CursorHasNoItem(container, context);
         }
     }
 
@@ -192,7 +239,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void CursorHasNoItem(InputContext context)
+    private void CursorHasNoItem(InventoryContainer container, InputContext context)
     {
         if (context.Inventory.HasItem(context.Index))
         {
@@ -202,20 +249,20 @@ public class InventoryInputHandler(InventoryInputDetector input)
             }
             else
             {
-                Pickup(context.ClickType, context.Index);
+                Pickup(container, context.ClickType, context.Index);
             }
         }
     }
 
     private void TransferToOtherInventory(ClickType clickType, int index)
     {
-        _onInput(clickType, Action.Transfer, index);
+        _onInput(clickType, InventoryAction.Transfer, index);
     }
 
     private void Stack(ClickType clickType, int index)
     {
         OnPreStack?.Invoke(index);
-        _onInput(clickType, Action.Stack, index);
+        _onInput(clickType, InventoryAction.Stack, index);
         OnPostStack?.Invoke(index);
     }
 
@@ -228,22 +275,22 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
 
         OnPreSwap?.Invoke(index);
-        _onInput(clickType, Action.Swap, index);
+        _onInput(clickType, InventoryAction.Swap, index);
         OnPostSwap?.Invoke(index);
     }
 
     private void Place(ClickType clickType, int index)
     {
         OnPrePlace?.Invoke(index);
-        _onInput(clickType, Action.Place, index);
+        _onInput(clickType, InventoryAction.Place, index);
         OnPostPlace?.Invoke(index);
     }
 
-    private void Pickup(ClickType clickType, int index)
+    private void Pickup(InventoryContainer container, ClickType clickType, int index)
     {
-        OnPrePickup?.Invoke(index);
-        _onInput(clickType, Action.Pickup, index);
-        OnPostPickup?.Invoke(index);
+        OnPrePickup?.Invoke(container, index);
+        _onInput(clickType, InventoryAction.Pickup, index);
+        OnPostPickup?.Invoke(container, index);
     }
 
     public enum ClickType
@@ -260,13 +307,14 @@ public class InventoryInputHandler(InventoryInputDetector input)
         public int Index { get; } = index;
     }
 
-    private enum Action
+    private enum InventoryAction
     {
         Pickup,
         Place,
         Stack,
         Swap,
-        Transfer
+        Transfer,
+        DoubleClick
     }
 }
 

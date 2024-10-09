@@ -51,7 +51,7 @@ public partial class InventoryContainer : PanelContainer
 
             itemContainer.GuiInput += @event =>
             {
-                inputHandler.HandleGuiInput(@event, vfxContext, index);
+                inputHandler.HandleGuiInput(this, @event, vfxContext, index);
             };
 
             itemContainer.MouseEntered += () =>

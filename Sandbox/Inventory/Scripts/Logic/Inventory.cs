@@ -35,9 +35,15 @@ public class Inventory
     /// <summary>
     /// Returns all non-empty <see cref="ItemStack"/>'s from this inventory.
     /// </summary>
-    public IEnumerable<ItemStack> GetItems()
+    public IEnumerable<(int, ItemStack)> GetItems()
     {
-        return _itemStacks.Where(item => item != null);
+        for (int i = 0; i < _itemStacks.Length; i++)
+        {
+            if (_itemStacks[i] != null)
+            {
+                yield return (i, _itemStacks[i]);
+            }
+        }
     }
 
     public void MoveItemTo(Inventory other, int fromIndex, int toIndex)
