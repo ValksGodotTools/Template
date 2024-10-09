@@ -208,6 +208,11 @@ public class Inventory
         return _itemStacks.Length == 0;
     }
 
+    public int GetItemCount()
+    {
+        return _itemStacks.Length;
+    }
+
     public override string ToString()
     {
         if (IsEmpty())

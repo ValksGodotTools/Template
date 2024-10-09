@@ -127,21 +127,40 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
         if (material != null)
         {
+            InventoryContainer otherInvContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
+            
+            Dictionary<InventoryContainer, List<(int, ItemStack)>> items = [];
+            items[container] = [];
+            items[otherInvContainer] = [];
+
             foreach ((int i, ItemStack item) in inventory.GetItems())
             {
                 if (item.Material.Equals(material))
+                {
+                    items[container].Add((i, item));
+                }
+            }
+
+            foreach ((int i, ItemStack item) in otherInvContainer.Inventory.GetItems())
+            {
+                if (item.Material.Equals(material))
+                {
+                    items[otherInvContainer].Add((i, item));
+                }
+            }
+
+            int sameItemCount = items[container].Count + items[otherInvContainer].Count;
+
+            if (sameItemCount > 1)
+            {
+                foreach ((int i, ItemStack item) in items[container])
                 {
                     OnPrePickup?.Invoke(container, i);
                     cursorInventory.TakeItemFrom(inventory, i, 0);
                     OnPostPickup?.Invoke(container, i);
                 }
-            }
 
-            InventoryContainer otherInvContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
-
-            foreach ((int i, ItemStack item) in otherInvContainer.Inventory.GetItems())
-            {
-                if (item.Material.Equals(material))
+                foreach ((int i, ItemStack item) in items[otherInvContainer])
                 {
                     OnPrePickup?.Invoke(otherInvContainer, i);
                     cursorInventory.TakeItemFrom(otherInvContainer.Inventory, i, 0);
