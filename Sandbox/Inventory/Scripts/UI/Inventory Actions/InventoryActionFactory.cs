@@ -18,3 +18,13 @@ public class InventoryActionFactory
         };
     }
 }
+
+public enum InventoryAction
+{
+    Pickup,
+    Place,
+    Stack,
+    Swap,
+    Transfer,
+    DoubleClick
+}
