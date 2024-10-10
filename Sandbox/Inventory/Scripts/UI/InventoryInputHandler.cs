@@ -155,6 +155,10 @@ public class InventoryInputHandler(InventoryInputDetector input)
             {
                 foreach ((int i, ItemStack item) in items[container])
                 {
+                    // Do not animate index under cursor
+                    if (i == index)
+                        continue;
+
                     OnPrePickup?.Invoke(container, i);
                     cursorInventory.TakeItemFrom(inventory, i, 0);
                     OnPostPickup?.Invoke(container, i);
