@@ -72,15 +72,6 @@ public class InventoryInputHandler(InventoryInputDetector input)
     {
         if (@event is InputEventMouseButton mouseButton)
         {
-            if (mouseButton.IsLeftClickJustPressed())
-            {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
-            }
-            else if (mouseButton.IsRightClickJustPressed())
-            {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
-            }
-
             if (mouseButton.DoubleClick)
             {
                 if (mouseButton.ButtonIndex == MouseButton.Left)
@@ -91,6 +82,14 @@ public class InventoryInputHandler(InventoryInputDetector input)
                 {
                     _onInput?.Invoke(ClickType.Right, InventoryAction.DoubleClick, index);
                 }
+            }
+            else if (mouseButton.IsLeftClickJustPressed())
+            {
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
+            }
+            else if (mouseButton.IsRightClickJustPressed())
+            {
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
             }
         }
     }
