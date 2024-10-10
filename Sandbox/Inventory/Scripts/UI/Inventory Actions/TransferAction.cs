@@ -27,8 +27,9 @@ public class TransferAction : InventoryActionBase
         ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
 
         InventoryActionEventArgs args = new(InventoryAction.Transfer);
-        args.TargetItemContainer = targetItemContainer;
+        args.TargetInventoryContainer = otherInventoryContainer;
         args.FromIndex = Index;
+        args.ToIndex = otherIndex;
         args.AreSameType = areSameType;
 
         InvokeOnPreAction(args);

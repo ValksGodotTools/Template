@@ -15,9 +15,9 @@ public class InventoryVFXManager
         {
             if (args.Action == InventoryAction.Pickup)
             {
-                itemFrame = container.ItemContainers[args.FromIndex].GetCurrentSpriteFrame();
+                itemFrame = args.TargetInventoryContainer.ItemContainers[args.FromIndex].GetCurrentSpriteFrame();
 
-                vfxContainer = context.VFX.AnimatePickup(container, context, args.FromIndex, itemFrame);
+                vfxContainer = context.VFX.AnimatePickup(args.TargetInventoryContainer, context, args.FromIndex, itemFrame);
             }
             else if (args.Action == InventoryAction.Place)
             {
@@ -38,7 +38,7 @@ public class InventoryVFXManager
             }
             else if (args.Action == InventoryAction.Transfer)
             {
-                context.VFX.AnimateTransfer(context, args.TargetItemContainer, args.FromIndex);
+                context.VFX.AnimateTransfer(context, args.TargetInventoryContainer.ItemContainers[args.ToIndex], args.FromIndex);
             }
         };
 
@@ -55,7 +55,7 @@ public class InventoryVFXManager
                 cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
                 // Ensure cursorItemContainer's position is in the correct position
-                cursorItemContainer.Position = container.ItemContainers[args.FromIndex].GlobalPosition;
+                cursorItemContainer.Position = args.TargetInventoryContainer.ItemContainers[args.FromIndex].GlobalPosition;
             }
             else if (args.Action == InventoryAction.Place)
             {
@@ -84,7 +84,7 @@ public class InventoryVFXManager
             {
                 if (!args.AreSameType)
                 {
-                    args.TargetItemContainer.HideSpriteAndCount();
+                    args.TargetInventoryContainer.ItemContainers[args.ToIndex].HideSpriteAndCount();
                 }
             }
         };

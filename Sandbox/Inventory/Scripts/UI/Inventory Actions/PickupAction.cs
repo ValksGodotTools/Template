@@ -8,6 +8,7 @@ public class PickupAction : InventoryActionBase
     {
         InventoryActionEventArgs args = new(InventoryAction.Pickup);
         args.FromIndex = Index;
+        args.TargetInventoryContainer = Context.InventoryContainer;
 
         InvokeOnPreAction(args);
 

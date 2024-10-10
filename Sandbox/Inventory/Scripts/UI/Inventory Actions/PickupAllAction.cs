@@ -52,16 +52,24 @@ public class PickupAllAction : InventoryActionBase
                 if (i == Index)
                     continue;
 
-                //OnPrePickup?.Invoke(container, i);
+                InventoryActionEventArgs args = new(InventoryAction.Pickup);
+                args.FromIndex = i;
+                args.TargetInventoryContainer = container;
+
+                InvokeOnPreAction(args);
                 cursorInventory.TakeItemFrom(inventory, i, 0);
-                //OnPostPickup?.Invoke(container, i);
+                InvokeOnPostAction(args);
             }
 
             foreach ((int i, ItemStack item) in items[otherInvContainer])
             {
-                //OnPrePickup?.Invoke(otherInvContainer, i);
+                InventoryActionEventArgs args = new(InventoryAction.Pickup);
+                args.FromIndex = i;
+                args.TargetInventoryContainer = otherInvContainer;
+
+                InvokeOnPreAction(args);
                 cursorInventory.TakeItemFrom(otherInvContainer.Inventory, i, 0);
-                //OnPostPickup?.Invoke(otherInvContainer, i);
+                InvokeOnPostAction(args);
             }
         }
     }
