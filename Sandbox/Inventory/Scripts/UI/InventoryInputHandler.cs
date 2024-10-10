@@ -265,7 +265,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
     {
         if (context.Inventory.HasItem(context.Index))
         {
-            if (input.HoldingShift)
+            if (input.HoldingShift && context.MouseButton == MouseButton.Left)
             {
                 TransferToOtherInventory(context.MouseButton, context.Index);
             }
