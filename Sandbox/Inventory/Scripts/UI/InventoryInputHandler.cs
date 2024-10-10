@@ -101,7 +101,7 @@ public class InventoryInputHandler
             {
                 if (_context.InputDetector.HoldingShift)
                 {
-                    //TransferAction.Transfer(_context, index);
+                    _onInput?.Invoke(MouseButton.Left, InventoryAction.Transfer, index);
                 }
                 else
                 {
