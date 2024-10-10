@@ -2,8 +2,10 @@
 
 namespace Template.Inventory;
 
-public class InventoryVFXContext(CanvasLayer ui, ItemContainer[] itemContainers, Inventory inventory)
+public class InventoryContext(InventoryContainer inventoryContainer, InventoryInputDetector inputDetector, CanvasLayer ui, ItemContainer[] itemContainers, Inventory inventory)
 {
+    public InventoryContainer InventoryContainer { get; } = inventoryContainer;
+    public InventoryInputDetector InputDetector { get; } = inputDetector;
     public CanvasLayer UI { get; } = ui;
     public InventoryVFX VFX { get; } = new();
     public ItemContainer[] ItemContainers { get; } = itemContainers;

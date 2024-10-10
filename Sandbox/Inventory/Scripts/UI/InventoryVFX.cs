@@ -7,7 +7,7 @@ public class InventoryVFX
 {
     private List<Node> _swapAnimContainers = [];
 
-    public void AnimateTransfer(InventoryVFXContext context, TransferEventArgs args)
+    public void AnimateTransfer(InventoryContext context, TransferEventArgs args)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForControl(context.ItemContainers[args.FromIndex].GlobalPosition)
@@ -21,7 +21,7 @@ public class InventoryVFX
         container.OnReachedTarget += args.TargetItemContainer.ShowSpriteAndCount;
     }
 
-    public void AnimateDragPickup(InventoryVFXContext context, int index)
+    public void AnimateDragPickup(InventoryContext context, int index)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForControl(context.ItemContainers[index].GlobalPosition)
@@ -41,7 +41,7 @@ public class InventoryVFX
         container.OnReachedTarget += context.CursorItemContainer.ShowSpriteAndCount;
     }
 
-    public void AnimateDragPlace(InventoryVFXContext context, int index, Vector2 mousePos)
+    public void AnimateDragPlace(InventoryContext context, int index, Vector2 mousePos)
     {
         ItemContainer[] itemContainers = context.ItemContainers;
 
@@ -63,7 +63,7 @@ public class InventoryVFX
         context.UI.AddChild(container);
     }
 
-    public AnimHelperItemContainer AnimatePickup(InventoryContainer invContainer, InventoryVFXContext context, int index, int itemFrame)
+    public AnimHelperItemContainer AnimatePickup(InventoryContainer invContainer, InventoryContext context, int index, int itemFrame)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForControl(invContainer.ItemContainers[index].GlobalPosition)
@@ -78,7 +78,7 @@ public class InventoryVFX
         return container;
     }
 
-    public AnimHelperItemContainer AnimatePlace(InventoryVFXContext context, int index, int itemFrame, Vector2 mousePos)
+    public AnimHelperItemContainer AnimatePlace(InventoryContext context, int index, int itemFrame, Vector2 mousePos)
     {
         AnimHelperItemContainer container = new AnimHelperItemContainer.Builder(AnimHelperItemContainer.Instantiate())
             .SetInitialPositionForNode2D(mousePos)
@@ -96,7 +96,7 @@ public class InventoryVFX
         return container;
     }
 
-    public void AnimateSwap(InventoryVFXContext context, int index, int itemFrame, Vector2 mousePos)
+    public void AnimateSwap(InventoryContext context, int index, int itemFrame, Vector2 mousePos)
     {
         foreach (Node node in _swapAnimContainers)
         {

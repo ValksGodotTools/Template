@@ -4,7 +4,7 @@ namespace Template.Inventory;
 
 public class InventoryVFXManager
 {
-    public void RegisterEvents(InventoryInputHandler input, InventoryVFXContext context, InventoryContainer container)
+    public void RegisterEvents(InventoryInputHandler input, InventoryContext context, InventoryContainer container)
     {
         AnimHelperItemContainer vfxContainer = null;
 
@@ -92,7 +92,7 @@ public class InventoryVFXManager
         };
     }
 
-    public void AnimateDragPickup(InventoryVFXContext context, int index)
+    public void AnimateDragPickup(InventoryContext context, int index)
     {
         Inventory cursorInventory = context.CursorInventory;
         Inventory inventory = context.Inventory;
@@ -107,7 +107,7 @@ public class InventoryVFXManager
         }
     }
 
-    public void AnimateDragPlace(InventoryVFXContext context, int index, Vector2 mousePos)
+    public void AnimateDragPlace(InventoryContext context, int index, Vector2 mousePos)
     {
         Inventory cursorInventory = context.CursorInventory;
         Inventory inventory = context.Inventory;
