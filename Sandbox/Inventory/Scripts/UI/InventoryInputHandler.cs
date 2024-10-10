@@ -39,29 +39,13 @@ public class InventoryInputHandler
         _invContainerPlayer = sandbox.GetPlayerInventory();
         _invPlayer = _invContainerPlayer.Inventory;
 
-        StringName[] hotbarActions = 
-        [
-            InputActions.Hotbar1,
-            InputActions.Hotbar2,
-            InputActions.Hotbar3,
-            InputActions.Hotbar4,
-            InputActions.Hotbar5,
-            InputActions.Hotbar6,
-            InputActions.Hotbar7,
-            InputActions.Hotbar8,
-            InputActions.Hotbar9,
-            InputActions.Hotbar10,
-            InputActions.Hotbar11,
-            InputActions.Hotbar12
-        ];
-
         for (int i = 0; i < columns; i++)
         {
             int index = i; // capture i
 
             _hotbarInputs += () =>
             {
-                if (Input.IsActionJustPressed(hotbarActions[index]))
+                if (Input.IsActionJustPressed("hotbar_" + (index + 1)))
                 {
                     int hotbarSlot = _invContainerPlayer.GetHotbarSlot(index);
                     _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Item1, hotbarSlot, _itemUnderCursor.Item2.Count);
