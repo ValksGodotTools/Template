@@ -2,11 +2,10 @@
 using GodotUtils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Template.Inventory;
 
-public class InventoryInputHandler(InventoryInputDetector input)
+public class InventoryInputHandler
 {
     public event Action<int>
         OnPrePlace,
@@ -24,10 +23,65 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
     private Action<MouseButton, InventoryAction, int> _onInput;
 
-    public void RegisterInput(InventoryContainer container, InventoryVFXContext context)
+    private InventoryInputDetector _input;
+    private InventoryContainer _invContainerPlayer;
+    private Inventory _invPlayer;
+    private InventoryVFXContext _context;
+    private (int, ItemStack) _itemUnderCursor;
+    private Action _hotbarInputs;
+
+    public InventoryInputHandler(int columns, InventoryInputDetector input, InventoryVFXContext context)
     {
-        Inventory inventory = context.Inventory;
-        Inventory cursorInventory = context.CursorInventory;
+        InventorySandbox sandbox = Services.Get<InventorySandbox>();
+
+        _input = input;
+        _context = context;
+        _invContainerPlayer = sandbox.GetPlayerInventory();
+        _invPlayer = _invContainerPlayer.Inventory;
+
+        StringName[] hotbarActions = 
+        [
+            InputActions.Hotbar1,
+            InputActions.Hotbar2,
+            InputActions.Hotbar3,
+            InputActions.Hotbar4,
+            InputActions.Hotbar5,
+            InputActions.Hotbar6,
+            InputActions.Hotbar7,
+            InputActions.Hotbar8,
+            InputActions.Hotbar9,
+            InputActions.Hotbar10,
+            InputActions.Hotbar11,
+            InputActions.Hotbar12
+        ];
+
+        for (int i = 0; i < columns; i++)
+        {
+            int index = i; // capture i
+
+            _hotbarInputs += () =>
+            {
+                if (Input.IsActionJustPressed(hotbarActions[index]))
+                {
+                    int hotbarSlot = _invContainerPlayer.GetHotbarSlot(index);
+                    _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Item1, hotbarSlot, _itemUnderCursor.Item2.Count);
+                }
+            };
+        }
+    }
+
+    public void Update()
+    {
+        if (_itemUnderCursor.Item2 != null)
+        {
+            _hotbarInputs();
+        }
+    }
+
+    public void RegisterInput(InventoryContainer container)
+    {
+        Inventory inventory = _context.Inventory;
+        Inventory cursorInventory = _context.CursorInventory;
 
         _onInput += (mouseBtn, action, index) =>
         {
@@ -36,7 +90,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                 switch (action)
                 {
                     case InventoryAction.Pickup:
-                        context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
+                        _context.CursorInventory.TakeItemFrom(_context.Inventory, index, 0);
                         break;
                     case InventoryAction.Place:
                     case InventoryAction.Swap:
@@ -44,7 +98,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                         cursorInventory.MoveItemTo(inventory, 0, index);
                         break;
                     case InventoryAction.Transfer:
-                        LeftClickTransfer(container, context, index);
+                        LeftClickTransfer(container, index);
                         break;
                     case InventoryAction.DoubleClick:
                         DoubleClickPickupAll(cursorInventory, inventory, container, index);
@@ -56,7 +110,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                 switch (action)
                 {
                     case InventoryAction.Pickup:
-                        RightClickPickup(context, index);
+                        RightClickPickup(index);
                         break;
                     case InventoryAction.Place:
                     case InventoryAction.Swap:
@@ -68,7 +122,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         };
     }
 
-    public void HandleGuiInput(InventoryContainer container, InputEvent @event, InventoryVFXContext context, int index)
+    public void HandleGuiInput(InventoryContainer container, InputEvent @event, int index)
     {
         if (@event is InputEventMouseButton mouseButton)
         {
@@ -85,39 +139,45 @@ public class InventoryInputHandler(InventoryInputDetector input)
             }
             else if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, MouseButton.Left, index));
+                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, MouseButton.Right, index));
+                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Right, index));
             }
         }
     }
 
-    public void HandleMouseEntered(InventoryContainer container, InventoryVFXContext context, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
+    public void HandleMouseEntered(InventoryContainer container, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
-        if (input.HoldingLeftClick)
-        {
-            ItemStack item = context.Inventory.GetItem(index);
+        _itemUnderCursor = (index, _context.Inventory.GetItem(index));
 
-            if (item != null)
+        if (_input.HoldingLeftClick)
+        {
+            if (_itemUnderCursor.Item2 != null)
             {
-                if (input.HoldingShift)
+                if (_input.HoldingShift)
                 {
-                    LeftClickTransfer(container, context, index);
+                    LeftClickTransfer(container, index);
                 }
                 else
                 {
-                    vfxManager.AnimateDragPickup(context, index);
-                    context.CursorInventory.TakePartOfItemFrom(context.Inventory, index, 0, item.Count);
+                    vfxManager.AnimateDragPickup(_context, index);
+                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, _itemUnderCursor.Item2.Count);
                 }
             }
         }
-        else if (input.HoldingRightClick)
+        else if (_input.HoldingRightClick)
         {
-            vfxManager.AnimateDragPlace(context, index, mousePos);
-            context.CursorInventory.MovePartOfItemTo(context.Inventory, 0, index, 1);
+            vfxManager.AnimateDragPlace(_context, index, mousePos);
+            _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, index, 1);
         }
+    }
+
+    public void HandleMouseExited()
+    {
+        _itemUnderCursor.Item1 = -1;
+        _itemUnderCursor.Item2 = null;
     }
 
     private void DoubleClickPickupAll(Inventory cursorInventory, Inventory inventory, InventoryContainer container, int index)
@@ -173,22 +233,22 @@ public class InventoryInputHandler(InventoryInputDetector input)
         }
     }
 
-    private void LeftClickTransfer(InventoryContainer container, InventoryVFXContext context, int index)
+    private void LeftClickTransfer(InventoryContainer container, int index)
     {
         InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
         Inventory otherInventory = otherInventoryContainer.Inventory;
 
-        if (otherInventory.TryFindFirstSameType(context.Inventory.GetItem(index).Material, out int stackIndex))
+        if (otherInventory.TryFindFirstSameType(_context.Inventory.GetItem(index).Material, out int stackIndex))
         {
-            Transfer(true, otherInventoryContainer, otherInventory, context, index, stackIndex);
+            Transfer(true, otherInventoryContainer, otherInventory, index, stackIndex);
         }
         else if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
         {
-            Transfer(false, otherInventoryContainer, otherInventory, context, index, otherIndex);
+            Transfer(false, otherInventoryContainer, otherInventory, index, otherIndex);
         }
     }
 
-    private void Transfer(bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, InventoryVFXContext context, int index, int otherIndex)
+    private void Transfer(bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, int index, int otherIndex)
     {
         ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
 
@@ -196,19 +256,19 @@ public class InventoryInputHandler(InventoryInputDetector input)
 
         OnPreTransfer?.Invoke(args);
 
-        context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
+        _context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
 
         OnPostTransfer?.Invoke(args);
     }
 
-    private void RightClickPickup(InventoryVFXContext context, int index)
+    private void RightClickPickup(int index)
     {
-        Inventory cursorInventory = context.CursorInventory;
-        Inventory inventory = context.Inventory;
+        Inventory cursorInventory = _context.CursorInventory;
+        Inventory inventory = _context.Inventory;
 
         int halfItemCount = inventory.GetItem(index).Count / 2;
 
-        if (input.HoldingShift && halfItemCount != 0)
+        if (_input.HoldingShift && halfItemCount != 0)
         {
             cursorInventory.TakePartOfItemFrom(inventory, index, 0, halfItemCount);
         }
@@ -265,7 +325,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
     {
         if (context.Inventory.HasItem(context.Index))
         {
-            if (input.HoldingShift && context.MouseButton == MouseButton.Left)
+            if (_input.HoldingShift && context.MouseButton == MouseButton.Left)
             {
                 TransferToOtherInventory(context.MouseButton, context.Index);
             }

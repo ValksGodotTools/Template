@@ -9,13 +9,16 @@ public partial class InventoryContainer : PanelContainer
     public ItemContainer[] ItemContainers { get; private set; }
 
     private InventoryInputDetector _inputDetector = new();
+    private InventoryInputHandler _inputHandler;
     private CanvasLayer _ui;
+    private int _columns;
 
     [OnInstantiate]
     private void Init(Inventory inventory, int columns = 10)
     {
         GridContainer.Columns = columns;
         Inventory = inventory;
+        _columns = columns;
     }
 
     public override void _Ready()
@@ -25,9 +28,22 @@ public partial class InventoryContainer : PanelContainer
         AddItemContainers(Inventory);
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        _inputHandler.Update();
+    }
+
     public override void _Input(InputEvent @event)
     {
         _inputDetector.Update(@event);
+    }
+
+    public int GetHotbarSlot(int index)
+    {
+        int totalSlotCount = Inventory.GetSlotCount();
+        int hotbarIndex = totalSlotCount - _columns + index;
+
+        return hotbarIndex;
     }
 
     private void AddItemContainers(Inventory inventory)
@@ -36,10 +52,10 @@ public partial class InventoryContainer : PanelContainer
 
         InventoryVFXContext vfxContext = new(_ui, ItemContainers, inventory);
         InventoryVFXManager vfxManager = new();
-        InventoryInputHandler inputHandler = new(_inputDetector);
+        _inputHandler = new(_columns, _inputDetector, vfxContext);
 
-        vfxManager.RegisterEvents(inputHandler, vfxContext, this);
-        inputHandler.RegisterInput(this, vfxContext);
+        vfxManager.RegisterEvents(_inputHandler, vfxContext, this);
+        _inputHandler.RegisterInput(this);
 
         for (int i = 0; i < ItemContainers.Length; i++)
         {
@@ -51,12 +67,17 @@ public partial class InventoryContainer : PanelContainer
 
             itemContainer.GuiInput += @event =>
             {
-                inputHandler.HandleGuiInput(this, @event, vfxContext, index);
+                _inputHandler.HandleGuiInput(this, @event, index);
             };
 
             itemContainer.MouseEntered += () =>
             {
-                inputHandler.HandleMouseEntered(this, vfxContext, vfxManager, index, GetGlobalMousePosition());
+                _inputHandler.HandleMouseEntered(this, vfxManager, index, GetGlobalMousePosition());
+            };
+
+            itemContainer.MouseExited += () =>
+            {
+                _inputHandler.HandleMouseExited();
             };
         }
 

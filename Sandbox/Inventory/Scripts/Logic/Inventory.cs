@@ -208,7 +208,7 @@ public class Inventory
         return _itemStacks.Length == 0;
     }
 
-    public int GetItemCount()
+    public int GetSlotCount()
     {
         return _itemStacks.Length;
     }

@@ -37,6 +37,11 @@ public partial class InventorySandbox : Node
         return inventory == _invContainerPlayer ? _invContainerChest : _invContainerPlayer;
     }
 
+    public InventoryContainer GetPlayerInventory()
+    {
+        return _invContainerPlayer;
+    }
+
     private void AddPlayerInv()
     {
         Inventory inv = new(40);
