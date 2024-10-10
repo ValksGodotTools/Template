@@ -2,17 +2,24 @@
 
 namespace Template.Inventory;
 
-public class SwapAction : IInventoryAction
+public class SwapAction : InventoryActionBase
 {
-    public void Execute(InventoryContext context, MouseButton mouseBtn, int index)
+    public override void Execute()
     {
-        if (mouseBtn == MouseButton.Left)
+        InventoryActionEventArgs args = new(InventoryAction.Swap);
+        args.FromIndex = Index;
+
+        InvokeOnPreAction(args);
+
+        if (MouseButton == MouseButton.Left)
         {
-            context.CursorInventory.MoveItemTo(context.Inventory, 0, index);
+            Context.CursorInventory.MoveItemTo(Context.Inventory, 0, Index);
         }
-        else if (mouseBtn == MouseButton.Right)
+        else if (MouseButton == MouseButton.Right)
         {
             // Right click swap disabled because inteferes with right click drag
         }
+
+        InvokeOnPostAction(args);
     }
 }

@@ -11,84 +11,82 @@ public class InventoryVFXManager
         int itemFrame = 0;
         int cursorFrame = 0;
 
-        input.OnPreTransfer += args =>
+        input.OnPreInventoryAction += args =>
         {
-            context.VFX.AnimateTransfer(context, args);
-        };
-
-        input.OnPostTransfer += args =>
-        {
-            if (!args.AreSameType)
+            if (args.Action == InventoryAction.Pickup)
             {
-                args.TargetItemContainer.HideSpriteAndCount();
+                itemFrame = container.ItemContainers[args.FromIndex].GetCurrentSpriteFrame();
+
+                vfxContainer = context.VFX.AnimatePickup(container, context, args.FromIndex, itemFrame);
+            }
+            else if (args.Action == InventoryAction.Place)
+            {
+                itemFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
+
+                vfxContainer = context.VFX.AnimatePlace(context, args.FromIndex, itemFrame, container.GetGlobalMousePosition());
+            }
+            else if (args.Action == InventoryAction.Stack)
+            {
+                itemFrame = context.ItemContainers[args.FromIndex].GetCurrentSpriteFrame();
+            }
+            else if (args.Action == InventoryAction.Swap)
+            {
+                itemFrame = context.ItemContainers[args.FromIndex].GetCurrentSpriteFrame();
+                cursorFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
+
+                context.VFX.AnimateSwap(context, args.FromIndex, itemFrame, container.GetGlobalMousePosition());
+            }
+            else if (args.Action == InventoryAction.Transfer)
+            {
+                context.VFX.AnimateTransfer(context, args.TargetItemContainer, args.FromIndex);
             }
         };
 
-        input.OnPrePickup += (invContainer, index) =>
+        input.OnPostInventoryAction += args =>
         {
-            itemFrame = invContainer.ItemContainers[index].GetCurrentSpriteFrame();
+            if (args.Action == InventoryAction.Pickup)
+            {
+                // Ensure the count is correctly displayed
+                vfxContainer.SetCount(context.CursorInventory.GetItem(0).Count);
 
-            vfxContainer = context.VFX.AnimatePickup(invContainer, context, index, itemFrame);
-        };
+                CursorItemContainer cursorItemContainer = context.CursorItemContainer;
 
-        input.OnPostPickup += (invContainer, index) =>
-        {
-            // Ensure the count is correctly displayed
-            vfxContainer.SetCount(context.CursorInventory.GetItem(0).Count);
+                cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
+                cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
-            CursorItemContainer cursorItemContainer = context.CursorItemContainer;
+                // Ensure cursorItemContainer's position is in the correct position
+                cursorItemContainer.Position = container.ItemContainers[args.FromIndex].GlobalPosition;
+            }
+            else if (args.Action == InventoryAction.Place)
+            {
+                // Ensure the count is correctly displayed
+                vfxContainer.SetCount(context.Inventory.GetItem(args.FromIndex).Count);
 
-            cursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
-            cursorItemContainer.SetCurrentSpriteFrame(itemFrame);
+                context.ItemContainers[args.FromIndex].HideSpriteAndCount(); // Needed for visual effects to work
+                context.ItemContainers[args.FromIndex].SetCurrentSpriteFrame(itemFrame);
+            }
+            else if (args.Action == InventoryAction.Stack)
+            {
+                context.ItemContainers[args.FromIndex].SetCurrentSpriteFrame(itemFrame);
+            }
+            else if (args.Action == InventoryAction.Swap)
+            {
+                context.ItemContainers[args.FromIndex].HideSpriteAndCount(); // Needed for visual effects to work
+                context.CursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
 
-            // Ensure cursorItemContainer's position is in the correct position
-            cursorItemContainer.Position = invContainer.ItemContainers[index].GlobalPosition;
-        };
+                context.ItemContainers[args.FromIndex].SetCurrentSpriteFrame(cursorFrame);
+                context.CursorItemContainer.SetCurrentSpriteFrame(itemFrame);
 
-        input.OnPrePlace += index =>
-        {
-            itemFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
-
-            vfxContainer = context.VFX.AnimatePlace(context, index, itemFrame, container.GetGlobalMousePosition());
-        };
-
-        input.OnPostPlace += index =>
-        {
-            // Ensure the count is correctly displayed
-            vfxContainer.SetCount(context.Inventory.GetItem(index).Count);
-
-            context.ItemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
-            context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
-        };
-
-        input.OnPreSwap += index =>
-        {
-            itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
-            cursorFrame = context.CursorItemContainer.GetCurrentSpriteFrame();
-
-            context.VFX.AnimateSwap(context, index, itemFrame, container.GetGlobalMousePosition());
-        };
-
-        input.OnPostSwap += index =>
-        {
-            context.ItemContainers[index].HideSpriteAndCount(); // Needed for visual effects to work
-            context.CursorItemContainer.HideSpriteAndCount(); // Needed for visual effects to work
-
-            context.ItemContainers[index].SetCurrentSpriteFrame(cursorFrame);
-            context.CursorItemContainer.SetCurrentSpriteFrame(itemFrame);
-
-            // Ensure cursorItemContainer's position is in the correct position
-            context.CursorItemContainer.Position = context.ItemContainers[index].GlobalPosition;
-        };
-
-        input.OnPreStack += index =>
-        {
-            itemFrame = context.ItemContainers[index].GetCurrentSpriteFrame();
-        };
-
-        input.OnPostStack += index =>
-        {
-            context.ItemContainers[index].SetCurrentSpriteFrame(itemFrame);
+                // Ensure cursorItemContainer's position is in the correct position
+                context.CursorItemContainer.Position = context.ItemContainers[args.FromIndex].GlobalPosition;
+            }
+            else if (args.Action == InventoryAction.Transfer)
+            {
+                if (!args.AreSameType)
+                {
+                    args.TargetItemContainer.HideSpriteAndCount();
+                }
+            }
         };
     }
 

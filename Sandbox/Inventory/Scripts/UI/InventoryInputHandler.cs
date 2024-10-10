@@ -6,19 +6,7 @@ namespace Template.Inventory;
 
 public class InventoryInputHandler
 {
-    public event Action<int>
-        OnPrePlace,
-        OnPreStack,
-        OnPreSwap,
-        OnPostPlace,
-        OnPostStack,
-        OnPostSwap;
-
-    public event Action<InventoryContainer, int> OnPrePickup, OnPostPickup;
-
-    public event Action<TransferEventArgs>
-        OnPreTransfer,
-        OnPostTransfer;
+    public event Action<InventoryActionEventArgs> OnPreInventoryAction, OnPostInventoryAction;
 
     private Action<MouseButton, InventoryAction, int> _onInput;
     private Action _hotbarInputs;
@@ -69,8 +57,11 @@ public class InventoryInputHandler
 
         _onInput += (mouseBtn, action, index) =>
         {
-            IInventoryAction inventoryAction = _actionFactory.GetAction(action);
-            inventoryAction.Execute(_context, mouseBtn, index);
+            InventoryActionEventArgs args = new(action);
+
+            InventoryActionBase invAction = _actionFactory.GetAction(action);
+            invAction.Initialize(_context, mouseBtn, index, OnPreInventoryAction, OnPostInventoryAction);
+            invAction.Execute();
         };
     }
 
@@ -110,7 +101,7 @@ public class InventoryInputHandler
             {
                 if (_context.InputDetector.HoldingShift)
                 {
-                    TransferAction.Transfer(_context, index);
+                    //TransferAction.Transfer(_context, index);
                 }
                 else
                 {

@@ -2,31 +2,38 @@
 
 namespace Template.Inventory;
 
-public class PickupAction : IInventoryAction
+public class PickupAction : InventoryActionBase
 {
-    public void Execute(InventoryContext context, MouseButton mouseBtn, int index)
+    public override void Execute()
     {
-        if (mouseBtn == MouseButton.Left)
+        InventoryActionEventArgs args = new(InventoryAction.Pickup);
+        args.FromIndex = Index;
+
+        InvokeOnPreAction(args);
+
+        if (MouseButton == MouseButton.Left)
         {
             // Left click pickup logic
-            context.CursorInventory.TakeItemFrom(context.Inventory, index, 0);
+            Context.CursorInventory.TakeItemFrom(Context.Inventory, Index, 0);
         }
-        else if (mouseBtn == MouseButton.Right)
+        else if (MouseButton == MouseButton.Right)
         {
             // Right click pickup (half stack or one item)
-            Inventory cursorInventory = context.CursorInventory;
-            Inventory inventory = context.Inventory;
+            Inventory cursorInventory = Context.CursorInventory;
+            Inventory inventory = Context.Inventory;
 
-            int halfItemCount = inventory.GetItem(index).Count / 2;
+            int halfItemCount = inventory.GetItem(Index).Count / 2;
 
-            if (context.InputDetector.HoldingShift && halfItemCount != 0)
+            if (Context.InputDetector.HoldingShift && halfItemCount != 0)
             {
-                cursorInventory.TakePartOfItemFrom(inventory, index, 0, halfItemCount);
+                cursorInventory.TakePartOfItemFrom(inventory, Index, 0, halfItemCount);
             }
             else
             {
-                cursorInventory.TakePartOfItemFrom(inventory, index, 0, 1);
+                cursorInventory.TakePartOfItemFrom(inventory, Index, 0, 1);
             }
         }
+
+        InvokeOnPostAction(args);
     }
 }

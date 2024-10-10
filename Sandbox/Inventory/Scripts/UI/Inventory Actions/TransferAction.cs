@@ -2,41 +2,39 @@
 
 namespace Template.Inventory;
 
-public class TransferAction : IInventoryAction
+public class TransferAction : InventoryActionBase
 {
-    public void Execute(InventoryContext context, MouseButton mouseBtn, int index)
+    public override void Execute()
     {
-        if (mouseBtn == MouseButton.Left)
+        if (MouseButton == MouseButton.Left)
         {
-            Transfer(context, index);
+            InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(Context.InventoryContainer);
+            Inventory otherInventory = otherInventoryContainer.Inventory;
+
+            if (otherInventory.TryFindFirstSameType(Context.Inventory.GetItem(Index).Material, out int stackIndex))
+            {
+                Transfer(true, otherInventoryContainer, otherInventory, stackIndex);
+            }
+            else if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
+            {
+                Transfer(false, otherInventoryContainer, otherInventory, otherIndex);
+            }
         }
     }
 
-    public static void Transfer(InventoryContext context, int index)
-    {
-        InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(context.InventoryContainer);
-        Inventory otherInventory = otherInventoryContainer.Inventory;
-
-        if (otherInventory.TryFindFirstSameType(context.Inventory.GetItem(index).Material, out int stackIndex))
-        {
-            Transfer(context, true, otherInventoryContainer, otherInventory, index, stackIndex);
-        }
-        else if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
-        {
-            Transfer(context, false, otherInventoryContainer, otherInventory, index, otherIndex);
-        }
-    }
-
-    private static void Transfer(InventoryContext context, bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, int index, int otherIndex)
+    private void Transfer(bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, int otherIndex)
     {
         ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
 
-        TransferEventArgs args = new(areSameType, index, targetItemContainer);
+        InventoryActionEventArgs args = new(InventoryAction.Transfer);
+        args.TargetItemContainer = targetItemContainer;
+        args.FromIndex = Index;
+        args.AreSameType = areSameType;
 
-        //OnPreTransfer?.Invoke(args);
+        InvokeOnPreAction(args);
 
-        context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
+        Context.Inventory.MoveItemTo(otherInventory, Index, otherIndex);
 
-        //OnPostTransfer?.Invoke(args);
+        InvokeOnPostAction(args);
     }
 }
