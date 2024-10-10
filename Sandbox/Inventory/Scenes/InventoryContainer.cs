@@ -50,11 +50,11 @@ public partial class InventoryContainer : PanelContainer
     {
         ItemContainers = new ItemContainer[inventory.GetItemSlotCount()];
 
-        InventoryVFXContext vfxContext = new(_ui, ItemContainers, inventory);
+        InventoryContext invContext = new(this, _inputDetector, _ui, ItemContainers, inventory);
         InventoryVFXManager vfxManager = new();
-        _inputHandler = new(_columns, _inputDetector, vfxContext);
+        _inputHandler = new(_columns, invContext);
 
-        vfxManager.RegisterEvents(_inputHandler, vfxContext, this);
+        vfxManager.RegisterEvents(_inputHandler, invContext, this);
         _inputHandler.RegisterInput(this);
 
         for (int i = 0; i < ItemContainers.Length; i++)
