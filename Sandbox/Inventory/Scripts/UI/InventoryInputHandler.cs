@@ -22,16 +22,16 @@ public class InventoryInputHandler(InventoryInputDetector input)
         OnPreTransfer,
         OnPostTransfer;
 
-    private Action<ClickType, InventoryAction, int> _onInput;
+    private Action<MouseButton, InventoryAction, int> _onInput;
 
     public void RegisterInput(InventoryContainer container, InventoryVFXContext context)
     {
         Inventory inventory = context.Inventory;
         Inventory cursorInventory = context.CursorInventory;
 
-        _onInput += (clickType, action, index) =>
+        _onInput += (mouseBtn, action, index) =>
         {
-            if (clickType == ClickType.Left)
+            if (mouseBtn == MouseButton.Left)
             {
                 switch (action)
                 {
@@ -51,7 +51,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
                         break;
                 }
             }
-            else if (clickType == ClickType.Right)
+            else if (mouseBtn == MouseButton.Right)
             {
                 switch (action)
                 {
@@ -76,20 +76,20 @@ public class InventoryInputHandler(InventoryInputDetector input)
             {
                 if (mouseButton.ButtonIndex == MouseButton.Left)
                 {
-                    _onInput?.Invoke(ClickType.Left, InventoryAction.DoubleClick, index);
+                    _onInput?.Invoke(MouseButton.Left, InventoryAction.DoubleClick, index);
                 }
                 else if (mouseButton.ButtonIndex == MouseButton.Right)
                 {
-                    _onInput?.Invoke(ClickType.Right, InventoryAction.DoubleClick, index);
+                    _onInput?.Invoke(MouseButton.Right, InventoryAction.DoubleClick, index);
                 }
             }
             else if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Left, index));
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, MouseButton.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, ClickType.Right, index));
+                HandleClick(container, new InputContext(context.Inventory, context.CursorInventory, MouseButton.Right, index));
             }
         }
     }
@@ -239,7 +239,7 @@ public class InventoryInputHandler(InventoryInputDetector input)
         else
         {
             // Cursor has item but inv slot does not
-            Place(context.ClickType, context.Index);
+            Place(context.MouseButton, context.Index);
         }
     }
 
@@ -253,11 +253,11 @@ public class InventoryInputHandler(InventoryInputDetector input)
         // The cursor item and inventory item are of the same type
         if (cursorMaterial.Equals(invMaterial))
         {
-            Stack(context.ClickType, index);
+            Stack(context.MouseButton, index);
         }
         else
         {
-            Swap(context.ClickType, index);
+            Swap(context.MouseButton, index);
         }
     }
 
@@ -267,65 +267,59 @@ public class InventoryInputHandler(InventoryInputDetector input)
         {
             if (input.HoldingShift)
             {
-                TransferToOtherInventory(context.ClickType, context.Index);
+                TransferToOtherInventory(context.MouseButton, context.Index);
             }
             else
             {
-                Pickup(container, context.ClickType, context.Index);
+                Pickup(container, context.MouseButton, context.Index);
             }
         }
     }
 
-    private void TransferToOtherInventory(ClickType clickType, int index)
+    private void TransferToOtherInventory(MouseButton mouseBtn, int index)
     {
-        _onInput(clickType, InventoryAction.Transfer, index);
+        _onInput(mouseBtn, InventoryAction.Transfer, index);
     }
 
-    private void Stack(ClickType clickType, int index)
+    private void Stack(MouseButton mouseBtn, int index)
     {
         OnPreStack?.Invoke(index);
-        _onInput(clickType, InventoryAction.Stack, index);
+        _onInput(mouseBtn, InventoryAction.Stack, index);
         OnPostStack?.Invoke(index);
     }
 
-    private void Swap(ClickType clickType, int index)
+    private void Swap(MouseButton mouseBtn, int index)
     {
         // Swapping is disabled for right click operations
-        if (clickType == ClickType.Right)
+        if (mouseBtn == MouseButton.Right)
         {
             return;
         }
 
         OnPreSwap?.Invoke(index);
-        _onInput(clickType, InventoryAction.Swap, index);
+        _onInput(mouseBtn, InventoryAction.Swap, index);
         OnPostSwap?.Invoke(index);
     }
 
-    private void Place(ClickType clickType, int index)
+    private void Place(MouseButton mouseBtn, int index)
     {
         OnPrePlace?.Invoke(index);
-        _onInput(clickType, InventoryAction.Place, index);
+        _onInput(mouseBtn, InventoryAction.Place, index);
         OnPostPlace?.Invoke(index);
     }
 
-    private void Pickup(InventoryContainer container, ClickType clickType, int index)
+    private void Pickup(InventoryContainer container, MouseButton mouseBtn, int index)
     {
         OnPrePickup?.Invoke(container, index);
-        _onInput(clickType, InventoryAction.Pickup, index);
+        _onInput(mouseBtn, InventoryAction.Pickup, index);
         OnPostPickup?.Invoke(container, index);
     }
 
-    public enum ClickType
-    {
-        Left,
-        Right
-    }
-
-    private class InputContext(Inventory inventory, Inventory cursorInventory, ClickType clickType, int index)
+    private class InputContext(Inventory inventory, Inventory cursorInventory, MouseButton mouseBtn, int index)
     {
         public Inventory Inventory { get; } = inventory;
         public Inventory CursorInventory { get; } = cursorInventory;
-        public ClickType ClickType { get; } = clickType;
+        public MouseButton MouseButton { get; } = mouseBtn;
         public int Index { get; } = index;
     }
 
