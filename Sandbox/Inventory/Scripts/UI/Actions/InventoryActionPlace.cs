@@ -1,24 +1,25 @@
 ﻿using Godot;
+using System;
 
 namespace Template.Inventory;
 
-public class StackAction : InventoryActionBase
+public class InventoryActionPlace : InventoryActionBase
 {
     public override void Execute()
     {
-        InventoryActionEventArgs args = new(InventoryAction.Stack);
+        InventoryActionEventArgs args = new(InventoryAction.Place);
         args.FromIndex = _index;
 
         InvokeOnPreAction(args);
 
         if (_mouseButton == MouseButton.Left)
         {
-            // Stack the entire cursor item stack
-            _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, _index, _context.CursorInventory.GetItem(0).Count);
+            // Place the whole stack
+            _context.CursorInventory.MoveItemTo(_context.Inventory, 0, _index);
         }
         else if (_mouseButton == MouseButton.Right)
         {
-            // Stack a single item
+            // Place one item
             _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, _index, 1);
         }
 

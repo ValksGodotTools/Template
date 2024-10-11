@@ -2,7 +2,7 @@
 
 namespace Template.Inventory;
 
-public class SwapAction : InventoryActionBase
+public class InventoryActionSwap : InventoryActionBase
 {
     public override void Execute()
     {

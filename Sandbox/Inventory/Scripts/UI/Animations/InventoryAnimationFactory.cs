@@ -7,11 +7,11 @@ public class InventoryAnimationFactory
 {
     private Dictionary<InventoryAction, InventoryAnimationBase> _animations = new()
     {
-        { InventoryAction.Pickup, new PickupAnimation() },
-        { InventoryAction.Place, new PlaceAnimation() },
-        { InventoryAction.Stack, new StackAnimation() },
-        { InventoryAction.Swap, new SwapAnimation() },
-        { InventoryAction.Transfer, new TransferAnimation() }
+        { InventoryAction.Pickup, new InventoryAnimationPickup() },
+        { InventoryAction.Place, new InventoryAnimationPlace() },
+        { InventoryAction.Stack, new InventoryAnimationStack() },
+        { InventoryAction.Swap, new InventoryAnimationSwap() },
+        { InventoryAction.Transfer, new InventoryAnimationTransfer() }
     };
 
     public InventoryAnimationFactory(InventoryContext context, InventoryContainer container)

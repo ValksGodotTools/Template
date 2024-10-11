@@ -2,7 +2,7 @@
 
 namespace Template.Inventory;
 
-public class PickupAction : InventoryActionBase
+public class InventoryActionPickup : InventoryActionBase
 {
     public override void Execute()
     {

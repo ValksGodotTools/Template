@@ -2,7 +2,7 @@
 
 namespace Template.Inventory;
 
-public class TransferAction : InventoryActionBase
+public class InventoryActionTransfer : InventoryActionBase
 {
     public override void Execute()
     {

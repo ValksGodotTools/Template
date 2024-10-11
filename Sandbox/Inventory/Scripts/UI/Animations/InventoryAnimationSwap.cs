@@ -1,6 +1,6 @@
 ﻿namespace Template.Inventory;
 
-public class SwapAnimation : InventoryAnimationBase
+public class InventoryAnimationSwap : InventoryAnimationBase
 {
     public override void OnPreAnimate(InventoryActionEventArgs args)
     {

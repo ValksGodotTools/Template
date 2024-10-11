@@ -1,6 +1,6 @@
 ﻿namespace Template.Inventory;
 
-public class PickupAnimation : InventoryAnimationBase
+public class InventoryAnimationPickup : InventoryAnimationBase
 {
     public override void OnPreAnimate(InventoryActionEventArgs args)
     {

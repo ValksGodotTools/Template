@@ -8,12 +8,12 @@ public class InventoryActionFactory
     {
         return actionType switch
         {
-            InventoryAction.DoubleClick => new PickupAllAction(),
-            InventoryAction.Transfer => new TransferAction(),
-            InventoryAction.Pickup => new PickupAction(),
-            InventoryAction.Place => new PlaceAction(),
-            InventoryAction.Stack => new StackAction(),
-            InventoryAction.Swap => new SwapAction(),
+            InventoryAction.DoubleClick => new InventoryActionPickupAll(),
+            InventoryAction.Transfer => new InventoryActionTransfer(),
+            InventoryAction.Pickup => new InventoryActionPickup(),
+            InventoryAction.Place => new InventoryActionPlace(),
+            InventoryAction.Stack => new InventoryActionStack(),
+            InventoryAction.Swap => new InventoryActionSwap(),
             _ => throw new NotImplementedException($"No action defined for {actionType}")
         };
     }

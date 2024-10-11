@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Template.Inventory;
 
-public class PickupAllAction : InventoryActionBase
+public class InventoryActionPickupAll : InventoryActionBase
 {
     public override void Execute()
     {
