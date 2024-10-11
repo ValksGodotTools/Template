@@ -6,12 +6,12 @@ public class TransferAction : InventoryActionBase
 {
     public override void Execute()
     {
-        if (MouseButton == MouseButton.Left)
+        if (_mouseButton == MouseButton.Left)
         {
-            InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(Context.InventoryContainer);
+            InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(_context.InventoryContainer);
             Inventory otherInventory = otherInventoryContainer.Inventory;
 
-            if (otherInventory.TryFindFirstSameType(Context.Inventory.GetItem(Index).Material, out int stackIndex))
+            if (otherInventory.TryFindFirstSameType(_context.Inventory.GetItem(_index).Material, out int stackIndex))
             {
                 Transfer(true, otherInventoryContainer, otherInventory, stackIndex);
             }
@@ -28,13 +28,13 @@ public class TransferAction : InventoryActionBase
 
         InventoryActionEventArgs args = new(InventoryAction.Transfer);
         args.TargetInventoryContainer = otherInventoryContainer;
-        args.FromIndex = Index;
+        args.FromIndex = _index;
         args.ToIndex = otherIndex;
         args.AreSameType = areSameType;
 
         InvokeOnPreAction(args);
 
-        Context.Inventory.MoveItemTo(otherInventory, Index, otherIndex);
+        _context.Inventory.MoveItemTo(otherInventory, _index, otherIndex);
 
         InvokeOnPostAction(args);
     }

@@ -8,19 +8,19 @@ public class PlaceAction : InventoryActionBase
     public override void Execute()
     {
         InventoryActionEventArgs args = new(InventoryAction.Place);
-        args.FromIndex = Index;
+        args.FromIndex = _index;
 
         InvokeOnPreAction(args);
 
-        if (MouseButton == MouseButton.Left)
+        if (_mouseButton == MouseButton.Left)
         {
             // Place the whole stack
-            Context.CursorInventory.MoveItemTo(Context.Inventory, 0, Index);
+            _context.CursorInventory.MoveItemTo(_context.Inventory, 0, _index);
         }
-        else if (MouseButton == MouseButton.Right)
+        else if (_mouseButton == MouseButton.Right)
         {
             // Place one item
-            Context.CursorInventory.MovePartOfItemTo(Context.Inventory, 0, Index, 1);
+            _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, _index, 1);
         }
 
         InvokeOnPostAction(args);

@@ -7,15 +7,15 @@ public class SwapAction : InventoryActionBase
     public override void Execute()
     {
         InventoryActionEventArgs args = new(InventoryAction.Swap);
-        args.FromIndex = Index;
+        args.FromIndex = _index;
 
         InvokeOnPreAction(args);
 
-        if (MouseButton == MouseButton.Left)
+        if (_mouseButton == MouseButton.Left)
         {
-            Context.CursorInventory.MoveItemTo(Context.Inventory, 0, Index);
+            _context.CursorInventory.MoveItemTo(_context.Inventory, 0, _index);
         }
-        else if (MouseButton == MouseButton.Right)
+        else if (_mouseButton == MouseButton.Right)
         {
             // Right click swap disabled because inteferes with right click drag
         }

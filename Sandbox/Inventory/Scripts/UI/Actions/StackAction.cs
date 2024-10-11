@@ -7,19 +7,19 @@ public class StackAction : InventoryActionBase
     public override void Execute()
     {
         InventoryActionEventArgs args = new(InventoryAction.Stack);
-        args.FromIndex = Index;
+        args.FromIndex = _index;
 
         InvokeOnPreAction(args);
 
-        if (MouseButton == MouseButton.Left)
+        if (_mouseButton == MouseButton.Left)
         {
             // Stack the entire cursor item stack
-            Context.CursorInventory.MovePartOfItemTo(Context.Inventory, 0, Index, Context.CursorInventory.GetItem(0).Count);
+            _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, _index, _context.CursorInventory.GetItem(0).Count);
         }
-        else if (MouseButton == MouseButton.Right)
+        else if (_mouseButton == MouseButton.Right)
         {
             // Stack a single item
-            Context.CursorInventory.MovePartOfItemTo(Context.Inventory, 0, Index, 1);
+            _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, _index, 1);
         }
 
         InvokeOnPostAction(args);

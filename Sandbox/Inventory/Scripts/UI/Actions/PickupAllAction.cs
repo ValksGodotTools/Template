@@ -1,5 +1,4 @@
 ﻿using Godot;
-using System;
 using System.Collections.Generic;
 
 namespace Template.Inventory;
@@ -8,13 +7,13 @@ public class PickupAllAction : InventoryActionBase
 {
     public override void Execute()
     {
-        if (MouseButton == MouseButton.Left)
+        if (_mouseButton == MouseButton.Left)
         {
-            InventoryContainer container = Context.InventoryContainer;
-            Inventory cursorInventory = Context.CursorInventory;
-            Inventory inventory = Context.Inventory;
+            InventoryContainer container = _context.InventoryContainer;
+            Inventory cursorInventory = _context.CursorInventory;
+            Inventory inventory = _context.Inventory;
 
-            Material? material = cursorInventory.GetItem(0)?.Material ?? inventory.GetItem(Index)?.Material;
+            Material? material = cursorInventory.GetItem(0)?.Material ?? inventory.GetItem(_index)?.Material;
 
             if (material == null)
                 return;
@@ -49,7 +48,7 @@ public class PickupAllAction : InventoryActionBase
             foreach ((int i, ItemStack item) in items[container])
             {
                 // Do not animate index under cursor
-                if (i == Index)
+                if (i == _index)
                     continue;
 
                 InventoryActionEventArgs args = new(InventoryAction.Pickup);
