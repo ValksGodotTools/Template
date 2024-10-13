@@ -55,7 +55,7 @@ public partial class InventoryContainer : PanelContainer
         _inputHandler = new(_columns, invContext);
 
         vfxManager.RegisterEvents(_inputHandler, invContext, this);
-        _inputHandler.RegisterInput(this);
+        _inputHandler.RegisterInput();
 
         for (int i = 0; i < ItemContainers.Length; i++)
         {
@@ -67,12 +67,12 @@ public partial class InventoryContainer : PanelContainer
 
             itemContainer.GuiInput += @event =>
             {
-                _inputHandler.HandleGuiInput(this, @event, index);
+                _inputHandler.HandleGuiInput(@event, index);
             };
 
             itemContainer.MouseEntered += () =>
             {
-                _inputHandler.HandleMouseEntered(this, vfxManager, index, GetGlobalMousePosition());
+                _inputHandler.HandleMouseEntered(vfxManager, index, GetGlobalMousePosition());
             };
 
             itemContainer.MouseExited += () =>

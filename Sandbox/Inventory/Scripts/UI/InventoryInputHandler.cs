@@ -51,7 +51,7 @@ public class InventoryInputHandler
         }
     }
 
-    public void RegisterInput(InventoryContainer container)
+    public void RegisterInput()
     {
         Inventory inventory = _context.Inventory;
         Inventory cursorInventory = _context.CursorInventory;
@@ -66,7 +66,7 @@ public class InventoryInputHandler
         };
     }
 
-    public void HandleGuiInput(InventoryContainer container, InputEvent @event, int index)
+    public void HandleGuiInput(InputEvent @event, int index)
     {
         if (@event is InputEventMouseButton mouseButton)
         {
@@ -83,16 +83,16 @@ public class InventoryInputHandler
             }
             else if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Left, index));
+                HandleClick(new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Right, index));
+                HandleClick(new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Right, index));
             }
         }
     }
 
-    public void HandleMouseEntered(InventoryContainer container, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
+    public void HandleMouseEntered(InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
         _itemUnderCursor = new ItemUnderCursor(index, _context.Inventory.GetItem(index));
 
@@ -123,7 +123,7 @@ public class InventoryInputHandler
         _itemUnderCursor = null;
     }
 
-    private void HandleClick(InventoryContainer container, InputContext context)
+    private void HandleClick(InputContext context)
     {
         if (context.CursorInventory.TryGetItem(0, out ItemStack cursorItem))
         {
@@ -131,7 +131,7 @@ public class InventoryInputHandler
         }
         else
         {
-            CursorHasNoItem(container, context);
+            CursorHasNoItem(context);
         }
     }
 
@@ -166,7 +166,7 @@ public class InventoryInputHandler
         }
     }
 
-    private void CursorHasNoItem(InventoryContainer container, InputContext context)
+    private void CursorHasNoItem(InputContext context)
     {
         if (context.Inventory.HasItem(context.Index))
         {
@@ -176,7 +176,7 @@ public class InventoryInputHandler
             }
             else
             {
-                Pickup(container, context.MouseButton, context.Index);
+                Pickup(context.MouseButton, context.Index);
             }
         }
     }
@@ -188,9 +188,7 @@ public class InventoryInputHandler
 
     private void Stack(MouseButton mouseBtn, int index)
     {
-        //OnPreStack?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Stack, index);
-        //OnPostStack?.Invoke(index);
     }
 
     private void Swap(MouseButton mouseBtn, int index)
@@ -201,23 +199,17 @@ public class InventoryInputHandler
             return;
         }
 
-        //OnPreSwap?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Swap, index);
-        //OnPostSwap?.Invoke(index);
     }
 
     private void Place(MouseButton mouseBtn, int index)
     {
-        //OnPrePlace?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Place, index);
-        //OnPostPlace?.Invoke(index);
     }
 
-    private void Pickup(InventoryContainer container, MouseButton mouseBtn, int index)
+    private void Pickup(MouseButton mouseBtn, int index)
     {
-        //OnPrePickup?.Invoke(container, index);
         _onInput(mouseBtn, InventoryAction.Pickup, index);
-        //OnPostPickup?.Invoke(container, index);
     }
 
     private class InputContext(Inventory inventory, Inventory cursorInventory, MouseButton mouseBtn, int index)

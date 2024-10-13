@@ -5,12 +5,12 @@ namespace Template.Inventory;
 
 public abstract class InventoryActionBase()
 {
-    private event Action<InventoryActionEventArgs> _onPreAction;
-    protected event Action<InventoryActionEventArgs> _onPostAction;
-
     protected InventoryContext _context { get; private set; }
     protected MouseButton _mouseButton { get; private set; }
     protected int _index { get; private set; }
+    
+    private event Action<InventoryActionEventArgs> _onPreAction;
+    private event Action<InventoryActionEventArgs> _onPostAction;
 
     public void Initialize(InventoryContext context, MouseButton mouseBtn, int index, Action<InventoryActionEventArgs> onPreAction, Action<InventoryActionEventArgs> onPostAction)
     {
@@ -21,6 +21,8 @@ public abstract class InventoryActionBase()
         _onPostAction = onPostAction;
     }
 
+    public abstract void Execute();
+
     protected void InvokeOnPreAction(InventoryActionEventArgs args)
     {
         _onPreAction?.Invoke(args);
@@ -30,6 +32,4 @@ public abstract class InventoryActionBase()
     {
         _onPostAction?.Invoke(args);
     }
-
-    public abstract void Execute();
 }
