@@ -16,7 +16,7 @@ public class InventoryInputHandler
     private InventoryContext _context;
     private Inventory _invPlayer;
 
-    private (int, ItemStack) _itemUnderCursor;
+    private ItemUnderCursor _itemUnderCursor;
 
     public InventoryInputHandler(int columns, InventoryContext context)
     {
@@ -36,7 +36,7 @@ public class InventoryInputHandler
                 if (Input.IsActionJustPressed("hotbar_" + (index + 1)))
                 {
                     int hotbarSlot = _invContainerPlayer.GetHotbarSlot(index);
-                    _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Item1, hotbarSlot, _itemUnderCursor.Item2.Count);
+                    _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Index, hotbarSlot, _itemUnderCursor.ItemStack.Count);
                 }
             };
         }
@@ -44,7 +44,7 @@ public class InventoryInputHandler
 
     public void Update()
     {
-        if (_itemUnderCursor.Item2 != null)
+        if (_itemUnderCursor != null)
         {
             _hotbarInputs();
         }
@@ -93,11 +93,11 @@ public class InventoryInputHandler
 
     public void HandleMouseEntered(InventoryContainer container, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
-        _itemUnderCursor = (index, _context.Inventory.GetItem(index));
+        _itemUnderCursor = new ItemUnderCursor(index, _context.Inventory.GetItem(index));
 
         if (_context.InputDetector.HoldingLeftClick)
         {
-            if (_itemUnderCursor.Item2 != null)
+            if (_itemUnderCursor.ItemStack != null)
             {
                 if (_context.InputDetector.HoldingShift)
                 {
@@ -106,7 +106,7 @@ public class InventoryInputHandler
                 else
                 {
                     vfxManager.AnimateDragPickup(_context, index);
-                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, _itemUnderCursor.Item2.Count);
+                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, _itemUnderCursor.ItemStack.Count);
                 }
             }
         }
@@ -119,8 +119,7 @@ public class InventoryInputHandler
 
     public void HandleMouseExited()
     {
-        _itemUnderCursor.Item1 = -1;
-        _itemUnderCursor.Item2 = null;
+        _itemUnderCursor = null;
     }
 
     private void HandleClick(InventoryContainer container, InputContext context)
@@ -226,5 +225,11 @@ public class InventoryInputHandler
         public Inventory CursorInventory { get; } = cursorInventory;
         public MouseButton MouseButton { get; } = mouseBtn;
         public int Index { get; } = index;
+    }
+
+    private class ItemUnderCursor(int index, ItemStack itemStack)
+    {
+        public int Index { get; } = index;
+        public ItemStack ItemStack { get; } = itemStack;
     }
 }
