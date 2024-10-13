@@ -35,8 +35,9 @@ public class InventoryInputHandler
             {
                 if (Input.IsActionJustPressed("hotbar_" + (index + 1)))
                 {
-                    int hotbarSlot = _invContainerPlayer.GetHotbarSlot(index);
-                    _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Index, hotbarSlot, _itemUnderCursor.ItemStack.Count);
+                    int hotbarSlotIndex = _invContainerPlayer.GetHotbarSlot(index);
+
+                    _context.Inventory.MoveItemTo(_invPlayer, _itemUnderCursor.Index, hotbarSlotIndex);
                 }
             };
         }
