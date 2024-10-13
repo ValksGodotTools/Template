@@ -1,59 +1,31 @@
 ﻿using Godot;
 using GodotUtils;
 using System;
-using System.Collections.Generic;
 
 namespace Template.Inventory;
 
 public class InventoryInputHandler
 {
-    public event Action<int>
-        OnPrePlace,
-        OnPreStack,
-        OnPreSwap,
-        OnPostPlace,
-        OnPostStack,
-        OnPostSwap;
-
-    public event Action<InventoryContainer, int> OnPrePickup, OnPostPickup;
-
-    public event Action<TransferEventArgs>
-        OnPreTransfer,
-        OnPostTransfer;
+    public event Action<InventoryActionEventArgs> OnPreInventoryAction, OnPostInventoryAction;
 
     private Action<MouseButton, InventoryAction, int> _onInput;
-
-    private InventoryInputDetector _input;
-    private InventoryContainer _invContainerPlayer;
-    private Inventory _invPlayer;
-    private InventoryVFXContext _context;
-    private (int, ItemStack) _itemUnderCursor;
     private Action _hotbarInputs;
+    
+    private InventoryActionFactory _actionFactory;
+    private InventoryContainer _invContainerPlayer;
+    private InventoryContext _context;
+    private Inventory _invPlayer;
 
-    public InventoryInputHandler(int columns, InventoryInputDetector input, InventoryVFXContext context)
+    private int _itemIndexUnderCursor;
+
+    public InventoryInputHandler(int columns, InventoryContext context)
     {
         InventorySandbox sandbox = Services.Get<InventorySandbox>();
 
-        _input = input;
         _context = context;
+        _actionFactory = new InventoryActionFactory();
         _invContainerPlayer = sandbox.GetPlayerInventory();
         _invPlayer = _invContainerPlayer.Inventory;
-
-        StringName[] hotbarActions = 
-        [
-            InputActions.Hotbar1,
-            InputActions.Hotbar2,
-            InputActions.Hotbar3,
-            InputActions.Hotbar4,
-            InputActions.Hotbar5,
-            InputActions.Hotbar6,
-            InputActions.Hotbar7,
-            InputActions.Hotbar8,
-            InputActions.Hotbar9,
-            InputActions.Hotbar10,
-            InputActions.Hotbar11,
-            InputActions.Hotbar12
-        ];
 
         for (int i = 0; i < columns; i++)
         {
@@ -61,10 +33,28 @@ public class InventoryInputHandler
 
             _hotbarInputs += () =>
             {
-                if (Input.IsActionJustPressed(hotbarActions[index]))
+                if (Input.IsActionJustPressed("hotbar_" + (index + 1)))
                 {
-                    int hotbarSlot = _invContainerPlayer.GetHotbarSlot(index);
-                    _context.Inventory.MovePartOfItemTo(_invPlayer, _itemUnderCursor.Item1, hotbarSlot, _itemUnderCursor.Item2.Count);
+                    // There is no item under the cursor
+                    if (_itemIndexUnderCursor == -1)
+                    {
+                        return;
+                    }
+
+                    // Item under cursor is only updated on mouse enter exit events so it could
+                    // be invalid if the cursor stays in the same slot after an inventory action
+                    if (_context.Inventory.GetItem(_itemIndexUnderCursor) == null)
+                    {
+                        return;
+                    }
+                    
+                    int hotbarSlotIndex = _invContainerPlayer.GetHotbarSlot(index);
+
+                    // I would like to replace the below line of code with
+                    // _onInput?.Invoke(MouseButton.Left, InventoryAction.Swap, _itemIndexUnderCursor);
+                    // but InventoryActionSwap.cs is specific to the cursor inventory meanwhile
+                    // the below line of code is specific to the "world chest" and player inventories
+                    _context.Inventory.MoveItemTo(_invPlayer, _itemIndexUnderCursor, hotbarSlotIndex);
                 }
             };
         }
@@ -72,57 +62,25 @@ public class InventoryInputHandler
 
     public void Update()
     {
-        if (_itemUnderCursor.Item2 != null)
-        {
-            _hotbarInputs();
-        }
+        _hotbarInputs();
     }
 
-    public void RegisterInput(InventoryContainer container)
+    public void RegisterInput()
     {
         Inventory inventory = _context.Inventory;
         Inventory cursorInventory = _context.CursorInventory;
 
         _onInput += (mouseBtn, action, index) =>
         {
-            if (mouseBtn == MouseButton.Left)
-            {
-                switch (action)
-                {
-                    case InventoryAction.Pickup:
-                        _context.CursorInventory.TakeItemFrom(_context.Inventory, index, 0);
-                        break;
-                    case InventoryAction.Place:
-                    case InventoryAction.Swap:
-                    case InventoryAction.Stack:
-                        cursorInventory.MoveItemTo(inventory, 0, index);
-                        break;
-                    case InventoryAction.Transfer:
-                        LeftClickTransfer(container, index);
-                        break;
-                    case InventoryAction.DoubleClick:
-                        DoubleClickPickupAll(cursorInventory, inventory, container, index);
-                        break;
-                }
-            }
-            else if (mouseBtn == MouseButton.Right)
-            {
-                switch (action)
-                {
-                    case InventoryAction.Pickup:
-                        RightClickPickup(index);
-                        break;
-                    case InventoryAction.Place:
-                    case InventoryAction.Swap:
-                    case InventoryAction.Stack:
-                        cursorInventory.MovePartOfItemTo(inventory, 0, index, 1);
-                        break;
-                }
-            }
+            InventoryActionEventArgs args = new(action);
+
+            InventoryActionBase invAction = _actionFactory.GetAction(action);
+            invAction.Initialize(_context, mouseBtn, index, OnPreInventoryAction, OnPostInventoryAction);
+            invAction.Execute();
         };
     }
 
-    public void HandleGuiInput(InventoryContainer container, InputEvent @event, int index)
+    public void HandleGuiInput(InputEvent @event, int index)
     {
         if (@event is InputEventMouseButton mouseButton)
         {
@@ -139,35 +97,37 @@ public class InventoryInputHandler
             }
             else if (mouseButton.IsLeftClickJustPressed())
             {
-                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Left, index));
+                HandleClick(new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Left, index));
             }
             else if (mouseButton.IsRightClickJustPressed())
             {
-                HandleClick(container, new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Right, index));
+                HandleClick(new InputContext(_context.Inventory, _context.CursorInventory, MouseButton.Right, index));
             }
         }
     }
 
-    public void HandleMouseEntered(InventoryContainer container, InventoryVFXManager vfxManager, int index, Vector2 mousePos)
+    public void HandleMouseEntered(InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
-        _itemUnderCursor = (index, _context.Inventory.GetItem(index));
+        _itemIndexUnderCursor = index;
 
-        if (_input.HoldingLeftClick)
+        ItemStack itemUnderCursor = _context.Inventory.GetItem(index);
+
+        if (_context.InputDetector.HoldingLeftClick)
         {
-            if (_itemUnderCursor.Item2 != null)
+            if (itemUnderCursor != null)
             {
-                if (_input.HoldingShift)
+                if (_context.InputDetector.HoldingShift)
                 {
-                    LeftClickTransfer(container, index);
+                    _onInput?.Invoke(MouseButton.Left, InventoryAction.Transfer, index);
                 }
                 else
                 {
                     vfxManager.AnimateDragPickup(_context, index);
-                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, _itemUnderCursor.Item2.Count);
+                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, itemUnderCursor.Count);
                 }
             }
         }
-        else if (_input.HoldingRightClick)
+        else if (_context.InputDetector.HoldingRightClick)
         {
             vfxManager.AnimateDragPlace(_context, index, mousePos);
             _context.CursorInventory.MovePartOfItemTo(_context.Inventory, 0, index, 1);
@@ -176,109 +136,10 @@ public class InventoryInputHandler
 
     public void HandleMouseExited()
     {
-        _itemUnderCursor.Item1 = -1;
-        _itemUnderCursor.Item2 = null;
+        _itemIndexUnderCursor = -1;
     }
 
-    private void DoubleClickPickupAll(Inventory cursorInventory, Inventory inventory, InventoryContainer container, int index)
-    {
-        Material? material = cursorInventory.GetItem(0)?.Material ?? inventory.GetItem(index)?.Material;
-
-        if (material != null)
-        {
-            InventoryContainer otherInvContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
-            
-            Dictionary<InventoryContainer, List<(int, ItemStack)>> items = [];
-            items[container] = [];
-            items[otherInvContainer] = [];
-
-            foreach ((int i, ItemStack item) in inventory.GetItems())
-            {
-                if (item.Material.Equals(material))
-                {
-                    items[container].Add((i, item));
-                }
-            }
-
-            foreach ((int i, ItemStack item) in otherInvContainer.Inventory.GetItems())
-            {
-                if (item.Material.Equals(material))
-                {
-                    items[otherInvContainer].Add((i, item));
-                }
-            }
-
-            int sameItemCount = items[container].Count + items[otherInvContainer].Count;
-
-            if (sameItemCount > 1)
-            {
-                foreach ((int i, ItemStack item) in items[container])
-                {
-                    // Do not animate index under cursor
-                    if (i == index)
-                        continue;
-
-                    OnPrePickup?.Invoke(container, i);
-                    cursorInventory.TakeItemFrom(inventory, i, 0);
-                    OnPostPickup?.Invoke(container, i);
-                }
-
-                foreach ((int i, ItemStack item) in items[otherInvContainer])
-                {
-                    OnPrePickup?.Invoke(otherInvContainer, i);
-                    cursorInventory.TakeItemFrom(otherInvContainer.Inventory, i, 0);
-                    OnPostPickup?.Invoke(otherInvContainer, i);
-                }
-            }
-        }
-    }
-
-    private void LeftClickTransfer(InventoryContainer container, int index)
-    {
-        InventoryContainer otherInventoryContainer = Services.Get<InventorySandbox>().GetOtherInventory(container);
-        Inventory otherInventory = otherInventoryContainer.Inventory;
-
-        if (otherInventory.TryFindFirstSameType(_context.Inventory.GetItem(index).Material, out int stackIndex))
-        {
-            Transfer(true, otherInventoryContainer, otherInventory, index, stackIndex);
-        }
-        else if (otherInventory.TryFindFirstEmptySlot(out int otherIndex))
-        {
-            Transfer(false, otherInventoryContainer, otherInventory, index, otherIndex);
-        }
-    }
-
-    private void Transfer(bool areSameType, InventoryContainer otherInventoryContainer, Inventory otherInventory, int index, int otherIndex)
-    {
-        ItemContainer targetItemContainer = otherInventoryContainer.ItemContainers[otherIndex];
-
-        TransferEventArgs args = new(areSameType, index, targetItemContainer);
-
-        OnPreTransfer?.Invoke(args);
-
-        _context.Inventory.MoveItemTo(otherInventory, index, otherIndex);
-
-        OnPostTransfer?.Invoke(args);
-    }
-
-    private void RightClickPickup(int index)
-    {
-        Inventory cursorInventory = _context.CursorInventory;
-        Inventory inventory = _context.Inventory;
-
-        int halfItemCount = inventory.GetItem(index).Count / 2;
-
-        if (_input.HoldingShift && halfItemCount != 0)
-        {
-            cursorInventory.TakePartOfItemFrom(inventory, index, 0, halfItemCount);
-        }
-        else
-        {
-            cursorInventory.TakePartOfItemFrom(inventory, index, 0, 1);
-        }
-    }
-
-    private void HandleClick(InventoryContainer container, InputContext context)
+    private void HandleClick(InputContext context)
     {
         if (context.CursorInventory.TryGetItem(0, out ItemStack cursorItem))
         {
@@ -286,7 +147,7 @@ public class InventoryInputHandler
         }
         else
         {
-            CursorHasNoItem(container, context);
+            CursorHasNoItem(context);
         }
     }
 
@@ -321,17 +182,17 @@ public class InventoryInputHandler
         }
     }
 
-    private void CursorHasNoItem(InventoryContainer container, InputContext context)
+    private void CursorHasNoItem(InputContext context)
     {
         if (context.Inventory.HasItem(context.Index))
         {
-            if (_input.HoldingShift && context.MouseButton == MouseButton.Left)
+            if (_context.InputDetector.HoldingShift && context.MouseButton == MouseButton.Left)
             {
                 TransferToOtherInventory(context.MouseButton, context.Index);
             }
             else
             {
-                Pickup(container, context.MouseButton, context.Index);
+                Pickup(context.MouseButton, context.Index);
             }
         }
     }
@@ -343,9 +204,7 @@ public class InventoryInputHandler
 
     private void Stack(MouseButton mouseBtn, int index)
     {
-        OnPreStack?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Stack, index);
-        OnPostStack?.Invoke(index);
     }
 
     private void Swap(MouseButton mouseBtn, int index)
@@ -356,23 +215,17 @@ public class InventoryInputHandler
             return;
         }
 
-        OnPreSwap?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Swap, index);
-        OnPostSwap?.Invoke(index);
     }
 
     private void Place(MouseButton mouseBtn, int index)
     {
-        OnPrePlace?.Invoke(index);
         _onInput(mouseBtn, InventoryAction.Place, index);
-        OnPostPlace?.Invoke(index);
     }
 
-    private void Pickup(InventoryContainer container, MouseButton mouseBtn, int index)
+    private void Pickup(MouseButton mouseBtn, int index)
     {
-        OnPrePickup?.Invoke(container, index);
         _onInput(mouseBtn, InventoryAction.Pickup, index);
-        OnPostPickup?.Invoke(container, index);
     }
 
     private class InputContext(Inventory inventory, Inventory cursorInventory, MouseButton mouseBtn, int index)
@@ -382,21 +235,4 @@ public class InventoryInputHandler
         public MouseButton MouseButton { get; } = mouseBtn;
         public int Index { get; } = index;
     }
-
-    private enum InventoryAction
-    {
-        Pickup,
-        Place,
-        Stack,
-        Swap,
-        Transfer,
-        DoubleClick
-    }
-}
-
-public class TransferEventArgs(bool stacking, int fromIndex, ItemContainer targetItemContainer)
-{
-    public bool AreSameType { get; } = stacking;
-    public int FromIndex { get; } = fromIndex;
-    public ItemContainer TargetItemContainer { get; } = targetItemContainer;
 }

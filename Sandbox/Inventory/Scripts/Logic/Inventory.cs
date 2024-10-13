@@ -233,6 +233,12 @@ public class Inventory
         ItemStack sourceItem = source.GetItem(fromIndex);
         ItemStack destinationItem = destination.GetItem(toIndex);
 
+        // Do nothing if trying to swap from and to the same slot
+        if (sourceItem == destinationItem)
+        {
+            return;
+        }
+
         if (sourceItem == null || count <= 0 || count > sourceItem.Count)
         {
             return;
@@ -285,6 +291,12 @@ public class Inventory
     {
         ItemStack sourceItem = source.GetItem(fromIndex);
         ItemStack destinationItem = destination.GetItem(toIndex);
+
+        // Do nothing if trying to swap from and to the same slot
+        if (sourceItem == destinationItem)
+        {
+            return;
+        }
 
         if (sourceItem != null && destinationItem != null)
         {
