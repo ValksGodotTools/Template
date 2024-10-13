@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Template"
 run/main_scene="res://Genres/0 Setup/Setup.tscn"
-config/features=PackedStringArray("4.3", "C#", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://Template/Sprites/UI/icon.svg"
 
@@ -217,5 +217,6 @@ locale/translations=PackedStringArray("res://Localisation/text.en.translation", 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.29219, 0.29219, 0.29219, 1)
 anti_aliasing/quality/msaa_2d=3
 anti_aliasing/quality/msaa_3d=3
