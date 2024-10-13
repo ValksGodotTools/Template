@@ -16,7 +16,7 @@ public class InventoryInputHandler
     private InventoryContext _context;
     private Inventory _invPlayer;
 
-    private ItemUnderCursor _itemUnderCursor;
+    private int _itemIndexUnderCursor;
 
     public InventoryInputHandler(int columns, InventoryContext context)
     {
@@ -35,9 +35,26 @@ public class InventoryInputHandler
             {
                 if (Input.IsActionJustPressed("hotbar_" + (index + 1)))
                 {
+                    // There is no item under the cursor
+                    if (_itemIndexUnderCursor == -1)
+                    {
+                        return;
+                    }
+
+                    // Item under cursor is only updated on mouse enter exit events so it could
+                    // be invalid if the cursor stays in the same slot after an inventory action
+                    if (_context.Inventory.GetItem(_itemIndexUnderCursor) == null)
+                    {
+                        return;
+                    }
+                    
                     int hotbarSlotIndex = _invContainerPlayer.GetHotbarSlot(index);
 
-                    _context.Inventory.MoveItemTo(_invPlayer, _itemUnderCursor.Index, hotbarSlotIndex);
+                    // I would like to replace the below line of code with
+                    // _onInput?.Invoke(MouseButton.Left, InventoryAction.Swap, _itemIndexUnderCursor);
+                    // but InventoryActionSwap.cs is specific to the cursor inventory meanwhile
+                    // the below line of code is specific to the "world chest" and player inventories
+                    _context.Inventory.MoveItemTo(_invPlayer, _itemIndexUnderCursor, hotbarSlotIndex);
                 }
             };
         }
@@ -45,10 +62,7 @@ public class InventoryInputHandler
 
     public void Update()
     {
-        if (_itemUnderCursor != null)
-        {
-            _hotbarInputs();
-        }
+        _hotbarInputs();
     }
 
     public void RegisterInput()
@@ -94,11 +108,13 @@ public class InventoryInputHandler
 
     public void HandleMouseEntered(InventoryVFXManager vfxManager, int index, Vector2 mousePos)
     {
-        _itemUnderCursor = new ItemUnderCursor(index, _context.Inventory.GetItem(index));
+        _itemIndexUnderCursor = index;
+
+        ItemStack itemUnderCursor = _context.Inventory.GetItem(index);
 
         if (_context.InputDetector.HoldingLeftClick)
         {
-            if (_itemUnderCursor.ItemStack != null)
+            if (itemUnderCursor != null)
             {
                 if (_context.InputDetector.HoldingShift)
                 {
@@ -107,7 +123,7 @@ public class InventoryInputHandler
                 else
                 {
                     vfxManager.AnimateDragPickup(_context, index);
-                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, _itemUnderCursor.ItemStack.Count);
+                    _context.CursorInventory.TakePartOfItemFrom(_context.Inventory, index, 0, itemUnderCursor.Count);
                 }
             }
         }
@@ -120,7 +136,7 @@ public class InventoryInputHandler
 
     public void HandleMouseExited()
     {
-        _itemUnderCursor = null;
+        _itemIndexUnderCursor = -1;
     }
 
     private void HandleClick(InputContext context)
@@ -218,11 +234,5 @@ public class InventoryInputHandler
         public Inventory CursorInventory { get; } = cursorInventory;
         public MouseButton MouseButton { get; } = mouseBtn;
         public int Index { get; } = index;
-    }
-
-    private class ItemUnderCursor(int index, ItemStack itemStack)
-    {
-        public int Index { get; } = index;
-        public ItemStack ItemStack { get; } = itemStack;
     }
 }
