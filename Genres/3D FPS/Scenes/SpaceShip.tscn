@@ -1,26 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dpm36ts508387"]
+[gd_scene load_steps=4 format=3 uid="uid://dpm36ts508387"]
 
 [ext_resource type="PackedScene" uid="uid://cqvwgqehn40mp" path="res://Genres/3D FPS/Scenes/SpaceShip.blend" id="1_shg0e"]
 [ext_resource type="Script" path="res://Genres/3D FPS/Scenes/SpaceShip.cs" id="2_gmwf3"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_mpji1"]
-size = Vector3(5.36, 4.19, 8.075)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gmwf3"]
 
 [node name="SpaceShip" instance=ExtResource("1_shg0e")]
 script = ExtResource("2_gmwf3")
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." index="1"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" index="0"]
-shape = SubResource("BoxShape3D_mpji1")
-disabled = true
-
-[node name="Area3D" type="Area3D" parent="." index="2"]
+[node name="Area3D" type="Area3D" parent="." index="1"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
 shape = SubResource("BoxShape3D_gmwf3")
 
-[node name="Camera3D" type="Camera3D" parent="." index="3"]
+[node name="Camera3D" type="Camera3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
