@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cqvwgqehn40mp"
-path="res://.godot/imported/SpaceShip.blend-e8348b3b652dbfd2d1eb8790b5e0e08e.scn"
+path="res://.godot/imported/SpaceShip.blend-a4cbfe3fd6bb87b1d56ff6da5188af81.scn"
 
 [deps]
 
-source_file="res://Genres/3D FPS/SpaceShip.blend"
-dest_files=["res://.godot/imported/SpaceShip.blend-e8348b3b652dbfd2d1eb8790b5e0e08e.scn"]
+source_file="res://Genres/3D FPS/Scenes/SpaceShip.blend"
+dest_files=["res://.godot/imported/SpaceShip.blend-a4cbfe3fd6bb87b1d56ff6da5188af81.scn"]
 
 [params]
 

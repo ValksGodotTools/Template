@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpm36ts508387"]
-
-[ext_resource type="PackedScene" uid="uid://cqvwgqehn40mp" path="res://Genres/3D FPS/SpaceShip.blend" id="1_evjd1"]
-
-[node name="SpaceShip" instance=ExtResource("1_evjd1")]
