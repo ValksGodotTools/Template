@@ -17,15 +17,12 @@ public partial class SpaceShip : Node3D, IStateMachine
     {
         _curState = Dorment();
         _quatYawPitch = Quaternion;
-        _updatedPosition = Position;
         TakeControlOfShip();
     }
     
     public override void _PhysicsProcess(double delta)
     {
         _curState.Update((float)delta);
-
-        Quaternion = _quatYawPitch;
     }
 
     public override void _Input(InputEvent @event)
@@ -42,7 +39,7 @@ public partial class SpaceShip : Node3D, IStateMachine
             Quaternion yawQuat = new(Vector3.Up, _yaw);
             Quaternion pitchQuat = new(Vector3.Right, _pitch);
 
-            _quatYawPitch = yawQuat * pitchQuat;
+            _quatYawPitch = (yawQuat * pitchQuat).Normalized();
         }
     }
 
@@ -83,8 +80,8 @@ public partial class SpaceShip : Node3D, IStateMachine
             Enter = () =>
             {
                 new GTween(this)
-                    .Animate("position", Position + Vector3.Up * 3, 1).EaseIn()
-                    //.Animate("position", Position + Vector3.Up * 20, 3).EaseOut()
+                    .Animate("position", Position + Vector3.Up * 1, 1).EaseIn()
+                    .Animate("position", Position + Vector3.Up * 15, 2).EaseOut()
                     .Callback(() => SwitchState(Flight()));
             }
         };
@@ -99,6 +96,7 @@ public partial class SpaceShip : Node3D, IStateMachine
             Enter = () => 
             {
                 _isFlying = true;
+                _updatedPosition = Position;
             },
             
             Update = delta =>
@@ -112,6 +110,7 @@ public partial class SpaceShip : Node3D, IStateMachine
                 _updatedPosition += Quaternion * new Vector3(fhInputs.X, udInputs, fhInputs.Y);
 
                 Position = Position.Lerp(_updatedPosition, 0.1f);
+                Quaternion = Quaternion.Slerp(_quatYawPitch, 0.05f);
             }
         };
 
