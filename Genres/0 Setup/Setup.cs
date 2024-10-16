@@ -259,24 +259,26 @@ public partial class Setup : Node
     {
         // .csproj
         {
-            string text = File.ReadAllText(Path.Combine(path, "Template.csproj"));
-            text = text.Replace("Template", name);
-            File.Delete(Path.Combine(path, "Template.csproj"));
+            string fullPath = Path.Combine(path, "Template.csproj");
+            string text = File.ReadAllText(fullPath);
+            text = text.Replace("<RootNamespace>Template</RootNamespace>", $"<RootNamespace>{name}</RootNamespace>");
+            File.Delete(fullPath);
             File.WriteAllText(Path.Combine(path, name + ".csproj"), text);
         }
 
         // .sln
         {
-            
-            string text = File.ReadAllText(Path.Combine(path, "Template.sln"));
+            string fullPath = Path.Combine(path, "Template.sln");
+            string text = File.ReadAllText(fullPath);
             text = text.Replace("Template", name);
-            File.Delete(Path.Combine(path, "Template.sln"));
+            File.Delete(fullPath);
             File.WriteAllText(Path.Combine(path, name + ".sln"), text);
         }
 
         // project.godot
         {
-            string text = File.ReadAllText(Path.Combine(path, "project.godot"));
+            string fullPath = Path.Combine(path, "project.godot");
+            string text = File.ReadAllText(fullPath);
 
             text = text.Replace(
                 "project/assembly_name=\"Template\"", 
@@ -287,7 +289,7 @@ public partial class Setup : Node
                 $"config/name=\"{name}\""
                 );
 
-            File.WriteAllText(Path.Combine(path, "project.godot"), text);
+            File.WriteAllText(fullPath, text);
         }
     }
 
