@@ -1,11 +1,19 @@
-![github_banner](https://github.com/user-attachments/assets/6899e707-d410-45f5-9c1b-78863e58a393)
+![github_banner](https://github.com/user-attachments/assets/8c996dc4-2ef8-4ea5-9b22-66a49ebb532a)
 
-[![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/network)
-[![License](https://img.shields.io/github/license/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/blob/main/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/commits/main)
-[![Contributors](https://img.shields.io/github/contributors/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/graphs/contributors)
-[![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=0099ff)](https://github.com/ValksGodotTools/Template/watchers)
+[![GitHub stars](https://img.shields.io/github/stars/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/network)
+[![License](https://img.shields.io/github/license/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/blob/main/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/commits/main)
+[![Contributors](https://img.shields.io/github/contributors/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/graphs/contributors)
+[![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/watchers)
+
+## Setup
+1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
+2. Download and install the [latest Redot C# release](https://www.redotengine.org/)
+3. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
+4. If you want to setup Template for a specific genre, [continue reading here](https://github.com/ValksGodotTools/Template/wiki/Setting-up-Template-for-a-Specific-Genre)
+
+If you are not using Windows you may need to get a [Custom ENet build](https://github.com/ValksGodotTools/Template/wiki/Custom-ENet-Builds)
 
 ## Features
 **Hot Features**
@@ -25,15 +33,7 @@
 - **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates in your game.
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
 
-## Setup
-1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
-2. Download and install the [latest Godot 4 C# release](https://godotengine.org/)
-3. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
-4. If you want to setup Template for a specific genre, [continue reading here](https://github.com/ValksGodotTools/Template/wiki/Setting-up-Template-for-a-Specific-Genre)
-
-If you are not using Windows you may need to get a [Custom ENet build](https://github.com/ValksGodotTools/Template/wiki/Custom-ENet-Builds)
-
 ## Contributing
-**The contributing guide has been moved to the [wiki](https://github.com/ValksGodotTools/Template/wiki/Contributing).**
+Want to contribute? Start by looking [here](https://github.com/ValksGodotTools/Template/wiki/Contributing)!
 
-Shoutout to [Brian Shao](https://github.com/cydq) for helping with cross-platform compatibility.
+Thank you [Brian Shao](https://github.com/cydq) for helping with cross-platform compatibility.

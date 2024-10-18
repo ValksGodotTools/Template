@@ -2,7 +2,9 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 using ENet;
+using Template.Netcode;
 using Template.Netcode.Server;
+using Template.Valky;
 
 namespace Template.TopDown2D;
 

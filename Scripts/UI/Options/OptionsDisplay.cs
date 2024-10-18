@@ -4,9 +4,9 @@ using System;
 
 using static Godot.DisplayServer;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsDisplay : Control
+public partial class OptionsDisplay : Control
 {
     public event Action<int> OnResolutionChanged;
 

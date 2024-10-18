@@ -2,11 +2,12 @@ using Godot;
 using GodotUtils;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
 [SceneTree]
-public partial class UIModLoader : Node
+public partial class ModLoader : Node
 {
     private Label _uiName;
     private Label _uiModVersion;
@@ -28,7 +29,7 @@ public partial class UIModLoader : Node
         _uiAuthors = Authors;
         _uiIncompatibilities = Incompatibilities;
 
-        Dictionary<string, ModInfo> mods = Services.Get<ModLoader>().Mods;
+        Dictionary<string, ModInfo> mods = Services.Get<Valky.ModLoader>().Mods;
 
         bool first = true;
 

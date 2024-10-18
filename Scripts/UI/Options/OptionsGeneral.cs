@@ -1,8 +1,8 @@
 using Godot;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsGeneral : Control
+public partial class OptionsGeneral : Control
 {
     [Export] private OptionsManager optionsManager;
     private ResourceOptions _options;

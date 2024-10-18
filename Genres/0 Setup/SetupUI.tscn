@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dnmu3cujgayk2"]
 
-[ext_resource type="Script" path="res://Genres/0 Setup/Setup.cs" id="1_mtg8u"]
-[ext_resource type="Script" path="res://Genres/0 Setup/CheckDotNetVersion.cs" id="2_7xnpc"]
+[ext_resource type="Script" path="res://Genres/0 Setup/SetupUI.cs" id="1_m5u8t"]
+[ext_resource type="Script" path="res://Genres/0 Setup/CheckDotNetVersion.cs" id="2_ut11q"]
 
 [sub_resource type="SystemFont" id="SystemFont_ax7t0"]
 font_names = PackedStringArray("Segoe UI")
@@ -34,7 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_rop0o")
-script = ExtResource("1_mtg8u")
+script = ExtResource("1_m5u8t")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
 popupPanel = NodePath("PopupPanel")
@@ -126,7 +126,6 @@ alignment = 1
 selected = 0
 item_count = 4
 popup/item_0/text = "No Genre"
-popup/item_0/id = 0
 popup/item_1/text = "2D Platformer"
 popup/item_1/id = 1
 popup/item_2/text = "2D Top Down"
@@ -159,7 +158,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
-text = "Move Project Files (HAS LOTS OF ISSUES // NOT RECOMMENDED)"
+button_pressed = true
+text = "Move Project Files"
 
 [node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 75)
@@ -212,7 +212,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_1payf")
 text = "Yes"
 
 [node name="CheckDotNetVersion" type="Node" parent="."]
-script = ExtResource("2_7xnpc")
+script = ExtResource("2_ut11q")
 
 [connection signal="text_changed" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName" to="." method="_on_game_name_text_changed"]
 [connection signal="item_selected" from="CenterContainer/VBoxContainer/VBoxContainer/Genre" to="." method="_on_genre_item_selected"]

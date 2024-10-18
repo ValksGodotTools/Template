@@ -5,7 +5,7 @@ using Template.Netcode.Server;
 namespace Template.TopDown2D;
 
 [Service]
-public partial class UINetControlPanel : UINetControlPanelLow
+public partial class NetControlPanel : NetControlPanelLow
 {
     public override void StartClientButtonPressed(string username)
     {

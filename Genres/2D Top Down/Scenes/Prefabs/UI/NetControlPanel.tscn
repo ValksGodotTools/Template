@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ca2xb7tvce5xj"]
 
-[ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/UINetControlPanel.cs" id="1_gtrss"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/UI/NetControlPanel.cs" id="1_gtrss"]
 
 [node name="MultiplayerControlPanel" type="PanelContainer"]
 offset_right = 347.0

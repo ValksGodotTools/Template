@@ -1,7 +1,7 @@
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.Valky;
 
 [Service(ServiceLifeTime.Application)]
 public partial class AudioManager : Node

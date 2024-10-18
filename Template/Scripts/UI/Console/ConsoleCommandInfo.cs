@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Template;
+namespace Template.Valky;
 
 public class ConsoleCommandInfo
 {

@@ -3,7 +3,7 @@ using GodotUtils;
 
 namespace Template.TopDown2D;
 
-[GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[GlobalClass, Icon(Images.GearIcon)]
 public sealed partial class StateMachineComponent : Node2D
 {
     [Export] public EnemyState IdleState { get; private set; }

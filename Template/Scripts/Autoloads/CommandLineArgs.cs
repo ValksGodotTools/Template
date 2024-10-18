@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace Template;
+namespace Template.Valky;
 
 /// <summary>
 /// Handles custom command line arguments set for each instance.

@@ -11,17 +11,17 @@ config_version=5
 [application]
 
 config/name="Template"
-run/main_scene="res://Genres/0 Setup/Setup.tscn"
-config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+run/main_scene="res://Genres/0 Setup/SetupUI.tscn"
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://Template/Sprites/UI/icon.svg"
 
 [autoload]
 
 ServiceProvider="*res://Template/Scripts/Autoloads/Services.cs"
-Console="*res://Template/Autoloads/console.tscn"
-Global="*res://Template/Autoloads/global.tscn"
-AudioManager="*res://Template/Autoloads/audio_manager.tscn"
+Console="*res://Template/Autoloads/Console.tscn"
+Global="*res://Template/Autoloads/Global.tscn"
+AudioManager="*res://Template/Autoloads/AudioManager.tscn"
 SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
 CommandLineArgs="*res://Template/Scripts/Autoloads/CommandLineArgs.cs"

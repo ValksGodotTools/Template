@@ -7,7 +7,7 @@ namespace Template.TopDown2D;
 /// <summary>
 /// This script assumes all enemies are of type Node2D and have animated sprite nodes.
 /// </summary>
-[GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[GlobalClass, Icon(Images.GearIcon)]
 public partial class EnemyComponent : EntityComponent
 {
     [Export] public StateMachineComponent StateMachine { get; private set; }

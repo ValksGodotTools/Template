@@ -2,7 +2,7 @@
 
 namespace Template.TopDown2D;
 
-[GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[GlobalClass, Icon(Images.GearIcon)]
 public partial class PlayerComponent : EntityComponent
 {
     public override void TakeDamage(Vector2 direction = default)
