@@ -2,7 +2,7 @@ using Godot;
 
 namespace Template.Valky;
 
-public partial class UIBackgroundNoise : Sprite2D
+public partial class BackgroundNoise : Sprite2D
 {
     private const int SPEED = 20;
     private const int AMPLITUDE_X = 200;

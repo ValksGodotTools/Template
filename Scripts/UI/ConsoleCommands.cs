@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
 public partial class UIConsole
 {

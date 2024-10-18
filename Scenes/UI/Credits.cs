@@ -1,10 +1,10 @@
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.UI;
 
 [SceneTree]
-public partial class UICredits : Node
+public partial class Credits : Node
 {
     private const float STARTING_SPEED = 0.75f;
 

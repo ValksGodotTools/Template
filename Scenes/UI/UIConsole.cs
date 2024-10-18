@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System;
 using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
 [Service(ServiceLifeTime.Application)]
 [SceneTree]

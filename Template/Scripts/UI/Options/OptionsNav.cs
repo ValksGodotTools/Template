@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Template.Valky;
 
-public partial class UIOptionsNav : Control
+public partial class OptionsNav : Control
 {
     [Export] private OptionsManager optionsManager;
     private readonly Dictionary<string, Control> _tabs = [];

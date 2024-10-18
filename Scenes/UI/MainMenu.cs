@@ -1,8 +1,8 @@
 using Godot;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIMainMenu : Node
+public partial class MainMenu : Node
 {
     public override void _Ready()
     {
