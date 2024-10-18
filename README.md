@@ -14,7 +14,7 @@
 - **[Menu UI](https://github.com/ValksGodotTools/Template/wiki/Menu-UI)** - Several UI scenes including the main menu, options and credits have been setup for you.
 - **[Simplified Tween Logic](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)** - You will love writing tween logic now.
 - **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
-- **[Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)** - Source generators that make your life a little easier.
+- **[Cat Lips Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)** - Source generators that make your life a little easier.
 - **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
 
 **WIP Features**
