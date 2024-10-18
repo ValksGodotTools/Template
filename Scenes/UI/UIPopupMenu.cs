@@ -89,7 +89,7 @@ public partial class UIPopupMenu : Control
     {
         OnMainMenuBtnPressed?.Invoke();
         GetTree().Paused = false;
-        Game.SwitchScene(Scene.UIUimainmenu);
+        Game.SwitchScene(Scene.MainMenu);
     }
 
     private async void _on_quit_pressed()

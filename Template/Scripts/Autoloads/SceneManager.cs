@@ -4,6 +4,19 @@ using System;
 
 namespace Template;
 
+public static class Scene 
+{
+    public const string MainMenu = "res://Scenes/UI/UIMainMenu.tscn";
+    public const string ModLoader = "res://Scenes/UI/UIModLoader.tscn";
+    public const string Options = "res://Scenes/UI/UIOptions.tscn";
+    public const string Credits = "res://Scenes/UI/UICredits.tscn";
+}
+
+public static class Prefab 
+{
+    
+}
+
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
 [Service(ServiceLifeTime.Application)]
 public partial class SceneManager : Node
@@ -28,32 +41,17 @@ public partial class SceneManager : Node
             Services.Get<AudioManager>().FadeOutSFX();
     }
 
-    public void SwitchScene(Prefab prefab, TransType transType = TransType.None)
+    public void SwitchScene(string scenePath, TransType transType = TransType.None)
     {
-        PreSceneChanged?.Invoke(prefab.ToString());
+        PreSceneChanged?.Invoke(scenePath);
 
         switch (transType)
         {
             case TransType.None:
-                ChangeScene(prefab, transType);
+                ChangeScene(scenePath, transType);
                 break;
             case TransType.Fade:
-                FadeTo(TransColor.Black, 2, () => ChangeScene(prefab, transType));
-                break;
-        }
-    }
-
-    public void SwitchScene(Scene scene, TransType transType = TransType.None)
-    {
-        PreSceneChanged?.Invoke(scene.ToString());
-
-        switch (transType)
-        {
-            case TransType.None:
-                ChangeScene(scene, transType);
-                break;
-            case TransType.Fade:
-                FadeTo(TransColor.Black, 2, () => ChangeScene(scene, transType));
+                FadeTo(TransColor.Black, 2, () => ChangeScene(scenePath, transType));
                 break;
         }
     }
@@ -74,17 +72,10 @@ public partial class SceneManager : Node
         CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
     }
 
-    private void ChangeScene(Scene scene, TransType transType)
+    private void ChangeScene(string scenePath, TransType transType)
     {
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), MapScenesToPaths.GetPath(scene),
-            Variant.From(transType));
-    }
-
-    private void ChangeScene(Prefab prefab, TransType transType)
-    {
-        // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), MapPrefabsToPaths.GetPath(prefab),
+        CallDeferred(nameof(DeferredSwitchScene), scenePath,
             Variant.From(transType));
     }
 

@@ -57,7 +57,7 @@ public partial class UIModLoader : Node
     {
         if (Input.IsActionJustPressed(InputActions.UICancel))
         {
-            Game.SwitchScene(Scene.UIUimainmenu);
+            Game.SwitchScene(Scene.MainMenu);
         }
     }
 

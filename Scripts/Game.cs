@@ -8,20 +8,9 @@ public partial class Game
 {
     public static UIConsole Console { get => Services.Get<UIConsole>(); }
 
-    public static void SwitchScene(Scene scene, TransType transType = TransType.None)
+    public static void SwitchScene(string scene, TransType transType = TransType.None)
     {
         Services.Get<SceneManager>().SwitchScene(scene, transType);
-    }
-
-    public static void SwitchScene(Prefab scene, TransType transType = TransType.None)
-    {
-        Services.Get<SceneManager>().SwitchScene(scene, transType);
-    }
-
-    [Obsolete("Please use the [OnInstantiate] attribute instead")]
-    public static T LoadPrefab<T>(Prefab prefab) where T : Node
-    {
-        return (T)GD.Load<PackedScene>(MapPrefabsToPaths.GetPath(prefab)).Instantiate();
     }
 
     public static void Log(object message, BBColor color = BBColor.Gray)

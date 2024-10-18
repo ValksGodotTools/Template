@@ -24,19 +24,19 @@ public partial class UIMainMenuNav : Node
     private static void _on_mods_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        Game.SwitchScene(Scene.UIUimodloader);
+        Game.SwitchScene(Scene.ModLoader);
     }
 
     private static void _on_options_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        Game.SwitchScene(Scene.UIUioptions);
+        Game.SwitchScene(Scene.Options);
     }
 
     private static void _on_credits_pressed()
     {
         //audioManager.PlayMusic(Music.Level4);
-        Game.SwitchScene(Scene.UIUicredits);
+        Game.SwitchScene(Scene.Credits);
     }
 
     private async void _on_quit_pressed()
