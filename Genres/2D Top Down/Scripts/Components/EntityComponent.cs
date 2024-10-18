@@ -3,7 +3,7 @@ using GodotUtils;
 
 namespace Template.TopDown2D;
 
-[GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[GlobalClass, Icon(Images.GearIcon)]
 public partial class EntityComponent : Node2D
 {
     [Export] private EntityConfig _config;

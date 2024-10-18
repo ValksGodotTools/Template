@@ -2,7 +2,7 @@ using Godot;
 
 namespace Template.TopDown2D;
 
-[GlobalClass, Icon("res://Template/Sprites/Icons/Gear/gear.svg")]
+[GlobalClass, Icon(Images.GearIcon)]
 public partial class CameraShakeComponent : Node
 {
     private CameraShakeConfig _config;
