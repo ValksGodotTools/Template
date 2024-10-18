@@ -1,4 +1,5 @@
 using Godot;
+using Template.UI;
 
 namespace Template.FPS3D;
 
@@ -15,15 +16,15 @@ public partial class SubView : SubViewportContainer
 
         UIPopupMenu popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
 
-        UIOptionsDisplay display = popupMenu
-            .Options.GetNode<UIOptionsDisplay>("%Display");
+        OptionsDisplay display = popupMenu
+            .Options.GetNode<OptionsDisplay>("%Display");
 
         display.OnResolutionChanged += (resolution) =>
         {
             StretchShrink = options.Options.Resolution;
         };
 
-        UIOptionsGraphics graphics = popupMenu.Options.GetNode<UIOptionsGraphics>("%Graphics");
+        OptionsGraphics graphics = popupMenu.Options.GetNode<OptionsGraphics>("%Graphics");
 
         graphics.OnAntialiasingChanged += (aa) =>
         {

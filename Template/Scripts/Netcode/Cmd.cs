@@ -1,4 +1,4 @@
-namespace Template;
+namespace Template.Netcode;
 
 public class Cmd<TOpcode>(TOpcode opcode, params object[] data)
 {

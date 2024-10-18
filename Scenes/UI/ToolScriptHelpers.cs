@@ -5,7 +5,7 @@ using System.Text;
 using Godot;
 using GodotUtils;
 
-namespace Template;
+namespace Template.UI;
 
 [Tool]
 public partial class ToolScriptHelpers : Node

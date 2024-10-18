@@ -1,5 +1,6 @@
 using Godot;
 using GodotUtils;
+using Template.UI;
 
 namespace Template.FPS3D;
 
@@ -14,8 +15,8 @@ public partial class Player : CharacterBody3D
     {
         _mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
 
-        UIOptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
-            .Options.GetNode<UIOptionsGameplay>("%Gameplay");
+        OptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
+            .Options.GetNode<OptionsGameplay>("%Gameplay");
 
         gameplay.OnMouseSensitivityChanged += value =>
         {

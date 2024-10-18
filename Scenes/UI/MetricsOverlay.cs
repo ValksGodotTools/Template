@@ -2,10 +2,10 @@ using Godot;
 using GodotUtils;
 using Monitor = Godot.Performance.Monitor;
 
-namespace Template;
+namespace Template.UI;
 
 [SceneTree]
-public partial class UIMetricsOverlay : Control
+public partial class MetricsOverlay : Control
 {
     private Label _labelFPS;
     private Label _labelMinRAM;

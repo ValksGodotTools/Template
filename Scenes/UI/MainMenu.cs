@@ -1,11 +1,9 @@
 using Godot;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIMainMenu : Node
+public partial class MainMenu : Node
 {
-    [Export] private GameState gameState;
-
     public override void _Ready()
     {
         //ServiceProvider.Get<AudioManager>().PlayMusic(Music.Menu);

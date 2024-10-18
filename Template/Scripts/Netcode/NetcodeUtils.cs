@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System;
 
-namespace Template;
+namespace Template.Netcode;
 
 public static class NetcodeUtils
 {

@@ -3,6 +3,8 @@ using Godot.Collections;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Template.Valky;
+using Template.UI;
 
 namespace Template;
 

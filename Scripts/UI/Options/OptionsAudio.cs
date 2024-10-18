@@ -1,8 +1,9 @@
 using Godot;
+using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsAudio : Control
+public partial class OptionsAudio : Control
 {
     [Export] private OptionsManager optionsManager;
     private ResourceOptions _options;

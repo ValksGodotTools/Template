@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
 [Service]
 [SceneTree]
@@ -15,7 +16,7 @@ public partial class UIPopupMenu : Control
 
     private VBoxContainer _vbox;
     private PanelContainer _menu;
-    public UIOptions Options;
+    public Options Options;
 
     public override void _Ready()
     {
@@ -24,7 +25,7 @@ public partial class UIPopupMenu : Control
         _menu = Menu;
         _vbox = Navigation;
 
-        Options = UIOptions.Instantiate();
+        Options = Options.Instantiate();
         AddChild(Options);
         Options.Hide();
         Hide();

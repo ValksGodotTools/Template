@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Diagnostics;
 
 namespace Template.Setup;
 
@@ -42,6 +43,34 @@ public partial class Setup : Node
         _genre = (Genre)genreOptionBtn.Selected;
         SetGenreSelectedInfo(_genre);
         DisplayGameNamePreview("Undefined");
+    }
+    
+    private static void RestartEditor()
+    {
+        QuitEditor();
+        StartEditor();
+    }
+    
+    private static void StartEditor() 
+    {
+        OS.Execute(OS.GetExecutablePath(), ["--editor"]);
+    }
+
+    private static void QuitEditor()
+    {
+        string[] names = ["redot", "godot"];
+
+        foreach (Process process in Process.GetProcesses())
+        {
+            foreach (string name in names)
+            {
+                if (process.ProcessName.Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    process.Kill();
+                    return;
+                }
+            }
+        }
     }
 
     private void SetGenreSelectedInfo(Genre genre)
@@ -163,6 +192,7 @@ public partial class Setup : Node
         DirectoryUtils.DeleteEmptyDirectories(path);
 
         GetTree().Quit();
+        RestartEditor();
     }
 
     private void _on_apply_changes_pressed() 
@@ -193,7 +223,7 @@ public partial class Setup : Node
         string text = File.ReadAllText(Path.Combine(path, "project.godot"));
 
         text = text.Replace(
-            "run/main_scene=\"res://Genres/0 Setup/setup.tscn\"",
+            "run/main_scene=\"res://Genres/0 Setup/Setup.tscn\"",
            $"run/main_scene=\"res://Scenes/{scene}\"");
 
         File.WriteAllText(Path.Combine(path, "project.godot"), text);

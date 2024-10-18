@@ -1,6 +1,7 @@
 using Godot;
-using QualityP = Template.QualityPreset;
+using QualityP = Template.UI.QualityPreset;
 using VSyncMode = Godot.DisplayServer.VSyncMode;
+using Template.UI;
 
 namespace Template;
 
