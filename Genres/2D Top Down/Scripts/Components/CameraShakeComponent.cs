@@ -1,4 +1,5 @@
 using Godot;
+using Template.Valky;
 
 namespace Template.TopDown2D;
 
@@ -10,15 +11,15 @@ public partial class CameraShakeComponent : Node
     private double _remainingTime;
     private double _freqCounter;
 
-	public override void _Ready()
-	{
+    public override void _Ready()
+    {
         _camera = GetParent<Camera2D>();
         _config = new();
         SetPhysicsProcess(false);
-	}
+    }
 
-	public override void _PhysicsProcess(double delta)
-	{
+    public override void _PhysicsProcess(double delta)
+    {
         // Constantly subtract from remaining time
         _remainingTime -= delta;
         _freqCounter += delta;

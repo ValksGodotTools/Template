@@ -2,7 +2,7 @@ using Godot;
 using System.Threading.Tasks;
 using System;
 
-namespace Template;
+namespace Template.Valky;
 
 [Service]
 public partial class Global : Node

@@ -2,7 +2,7 @@ using Godot;
 using GodotUtils;
 using Template.Netcode;
 
-namespace Template;
+namespace Template.Netcode;
 
 public abstract partial class UINetControlPanelLow : Control
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Template;
+namespace Template.Netcode;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class NetExcludeAttribute : Attribute

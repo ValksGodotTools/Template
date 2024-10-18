@@ -2,7 +2,7 @@ using Godot;
 using GodotUtils;
 using System.Collections.Generic;
 
-namespace Template;
+namespace Template.Valky;
 
 public partial class UIOptionsNav : Control
 {

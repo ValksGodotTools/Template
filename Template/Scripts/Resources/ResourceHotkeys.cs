@@ -1,7 +1,7 @@
 using Godot.Collections;
 using Godot;
 
-namespace Template;
+namespace Template.Valky;
 
 public partial class ResourceHotkeys : Resource
 {
