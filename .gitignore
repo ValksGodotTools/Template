@@ -1,10 +1,13 @@
-# Godot
+# Redot
 .godot/*
 Exported/*
 .import/
 export.cfg
 export_presets.cfg
 *.translation
+
+# Addons
+addons/**/*.template_debug.x86_64.dll
 
 # GdUnit4
 TestResults/

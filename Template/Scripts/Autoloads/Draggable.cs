@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Template;
+namespace Template.Valky;
 
 // Autoload
 public partial class Draggable : Node2D

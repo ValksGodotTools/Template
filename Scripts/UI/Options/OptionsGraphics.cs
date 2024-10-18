@@ -2,9 +2,9 @@ using Godot;
 using System;
 using Environment = Godot.Environment;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsGraphics : Control
+public partial class OptionsGraphics : Control
 {
     public event Action<int> OnAntialiasingChanged;
 

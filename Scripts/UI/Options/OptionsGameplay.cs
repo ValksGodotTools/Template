@@ -1,9 +1,9 @@
 using Godot;
 using System;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsGameplay : Control
+public partial class OptionsGameplay : Control
 {
     public event Action<float> OnMouseSensitivityChanged;
 

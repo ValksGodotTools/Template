@@ -4,15 +4,17 @@ using Layout = Godot.Control.LayoutPreset;
 
 namespace Template.Inventory;
 
-[SceneTree]
 [Service]
 public partial class InventorySandbox : Node
 {
     private InventoryContainer _invContainerPlayer;
     private InventoryContainer _invContainerChest;
+    private VBoxContainer _inventoryParent;
 
     public override void _Ready()
     {
+        // [SceneTree] causing problems when setting up Template for any genre so doing this manually
+        _inventoryParent = GetNode<VBoxContainer>("%InventoryParent");
         AddPlayerInv();
         AddChestInv();
     }
@@ -48,8 +50,8 @@ public partial class InventorySandbox : Node
 
         _invContainerPlayer = InventoryContainer.Instantiate(inv, columns: 10);
 
-        InventoryParent.AddChild(_invContainerPlayer);
-        InventoryParent.MoveChild(_invContainerPlayer, InventoryParent.GetChildCount() - 1); // appear bottom
+        _inventoryParent.AddChild(_invContainerPlayer);
+        _inventoryParent.MoveChild(_invContainerPlayer, _inventoryParent.GetChildCount() - 1); // appear bottom
 
         _invContainerPlayer.SetLayout(Layout.CenterBottom);
         _invContainerPlayer.Position -= new Vector2(0, 50);
@@ -65,8 +67,8 @@ public partial class InventorySandbox : Node
 
         _invContainerChest = InventoryContainer.Instantiate(inv, columns: 10);
 
-        InventoryParent.AddChild(_invContainerChest);
-        InventoryParent.MoveChild(_invContainerChest, 0); // other inventory should always appear on top
+        _inventoryParent.AddChild(_invContainerChest);
+        _inventoryParent.MoveChild(_invContainerChest, 0); // other inventory should always appear on top
 
         _invContainerChest.SetLayout(Layout.CenterTop);
         _invContainerChest.Position += new Vector2(0, 50);

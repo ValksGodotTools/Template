@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Template/Scripts/Autoloads/Global.cs" id="1_ueahs"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/options_manager.tres" id="2_rot82"]
 [ext_resource type="Script" path="res://Template/Scripts/Autoloads/UIManager.cs" id="3_cvid6"]
-[ext_resource type="PackedScene" uid="uid://b1augjui20eux" path="res://Scenes/UI/UIMetricsOverlay.tscn" id="3_gpsxw"]
+[ext_resource type="PackedScene" uid="uid://b1augjui20eux" path="res://Scenes/UI/MetricsOverlay.tscn" id="3_gpsxw"]
 
 [node name="Global" type="Node2D"]
 process_mode = 3

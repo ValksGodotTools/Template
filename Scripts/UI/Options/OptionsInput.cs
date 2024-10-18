@@ -4,9 +4,9 @@ using System;
 using System.Linq;
 using Godot.Collections;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIOptionsInput : Control
+public partial class OptionsInput : Control
 {
     [Export] private OptionsManager optionsManager;
     private static BtnInfo _btnNewInput; // the btn waiting for new input

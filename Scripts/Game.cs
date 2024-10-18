@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using Template.Valky;
+using Template.UI;
 using static Template.SceneManager;
 
 namespace Template;

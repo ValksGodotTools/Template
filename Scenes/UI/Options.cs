@@ -1,9 +1,9 @@
 using Godot;
 
-namespace Template;
+namespace Template.UI;
 
 [SceneTree]
-public partial class UIOptions : PanelContainer
+public partial class Options : PanelContainer
 {
     [OnInstantiate]
     private void Init()

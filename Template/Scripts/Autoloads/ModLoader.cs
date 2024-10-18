@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Text.Json;
 
-namespace Template;
+namespace Template.Valky;
 
 [Service(ServiceLifeTime.Application)]
 public partial class ModLoader

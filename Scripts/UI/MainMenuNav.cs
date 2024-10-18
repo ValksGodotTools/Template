@@ -1,8 +1,9 @@
 using Godot;
+using Template.Valky;
 
-namespace Template;
+namespace Template.UI;
 
-public partial class UIMainMenuNav : Node
+public partial class MainMenuNav : Node
 {
     private AudioManager _audioManager;
 

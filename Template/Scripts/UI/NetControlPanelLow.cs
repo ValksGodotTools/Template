@@ -1,10 +1,9 @@
 using Godot;
 using GodotUtils;
-using Template.Netcode;
 
-namespace Template;
+namespace Template.Netcode;
 
-public abstract partial class UINetControlPanelLow : Control
+public abstract partial class NetControlPanelLow : Control
 {
     public Net Net { get; private set; } = new();
 
