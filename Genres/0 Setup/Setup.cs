@@ -193,7 +193,7 @@ public partial class Setup : Node
         string text = File.ReadAllText(Path.Combine(path, "project.godot"));
 
         text = text.Replace(
-            "run/main_scene=\"res://Genres/0 Setup/setup.tscn\"",
+            "run/main_scene=\"res://Genres/0 Setup/Setup.tscn\"",
            $"run/main_scene=\"res://Scenes/{scene}\"");
 
         File.WriteAllText(Path.Combine(path, "project.godot"), text);
