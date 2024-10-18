@@ -159,7 +159,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
-text = "Move Project Files (HAS LOTS OF ISSUES // NOT RECOMMENDED)"
+button_pressed = true
+text = "Move Project Files"
 
 [node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 75)
