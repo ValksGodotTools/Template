@@ -23,7 +23,6 @@ If you are not using Windows you may need to get a [Custom ENet build](https://g
 - **[Simplified Tween Logic](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)** - You will love writing tween logic now.
 - **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
 - **[Cat Lips Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)** - Source generators that make your life a little easier.
-- **[Embedded Game Window](https://fabimakesgames.itch.io/embedgame)** - Embed the game window thanks to "Embed Game" made by fabimakesgames.
 - **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
 
 **WIP Features**
