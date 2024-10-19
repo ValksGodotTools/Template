@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "embed_game_init"
+compatibility_minimum = "4.1"
+reloadable = true
+
+[libraries]
+
+
+windows.debug.x86_32 = "res://addons/fabimakesgames.embed_game/bin/embed_game.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "res://addons/fabimakesgames.embed_game/bin/embed_game.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "res://addons/fabimakesgames.embed_game/bin/embed_game.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/fabimakesgames.embed_game/bin/embed_game.windows.template_release.x86_64.dll"

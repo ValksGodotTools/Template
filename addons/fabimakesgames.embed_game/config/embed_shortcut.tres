@@ -1,0 +1,9 @@
+[gd_resource type="Shortcut" load_steps=2 format=3 uid="uid://dvlydk5ftl206"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_myaxp"]
+device = -1
+ctrl_pressed = true
+keycode = 4194336
+
+[resource]
+events = [SubResource("InputEventKey_myaxp")]

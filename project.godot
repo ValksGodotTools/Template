@@ -26,6 +26,7 @@ SceneManager="*res://Template/Scripts/Autoloads/SceneManager.cs"
 VisualizeAutoload="*res://Template/Visualize/Scripts/VisualizeAutoload.cs"
 CommandLineArgs="*res://Template/Scripts/Autoloads/CommandLineArgs.cs"
 Draggable="*res://Template/Scripts/Autoloads/Draggable.cs"
+EmbedGameAutoload="*res://addons/fabimakesgames.embed_game/embed_game_autoload.gd"
 
 [display]
 
@@ -34,6 +35,10 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="Template"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/fabimakesgames.embed_game/plugin.cfg")
 
 [file_customization]
 
