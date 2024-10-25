@@ -17,23 +17,27 @@ If you are not using Windows you may need to get a [Custom ENet build](https://g
 
 ## Features
 **Hot Features**
-- **[Multiplayer](https://github.com/ValksGodotTools/Template/wiki/Multiplayer)** - Multiplayer sending minimal packet data achieved with ENet.
-- **[In-Game Debugging](https://github.com/ValksGodotTools/Template/wiki/In%E2%80%90Game-Debugging)** - See what your code is doing in-game.
-- **[Menu UI](https://github.com/ValksGodotTools/Template/wiki/Menu-UI)** - Several UI scenes including the main menu, options and credits have been setup for you.
-- **[Simplified Tween Logic](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)** - You will love writing tween logic now.
-- **[Managing Static with Services](https://github.com/ValksGodotTools/Template/wiki/Services)** - Organize and manage static data using the service pattern.
-- **[Cat Lips Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)** - Source generators that make your life a little easier.
-- **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)** - Extend functionality with a collection of useful extensions.
+- **[Multiplayer](https://github.com/ValksGodotTools/Template/wiki/Multiplayer)** - Send minimal packet data with ENet.
+- **[In-Game Debugging Tools](https://github.com/ValksGodotTools/Template/wiki/In%E2%80%90Game-Debugging)**
+- **[Menu UI](https://github.com/ValksGodotTools/Template/wiki/Menu-UI)** - Main menu, options and credits.
+- **[Simplified Tweens](https://github.com/ValksGodotTools/Template/wiki/Simplified-Tweens)**
+- **[Service Attribute](https://github.com/ValksGodotTools/Template/wiki/Services)** - Alternative way of managing static members.
+- **[Cat Lips Source Generators](https://github.com/ValksGodotTools/Template/wiki/Source-Generators)**
+- **[Useful Extensions](https://github.com/ValksGodotTools/Template/wiki/Extensions)**
 
 **WIP Features**
 - **[3D FPS Scene](https://github.com/ValksGodotTools/Template/wiki/3D-FPS)** - Minimal first-person shooter scene with character controller and pre-made weapon animations.
 - **[2D Top Down Scene](https://github.com/ValksGodotTools/Template/wiki/2D-Top-Down)** - A dungeon scene with enemies, room transitions and working multiplayer.
 - **[Inventory](https://github.com/ValksGodotTools/Template/wiki/Inventory)** - A WIP re-creation of my old inventory system.
-- **[Draggable Nodes](https://github.com/ValksGodotTools/Template/wiki/Draggable-Nodes)** - Easily make any Node2D or Control draggable in-game.
-- **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates in your game.
-- **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Experiment with modding capabilities with a partially functional mod loader.
+- **[Draggable Nodes](https://github.com/ValksGodotTools/Template/wiki/Draggable-Nodes)** - Make any node draggable.
+- **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates.
+- **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Half-working mod loader.
+
+![scaled](https://github.com/user-attachments/assets/290b9825-7c10-4a91-aca4-278aa555b6df)  
+[Image by Rune](https://www.pixiv.net/en/users/25170019)
 
 ## Contributing
+
 Want to contribute? Start by looking [here](https://github.com/ValksGodotTools/Template/wiki/Contributing)!
 
 Thank you [Brian Shao](https://github.com/cydq) for helping with cross-platform compatibility.
