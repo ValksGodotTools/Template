@@ -10,7 +10,7 @@
 ## Setup
 1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
 2. Download and install the [latest Redot C# release](https://www.redotengine.org/)
-3. Clone with `git clone --recursive https://github.com/ValksGodotTools/Template`
+3. Clone with `git clone --recursive https://github.com/CSharpRedotTools/Template`
 4. If you want to setup Template for a specific genre, [continue reading here](https://github.com/ValksGodotTools/Template/wiki/Setting-up-Template-for-a-Specific-Genre)
 
 If you are not using Windows you may need to get a [Custom ENet build](https://github.com/ValksGodotTools/Template/wiki/Custom-ENet-Builds)
