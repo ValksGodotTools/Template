@@ -16,7 +16,7 @@ Color = Color(1, 1, 1, 1)
 BlendMode = 0
 LightMode = 0
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fg2x8"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8hory"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmrw4"]
 atlas = ExtResource("2_ffw43")
@@ -125,7 +125,7 @@ IdleState = NodePath("../EnemyComponent/IdleState")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
-material = SubResource("CanvasItemMaterial_fg2x8")
+material = SubResource("CanvasItemMaterial_8hory")
 position = Vector2(0, 15)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_er05e")

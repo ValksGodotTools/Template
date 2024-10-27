@@ -1,12 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://bp0sflr3sgvif"]
+[gd_scene load_steps=31 format=3 uid="uid://bp0sflr3sgvif"]
 
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scenes/Prefabs/Player/Player.cs" id="1_p86na"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerConfig.cs" id="2_dhp8j"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Components/PlayerComponent.cs" id="3_xmnsw"]
 [ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Enemies/EntityConfig.cs" id="4_8dnua"]
 [ext_resource type="Shader" path="res://Genres/2D Top Down/Shaders/color.gdshader" id="5_fp4qj"]
-[ext_resource type="Texture2D" uid="uid://q80kt62wvbpp" path="res://Template/Sprites/UI/icon.svg" id="6_txatc"]
+[ext_resource type="Texture2D" uid="uid://bkrwlmtm28kxo" path="res://Genres/2D Top Down/Sprites/Redot Chan/Redot_chan_sprite_sheet.png" id="6_d4sei"]
+[ext_resource type="Texture2D" uid="uid://yut3jj26a6k0" path="res://Template/Sprites/UI/icon.svg" id="6_txatc"]
 [ext_resource type="Texture2D" uid="uid://e5nc1kcq5ns" path="res://Genres/2D Top Down/Sprites/light.png" id="7_6hb2u"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerAnimation.cs" id="7_yvakb"]
+[ext_resource type="Script" path="res://Genres/2D Top Down/Scripts/Player/PlayerInputs.cs" id="10_ns4ju"]
 
 [sub_resource type="Resource" id="Resource_yn7yi"]
 script = ExtResource("2_dhp8j")
@@ -30,18 +33,141 @@ shader = ExtResource("5_fp4qj")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/blend_intensity = 0.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t86ow"]
-atlas = ExtResource("6_txatc")
-region = Rect2(0, 0, 128, 128)
+[sub_resource type="AtlasTexture" id="AtlasTexture_jxoqj"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2tdos"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kr652"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klsbd"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_affsn"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(80, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbdnq"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(96, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bosp"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(112, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcdct"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnmrw"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_th4hm"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmp5w"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_74vxo"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx1sg"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bu68d"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wh2ff"]
+atlas = ExtResource("6_d4sei")
+region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_88cys"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_t86ow")
+"texture": SubResource("AtlasTexture_jxoqj")
 }],
 "loop": true,
-"name": &"default",
+"name": &"idle_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2tdos")
+}],
+"loop": true,
+"name": &"idle_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kr652")
+}],
+"loop": true,
+"name": &"idle_side",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_klsbd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_affsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbdnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bosp")
+}],
+"loop": true,
+"name": &"walk_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcdct")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnmrw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_th4hm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bmp5w")
+}],
+"loop": true,
+"name": &"walk_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_74vxo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx1sg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bu68d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wh2ff")
+}],
+"loop": true,
+"name": &"walk_side",
 "speed": 5.0
 }]
 
@@ -59,12 +185,20 @@ AnimatedSprite = NodePath("../AnimatedSprite2D")
 shape = SubResource("RectangleShape2D_4su66")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 1
 material = SubResource("ShaderMaterial_he5ml")
-scale = Vector2(0.5, 0.5)
+scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_88cys")
+animation = &"idle_front"
+
+[node name="Animation" type="Node" parent="AnimatedSprite2D" node_paths=PackedStringArray("_playerInputs")]
+script = ExtResource("7_yvakb")
+_playerInputs = NodePath("../../Inputs")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.580392, 0.615686, 1, 1)
+energy = 0.2
 shadow_enabled = true
 shadow_filter = 2
 shadow_filter_smooth = 1.0
@@ -75,3 +209,6 @@ texture_scale = 1.5
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_txatc")
 offset = Vector2(500, 0)
+
+[node name="Inputs" type="Node" parent="."]
+script = ExtResource("10_ns4ju")

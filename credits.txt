@@ -1,53 +1,17 @@
-[h1]TEMPLATE
+[h1]Big Header
 
-[h2]TEMPLATE
+[h2]Smaller Header
 
-Repo Link https://github.com/ValksGodotTools/Template
+Anything here will show up in the credits in-game. Update this file with the appropriate credits!!!
 
+Click the "Retrieve Credits" checkbox in res://Scenes/UI/ToolScriptHelpers.tscn to 
+retrieve all credit.txt files in the project.
 
+If you use this Template for your game you do not have to mention the link to it in the credits although
+it is appreciated. https://github.com/CSharpRedotTools/Template
 
-
-
-[h1]Assets
-
-[h2]Valkyrienyanko
-
-All FPS animations made by Valkyrienyanko LICENSED CC0: https://github.com/ValksGodotTools/Template
-
-"Dirt & Grass Tileset" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/dirt-grass-tileset
-
-"Flag (Captured / Uncaptured)" by Valkyrienyanko LICENSED CC0: https://opengameart.org/content/flag-captured-uncaptured
-
-
-
-
-[h2]Audio
-
-"5 Chiptunes (Action)" by SubspaceAudio LICENSED CC0: https://opengameart.org/content/5-chiptunes-action
-
-
-
-
-[h2]Art
+[h2]Assets Used
 
 "Concept Art Series Bundle 1" by Eon Cire LICENSED CC0: https://opengameart.org/content/concept-art-studies-bundle-1
 
-"Super Random Sprites" by GrafxKid LICENSED CC0: https://opengameart.org/content/super-random-sprites
-
-"Mini Fantasy Sprites" by GrafxKid LICENSED CC0: https://opengameart.org/content/mini-fantasy-sprites
-
-"Choco Prairies GB Pack" by GrafxKid LICENSED CC0: https://opengameart.org/content/choco-prairies-gb-pack
-
-"Various Creatures" by GrafxKid LICENSED CC0: https://opengameart.org/content/various-creatures
-
-"Classic Hero" by GrafxKid LICENSED CC0: https://opengameart.org/content/classic-hero
-
-"Platform Baddies" by GrafxKid LICENSED CC0: https://opengameart.org/content/platformer-baddies
-
-"Classic Hero and Baddies Pack" by GrafxKid LICENSED CC0: https://opengameart.org/content/classic-hero-and-baddies-pack
-
-"Twiggy Sprites" by GrafxKid LICENSED CC0: https://opengameart.org/content/twiggy-sprites
-
-"Bushly and Princess Sera" by GrafxKid LICENSED CC0: https://opengameart.org/content/bushly-and-princess-sera
-
-"Items and Elements" by GrafxKid LICENSED CC0: https://opengameart.org/content/items-and-elements
+"Redot Chan" by Rune: https://runegamedev.itch.io/redot-chan-sprite-sheet

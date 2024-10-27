@@ -231,3 +231,5 @@ textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.29219, 0.29219, 0.29219, 1)
 anti_aliasing/quality/msaa_2d=3
 anti_aliasing/quality/msaa_3d=3
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
