@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dnawp2ojmq7fy"]
 
-[ext_resource type="Texture2D" uid="uid://bta173dmvpgj3" path="res://Template/Visualize/Example Scene/icon.svg" id="1_05sfh"]
+[ext_resource type="Texture2D" uid="uid://yut3jj26a6k0" path="res://Template/Sprites/UI/icon.svg" id="1_n7c3n"]
 [ext_resource type="Script" path="res://Template/Visualize/Example Scene/VisualizeExampleSprite.cs" id="2_2sqlw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_v1aa2"]
@@ -8,5 +8,5 @@ light_mode = 1
 
 [node name="Sprite2D" type="Sprite2D"]
 material = SubResource("CanvasItemMaterial_v1aa2")
-texture = ExtResource("1_05sfh")
+texture = ExtResource("1_n7c3n")
 script = ExtResource("2_2sqlw")
