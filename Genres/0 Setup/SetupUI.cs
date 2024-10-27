@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using System.IO;
 
 namespace Template.Setup;

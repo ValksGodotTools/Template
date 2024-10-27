@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.FPS3D;
 
@@ -79,7 +79,7 @@ public partial class SpaceShip : Node3D, IStateMachine
         {
             Enter = () =>
             {
-                new GTween(this)
+                new RTween(this)
                     .Animate("position", Position + Vector3.Up * 1, 1).EaseIn()
                     .Animate("position", Position + Vector3.Up * 15, 2).EaseOut()
                     .Callback(() => SwitchState(Flight()));

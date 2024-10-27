@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.Example;
 
@@ -16,7 +16,7 @@ public partial class ExampleScene : Node
         VisualizeExampleSprite sprite = VisualizeExampleSprite.Instantiate();
 
         // As you can see the visualize info is created at the moment of node creation
-        _ = new GTween(this)
+        _ = new RTween(this)
 			.Delay(0.1)
 			.Callback(() =>
 			{

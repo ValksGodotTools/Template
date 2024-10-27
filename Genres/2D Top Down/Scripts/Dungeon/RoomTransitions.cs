@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using System.Collections.Generic;
 
 namespace Template.TopDown2D;
@@ -157,12 +157,12 @@ public partial class RoomTransitions : Node
         Vector2 screenSize = GetViewport().GetVisibleRect().Size;
         Vector2 transitionOffset = screenSize * (normal * -1);
 
-        new GTween(playerCamera)
+        new RTween(playerCamera)
             .SetAnimatingProp(Camera2D.PropertyName.Position)
             .AnimateProp(playerCamera.Position + transitionOffset, duration)
             .TransExpo();
 
-        new GTween(_player)
+        new RTween(_player)
             .SetAnimatingProp(Player.PropertyName.Position)
             .AnimateProp(_player.Position + new Vector2(150, 150) * (normal * -1), duration)
             .EaseIn()

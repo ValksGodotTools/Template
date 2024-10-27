@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 using System.Collections.Generic;
 
 namespace Template.TopDown2D;
@@ -21,7 +21,7 @@ public partial class SlideState : EnemyState
 
         Entity.ApplyCentralImpulse(force);
 
-        new GTween(Sprite)
+        new RTween(Sprite)
             .SetAnimatingProp(Node2D.PropertyName.Scale)
             .AnimateProp(Sprite.Scale * new Vector2(1.3f, 0.5f), 0.2).EaseOut()
             .AnimateProp(Sprite.Scale * new Vector2(1, 1), 0.3).EaseOut()

@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.Valky;
 
@@ -7,7 +7,7 @@ namespace Template.Valky;
 public partial class AudioManager : Node
 {
     [Export] private OptionsManager optionsManager;
-    private GAudioPlayer _musicPlayer;
+    private RAudioPlayer _musicPlayer;
     private Node _sfxPlayersParent;
     private float _lastPitch;
     private ResourceOptions _options;
@@ -15,7 +15,7 @@ public partial class AudioManager : Node
     public override void _Ready()
     {
         _options = optionsManager.Options;
-        _musicPlayer = new GAudioPlayer(this);
+        _musicPlayer = new RAudioPlayer(this);
 
         _sfxPlayersParent = new Node();
         AddChild(_sfxPlayersParent);
@@ -32,7 +32,7 @@ public partial class AudioManager : Node
                 volume == 0 ? -80 : volume.Remap(0, 100, -40, 0);
 
             // Transition from current song being played to new song
-            new GTween(_musicPlayer.StreamPlayer)
+            new RTween(_musicPlayer.StreamPlayer)
                 .SetAnimatingProp(AudioStreamPlayer.PropertyName.VolumeDb)
                 // Fade out current song
                 .AnimateProp(-80, fadeOut).EaseIn()
@@ -57,7 +57,7 @@ public partial class AudioManager : Node
     public void PlaySFX(AudioStream sound)
     {
         // Setup the SFX stream player
-        GAudioPlayer sfxPlayer = new(_sfxPlayersParent, true)
+        RAudioPlayer sfxPlayer = new(_sfxPlayersParent, true)
         {
             Stream = sound,
             Volume = _options.SFXVolume
@@ -89,7 +89,7 @@ public partial class AudioManager : Node
     {
         foreach (AudioStreamPlayer audioPlayer in _sfxPlayersParent.GetChildren())
         {
-            new GTween(audioPlayer)
+            new RTween(audioPlayer)
                 .Animate(AudioStreamPlayer.PropertyName.VolumeDb, -80, fadeTime);
         }
     }

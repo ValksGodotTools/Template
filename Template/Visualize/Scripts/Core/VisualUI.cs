@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Threading;
 using static Godot.Control;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template;
 
@@ -116,7 +116,7 @@ public static class VisualUI
         {
             baseButton.Pressed += () =>
             {
-                _ = new GTween(baseButton)
+                _ = new RTween(baseButton)
                     .Delay(0.1)
                     .Callback(() => baseButton.ReleaseFocus());
             };

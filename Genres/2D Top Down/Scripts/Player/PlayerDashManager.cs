@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -31,17 +31,17 @@ public class PlayerDashManager(PlayerConfig config, AnimatedSprite2D dashSprite)
 
     private void ResetDashStateAfterDelay(Node node)
     {
-        GTween.Delay(node, 0.2, () => _canDash = true);
+        RTween.Delay(node, 0.2, () => _canDash = true);
     }
 
     private void Dash(Node2D node, Vector2 moveDirection)
     {
-        GTween ghosts = new GTween(node)
+        RTween ghosts = new RTween(node)
             .Delay(0.0565)
             .Callback(() => AddDashGhost(node))
             .Loop();
 
-        new GTween(node)
+        new RTween(node)
             .Animate(CharacterBody2D.PropertyName.Velocity, moveDirection * config.DashStrength, 0.1)
             .Delay(0.1)
             .Callback(() => ghosts.Stop());

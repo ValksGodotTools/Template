@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -14,20 +14,20 @@ public partial class IdleState : EnemyState
     [Export] private double _delayUntilIdleActionState = 1;
     [Export] private string _animationName = "idle";
 
-    private GTween _delayUntilSlide;
+    private RTween _delayUntilSlide;
     private bool _isBodyEnteredSubscribed;
 
     protected override void Enter()
     {
         Sprite.PlayRandom(_animationName);
 
-        GTween.Delay(this, GD.RandRange(_minIdleTime, _maxIdleTime), () =>
+        RTween.Delay(this, GD.RandRange(_minIdleTime, _maxIdleTime), () =>
         {
             _isBodyEnteredSubscribed = true;
             _playerDetectArea.BodyEntered += BodyEnteredCallback;
             _playerDetectArea.SetDeferred(Area2D.PropertyName.Monitoring, true);
 
-            _delayUntilSlide = GTween.Delay(this, _delayUntilIdleActionState, () =>
+            _delayUntilSlide = RTween.Delay(this, _delayUntilIdleActionState, () =>
             {
                 SwitchState(_idleActionState);
             });

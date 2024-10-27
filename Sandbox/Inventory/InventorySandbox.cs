@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using Layout = Godot.Control.LayoutPreset;
 
 namespace Template.Inventory;

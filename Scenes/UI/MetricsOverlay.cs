@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using Monitor = Godot.Performance.Monitor;
 
 namespace Template.UI;
@@ -23,7 +23,7 @@ public partial class MetricsOverlay : Control
         _labelNodes = Nodes;
         _labelOrphanNodes = OrphanNodes;
 
-        if (GOS.IsExportedRelease())
+        if (ROS.IsExportedRelease())
         {
             _labelMinRAM.Hide();
             _labelMaxRAM.Hide();
@@ -53,7 +53,7 @@ public partial class MetricsOverlay : Control
 
         _labelFPS.Text = Engine.GetFramesPerSecond().ToString();
 
-        if (!GOS.IsExportedRelease())
+        if (!ROS.IsExportedRelease())
         {
             double minRAM = Performance.GetMonitor(Monitor.MemoryStatic) / BYTES_IN_MEGABYTE;
             double maxRAM = Performance.GetMonitor(Monitor.MemoryStaticMax) / BYTES_IN_MEGABYTE;

@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using System;
 
 namespace Template.Inventory;
@@ -23,7 +23,7 @@ public partial class AnimHelperItemContainer : ItemContainer
     public override void _Ready()
     {
         // Always QueueFree after so many seconds have passed
-        new GTween(this).Delay(0.5).Callback(() =>
+        new RTween(this).Delay(0.5).Callback(() =>
         {
             QueueFree();
             OnReachedTarget?.Invoke();

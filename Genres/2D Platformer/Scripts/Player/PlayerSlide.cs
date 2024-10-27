@@ -1,4 +1,4 @@
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.Platformer2D.Retro;
 

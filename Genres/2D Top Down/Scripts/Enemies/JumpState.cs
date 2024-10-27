@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -29,7 +29,7 @@ public partial class JumpState : EnemyState
 
         float size = 1.5f;
 
-        new GTween(Sprite)
+        new RTween(Sprite)
             .SetAnimatingProp(Node2D.PropertyName.Scale)
             .AnimateProp(Sprite.Scale * new Vector2(size * 2, size), 0.2).EaseOut()
             .AnimateProp(Sprite.Scale * new Vector2(size, size * 2), _jumpTime * 0.5).EaseOut()

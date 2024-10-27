@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -21,7 +21,7 @@ public partial class PlayerDashGhost : Node2D
 
         const double MODULATE_DURATION = 0.5;
 
-        new GTween(this)
+        new RTween(this)
             .Animate(Node2D.PropertyName.Modulate, Colors.Transparent, MODULATE_DURATION).EaseOut()
             .Callback(QueueFree);
     }

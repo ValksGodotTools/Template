@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -167,7 +167,7 @@ public static class SetupManager
             switch (Path.GetDirectoryName(fullFilePath))
             {
                 case ".godot":
-                case "GodotUtils":
+                case "RedotUtils":
                 case "addons":
                     return;
             }

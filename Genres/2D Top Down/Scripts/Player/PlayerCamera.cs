@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -22,7 +22,7 @@ public partial class PlayerCamera : Camera2D
     {
         _player = player;
         Position = player.Position;
-        GTween.Delay(this, 0.01, () => PositionSmoothingEnabled = true);
+        RTween.Delay(this, 0.01, () => PositionSmoothingEnabled = true);
         SetPhysicsProcess(true);
     }
 

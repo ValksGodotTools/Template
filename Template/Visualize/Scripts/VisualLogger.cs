@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 using System.Collections.Generic;
 
 namespace Template;
@@ -61,7 +61,7 @@ public class VisualLogger
             vbox.RemoveChild(vbox.GetChild(vbox.GetChildCount() - 1));
         }
 
-        _ = new GTween(label)
+        _ = new RTween(label)
             .SetAnimatingProp(CanvasItem.PropertyName.Modulate)
             .AnimateProp(Colors.Transparent, fadeTime)
             .Callback(label.QueueFree);

@@ -1,5 +1,5 @@
 ﻿using Godot;
-using GodotUtils;
+using RedotUtils;
 
 namespace Template.TopDown2D;
 
@@ -13,7 +13,7 @@ public partial class ShakeState : EnemyState
 
     protected override void Enter()
     {
-        GTween tweenShake = new(Sprite);
+        RTween tweenShake = new(Sprite);
         Vector2 prevSpritePos = Sprite.Position;
 
         Sprite.Play(_animationName);
@@ -23,7 +23,7 @@ public partial class ShakeState : EnemyState
             .AnimateProp(Sprite.Position + _offset, _frequency)
             .Loop();
 
-        GTween.Delay(this, _duration, () =>
+        RTween.Delay(this, _duration, () =>
         {
             tweenShake.Stop();
             Sprite.Position = prevSpritePos;

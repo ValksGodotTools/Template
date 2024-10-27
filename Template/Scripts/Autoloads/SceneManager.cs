@@ -1,5 +1,5 @@
 using Godot;
-using GodotUtils;
+using RedotUtils;
 using System;
 using Template.Valky;
 
@@ -131,7 +131,7 @@ public partial class SceneManager : Node
         canvasLayer.AddChild(colorRect);
 
         // Animate color rect
-        new GTween(colorRect)
+        new RTween(colorRect)
             .Animate(ColorRect.PropertyName.Color, new Color(0, 0, 0, transColor == TransColor.Black ? 1 : 0), duration)
             .Callback(() =>
             {
