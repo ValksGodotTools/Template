@@ -3,6 +3,7 @@ using Template.Netcode.Client;
 
 namespace Template.TopDown2D;
 
+[Visualize(nameof(Position))]
 [SceneTree]
 public partial class Player : CharacterBody2D
 {

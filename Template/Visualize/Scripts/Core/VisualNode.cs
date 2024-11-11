@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace Template;
 
+/// <summary>
+/// Represents a node to be visualized
+/// </summary>
 public class VisualNode(Node node, Vector2 initialPosition, string[] visualizeMembers, IEnumerable<PropertyInfo> properties, IEnumerable<FieldInfo> fields, IEnumerable<MethodInfo> methods)
 {
     public Node Node { get; } = node;

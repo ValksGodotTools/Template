@@ -4,6 +4,9 @@ using System;
 
 namespace Template;
 
+/// <summary>
+/// More utility methods
+/// </summary>
 public static partial class VisualControlTypes
 {
     private static void SetControlValue(Control control, object value)

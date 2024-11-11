@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Template;
 
+/// <summary>
+/// This logger shows all messages in game making it easier to debug
+/// </summary>
 public class VisualLogger
 {
     // This is ugly using public static here but I don't know how else to do it

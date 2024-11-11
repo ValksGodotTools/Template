@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Template;
 
+/// <summary>
+/// A set of utility methods for handling the VisualizeAttribute
+/// </summary>
 public static class VisualHandler
 {
     public static void SetMemberValue(MemberInfo member, object target, object value)

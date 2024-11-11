@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace Template;
 
+/// <summary>
+/// Handles the VisualizeAttribute
+/// </summary>
 public static class VisualizeAttributeHandler
 {
     private static readonly BindingFlags _flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;

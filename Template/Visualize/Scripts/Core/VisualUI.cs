@@ -9,96 +9,105 @@ using RedotUtils;
 
 namespace Template;
 
+/// <summary>
+/// The main core class for the visualizer UI
+/// </summary>
 public static class VisualUI
 {
     public const float VISUAL_UI_SCALE_FACTOR = 0.6f;
 
+    /// <summary>
+    /// Creates the visual panel for a specified visual node.
+    /// </summary>
     public static (Control, List<Action>) CreateVisualPanel(SceneTree tree, VisualNode debugVisualNode)
     {
-        List<VisualSpinBox> spinBoxes = [];
         Dictionary<Node, VBoxContainer> visualNodes = [];
+        
+        List<VisualSpinBox> spinBoxes = [];
         List<Action> updateControls = [];
 
         Node node = debugVisualNode.Node;
 
-        PanelContainer panelContainer = new()
-        {
-            // Ensure this info is rendered above all game elements
-            Name = node.Name,
-            Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR,
-            ZIndex = (int)RenderingServer.CanvasItemZMax
-        };
+        PanelContainer panelContainer = CreatePanelContainer(node.Name);
 
-        panelContainer.AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
-
-        VBoxContainer vboxParent = new();
-
-        VBoxContainer vboxMembers = new()
-        {
-            Modulate = new Color(0.8f, 1, 0.8f, 1)
-        };
-
-        VBoxContainer readonlyMembers = new()
-        {
-            Modulate = new Color(1.0f, 0.75f, 0.8f, 1)
-        };
+        VBoxContainer mutableMembers = CreateColoredVBox(0.8f, 1, 0.8f);
+        VBoxContainer readonlyMembers = CreateColoredVBox(1.0f, 0.75f, 0.8f);
 
         string[] visualizeMembers = debugVisualNode.VisualizeMembers;
 
-        if (visualizeMembers != null)
-        {
-            foreach (string visualMember in visualizeMembers)
-            {
-                // Try to get the property first
-                PropertyInfo property = node.GetType().GetProperty(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-                FieldInfo field = null;
-                object initialValue = null;
+        AddVisualControls(visualizeMembers, node, readonlyMembers, updateControls, spinBoxes);
 
-                if (property != null)
-                {
-                    initialValue = property.GetValue(property.GetGetMethod(true).IsStatic ? null : node);
-                }
-                else
-                {
-                    // If property is null, try to get the field
-                    field = node.GetType().GetField(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-                    if (field != null)
-                    {
-                        initialValue = field.GetValue(field.IsStatic ? null : node);
-                    }
-                }
+        AddMemberInfoElements(mutableMembers, debugVisualNode.Properties, node, spinBoxes);
 
-                // If neither property nor field is found, skip this member
-                if (property == null && field == null)
-                {
-                    continue;
-                }
+        AddMemberInfoElements(mutableMembers, debugVisualNode.Fields, node, spinBoxes);
 
-                if (initialValue != null)
-                {
-                    AddVisualControl(visualMember, readonlyMembers, node, field, property, initialValue, updateControls, spinBoxes);
-                }
-                else
-                {
-                    _ = TryAddVisualControlAsync(visualMember, readonlyMembers, node, field, property, updateControls, spinBoxes);
-                }
-            }
-        }
-
-        AddMemberInfoElements(vboxMembers, debugVisualNode.Properties, node, spinBoxes);
-
-        AddMemberInfoElements(vboxMembers, debugVisualNode.Fields, node, spinBoxes);
-
-        VisualMethods.AddMethodInfoElements(vboxMembers, debugVisualNode.Methods, node, spinBoxes);
+        VisualMethods.AddMethodInfoElements(mutableMembers, debugVisualNode.Methods, node, spinBoxes);
 
         VBoxContainer vboxLogs = new();
-        vboxMembers.AddChild(vboxLogs);
+        mutableMembers.AddChild(vboxLogs);
 
         visualNodes.Add(node, vboxLogs);
 
-        vboxParent.AddChild(new Label 
-        { 
-            Text = node.Name,
+        VBoxContainer vboxParent = CreateVBoxParent(node.Name);
+
+        vboxParent.AddChild(readonlyMembers);
+        vboxParent.AddChild(mutableMembers);
+
+        SetButtonsToReleaseFocusOnPress(vboxParent);
+
+        panelContainer.AddChild(vboxParent);
+        
+        // Add to canvas layer so UI is not affected by lighting in game world
+        CanvasLayer canvasLayer = CreateCanvasLayer(node.Name, node.GetInstanceId());
+        canvasLayer.AddChild(panelContainer);
+
+        tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
+
+        SetInitialPosition(mutableMembers, debugVisualNode.InitialPosition);
+
+        // This is ugly but I don't know how else to do it
+        VisualLogger.VisualNodes = visualNodes;
+
+        return (panelContainer, updateControls);
+    }
+    
+    /// <summary>
+    /// Sets the initial position for a VBoxContainer.
+    /// </summary>
+    private static void SetInitialPosition(VBoxContainer vbox, Vector2 initialPosition)
+    {
+        if (initialPosition != Vector2.Zero)
+        {
+            vbox.GlobalPosition = initialPosition;
+        }
+    }
+
+    /// <summary>
+    /// Ensures buttons release focus on press within a VBoxContainer.
+    /// </summary>
+    private static void SetButtonsToReleaseFocusOnPress(VBoxContainer vboxParent)
+    {
+        foreach (BaseButton baseButton in vboxParent.GetChildren<BaseButton>())
+        {
+            baseButton.Pressed += () =>
+            {
+                _ = new RTween(baseButton)
+                    .Delay(0.1)
+                    .Callback(() => baseButton.ReleaseFocus());
+            };
+        }
+    }
+
+    /// <summary>
+    /// Creates a VBoxContainer parent with a specified name.
+    /// </summary>
+    private static VBoxContainer CreateVBoxParent(string name)
+    {
+        VBoxContainer vboxParent = new();
+
+        vboxParent.AddChild(new Label
+        {
+            Text = name,
             LabelSettings = new LabelSettings
             {
                 FontSize = 20,
@@ -109,39 +118,107 @@ public static class VisualUI
             HorizontalAlignment = HorizontalAlignment.Center
         });
 
-        vboxParent.AddChild(readonlyMembers);
-        vboxParent.AddChild(vboxMembers);
-
-        foreach (BaseButton baseButton in vboxParent.GetChildren<BaseButton>())
-        {
-            baseButton.Pressed += () =>
-            {
-                _ = new RTween(baseButton)
-                    .Delay(0.1)
-                    .Callback(() => baseButton.ReleaseFocus());
-            };
-        }
-
-        // Add to canvas layer so UI is not affected by lighting in game world
-        CanvasLayer canvasLayer = new();
-        canvasLayer.FollowViewportEnabled = true;
-        panelContainer.AddChild(vboxParent);
-        canvasLayer.AddChild(panelContainer);
-        canvasLayer.Name = $"Visualizing {node.Name} {node.GetInstanceId()}";
-
-        tree.Root.CallDeferred(Node.MethodName.AddChild, canvasLayer);
-
-        if (debugVisualNode.InitialPosition != Vector2.Zero)
-        {
-            vboxMembers.GlobalPosition = debugVisualNode.InitialPosition;
-        }
-
-        // This is ugly but I don't know how else to do it
-        VisualLogger.VisualNodes = visualNodes;
-
-        return (panelContainer, updateControls);
+        return vboxParent;
     }
 
+    /// <summary>
+    /// Creates a colored VBoxContainer with specified RGB values.
+    /// </summary>
+    private static VBoxContainer CreateColoredVBox(float r, float g, float b)
+    {
+        return new VBoxContainer
+        {
+            Modulate = new Color(r, g, b, 1)
+        };
+    }
+    
+    /// <summary>
+    /// Creates a panel container with a specified name.
+    /// </summary>
+    private static PanelContainer CreatePanelContainer(string name)
+    {
+        PanelContainer panelContainer = new()
+        {
+            // Ensure this info is rendered above all game elements
+            Name = name,
+            Scale = Vector2.One * VISUAL_UI_SCALE_FACTOR,
+            ZIndex = (int)RenderingServer.CanvasItemZMax
+        };
+
+        panelContainer.AddThemeStyleboxOverride("panel", new StyleBoxEmpty());
+
+        return panelContainer;
+    }
+
+    /// <summary>
+    /// Attempts to get member information for a Node.
+    /// </summary>
+    private static void TryGetMemberInfo(Node node, string visualMember, out PropertyInfo property, out FieldInfo field, out object initialValue)
+    {
+        property = node.GetType().GetProperty(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+        field = null;
+        initialValue = null;
+
+        if (property != null)
+        {
+            initialValue = property.GetValue(property.GetGetMethod(true).IsStatic ? null : node);
+        }
+        else
+        {
+            field = node.GetType().GetField(visualMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+
+            if (field != null)
+            {
+                initialValue = field.GetValue(field.IsStatic ? null : node);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Adds visual controls for specified members of a Node.
+    /// </summary>
+    private static void AddVisualControls(string[] visualizeMembers, Node node, VBoxContainer readonlyMembers, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
+    {
+        if (visualizeMembers == null)
+        {
+            return;
+        }
+        
+        foreach (string visualMember in visualizeMembers)
+        {
+            TryGetMemberInfo(node, visualMember, out PropertyInfo property, out FieldInfo field, out object initialValue);
+
+            // If neither property nor field is found, skip this member
+            if (property == null && field == null)
+            {
+                continue;
+            }
+
+            if (initialValue != null)
+            {
+                AddVisualControl(visualMember, readonlyMembers, node, field, property, initialValue, updateControls, spinBoxes);
+            }
+            else
+            {
+                _ = TryAddVisualControlAsync(visualMember, readonlyMembers, node, field, property, updateControls, spinBoxes);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Creates a canvas layer for a Node with a specified name and instance ID.
+    /// </summary>
+    private static CanvasLayer CreateCanvasLayer(string name, ulong instanceId)
+    {
+        CanvasLayer canvasLayer = new();
+        canvasLayer.FollowViewportEnabled = true;
+        canvasLayer.Name = $"Visualizing {name} {instanceId}";
+        return canvasLayer;
+    }
+
+    /// <summary>
+    /// Asynchronously tries to add a visual control for a Node member.
+    /// </summary>
     private static async Task TryAddVisualControlAsync(string visualMember, VBoxContainer readonlyMembers, Node node, FieldInfo field, PropertyInfo property, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
     {
         CancellationTokenSource cts = new();
@@ -197,6 +274,9 @@ public static class VisualUI
         }
     }
 
+    /// <summary>
+    /// Adds a visual control to the UI for a Node member.
+    /// </summary>
     private static void AddVisualControl(string visualMember, VBoxContainer readonlyMembers, Node node, FieldInfo field, PropertyInfo property, object initialValue, List<Action> updateControls, List<VisualSpinBox> spinBoxes)
     {
         Type memberType = property != null ? property.PropertyType : field.FieldType;
@@ -225,6 +305,9 @@ public static class VisualUI
         readonlyMembers.AddChild(hbox);
     }
 
+    /// <summary>
+    /// Adds member information elements to a VBoxContainer.
+    /// </summary>
     private static void AddMemberInfoElements(VBoxContainer vbox, IEnumerable<MemberInfo> members, Node node, List<VisualSpinBox> spinBoxes)
     {
         foreach (MemberInfo member in members)
@@ -234,6 +317,9 @@ public static class VisualUI
         }
     }
 
+    /// <summary>
+    /// Creates a member information element for a specified Node member.
+    /// </summary>
     private static HBoxContainer CreateMemberInfoElement(MemberInfo member, Node node, List<VisualSpinBox> spinBoxes)
     {
         HBoxContainer hbox = new();
@@ -268,3 +354,4 @@ public static class VisualUI
         return hbox;
     }
 }
+

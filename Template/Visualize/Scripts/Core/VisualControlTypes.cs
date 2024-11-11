@@ -7,6 +7,9 @@ namespace Template;
 
 public static partial class VisualControlTypes
 {
+    /// <summary>
+    /// Creates a control for the given member type and context
+    /// </summary>
     public static VisualControlInfo CreateControlForType(Type type, VisualControlContext context)
     {
         VisualControlInfo info = type switch
