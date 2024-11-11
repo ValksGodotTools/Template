@@ -35,11 +35,11 @@ If you are not using Windows you may need to get a [Custom ENet build](https://g
 - **[State Manager](https://github.com/ValksGodotTools/Template/wiki/State-Manager)** - Implement states using delegates.
 - **[Mod Loader](https://github.com/ValksGodotTools/Template/wiki/Mod-Loader)** - Half-working mod loader.
 
-![scaled](https://github.com/user-attachments/assets/290b9825-7c10-4a91-aca4-278aa555b6df)  
-[Image by Rune](https://www.pixiv.net/en/users/25170019)
-
 ## Contributing
 
 Want to contribute? Start by looking [here](https://github.com/ValksGodotTools/Template/wiki/Contributing)!
+
+![scaled](https://github.com/user-attachments/assets/290b9825-7c10-4a91-aca4-278aa555b6df)  
+[Image by Rune](https://www.pixiv.net/en/users/25170019)
 
 Thank you [Brian Shao](https://github.com/cydq) for helping with cross-platform compatibility.
