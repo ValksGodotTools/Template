@@ -48,7 +48,7 @@ public partial class Services : Node
 
         if (serviceAttribute != null)
         {
-            GD.Print($"Registering service: {node.GetType().Name}");
+            //GD.Print($"Registering service: {node.GetType().Name}");
             AddService(node);
             return;
         }
