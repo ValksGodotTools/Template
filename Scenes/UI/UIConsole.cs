@@ -9,26 +9,28 @@ using Template.Valky;
 
 namespace Template.UI;
 
-[Service(ServiceLifeTime.Application)]
 [SceneTree]
 public partial class UIConsole : PanelContainer
 {
-    public event Action<bool> OnToggleVisibility;
+    public static event Action<bool> OnToggleVisibility;
 
-    private TextEdit _feed;
-    private LineEdit _input;
+    public static UIConsole Instance { get; private set; }
+    
+    private static TextEdit _feed;
+    private static LineEdit _input;
     private Button _settingsBtn;
     private PopupPanel _settingsPopup;
     private CheckBox _settingsAutoScroll;
-    private readonly ConsoleHistory _history = new();
-    private bool _autoScroll = true;
+    private static readonly ConsoleHistory _history = new();
+    private static bool _autoScroll = true;
 
-    public List<ConsoleCommandInfo> Commands { get; } = [];
+    public static List<ConsoleCommandInfo> Commands { get; } = [];
 
     public override void _Ready()
     {
         LoadCommands();
 
+        Instance       = this;
         _feed          = Output;
         _input         = CmdsInput;
         _settingsBtn   = Settings;
@@ -56,7 +58,7 @@ public partial class UIConsole : PanelContainer
         InputNavigateHistory();
     }
 
-    public void AddMessage(object message)
+    public static void AddMessage(object message)
     {
         double prevScroll = _feed.ScrollVertical;
         
@@ -80,19 +82,19 @@ public partial class UIConsole : PanelContainer
         ScrollDown();
     }
 
-    public void ToggleVisibility()
+    public static void ToggleVisibility()
     {
-        Visible = !Visible;
-        OnToggleVisibility?.Invoke(Visible);
+        Instance.Visible = !Instance.Visible;
+        OnToggleVisibility?.Invoke(Instance.Visible);
 
-        if (Visible)
+        if (Instance.Visible)
         {
             _input.GrabFocus();
-            CallDeferred(nameof(ScrollDown));
+            Instance.CallDeferred(nameof(ScrollDown));
         }
     }
 
-    private void ScrollDown()
+    private static void ScrollDown()
     {
         if (_autoScroll)
         {
@@ -156,7 +158,7 @@ public partial class UIConsole : PanelContainer
         });
     }
 
-    private bool ProcessCommand(string text)
+    private static bool ProcessCommand(string text)
     {
         ConsoleCommandInfo cmd = TryGetCommand(text.Split()[0].ToLower());
 
@@ -186,13 +188,13 @@ public partial class UIConsole : PanelContainer
         return true;
     }
 
-    private ConsoleCommandInfo TryGetCommand(string text)
+    private static ConsoleCommandInfo TryGetCommand(string text)
     {
         ConsoleCommandInfo cmd =
             Commands.Find(cmd =>
             {
                 // Does text match the command name?
-                bool nameMatch = string.Equals(Name, text, StringComparison.OrdinalIgnoreCase);
+                bool nameMatch = string.Equals(Instance.Name, text, StringComparison.OrdinalIgnoreCase);
 
                 if (nameMatch)
                 {
@@ -210,7 +212,7 @@ public partial class UIConsole : PanelContainer
         return cmd;
     }
 
-    private void OnConsoleInputEntered(string text)
+    private static void OnConsoleInputEntered(string text)
     {
         // case sensitivity and trailing spaces should not factor in here
         string inputToLowerTrimmed = text.Trim().ToLower();
@@ -235,10 +237,10 @@ public partial class UIConsole : PanelContainer
         _input.Clear();
     }
 
-    private void InputNavigateHistory()
+    private static void InputNavigateHistory()
     {
         // If console is not visible or there is no history to navigate do nothing
-        if (!Visible || _history.NoHistory())
+        if (!Instance.Visible || _history.NoHistory())
         {
             return;
         }
@@ -265,7 +267,7 @@ public partial class UIConsole : PanelContainer
     }
 
     #region Helper Functions
-    private void SetCaretColumn(int pos)
+    private static void SetCaretColumn(int pos)
     {
         _input.CallDeferred(LineEdit.MethodName.GrabFocus);
         _input.CallDeferred(LineEdit.MethodName.Set, LineEdit.PropertyName.CaretColumn, pos);
@@ -287,14 +289,14 @@ public partial class UIConsole : PanelContainer
         return parameters;
     }
 
-    private object GetMethodInstance(Type type)
+    private static object GetMethodInstance(Type type)
     {
         object instance;
 
         if (type.IsSubclassOf(typeof(GodotObject)))
         {
             // This is a Godot Object, find it or create a new instance
-            instance = FindNodeByType(GetTree().Root, type) ??
+            instance = FindNodeByType(Instance.GetTree().Root, type) ??
                 Activator.CreateInstance(type);
         }
         else

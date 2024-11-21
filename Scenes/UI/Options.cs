@@ -13,7 +13,7 @@ public partial class Options : PanelContainer
 
     public override void _Ready()
     {
-        if (Services.Get<SceneManager>().CurrentScene.Name != "Options")
+        if (SceneManager.CurrentScene.Name != "Options")
         {
             _.BackgroundArt.Hide();
         }

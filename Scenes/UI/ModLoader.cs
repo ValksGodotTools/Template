@@ -19,7 +19,7 @@ public partial class ModLoader : Node
 
     public override void _Ready()
     {
-        Node uiMods = Mods;
+        Node uiMods = VBoxMods;
         
         _uiName = ModName;
         _uiModVersion = ModVersion;
@@ -29,7 +29,7 @@ public partial class ModLoader : Node
         _uiAuthors = Authors;
         _uiIncompatibilities = Incompatibilities;
 
-        Dictionary<string, ModInfo> mods = Services.Get<Valky.ModLoader>().Mods;
+        Dictionary<string, ModInfo> mods = ModLoaderUI.Mods;
 
         bool first = true;
 
@@ -84,7 +84,7 @@ public partial class ModLoader : Node
     {
         //OS.CreateProcess(OS.GetExecutablePath(), null);
         OS.CreateInstance(null);
-        await GetNode<Global>("/root/Global").QuitAndCleanup();
+        await Global.QuitAndCleanup();
     }
 
     private static void _on_open_mods_folder_pressed()

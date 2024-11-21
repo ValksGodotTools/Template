@@ -20,30 +20,30 @@ public static class Prefab
 }
 
 // About Scene Switching: https://docs.godotengine.org/en/latest/tutorials/scripting/singletons_autoload.html
-[Service(ServiceLifeTime.Application)]
 public partial class SceneManager : Node
 {
     /// <summary>
     /// The event is invoked right before the scene is changed
     /// </summary>
-    public event Action<string> PreSceneChanged;
+    public static event Action<string> PreSceneChanged;
 
-    public Node CurrentScene { get; private set; }
+    public static Node CurrentScene { get; private set; }
 
-    private SceneTree _tree;
+    private static SceneTree _tree;
+    private static SceneManager _instance;
 
     public override void _Ready()
     {
+        _instance = this;
         _tree = GetTree();
         Window root = _tree.Root;
         CurrentScene = root.GetChild(root.GetChildCount() - 1);
 
         // Gradually fade out all SFX whenever the scene is changed
-        PreSceneChanged += scene =>
-            Services.Get<AudioManager>().FadeOutSFX();
+        PreSceneChanged += scene => AudioManager.FadeOutSFX();
     }
 
-    public void SwitchScene(string scenePath, TransType transType = TransType.None)
+    public static void SwitchScene(string scenePath, TransType transType = TransType.None)
     {
         PreSceneChanged?.Invoke(scenePath);
 
@@ -61,7 +61,7 @@ public partial class SceneManager : Node
     /// <summary>
     /// Resets the currently active scene.
     /// </summary>
-    public void ResetCurrentScene()
+    public static void ResetCurrentScene()
     {
         string sceneFilePath = _tree.CurrentScene.SceneFilePath;
 
@@ -71,17 +71,17 @@ public partial class SceneManager : Node
         PreSceneChanged?.Invoke(sceneName);
 
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
+        _instance.CallDeferred(nameof(DeferredSwitchScene), sceneFilePath, Variant.From(TransType.None));
     }
 
-    private void ChangeScene(string scenePath, TransType transType)
+    private static void ChangeScene(string scenePath, TransType transType)
     {
         // Wait for engine to be ready before switching scenes
-        CallDeferred(nameof(DeferredSwitchScene), scenePath,
+        _instance.CallDeferred(nameof(DeferredSwitchScene), scenePath,
             Variant.From(transType));
     }
 
-    private void DeferredSwitchScene(string rawName, Variant transTypeVariant)
+    private static void DeferredSwitchScene(string rawName, Variant transTypeVariant)
     {
         // Safe to remove scene now
         CurrentScene.Free();
@@ -110,7 +110,7 @@ public partial class SceneManager : Node
         }
     }
 
-    private void FadeTo(TransColor transColor, double duration, Action finished = null)
+    private static void FadeTo(TransColor transColor, double duration, Action finished = null)
     {
         // Add canvas layer to scene
         CanvasLayer canvasLayer = new()

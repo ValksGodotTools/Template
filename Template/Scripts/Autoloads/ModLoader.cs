@@ -7,12 +7,11 @@ using System.Text.Json;
 
 namespace Template.Valky;
 
-[Service(ServiceLifeTime.Application)]
-public partial class ModLoader
+public partial class ModLoaderUI
 {
-    public Dictionary<string, ModInfo> Mods { get; } = [];
+    public static Dictionary<string, ModInfo> Mods { get; } = [];
 
-    public void LoadMods(Node node)
+    public static void LoadMods(Node node)
     {
         string modsPath = ProjectSettings.GlobalizePath("res://Mods");
 

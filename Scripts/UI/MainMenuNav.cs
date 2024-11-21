@@ -5,42 +5,38 @@ namespace Template.UI;
 
 public partial class MainMenuNav : Node
 {
-    private AudioManager _audioManager;
-
     public override void _Ready()
     {
-        _audioManager = Services.Get<AudioManager>();
-
         GetNode<Button>("Play").GrabFocus();
     }
 
     private static void _on_play_pressed()
     {
-        //audioManager.PlayMusic(Music.Level1, false);
+        //AudioManager.PlayMusic(Music.Level1, false);
         Game.SwitchScene(Scene.Game);
     }
 
     private static void _on_mods_pressed()
     {
-        //audioManager.PlayMusic(Music.Level4);
+        //AudioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Scene.ModLoader);
     }
 
     private static void _on_options_pressed()
     {
-        //audioManager.PlayMusic(Music.Level4);
+        //AudioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Scene.Options);
     }
 
     private static void _on_credits_pressed()
     {
-        //audioManager.PlayMusic(Music.Level4);
+        //AudioManager.PlayMusic(Music.Level4);
         Game.SwitchScene(Scene.Credits);
     }
 
     private async void _on_quit_pressed()
     {
-        await GetNode<Global>("/root/Global").QuitAndCleanup();
+        await Global.QuitAndCleanup();
     }
 
     private static void _on_discord_pressed()

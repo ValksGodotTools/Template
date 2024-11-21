@@ -23,7 +23,7 @@ public class Net
 
     public void Initialize(IGameServerFactory serverFactory, IGameClientFactory clientFactory)
     {
-        Services.Get<Global>().OnQuit += StopThreads;
+        Global.OnQuit += StopThreads;
 
         _serverFactory = serverFactory;
         _clientFactory = clientFactory;
@@ -127,7 +127,7 @@ public class Net
         }
 
         // Wait for the logger to finish enqueing the remaining logs
-        while (Services.Get<Global>().Logger.StillWorking())
+        while (Global.Logger.StillWorking())
         {
             await Task.Delay(1);
         }

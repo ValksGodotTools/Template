@@ -35,9 +35,9 @@ public partial class UIPopupMenu : Control
     {
         if (Input.IsActionJustPressed(InputActions.UICancel))
         {
-            if (Game.Console.Visible)
+            if (UIConsole.Instance.Visible)
             {
-                Game.Console.ToggleVisibility();
+                UIConsole.ToggleVisibility();
                 return;
             }
 
@@ -95,7 +95,7 @@ public partial class UIPopupMenu : Control
 
     private async void _on_quit_pressed()
     {
-        await GetNode<Global>("/root/Global").QuitAndCleanup();
+        await Global.QuitAndCleanup();
     }
 }
 

@@ -1,53 +1,57 @@
 using Godot;
 using System.Threading.Tasks;
 using System;
+using Template.UI;
 
 namespace Template.Valky;
 
-[Service]
 public partial class Global : Node
 {
     /// <summary>
     /// If no await calls are needed, add "return await Task.FromResult(1);"
     /// </summary>
-    public event Func<Task> OnQuit;
+    public static event Func<Task> OnQuit;
 
     [Export] private OptionsManager optionsManager;
 
-    public Logger Logger { get; private set; } = new();
+    public static Logger Logger { get; private set; } = new();
 
-	public override void _Ready()
-	{
-        Logger.MessageLogged += Game.Console.AddMessage;
+    private static Global _instance;
 
-        new ModLoader().LoadMods(this);
+    public override void _Ready()
+    {
+        _instance = this;
+        
+        Logger.MessageLogged += UIConsole.AddMessage;
+
+        ModLoaderUI.LoadMods(this);
     }
 
-	public override void _PhysicsProcess(double delta)
-	{
+    public override void _PhysicsProcess(double delta)
+    {
         if (Input.IsActionJustPressed(InputActions.Fullscreen))
         {
             optionsManager.ToggleFullscreen();
         }
 
         Logger.Update();
-	}
+    }
 
     public override async void _Notification(int what)
-	{
-		if (what == NotificationWMCloseRequest)
-		{
-			await QuitAndCleanup();
-		}
-	}
+    {
+        if (what == NotificationWMCloseRequest)
+        {
+            await QuitAndCleanup();
+        }
+    }
 
-    public async Task QuitAndCleanup()
-	{
-        GetTree().AutoAcceptQuit = false;
+    public static async Task QuitAndCleanup()
+    {
+        _instance.GetTree().AutoAcceptQuit = false;
 
         // Handle cleanup here
-        optionsManager.SaveOptions();
-        optionsManager.SaveHotkeys();
+        _instance.optionsManager.SaveOptions();
+        _instance.optionsManager.SaveHotkeys();
 
         if (OnQuit != null)
         {
@@ -55,7 +59,7 @@ public partial class Global : Node
         }
 
         // This must be here because buttons call Global::Quit()
-        GetTree().Quit();
-	}
+        _instance.GetTree().Quit();
+    }
 }
 

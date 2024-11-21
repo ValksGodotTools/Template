@@ -3,14 +3,13 @@ using RedotUtils;
 
 namespace Template.Valky;
 
-[Service(ServiceLifeTime.Application)]
 public partial class AudioManager : Node
 {
     [Export] private OptionsManager optionsManager;
-    private RAudioPlayer _musicPlayer;
-    private Node _sfxPlayersParent;
-    private float _lastPitch;
-    private ResourceOptions _options;
+    private static RAudioPlayer _musicPlayer;
+    private static Node _sfxPlayersParent;
+    private static float _lastPitch;
+    private static ResourceOptions _options;
 
     public override void _Ready()
     {
@@ -23,7 +22,7 @@ public partial class AudioManager : Node
         //PlayMusic(Music.Menu);
     }
 
-    public void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
+    public static void PlayMusic(AudioStream song, bool instant = true, double fadeOut = 1.5, double fadeIn = 0.5)
     {
         if (!instant && _musicPlayer.Playing)
         {
@@ -54,7 +53,7 @@ public partial class AudioManager : Node
         }
     }
 
-    public void PlaySFX(AudioStream sound)
+    public static void PlaySFX(AudioStream sound)
     {
         // Setup the SFX stream player
         RAudioPlayer sfxPlayer = new(_sfxPlayersParent, true)
@@ -85,7 +84,7 @@ public partial class AudioManager : Node
     /// <summary>
     /// Gradually fade out all sounds
     /// </summary>
-    public void FadeOutSFX(double fadeTime = 1)
+    public static void FadeOutSFX(double fadeTime = 1)
     {
         foreach (AudioStreamPlayer audioPlayer in _sfxPlayersParent.GetChildren())
         {
@@ -94,13 +93,13 @@ public partial class AudioManager : Node
         }
     }
 
-    public void SetMusicVolume(float v)
+    public static void SetMusicVolume(float v)
     {
         _musicPlayer.Volume = v;
         _options.MusicVolume = _musicPlayer.Volume;
     }
 
-    public void SetSFXVolume(float v)
+    public static void SetSFXVolume(float v)
     {
         // Set volume for future SFX players
         _options.SFXVolume = v;

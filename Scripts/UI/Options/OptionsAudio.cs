@@ -29,12 +29,12 @@ public partial class OptionsAudio : Control
 
     private static void _on_music_value_changed(float v)
     {
-        Services.Get<AudioManager>().SetMusicVolume(v);
+        AudioManager.SetMusicVolume(v);
     }
 
     private static void _on_sounds_value_changed(float v)
     {
-        Services.Get<AudioManager>().SetSFXVolume(v);
+        AudioManager.SetSFXVolume(v);
     }
 }
 
