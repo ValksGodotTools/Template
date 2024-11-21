@@ -3,7 +3,6 @@ using RedotUtils;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Template;
 
@@ -19,7 +18,7 @@ public partial class Services : Node
 
     public override void _EnterTree()
     {
-        RegisterServices();
+        GetTree().NodeAdded += RegisterService;
     }
 
     /// <summary>
@@ -38,58 +37,21 @@ public partial class Services : Node
         return (T)_services[typeof(T)].Instance;
     }
 
-    /// <summary>
-    /// Registers services by scanning the scene tree and caching service attributes.
-    /// </summary>
-    private void RegisterServices()
+    private void RegisterService(Node node)
     {
-        IEnumerable<Node> scriptNodes = GetScriptNodes();
-        Dictionary<Type, ServiceAttribute> cachedAttributes = CacheServiceAttributes();
-
-        foreach (Node node in scriptNodes)
+        if (_services.ContainsKey(node.GetType()))
         {
-            foreach (KeyValuePair<Type, ServiceAttribute> kvp in cachedAttributes)
-            {
-                Type type = kvp.Key;
-                ServiceAttribute serviceAttribute = kvp.Value;
-
-                if (type.IsAssignableTo(node.GetType()))
-                {
-                    AddService(node, serviceAttribute);
-                    break;
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// Retrieves all nodes in the scene tree that have a script attached.
-    /// </summary>
-    /// <returns>An enumerable collection of nodes with scripts.</returns>
-    private IEnumerable<Node> GetScriptNodes()
-    {
-        return GetTree().Root.GetChildren<Node>().Where(x => x.GetScript().VariantType != Variant.Type.Nil);
-    }
-
-    /// <summary>
-    /// Caches service attributes for all types in the executing assembly.
-    /// </summary>
-    /// <returns>A dictionary of types and their corresponding service attributes.</returns>
-    private Dictionary<Type, ServiceAttribute> CacheServiceAttributes()
-    {
-        Dictionary<Type, ServiceAttribute> cachedAttributes = [];
-
-        foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
-        {
-            ServiceAttribute serviceAttribute = (ServiceAttribute)type.GetCustomAttribute(typeof(ServiceAttribute));
-
-            if (serviceAttribute != null && type.IsAssignableTo(typeof(Node)))
-            {
-                cachedAttributes[type] = serviceAttribute;
-            }
+            throw new Exception($"There can only be one service of type '{node.GetType().Name}'");
         }
 
-        return cachedAttributes;
+        ServiceAttribute serviceAttribute = node.GetType().GetCustomAttribute<ServiceAttribute>();
+
+        if (serviceAttribute != null)
+        {
+            GD.Print($"Registering service: {node.GetType().Name}");
+            AddService(node, serviceAttribute);
+            return;
+        }
     }
 
     /// <summary>
