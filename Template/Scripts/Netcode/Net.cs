@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Template.Netcode.Client;
 using Template.Netcode.Server;
+using Template.UI;
 using Template.Valky;
 
 namespace Template.Netcode;
@@ -58,6 +59,11 @@ public class Net
             PrintPacketReceived = false,
             PrintPacketSent = false
         });
+
+        Services.Get<UIPopupMenu>().OnMainMenuBtnPressed += () =>
+        {
+            Server.Stop();
+        };
     }
 
     public void StartClient(string ip, ushort port)

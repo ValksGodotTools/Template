@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Template.Netcode;
 
+/// <summary>
+/// A base class with common functionality for Client and Server packets
+/// </summary>
 public abstract class GamePacket
 {
     private PropertyInfo[] _cachedProperties;

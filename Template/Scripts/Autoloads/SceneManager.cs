@@ -7,10 +7,11 @@ namespace Template;
 
 public static class Scene 
 {
-    public const string MainMenu = "res://Scenes/UI/UIMainMenu.tscn";
-    public const string ModLoader = "res://Scenes/UI/UIModLoader.tscn";
-    public const string Options = "res://Scenes/UI/UIOptions.tscn";
-    public const string Credits = "res://Scenes/UI/UICredits.tscn";
+    public const string MainMenu = "res://Scenes/UI/MainMenu.tscn";
+    public const string ModLoader = "res://Scenes/UI/ModLoader.tscn";
+    public const string Options = "res://Scenes/UI/Options.tscn";
+    public const string Credits = "res://Scenes/UI/Credits.tscn";
+    public const string Game = "res://Genres/2D Top Down/Level.tscn";
 }
 
 public static class Prefab 

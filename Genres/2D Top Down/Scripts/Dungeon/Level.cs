@@ -1,6 +1,8 @@
 using Godot;
 using RedotUtils;
 using System.Collections.Generic;
+using System.Net.Http;
+using Template.UI;
 
 namespace Template.TopDown2D;
 
@@ -55,6 +57,11 @@ public partial class Level : Node
 
                 _playerCamera.StopFollowingPlayer();
                 _roomTransitions.Reset();
+            };
+
+            Services.Get<UIPopupMenu>().OnMainMenuBtnPressed += () =>
+            {
+                client.Stop();
             };
         };
     }

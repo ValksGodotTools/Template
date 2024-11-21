@@ -4,6 +4,9 @@ using Template.Netcode.Server;
 
 namespace Template.Netcode;
 
+/// <summary>
+/// A packet sent from the client to the server
+/// </summary>
 public abstract class ClientPacket : GamePacket
 {
     public static Dictionary<Type, PacketInfo<ClientPacket>> PacketMap { get; } = NetcodeUtils.MapPackets<ClientPacket>();
