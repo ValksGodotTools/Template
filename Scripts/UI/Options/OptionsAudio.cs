@@ -1,5 +1,4 @@
 using Godot;
-using Template.Valky;
 
 namespace Template.UI;
 

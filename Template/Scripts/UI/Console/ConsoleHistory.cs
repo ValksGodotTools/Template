@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Template.Valky;
+namespace Template.UI;
 
 public class ConsoleHistory
 {

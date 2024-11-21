@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Template.Valky;
+namespace Template.UI;
 
 public partial class BackgroundNoise : Sprite2D
 {

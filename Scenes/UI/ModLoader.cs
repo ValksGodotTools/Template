@@ -2,7 +2,6 @@ using Godot;
 using RedotUtils;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Template.Valky;
 
 namespace Template.UI;
 

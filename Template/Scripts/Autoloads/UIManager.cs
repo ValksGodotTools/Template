@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace Template.Valky;
+namespace Template.UI;
 
 public partial class UIManager : Node
 {

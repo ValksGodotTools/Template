@@ -1,7 +1,6 @@
 using Godot;
 using RedotUtils;
 using System.Collections.Generic;
-using System.Net.Http;
 using Template.UI;
 
 namespace Template.TopDown2D;

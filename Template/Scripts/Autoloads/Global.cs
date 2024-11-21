@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System;
 using Template.UI;
 
-namespace Template.Valky;
+namespace Template;
 
 public partial class Global : Node
 {

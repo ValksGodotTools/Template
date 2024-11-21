@@ -1,7 +1,6 @@
 using Godot;
 using RedotUtils;
 using System;
-using Template.Valky;
 
 namespace Template;
 

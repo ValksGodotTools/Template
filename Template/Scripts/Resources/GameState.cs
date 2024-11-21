@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Template.Valky;
+namespace Template;
 
 [GlobalClass]
 public partial class GameState : Resource

@@ -1,7 +1,7 @@
 using Godot;
 using RedotUtils;
 
-namespace Template.Valky;
+namespace Template;
 
 public partial class AudioManager : Node
 {

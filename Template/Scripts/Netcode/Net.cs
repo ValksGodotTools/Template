@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Template.Netcode.Client;
 using Template.Netcode.Server;
 using Template.UI;
-using Template.Valky;
 
 namespace Template.Netcode;
 
