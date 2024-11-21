@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp28a3uv7irs7"
-path="res://.godot/imported/monkey-mountain.JPG-8a693c37df75bdc2b1109b8cf22a90de.ctex"
+uid="uid://bkrwlmtm28kxo"
+path="res://.godot/imported/RedotChan.png-89fdb0c7a2de8ebc8eabd8cc8e3b2f68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Template/Sprites/Concept Art/monkey-mountain.JPG"
-dest_files=["res://.godot/imported/monkey-mountain.JPG-8a693c37df75bdc2b1109b8cf22a90de.ctex"]
+source_file="res://Genres/2D Top Down/Sprites/Redot Chan/RedotChan.png"
+dest_files=["res://.godot/imported/RedotChan.png-89fdb0c7a2de8ebc8eabd8cc8e3b2f68.ctex"]
 
 [params]
 

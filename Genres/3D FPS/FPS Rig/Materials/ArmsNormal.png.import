@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctpem4y3wuhoc"
-path.s3tc="res://.godot/imported/FPS Arms Normal.png-3542ebd2026f0ca563b258c6f88522a3.s3tc.ctex"
+path.s3tc="res://.godot/imported/ArmsNormal.png-7474ab825bee0e0fe02d8273787ba36f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://Genres/3D FPS/FPS Rig/Materials/FPS Arms Normal.png"
-dest_files=["res://.godot/imported/FPS Arms Normal.png-3542ebd2026f0ca563b258c6f88522a3.s3tc.ctex"]
+source_file="res://Genres/3D FPS/FPS Rig/Materials/ArmsNormal.png"
+dest_files=["res://.godot/imported/ArmsNormal.png-7474ab825bee0e0fe02d8273787ba36f.s3tc.ctex"]
 
 [params]
 

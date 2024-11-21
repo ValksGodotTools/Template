@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkrwlmtm28kxo"
-path="res://.godot/imported/Redot_chan_sprite_sheet.png-c8a111e8c12e6d1cb739c7c3fe97b6b7.ctex"
+uid="uid://befic22eh3djm"
+path="res://.godot/imported/FloatingIslandCity.JPG-0565804db35eb8453bf51c64a7d5d32b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Genres/2D Top Down/Sprites/Redot Chan/Redot_chan_sprite_sheet.png"
-dest_files=["res://.godot/imported/Redot_chan_sprite_sheet.png-c8a111e8c12e6d1cb739c7c3fe97b6b7.ctex"]
+source_file="res://Template/Sprites/Concept Art/FloatingIslandCity.JPG"
+dest_files=["res://.godot/imported/FloatingIslandCity.JPG-0565804db35eb8453bf51c64a7d5d32b.ctex"]
 
 [params]
 

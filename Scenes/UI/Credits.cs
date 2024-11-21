@@ -26,7 +26,7 @@ public partial class Credits : Node
         };
 
         // Read the contents from credits.txt and construct the credits
-        FileAccess file = FileAccess.Open("res://credits.txt", FileAccess.ModeFlags.Read);
+        FileAccess file = FileAccess.Open("res://Credits.txt", FileAccess.ModeFlags.Read);
 
         while (!file.EofReached())
         {

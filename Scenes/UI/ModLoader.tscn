@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d1jo48n2hdkih"]
 
-[ext_resource type="Theme" uid="uid://0lugooukjqem" path="res://Template/Themes/mod_loader.tres" id="1_22r32"]
+[ext_resource type="Theme" uid="uid://0lugooukjqem" path="res://Template/Themes/ModLoader.tres" id="1_22r32"]
 [ext_resource type="Script" path="res://Scenes/UI/ModLoader.cs" id="1_xqxxn"]
 
 [node name="ModLoader" type="PanelContainer"]

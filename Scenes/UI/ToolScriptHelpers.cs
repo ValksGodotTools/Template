@@ -52,7 +52,7 @@ public partial class ToolScriptHelpers : Node
 
         void ProcessCreditFile(string fullFilePath)
         {
-            if (string.Equals(Path.GetFileName(fullFilePath), "credit.txt", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Path.GetFileName(fullFilePath), "Credit.txt", StringComparison.OrdinalIgnoreCase))
             {
                 string folderParentName = new DirectoryInfo(Path.GetDirectoryName(fullFilePath)).Name;
                 

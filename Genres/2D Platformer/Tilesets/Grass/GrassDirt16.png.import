@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yut3jj26a6k0"
-path="res://.godot/imported/Icon.svg-c85408e9bcc5978f553cf97895421286.ctex"
+uid="uid://m55ae6s1b6k1"
+path="res://.godot/imported/GrassDirt16.png-aea30fb3c0aabe94e36ae74629f5bb2b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Template/Sprites/UI/Icon.svg"
-dest_files=["res://.godot/imported/Icon.svg-c85408e9bcc5978f553cf97895421286.ctex"]
+source_file="res://Genres/2D Platformer/Tilesets/Grass/GrassDirt16.png"
+dest_files=["res://.godot/imported/GrassDirt16.png-aea30fb3c0aabe94e36ae74629f5bb2b.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cuq4e87b4hbos"
-path="res://.godot/imported/hero.png-20b1d46fb447060eef749a9f3a5d0ca7.ctex"
+path="res://.godot/imported/Hero.png-6e0966eed0db7d883f8039623f97cdb7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Genres/2D Platformer/Sprites/Hero/hero.png"
-dest_files=["res://.godot/imported/hero.png-20b1d46fb447060eef749a9f3a5d0ca7.ctex"]
+source_file="res://Genres/2D Platformer/Sprites/Hero/Hero.png"
+dest_files=["res://.godot/imported/Hero.png-6e0966eed0db7d883f8039623f97cdb7.ctex"]
 
 [params]
 
