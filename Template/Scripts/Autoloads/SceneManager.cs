@@ -6,10 +6,10 @@ namespace Template;
 
 public static class Scene 
 {
-    public const string MainMenu = "res://Scenes/UI/MainMenu.tscn";
-    public const string ModLoader = "res://Scenes/UI/ModLoader.tscn";
-    public const string Options = "res://Scenes/UI/Options.tscn";
-    public const string Credits = "res://Scenes/UI/Credits.tscn";
+    public const string MainMenu = "res://Scenes/MenuUI/MainMenu.tscn";
+    public const string ModLoader = "res://Scenes/MenuUI/ModLoader.tscn";
+    public const string Options = "res://Scenes/MenuUI/Options.tscn";
+    public const string Credits = "res://Scenes/MenuUI/Credits.tscn";
     public const string Game = "res://Genres/2D Top Down/Level.tscn";
 }
 
