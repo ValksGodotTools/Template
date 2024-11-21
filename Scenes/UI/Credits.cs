@@ -106,7 +106,10 @@ public partial class Credits : Node
         {
             Game.SwitchScene(Scene.MainMenu);
         }
+    }
 
+    public override void _Process(double delta)
+    {
         if (Input.IsActionJustPressed(InputActions.UICancel))
         {
             Game.SwitchScene(Scene.MainMenu);
