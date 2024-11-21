@@ -14,7 +14,7 @@ config/name="Template"
 run/main_scene="res://Genres/0 Setup/SetupUI.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 boot_splash/show_image=false
-config/icon="res://Template/Sprites/UI/icon.svg"
+config/icon="res://Template/Sprites/UI/Icon.svg"
 
 [autoload]
 
