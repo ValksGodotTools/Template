@@ -10,12 +10,10 @@ public partial class EntityComponent : Node2D
     [Export] public AnimatedSprite2D AnimatedSprite { get; private set; }
     
     protected Node2D _entity;
-    private ShaderMaterial _shaderMaterial;
 
     public override void _Ready()
     {
         _entity = GetOwner<Node2D>();
-        _shaderMaterial = AnimatedSprite.Material as ShaderMaterial;
 
         SetMaterial();
         CreateReflection();
@@ -23,13 +21,10 @@ public partial class EntityComponent : Node2D
 
     public virtual void TakeDamage(Vector2 direction = default)
     {
-        if (_shaderMaterial != null)
-        {
-            StrobeFlash(this, _shaderMaterial);
-        }
+        StrobeFlash(AnimatedSprite);
     }
 
-    private static void StrobeFlash(Node node, ShaderMaterial shaderMaterial)
+    private static void StrobeFlash(Node2D node)
     {
         float initialDuration = 0.04f; // Initial duration for the first flash
         float durationIncrement = 0.01f; // Increment for each subsequent flash
@@ -39,7 +34,7 @@ public partial class EntityComponent : Node2D
         float currentIntensity = 1.0f;
 
         // Create a sequence of tweens to simulate the strobe light effect
-        RTween tween = new RTween(node).SetAnimatingShaderMaterial(shaderMaterial);
+        RShaderTween tween = new(node);
 
         for (int i = 0; i < 4; i++) // Adjust the number of flashes as needed
         {
