@@ -7,6 +7,7 @@ namespace Template.Setup;
 public partial class SetupUI : Node
 {
     [Export] private LineEdit lineEditGameName;
+    [Export] private LineEdit lineEditRedotExe;
     [Export] private OptionButton genreOptionBtn;
     [Export] private PopupPanel popupPanel;
     [Export] private RichTextLabel gameNamePreview;
@@ -23,6 +24,8 @@ public partial class SetupUI : Node
         _genre = (Genre)genreOptionBtn.Selected;
         SetupUtils.SetGenreSelectedInfo(genreSelectedInfo, _genre);
         SetupUtils.DisplayGameNamePreview("Undefined", gameNamePreview);
+
+        
     }
 
     private void _on_yes_pressed()
@@ -35,6 +38,7 @@ public partial class SetupUI : Node
 
         SetupManager.RenameProjectFiles(path, gameName);
         SetupManager.RenameAllNamespaces(path, gameName);
+        SetupManager.SetupVSCodeTemplates(lineEditRedotExe.Text, gameName);
 
         if (checkButtonMoveProjectFiles.ButtonPressed)
         {

@@ -27,7 +27,7 @@ bg_color = Color(0.6, 0, 0.0470588, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
 bg_color = Color(0, 0.6, 0.0784314, 1)
 
-[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "genreOptionBtn", "popupPanel", "gameNamePreview", "genreSelectedInfo", "checkButtonDeleteSetupScene", "checkButtonDeleteOtherGenres", "checkButtonMoveProjectFiles")]
+[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "lineEditRedotExe", "genreOptionBtn", "popupPanel", "gameNamePreview", "genreSelectedInfo", "checkButtonDeleteSetupScene", "checkButtonDeleteOtherGenres", "checkButtonMoveProjectFiles")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -36,6 +36,7 @@ grow_vertical = 2
 theme = SubResource("Theme_rop0o")
 script = ExtResource("1_m5u8t")
 lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
+lineEditRedotExe = NodePath("CenterContainer/VBoxContainer/VSCode/HBoxContainer/RedotExe")
 genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
 popupPanel = NodePath("PopupPanel")
 gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/NamePreview")
@@ -160,6 +161,27 @@ theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
 button_pressed = true
 text = "Move Project Files"
+
+[node name="VSCode" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/VSCode"]
+layout_mode = 2
+text = "Optional VSCode Settings"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/VSCode"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/VSCode/HBoxContainer"]
+layout_mode = 2
+text = "Redot Executable Path"
+
+[node name="RedotExe" type="LineEdit" parent="CenterContainer/VBoxContainer/VSCode/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "C:/Path/To/Redot.exe"
 
 [node name="ApplyChanges" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 75)

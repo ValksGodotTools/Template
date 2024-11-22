@@ -117,40 +117,66 @@ public static class SetupManager
     /// </summary>
     public static void RenameProjectFiles(string path, string name)
     {
-        // .csproj
-        {
-            string fullPath = Path.Combine(path, "Template.csproj");
-            string text = File.ReadAllText(fullPath);
-            text = text.Replace("<RootNamespace>Template</RootNamespace>", $"<RootNamespace>{name}</RootNamespace>");
-            File.Delete(fullPath);
-            File.WriteAllText(Path.Combine(path, name + ".csproj"), text);
-        }
+        RenameCSProjFile(path, name);
+        RenameSolutionFile(path, name);
+        RenameProjectGodotFile(path, name);
+    }
+    
+    public static void SetupVSCodeTemplates(string redotExe, string gameName)
+    {
+        // Normalize the redot.exe path and remove quotes
+        redotExe = redotExe.Trim().Replace("\\", "/").Replace("\"", "");
+        
+        string path = ProjectSettings.GlobalizePath("res://");
+        string fullPath = Path.Combine(path, "Genres", "0 Setup", "VSCode Templates");
+        string launchFilePath = Path.Combine(fullPath, "launch.json");
+        string tasksFilePath = Path.Combine(fullPath, "tasks.json");
 
-        // .sln
-        {
-            string fullPath = Path.Combine(path, "Template.sln");
-            string text = File.ReadAllText(fullPath);
-            text = text.Replace("Template", name);
-            File.Delete(fullPath);
-            File.WriteAllText(Path.Combine(path, name + ".sln"), text);
-        }
+        string launchText = File.ReadAllText(launchFilePath);
+        launchText = launchText.Replace("ENGINE_EXE", redotExe);
+        string launchVSCodePath = Path.Combine(path, ".vscode", "launch.json");
+        File.WriteAllText(launchVSCodePath, launchText);
 
-        // project.godot
-        {
-            string fullPath = Path.Combine(path, "project.godot");
-            string text = File.ReadAllText(fullPath);
+        string tasksText = File.ReadAllText(tasksFilePath);
+        tasksText = tasksText.Replace("ENGINE_EXE", redotExe);
+        tasksText = tasksText.Replace("Template", gameName);
+        string tasksVSCodePath = Path.Combine(path, ".vscode", "tasks.json");
+        File.WriteAllText(tasksVSCodePath, tasksText);
+    }
+    
+    private static void RenameProjectGodotFile(string path, string name)
+    {
+        string fullPath = Path.Combine(path, "project.godot");
+        string text = File.ReadAllText(fullPath);
 
-            text = text.Replace(
-                "project/assembly_name=\"Template\"",
-                $"project/assembly_name=\"{name}\"");
+        text = text.Replace(
+            "project/assembly_name=\"Template\"",
+            $"project/assembly_name=\"{name}\"");
 
-            text = text.Replace(
-                "config/name=\"Template\"",
-                $"config/name=\"{name}\""
-                );
+        text = text.Replace(
+            "config/name=\"Template\"",
+            $"config/name=\"{name}\""
+            );
 
-            File.WriteAllText(fullPath, text);
-        }
+        File.WriteAllText(fullPath, text);
+    }
+    
+    private static void RenameSolutionFile(string path, string name)
+    {
+        string fullPath = Path.Combine(path, "Template.sln");
+        string text = File.ReadAllText(fullPath);
+        text = text.Replace("Template", name);
+        File.Delete(fullPath);
+        File.WriteAllText(Path.Combine(path, name + ".sln"), text);
+    }
+    
+    private static void RenameCSProjFile(string path, string name)
+    {
+        string fullPath = Path.Combine(path, "Template.csproj");
+        string text = File.ReadAllText(fullPath);
+        text = text.Replace("<RootNamespace>Template</RootNamespace>", $"<RootNamespace>{name}</RootNamespace>");
+        File.Delete(fullPath);
+        File.WriteAllText(Path.Combine(path, name + ".csproj"), text);
     }
 
     /// <summary>
