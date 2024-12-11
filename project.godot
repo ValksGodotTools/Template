@@ -18,6 +18,7 @@ config/icon="res://Template/Sprites/UI/Icon.svg"
 
 [autoload]
 
+CheckExports="*res://Template/Scripts/Autoloads/CheckExports.cs"
 ServiceProvider="*res://Template/Scripts/Autoloads/Services.cs"
 Console="*res://Template/Autoloads/Console.tscn"
 Global="*res://Template/Autoloads/Global.tscn"

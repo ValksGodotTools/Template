@@ -1,10 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://d4a5xfmaulku1"]
+[gd_scene load_steps=16 format=3 uid="uid://d4a5xfmaulku1"]
 
-[ext_resource type="Script" path="res://Scenes/MenuUI/MainMenu.cs" id="1_cqe0w"]
-[ext_resource type="Resource" uid="uid://b42wyojsytvbi" path="res://Template/Resources/GameState.tres" id="2_qsxg3"]
+[ext_resource type="Script" uid="uid://ckf2hfrig7e7o" path="res://Scenes/MenuUI/MainMenu.cs" id="1_cqe0w"]
 [ext_resource type="Texture2D" uid="uid://befic22eh3djm" path="res://Template/Sprites/Concept Art/FloatingIslandCity.JPG" id="3_3urlq"]
-[ext_resource type="Script" path="res://Template/Scripts/UI/BackgroundNoise.cs" id="4_wcnwk"]
-[ext_resource type="Script" path="res://Scripts/UI/MainMenuNav.cs" id="5_sc4as"]
+[ext_resource type="Script" uid="uid://dkx0u4t8smu1c" path="res://Template/Scripts/UI/BackgroundNoise.cs" id="4_wcnwk"]
+[ext_resource type="Script" uid="uid://bi551lrt82awu" path="res://Scripts/UI/MainMenuNav.cs" id="5_sc4as"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xl3hr"]
 
@@ -56,7 +55,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cqe0w")
-gameState = ExtResource("2_qsxg3")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(577, 324)
