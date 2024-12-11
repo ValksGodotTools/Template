@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using System.Collections.Generic;
 
@@ -97,3 +98,4 @@ public partial class CommandLineArgs : Node
         public Vector2I Size { get; } = size;
     }
 }
+#endif
