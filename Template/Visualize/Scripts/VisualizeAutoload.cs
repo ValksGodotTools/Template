@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using RedotUtils;
 using System;
@@ -12,10 +13,7 @@ public partial class VisualizeAutoload : Node
 
     public override void _Ready()
     {
-        Window root = GetTree().Root;
-        List<Node> children = root.GetChildren<Node>();
-
-        foreach (Node node in children)
+        foreach (Node node in GetTree().Root.GetChildren<Node>())
         {
             AddVisualNode(node);
         }
@@ -177,3 +175,4 @@ public class VisualNodeInfo(List<Action> actions, Control visualControl, Node no
     public Vector2 Offset { get; } = offset;
     public Node Node { get; } = node ?? throw new ArgumentNullException(nameof(node));
 }
+#endif
