@@ -32,10 +32,8 @@ public partial class Player
             {
                 _jumpVars.HoldingKey = false;
             }
-        };
 
-        state.Transitions = () =>
-        {
+            // Transitions
             if (IsOnFloor())
             {
                 SwitchState(Idle());

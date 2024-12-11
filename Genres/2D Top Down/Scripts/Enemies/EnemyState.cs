@@ -34,7 +34,7 @@ public abstract partial class EnemyState : Node2D
     }
     
     protected virtual void Enter() { }
-    protected virtual void Update(float delta) { }
+    protected virtual void Update(double delta) { }
     protected virtual void Exit() { }
 
     protected bool IsState(string state)

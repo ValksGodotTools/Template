@@ -14,7 +14,7 @@ public partial class Player
             Sprite.Play("idle");
         };
 
-        state.Transitions = () =>
+        state.Update = delta =>
         {
             if (Input.IsActionJustPressed(InputActions.Jump) && IsOnFloor())
             {

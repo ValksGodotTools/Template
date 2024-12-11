@@ -18,11 +18,6 @@ public partial class Player
 
         };
 
-        state.Transitions = () =>
-        {
-
-        };
-
         return state;
     }
 }
