@@ -10,7 +10,7 @@ public partial class OptionsDisplay : Control
 {
     public event Action<int> OnResolutionChanged;
 
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private ResourceOptions _options;
 
     // Max FPS
@@ -24,7 +24,7 @@ public partial class OptionsDisplay : Control
 
     public override void _Ready()
     {
-        _options = optionsManager.Options;
+        _options = _optionsManager.Options;
         SetupMaxFPS();
         SetupWindowSize();
         SetupWindowMode();
@@ -62,7 +62,7 @@ public partial class OptionsDisplay : Control
         OptionButton optionBtnWindowMode = GetNode<OptionButton>("%WindowMode");
         optionBtnWindowMode.Select((int)_options.WindowMode);
 
-        optionsManager.WindowModeChanged += windowMode =>
+        _optionsManager.WindowModeChanged += windowMode =>
         {
             if (!GodotObject.IsInstanceValid(optionBtnWindowMode))
             {

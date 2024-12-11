@@ -6,7 +6,7 @@ namespace Template.UI;
 
 public partial class OptionsNav : Control
 {
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private readonly Dictionary<string, Control> _tabs = [];
     private readonly Dictionary<string, Button> _buttons = [];
 
@@ -27,15 +27,15 @@ public partial class OptionsNav : Control
             _buttons.Add(button.Name, button);
         }
 
-        _buttons[optionsManager.CurrentOptionsTab].GrabFocus();
+        _buttons[_optionsManager.CurrentOptionsTab].GrabFocus();
 
         HideAllTabs();
-        ShowTab(optionsManager.CurrentOptionsTab);
+        ShowTab(_optionsManager.CurrentOptionsTab);
     }
 
     private void ShowTab(string tabName)
     {
-        optionsManager.CurrentOptionsTab = tabName;
+        _optionsManager.CurrentOptionsTab = tabName;
         HideAllTabs();
         _tabs[tabName].Show();
     }

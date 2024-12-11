@@ -5,7 +5,7 @@ namespace Template;
 
 public partial class AudioManager : Node
 {
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private static RAudioPlayer _musicPlayer;
     private static Node _sfxPlayersParent;
     private static float _lastPitch;
@@ -13,7 +13,7 @@ public partial class AudioManager : Node
 
     public override void _Ready()
     {
-        _options = optionsManager.Options;
+        _options = _optionsManager.Options;
         _musicPlayer = new RAudioPlayer(this);
 
         _sfxPlayersParent = new Node();

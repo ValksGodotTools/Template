@@ -12,7 +12,7 @@ public partial class Global : Node
     /// </summary>
     public static event Func<Task> OnQuit;
 
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
 
     public static Logger Logger { get; private set; } = new();
 
@@ -31,7 +31,7 @@ public partial class Global : Node
     {
         if (Input.IsActionJustPressed(InputActions.Fullscreen))
         {
-            optionsManager.ToggleFullscreen();
+            _optionsManager.ToggleFullscreen();
         }
 
         Logger.Update();
@@ -50,8 +50,8 @@ public partial class Global : Node
         _instance.GetTree().AutoAcceptQuit = false;
 
         // Handle cleanup here
-        _instance.optionsManager.SaveOptions();
-        _instance.optionsManager.SaveHotkeys();
+        _instance._optionsManager.SaveOptions();
+        _instance._optionsManager.SaveHotkeys();
 
         if (OnQuit != null)
         {

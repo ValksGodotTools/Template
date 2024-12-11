@@ -6,8 +6,8 @@ namespace Template.TopDown2D;
 [SceneTree]
 public partial class Torch : Node2D
 {
-    [Visualize] [Export] private double flickerRange = 0.05;
-    [Visualize] [Export] private double pulseAmplitude = 0.1;
+    [Visualize] [Export] private double _flickerRange = 0.05;
+    [Visualize] [Export] private double _pulseAmplitude = 0.1;
     [Visualize] [Export]
     private float TextureScale
     {
@@ -29,7 +29,7 @@ public partial class Torch : Node2D
         set => Position = value;
     }
 
-    [Visualize] private double energy = 1;
+    [Visualize] private double _energy = 1;
     private float _textureScale = 1;
     private PointLight2D _light;
 
@@ -40,7 +40,7 @@ public partial class Torch : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
-        _light.Energy = (float)(energy + GD.RandRange(0, flickerRange) - 
-            Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * pulseAmplitude);
+        _light.Energy = (float)(_energy + GD.RandRange(0, _flickerRange) - 
+            Mathf.Sin(Engine.GetPhysicsFrames() * 0.01) * _pulseAmplitude);
     }
 }

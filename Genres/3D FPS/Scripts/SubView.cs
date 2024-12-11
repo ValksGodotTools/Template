@@ -5,14 +5,14 @@ namespace Template.FPS3D;
 
 public partial class SubView : SubViewportContainer
 {
-    [Export] private OptionsManager options;
+    [Export] private OptionsManager _options;
 
     public override void _Ready()
     {
-        StretchShrink = options.Options.Resolution;
+        StretchShrink = _options.Options.Resolution;
 
         SubViewport subViewport = GetNode<SubViewport>("SubViewport");
-        subViewport.Msaa3D = (Viewport.Msaa)options.Options.Antialiasing;
+        subViewport.Msaa3D = (Viewport.Msaa)_options.Options.Antialiasing;
 
         UIPopupMenu popupMenu = GetNode<UIPopupMenu>("%PopupMenu");
 
@@ -21,7 +21,7 @@ public partial class SubView : SubViewportContainer
 
         display.OnResolutionChanged += (resolution) =>
         {
-            StretchShrink = options.Options.Resolution;
+            StretchShrink = _options.Options.Resolution;
         };
 
         OptionsGraphics graphics = popupMenu.Options.GetNode<OptionsGraphics>("%Graphics");

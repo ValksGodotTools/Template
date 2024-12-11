@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dnmu3cujgayk2"]
 
-[ext_resource type="Script" path="res://Genres/0 Setup/SetupUI.cs" id="1_m5u8t"]
-[ext_resource type="Script" path="res://Genres/0 Setup/CheckDotNetVersion.cs" id="2_ut11q"]
+[ext_resource type="Script" uid="uid://dosqetacy3knn" path="res://Genres/0 Setup/SetupUI.cs" id="1_m5u8t"]
+[ext_resource type="Script" uid="uid://blxj0cebqkjo2" path="res://Genres/0 Setup/CheckDotNetVersion.cs" id="2_ut11q"]
 
 [sub_resource type="SystemFont" id="SystemFont_ax7t0"]
 font_names = PackedStringArray("Segoe UI")
@@ -27,7 +27,7 @@ bg_color = Color(0.6, 0, 0.0470588, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1payf"]
 bg_color = Color(0, 0.6, 0.0784314, 1)
 
-[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("lineEditGameName", "lineEditRedotExe", "genreOptionBtn", "popupPanel", "gameNamePreview", "genreSelectedInfo", "checkButtonDeleteSetupScene", "checkButtonDeleteOtherGenres", "checkButtonMoveProjectFiles")]
+[node name="Setup" type="PanelContainer" node_paths=PackedStringArray("_lineEditGameName", "_lineEditRedotExe", "_genreOptionBtn", "_popupPanel", "_gameNamePreview", "_genreSelectedInfo", "_checkButtonDeleteSetupScene", "_checkButtonDeleteOtherGenres", "_checkButtonMoveProjectFiles")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,15 +35,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_rop0o")
 script = ExtResource("1_m5u8t")
-lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
-lineEditRedotExe = NodePath("CenterContainer/VBoxContainer/VSCode/HBoxContainer/RedotExe")
-genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
-popupPanel = NodePath("PopupPanel")
-gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/NamePreview")
-genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenrePreview")
-checkButtonDeleteSetupScene = NodePath("CenterContainer/VBoxContainer/Options/DeleteSetupScene")
-checkButtonDeleteOtherGenres = NodePath("CenterContainer/VBoxContainer/Options/DeleteOtherGenres")
-checkButtonMoveProjectFiles = NodePath("CenterContainer/VBoxContainer/Options/MoveProjectFiles")
+_lineEditGameName = NodePath("CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer2/GameName")
+_lineEditRedotExe = NodePath("CenterContainer/VBoxContainer/VSCode/HBoxContainer/RedotExe")
+_genreOptionBtn = NodePath("CenterContainer/VBoxContainer/VBoxContainer/Genre")
+_popupPanel = NodePath("PopupPanel")
+_gameNamePreview = NodePath("CenterContainer/VBoxContainer/Tooltip/MarginContainer/NamePreview")
+_genreSelectedInfo = NodePath("CenterContainer/VBoxContainer/Tooltip2/MarginContainer/GenrePreview")
+_checkButtonDeleteSetupScene = NodePath("CenterContainer/VBoxContainer/Options/DeleteSetupScene")
+_checkButtonDeleteOtherGenres = NodePath("CenterContainer/VBoxContainer/Options/DeleteOtherGenres")
+_checkButtonMoveProjectFiles = NodePath("CenterContainer/VBoxContainer/Options/MoveProjectFiles")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -127,6 +127,7 @@ alignment = 1
 selected = 0
 item_count = 4
 popup/item_0/text = "No Genre"
+popup/item_0/id = 0
 popup/item_1/text = "2D Platformer"
 popup/item_1/id = 1
 popup/item_2/text = "2D Top Down"
@@ -141,24 +142,24 @@ alignment = 1
 [node name="DeleteSetupScene" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 button_pressed = true
 text = "Delete Setup Scene"
 
 [node name="DeleteOtherGenres" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 button_pressed = true
 text = "Delete Other Genres"
 
 [node name="MoveProjectFiles" type="CheckButton" parent="CenterContainer/VBoxContainer/Options"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 theme_override_colors/font_color = Color(0.623529, 0.623529, 0.623529, 1)
+theme_override_colors/font_pressed_color = Color(0.625, 0.625, 0.625, 1)
 button_pressed = true
 text = "Move Project Files"
 
@@ -198,7 +199,7 @@ size = Vector2i(366, 130)
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 362.0
-offset_bottom = 126.0
+offset_bottom = 136.0
 
 [node name="MarginContainer" type="MarginContainer" parent="PopupPanel/PanelContainer"]
 layout_mode = 2

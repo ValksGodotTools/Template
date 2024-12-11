@@ -6,14 +6,14 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] private OptionsManager options;
+    [Export] private OptionsManager _options;
     private Vector3 _cameraTarget;
     private Vector2 _mouseInput;
     private float _mouseSensitivity;
 
     private void OnReadyUI()
     {
-        _mouseSensitivity = options.Options.MouseSensitivity * 0.0001f;
+        _mouseSensitivity = _options.Options.MouseSensitivity * 0.0001f;
 
         OptionsGameplay gameplay = GetNode<UIPopupMenu>("%PopupMenu")
             .Options.GetNode<OptionsGameplay>("%Gameplay");
@@ -28,7 +28,7 @@ public partial class Player : CharacterBody3D
     {
         if (Input.IsActionJustPressed(InputActions.NextHeldItem))
         {
-            animTree.SetCondition("holster", true);
+            _animTree.SetCondition("holster", true);
         }
 
         if (Input.IsActionJustPressed(InputActions.PreviousHeldItem))

@@ -7,12 +7,12 @@ public partial class OptionsGameplay : Control
 {
     public event Action<float> OnMouseSensitivityChanged;
 
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private ResourceOptions _options;
 
     public override void _Ready()
     {
-        _options = optionsManager.Options;
+        _options = _optionsManager.Options;
         SetupDifficulty();
         SetupMouseSensitivity();
     }

@@ -8,13 +8,13 @@ public partial class OptionsGraphics : Control
 {
     public event Action<int> OnAntialiasingChanged;
 
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private ResourceOptions _options;
     private OptionButton _antialiasing;
 
     public override void _Ready()
     {
-        _options = optionsManager.Options;
+        _options = _optionsManager.Options;
         SetupQualityPreset();
         SetupAntialiasing();
         SetupWorldEnvironmentSettings();

@@ -1,11 +1,11 @@
 [gd_scene load_steps=75 format=4 uid="uid://b5cjboi5sgqg4"]
 
-[ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Player.cs" id="1_3aas6"]
-[ext_resource type="Script" path="res://Genres/3D FPS/Scripts/Env.cs" id="1_7hkd7"]
+[ext_resource type="Script" uid="uid://bntqintclag2f" path="res://Genres/3D FPS/Scripts/Player.cs" id="1_3aas6"]
+[ext_resource type="Script" uid="uid://bhhfyeewdksp2" path="res://Genres/3D FPS/Scripts/Env.cs" id="1_7hkd7"]
 [ext_resource type="PackedScene" uid="uid://c6pism2kgjr5c" path="res://Scenes/MenuUI/UIPopupMenu.tscn" id="1_bhqx1"]
-[ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Genres/3D FPS/Materials/Material.tres" id="1_wx8rx"]
-[ext_resource type="Script" path="res://Genres/3D FPS/Scripts/SubView.cs" id="3_k7q3h"]
-[ext_resource type="Script" path="res://Genres/3D FPS/Scripts/LevelUI.cs" id="3_u6p7k"]
+[ext_resource type="Material" uid="uid://dihglq1xyljur" path="res://Genres/3D FPS/Materials/material.tres" id="1_wx8rx"]
+[ext_resource type="Script" uid="uid://cnrhkxeocc2bn" path="res://Genres/3D FPS/Scripts/SubView.cs" id="3_k7q3h"]
+[ext_resource type="Script" uid="uid://2ql30j2jwpeq" path="res://Genres/3D FPS/Scripts/LevelUI.cs" id="3_u6p7k"]
 [ext_resource type="Resource" uid="uid://bvgp3pcf0t0ky" path="res://Template/Resources/OptionsManager.tres" id="4_ayq1j"]
 [ext_resource type="Material" uid="uid://u5sjl2fbrf5n" path="res://Genres/3D FPS/FPS Rig/Materials/ArmsMaterial.material" id="8_7uxpi"]
 [ext_resource type="Animation" uid="uid://d0wqid335slv6" path="res://Genres/3D FPS/FPS Rig/Weapons/Assault Rifle/Animations/Holster.res" id="8_v4j0c"]
@@ -414,12 +414,12 @@ blend_shape_mode = 0
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j32xg"]
 _data = {
-&"Reload": ExtResource("12_nfy3t"),
-&"Inspect": ExtResource("11_l1d44"),
-&"Rest": ExtResource("14_5i5dp"),
-&"Rest to ADS": ExtResource("14_4x5vf"),
+&"ADS": ExtResource("14_iktjy"),
 &"Holster": ExtResource("8_v4j0c"),
-&"ADS": ExtResource("14_iktjy")
+&"Inspect": ExtResource("11_l1d44"),
+&"Reload": ExtResource("12_nfy3t"),
+&"Rest": ExtResource("14_5i5dp"),
+&"Rest to ADS": ExtResource("14_4x5vf")
 }
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_tdvmn"]
@@ -672,12 +672,12 @@ blend_shape_mode = 0
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o1rpy"]
 _data = {
-&"Reload": ExtResource("19_3knj7"),
-&"Inspect": ExtResource("19_7wr4n"),
-&"Rest": ExtResource("21_ysw8i"),
-&"Rest to ADS": ExtResource("17_xly7s"),
+&"ADS": ExtResource("14_cnvo3"),
 &"Holster": ExtResource("15_jr4i0"),
-&"ADS": ExtResource("14_cnvo3")
+&"Inspect": ExtResource("19_7wr4n"),
+&"Reload": ExtResource("19_3knj7"),
+&"Rest": ExtResource("21_ysw8i"),
+&"Rest to ADS": ExtResource("17_xly7s")
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6psqc"]
@@ -696,7 +696,7 @@ visible = false
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fx7rt")
 script = ExtResource("1_7hkd7")
-options = ExtResource("4_ayq1j")
+_options = ExtResource("4_ayq1j")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.873772, 0.238744, -0.423702, 0, 0.871214, 0.490904, 0.486335, -0.428938, 0.761242, 0, 0, 0)
@@ -712,6 +712,7 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/Cube/StaticBody3D"]
 shape = SubResource("BoxShape3D_ujevp")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Cube2" type="MeshInstance3D" parent="Props"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 30, -14, 1, 0)
@@ -722,6 +723,7 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/Cube2/StaticBody3D"]
 shape = SubResource("BoxShape3D_ujevp")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Cube3" type="MeshInstance3D" parent="Props"]
 transform = Transform3D(-8.74228e-08, 0, 26, 0, 2, 0, -2, 0, -1.1365e-06, 0, 1, 14)
@@ -732,6 +734,7 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/Cube3/StaticBody3D"]
 shape = SubResource("BoxShape3D_ujevp")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Cube4" type="MeshInstance3D" parent="Props"]
 transform = Transform3D(-8.74228e-08, 0, 26, 0, 2, 0, -2, 0, -1.1365e-06, 0, 1, -14)
@@ -742,6 +745,7 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/Cube4/StaticBody3D"]
 shape = SubResource("BoxShape3D_ujevp")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Cube5" type="MeshInstance3D" parent="Props"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 5.81444, 2, -10.0281)
@@ -752,6 +756,7 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/Cube5/StaticBody3D"]
 shape = SubResource("BoxShape3D_ujevp")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_mjqun")
@@ -760,14 +765,15 @@ mesh = SubResource("PlaneMesh_mjqun")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_er703")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
-[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animTree", "fpsRig", "nodeItems")]
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_animTree", "_fpsRig", "_nodeItems")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_3aas6")
-animTree = NodePath("SubViewportContainer/SubViewport/FPS Rig/AnimationTree")
-fpsRig = NodePath("SubViewportContainer/SubViewport/FPS Rig")
-nodeItems = NodePath("SubViewportContainer/SubViewport/FPS Rig/Items")
-options = ExtResource("4_ayq1j")
+_animTree = NodePath("SubViewportContainer/SubViewport/FPS Rig/AnimationTree")
+_fpsRig = NodePath("SubViewportContainer/SubViewport/FPS Rig")
+_nodeItems = NodePath("SubViewportContainer/SubViewport/FPS Rig/Items")
+_options = ExtResource("4_ayq1j")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Player"]
 anchors_preset = 15
@@ -777,7 +783,7 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch = true
 script = ExtResource("3_k7q3h")
-options = ExtResource("4_ayq1j")
+_options = ExtResource("4_ayq1j")
 
 [node name="SubViewport" type="SubViewport" parent="Player/SubViewportContainer"]
 handle_input_locally = false
@@ -822,7 +828,7 @@ bones/1/parent = 0
 bones/1/rest = Transform3D(-0.0778564, -0.995034, 0.0620204, 0.0620206, 0.0572547, 0.996431, -0.995034, 0.0814251, 0.0572549, -0.211094, 0.0547319, 0.0341427)
 bones/1/enabled = true
 bones/1/position = Vector3(-0.34723, -0.117413, -0.0639479)
-bones/1/rotation = Quaternion(-0.62593, -0.58282, 0.51811, 0.00974651)
+bones/1/rotation = Quaternion(-0.625834, -0.583016, 0.518004, 0.00976369)
 bones/1/scale = Vector3(1, 1, 1)
 bones/2/name = "Lower Arm L"
 bones/2/parent = 1
@@ -836,7 +842,7 @@ bones/3/parent = 2
 bones/3/rest = Transform3D(0.911249, -0.0545937, 0.408222, 0.148465, 0.968079, -0.201943, -0.384166, 0.244627, 0.890266, -2.10842e-09, 0.236574, -3.11807e-09)
 bones/3/enabled = true
 bones/3/position = Vector3(-2.10842e-09, 0.236574, -3.11807e-09)
-bones/3/rotation = Quaternion(-0.00885586, -0.21949, 0.244728, 0.94438)
+bones/3/rotation = Quaternion(-0.00804111, -0.219645, 0.245498, 0.944152)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/name = "Thumb 01 L"
 bones/4/parent = 3
@@ -955,21 +961,21 @@ bones/20/parent = 0
 bones/20/rest = Transform3D(-0.0778564, 0.995034, -0.0620204, -0.0620206, 0.0572547, 0.996431, 0.995034, 0.0814251, 0.0572549, 0.211094, 0.0547319, 0.0341427)
 bones/20/enabled = true
 bones/20/position = Vector3(0.216831, -0.067224, 0.155605)
-bones/20/rotation = Quaternion(-0.745896, 0.0497364, -0.624378, 0.226535)
+bones/20/rotation = Quaternion(-0.745508, 0.0508086, -0.624533, 0.227145)
 bones/20/scale = Vector3(1, 1, 1)
 bones/21/name = "Lower Arm R"
 bones/21/parent = 20
 bones/21/rest = Transform3D(0.991398, -0.11525, -0.0620205, 0.118816, 0.991264, 0.0572547, 0.05488, -0.0641313, 0.996431, 9.31323e-10, 0.291113, -6.98492e-10)
 bones/21/enabled = true
 bones/21/position = Vector3(9.31323e-10, 0.291113, -6.98492e-10)
-bones/21/rotation = Quaternion(-0.392334, -0.0153643, 0.756532, 0.522969)
+bones/21/rotation = Quaternion(-0.392556, -0.0153412, 0.75696, 0.522183)
 bones/21/scale = Vector3(0.999999, 1, 1)
 bones/22/name = "Hand R"
 bones/22/parent = 21
 bones/22/rest = Transform3D(0.911249, 0.0545937, -0.408222, -0.148465, 0.968079, -0.201943, 0.384166, 0.244627, 0.890266, 2.10842e-09, 0.236574, -3.11807e-09)
 bones/22/enabled = true
 bones/22/position = Vector3(2.10842e-09, 0.236574, -3.11807e-09)
-bones/22/rotation = Quaternion(0.504122, -0.265535, -0.296192, 0.766565)
+bones/22/rotation = Quaternion(0.503849, -0.265881, -0.298472, 0.76574)
 bones/22/scale = Vector3(1, 1, 1)
 bones/23/name = "Thumb 01 R"
 bones/23/parent = 22
@@ -1080,7 +1086,7 @@ bones/38/name = "Gun Root"
 bones/38/parent = -1
 bones/38/rest = Transform3D(1, 0, 0, 0, -3.57628e-07, 1, 0, -1, -3.57628e-07, 2.15528e-17, 0.0970653, -0.0699691)
 bones/38/enabled = true
-bones/38/position = Vector3(0.106731, -0.0945551, -0.205701)
+bones/38/position = Vector3(0.106731, -0.0936264, -0.205701)
 bones/38/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 bones/38/scale = Vector3(1, 1, 1)
 bones/39/name = "Mag"
@@ -1406,6 +1412,7 @@ libraries = {
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_6psqc")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 visible = false

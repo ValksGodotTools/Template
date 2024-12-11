@@ -6,8 +6,8 @@ namespace Template.TopDown2D;
 
 public partial class RoomTransitions : Node
 {
-    [Export] private TileMapLayer tileMap; // Reference to the tile map layer
-    [Export] private Camera2D playerCamera; // Reference to the player's camera
+    [Export] private TileMapLayer _tileMap; // Reference to the tile map layer
+    [Export] private Camera2D _playerCamera; // Reference to the player's camera
 
     private Player _player; // Reference to the player object
 
@@ -26,11 +26,11 @@ public partial class RoomTransitions : Node
     // Initializes the size of each room based on tile size and scale
     private void InitializeRoomSize()
     {
-        _tileSize = tileMap.TileSet.TileSize;
+        _tileSize = _tileMap.TileSet.TileSize;
         int roomTileSize = 10;
 
-        int roomWidth = (int)tileMap.Scale.X * _tileSize.X * roomTileSize;
-        int roomHeight = (int)tileMap.Scale.Y * _tileSize.Y * roomTileSize;
+        int roomWidth = (int)_tileMap.Scale.X * _tileSize.X * roomTileSize;
+        int roomHeight = (int)_tileMap.Scale.Y * _tileSize.Y * roomTileSize;
 
         _roomSize = new(roomWidth, roomHeight);
     }
@@ -61,10 +61,10 @@ public partial class RoomTransitions : Node
     // Removes camera bounds to allow free movement
     private void UnlimitedCameraBounds()
     {
-        playerCamera.LimitTop = int.MinValue;
-        playerCamera.LimitLeft = int.MinValue;
-        playerCamera.LimitBottom = int.MaxValue;
-        playerCamera.LimitRight = int.MaxValue;
+        _playerCamera.LimitTop = int.MinValue;
+        _playerCamera.LimitLeft = int.MinValue;
+        _playerCamera.LimitBottom = int.MaxValue;
+        _playerCamera.LimitRight = int.MaxValue;
     }
 
     // Creates a trigger for room transitions
@@ -144,9 +144,9 @@ public partial class RoomTransitions : Node
     // Prepares the camera for the transition animation
     private void PrepareCameraForTransition()
     {
-        playerCamera.SetPhysicsProcess(false);
-        playerCamera.PositionSmoothingEnabled = false;
-        playerCamera.Position = playerCamera.GetScreenCenterPosition();
+        _playerCamera.SetPhysicsProcess(false);
+        _playerCamera.PositionSmoothingEnabled = false;
+        _playerCamera.Position = _playerCamera.GetScreenCenterPosition();
         UnlimitedCameraBounds();
     }
 
@@ -157,9 +157,9 @@ public partial class RoomTransitions : Node
         Vector2 screenSize = GetViewport().GetVisibleRect().Size;
         Vector2 transitionOffset = screenSize * (normal * -1);
 
-        new RTween(playerCamera)
+        new RTween(_playerCamera)
             .SetAnimatingProp(Camera2D.PropertyName.Position)
-            .AnimateProp(playerCamera.Position + transitionOffset, duration)
+            .AnimateProp(_playerCamera.Position + transitionOffset, duration)
             .TransExpo();
 
         new RTween(_player)
@@ -172,8 +172,8 @@ public partial class RoomTransitions : Node
     // Finalizes the room transition after the animation
     private void FinalizeRoomTransition()
     {
-        playerCamera.SetPhysicsProcess(true);
-        playerCamera.PositionSmoothingEnabled = true;
+        _playerCamera.SetPhysicsProcess(true);
+        _playerCamera.PositionSmoothingEnabled = true;
         LimitCameraBoundsToRoom();
         CreateRoomBoundaries();
         CreateRoomDoorTriggers();
@@ -182,10 +182,10 @@ public partial class RoomTransitions : Node
     // Limits the camera bounds to the current room
     private void LimitCameraBoundsToRoom()
     {
-        playerCamera.LimitTop = _roomSize.Y * _currentRoom.Y;
-        playerCamera.LimitLeft = _roomSize.X * _currentRoom.X;
-        playerCamera.LimitBottom = _roomSize.Y + (_roomSize.Y * _currentRoom.Y);
-        playerCamera.LimitRight = _roomSize.X + (_roomSize.X * _currentRoom.X);
+        _playerCamera.LimitTop = _roomSize.Y * _currentRoom.Y;
+        _playerCamera.LimitLeft = _roomSize.X * _currentRoom.X;
+        _playerCamera.LimitBottom = _roomSize.Y + (_roomSize.Y * _currentRoom.Y);
+        _playerCamera.LimitRight = _roomSize.X + (_roomSize.X * _currentRoom.X);
     }
 
     // Creates triggers for room transitions at each door

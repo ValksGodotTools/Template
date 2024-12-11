@@ -7,7 +7,7 @@ namespace Template.TopDown2D;
 
 public partial class RoomGeneration : Node
 {
-    [Export] private TileMapLayer tileMap;
+    [Export] private TileMapLayer _tileMap;
 
     public override void _Ready()
     {
@@ -28,7 +28,7 @@ public partial class RoomGeneration : Node
         {
             for (int y = 0; y < 10; y++)
             {
-                string tileName = tileMap.GetCustomData<string>(new Vector2I(x, y), "name");
+                string tileName = _tileMap.GetCustomData<string>(new Vector2I(x, y), "name");
 
                 if (tileName == "floor")
                 {
@@ -47,7 +47,7 @@ public partial class RoomGeneration : Node
         for (int i = 0; i < 2; i++)
         {
             Vector2I randomFloorTile = floorTiles[random.Next(floorTiles.Count)];
-            Vector2 randomFloorPosition = tileMap.MapToLocal(randomFloorTile) * tileMap.Scale;
+            Vector2 randomFloorPosition = _tileMap.MapToLocal(randomFloorTile) * _tileMap.Scale;
 
             Frog frog = Frog.Instantiate(randomFloorPosition);
             AddChild(frog);

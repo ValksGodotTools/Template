@@ -6,10 +6,10 @@ namespace Template.FPS3D;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] private BoneAttachment3D cameraBone;
-    [Export] private AnimationTree animTree;
-    [Export] private Node3D fpsRig;
-    [Export] private Node3D nodeItems;
+    [Export] private BoneAttachment3D _cameraBone;
+    [Export] private AnimationTree _animTree;
+    [Export] private Node3D _fpsRig;
+    [Export] private Node3D _nodeItems;
 
     //bool isReloading { get => animTree.GetCondition("reload"); }
 
@@ -24,25 +24,25 @@ public partial class Player : CharacterBody3D
         _camera = GetNode<Camera3D>("%Camera3D");
         _camOffset = _camera.Position - Position;
 
-        foreach (Node3D node in nodeItems.GetChildren(false))
+        foreach (Node3D node in _nodeItems.GetChildren(false))
         {
             _items.Add(new Item(node));
         }
 
         RecreateCameraBone(_curItemIndex);
 
-        animTree.AnimationStarted += anim =>
+        _animTree.AnimationStarted += anim =>
         {
             switch (anim)
             {
                 case "Holster":
-                    AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
+                    AnimationNodeStateMachinePlayback stateMachine = _animTree.GetStateMachine();
                     _switchingGuns = stateMachine.GetCurrentNode() == "Holster";
                     break;
             }
         };
 
-        animTree.AnimationFinished += async anim =>
+        _animTree.AnimationFinished += async anim =>
         {
             switch (anim)
             {
@@ -50,7 +50,7 @@ public partial class Player : CharacterBody3D
                 case "ADS":
                     if (!Input.IsActionPressed(InputActions.Ads))
                     {
-                        animTree.SetCondition("rest", true);
+                        _animTree.SetCondition("rest", true);
                     }
 
                     break;
@@ -62,7 +62,7 @@ public partial class Player : CharacterBody3D
                     {
                         int nextItemIndex = (_curItemIndex + 1) % _items.Count;
 
-                        animTree.AnimPlayer = _items[nextItemIndex].AnimationPlayer.GetPath();
+                        _animTree.AnimPlayer = _items[nextItemIndex].AnimationPlayer.GetPath();
                         
                         _items[_curItemIndex].SetVisible(false);
                         
@@ -74,7 +74,7 @@ public partial class Player : CharacterBody3D
                         RecreateCameraBone(nextItemIndex);
                         _items[nextItemIndex].SetVisible(true);
 
-                        AnimationNodeStateMachinePlayback stateMachine = animTree.GetStateMachine();
+                        AnimationNodeStateMachinePlayback stateMachine = _animTree.GetStateMachine();
                         stateMachine.Start("Draw");
 
                         _curItemIndex = (_curItemIndex + 1) % _items.Count;
@@ -93,34 +93,34 @@ public partial class Player : CharacterBody3D
         _camera.Position = Position + _camOffset;
         _camera.Quaternion = (camTarget * GetAnimationRotations()).Normalized();
 
-        fpsRig.Position = _camera.Position;
-        fpsRig.Quaternion = camTarget;
+        _fpsRig.Position = _camera.Position;
+        _fpsRig.Quaternion = camTarget;
 
         if (Input.IsActionJustPressed(InputActions.Reload))
         {
-            animTree.SetCondition("reload", true);
+            _animTree.SetCondition("reload", true);
         }
 
         if (Input.IsActionJustPressed(InputActions.Ads))
         {
-            animTree.SetCondition("ads", true);
+            _animTree.SetCondition("ads", true);
         }
 
         if (Input.IsActionJustReleased(InputActions.Ads))
         {
-            animTree.SetCondition("rest", true);
+            _animTree.SetCondition("rest", true);
         }
 
         if (Input.IsActionJustPressed(InputActions.Inspect))
         {
-            animTree.SetCondition("inspect", true);
+            _animTree.SetCondition("inspect", true);
         }
     }
 
     private Quaternion GetAnimationRotations()
     {
         // The camera bone
-        Quaternion camBoneQuat = new(cameraBone.Basis);
+        Quaternion camBoneQuat = new(_cameraBone.Basis);
 
         // Account for annoying offset from the camera bone
         Quaternion offset = Quaternion.FromEuler(new Vector3(-Mathf.Pi / 2, -Mathf.Pi, 0));
@@ -134,20 +134,20 @@ public partial class Player : CharacterBody3D
     // another skeleton
     private void RecreateCameraBone(int itemIndex)
     {
-        if (GodotObject.IsInstanceValid(cameraBone))
+        if (GodotObject.IsInstanceValid(_cameraBone))
         {
-            cameraBone.QueueFree();
+            _cameraBone.QueueFree();
         }
 
-        cameraBone = new();
-        fpsRig.AddChild(cameraBone);
-        cameraBone.BoneName = "Camera";
+        _cameraBone = new();
+        _fpsRig.AddChild(_cameraBone);
+        _cameraBone.BoneName = "Camera";
 
-        cameraBone.SetExternalSkeleton(_items[itemIndex].SkeletonRig.GetPath());
+        _cameraBone.SetExternalSkeleton(_items[itemIndex].SkeletonRig.GetPath());
 
         // Will output an error if this is the same camera bone so that's why we re-create
         // it every time
-        cameraBone.SetUseExternalSkeleton(true);
+        _cameraBone.SetUseExternalSkeleton(true);
     }
 }
 

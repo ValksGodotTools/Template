@@ -4,12 +4,12 @@ namespace Template.UI;
 
 public partial class OptionsGeneral : Control
 {
-    [Export] private OptionsManager optionsManager;
+    [Export] private OptionsManager _optionsManager;
     private ResourceOptions _options;
 
     public override void _Ready()
     {
-        _options = optionsManager.Options;
+        _options = _optionsManager.Options;
         SetupLanguage();
     }
 
