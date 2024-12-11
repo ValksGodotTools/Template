@@ -13,6 +13,7 @@
         "**/*.import": true,
         "**/*.sln": true,
         "**/*.txt": true,
+        "**/*.uid": true,
         "**/bin": true,
         "**/obj": true,
         "**/LICENSE": true,
