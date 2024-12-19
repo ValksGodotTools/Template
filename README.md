@@ -8,7 +8,7 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/ValksGodotTools/Template?style=flat&labelColor=1a1a1a&color=ff6600)](https://github.com/ValksGodotTools/Template/watchers)
 
 ## Setup
-1. Ensure your .NET SDK is at least `8.0.400`. Check version with `dotnet --version`. Update if needed: [Update .NET SDK](https://dotnet.microsoft.com/download)
+1. Ensure your [.NET SDK](https://dotnet.microsoft.com/download) is at least `8.0.400`. Check with `dotnet --version`. 
 2. Download and install the [latest Redot C# release](https://www.redotengine.org/)
 3. Clone with `git clone --recursive https://github.com/CSharpRedotTools/Template`
 4. If you want to setup Template for a specific genre, [continue reading here](https://github.com/ValksGodotTools/Template/wiki/Setting-up-Template-for-a-Specific-Genre)
